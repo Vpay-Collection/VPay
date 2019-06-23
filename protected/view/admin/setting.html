@@ -256,14 +256,6 @@
             layer.msg("请输入通讯密钥");
             return;
         }
-        if (notifyUrl === "") {
-            layer.msg("请输入异步回调地址");
-            return;
-        }
-        if (returnUrl === "") {
-            layer.msg("请输入支付完成后跳转地址");
-            return;
-        }
 
         if (close === "") {
             layer.msg("请输入创建的订单几分钟后失效");
@@ -301,8 +293,6 @@
             if (data.code === 1) {
                 $("#user").val(data.data.user);
                 $("#pass").val(data.data.pass);
-                $("#notifyUrl").val(data.data.notifyUrl);
-                $("#returnUrl").val(data.data.returnUrl);
                 $("#key").val(data.data.key);
                 $("#uid").val(data.data.uid);
                 $("#close").val(data.data.close);
