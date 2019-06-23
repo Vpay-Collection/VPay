@@ -1,0 +1,86 @@
+<table id="demo" lay-filter="test"></table>
+
+<script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+
+<script>
+    function formatDate(now) {
+        if (now === "0") {
+            return "无";
+        }
+
+        now = new Date(now * 1000);
+        return now.getFullYear()
+            + "-" + (now.getMonth() > 8 ? (now.getMonth() + 1) : "0" + (now.getMonth() + 1))
+            + "-" + (now.getDate() > 9 ? now.getDate() : "0" + now.getDate())
+            + " " + (now.getHours() > 9 ? now.getHours() : "0" + now.getHours())
+            + ":" + (now.getMinutes() > 9 ? now.getMinutes() : "0" + now.getMinutes())
+            + ":" + (now.getSeconds() > 9 ? now.getSeconds() : "0" + now.getSeconds());
+
+    }
+
+    var myTable, table, form;
+    layui.use(['form', 'table', 'laydate'], function () {
+        table = layui.table;
+        form = layui.form;
+
+        //第一个实例
+        myTable = table.render({
+            elem: '#demo'
+            , height: 'full-160'
+            , url: "<{url('admin/api','GetApp')}>"
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', minWidth: 100},
+                {field: 'app_name', title: '应用名称', minWidth: 200},
+                {field: 'return_url', title: '同步回调地址', minWidth: 380},
+                {field: 'notify_url', title: '异步回调地址', minWidth: 380},
+
+                {field: 'connect_key', title: '通讯密钥', minWidth: 400},
+
+                {title: '操作', minWidth: 120, align: 'center', toolbar: '#barDemo'}
+
+            ]]
+            , page: true
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'del') {
+                layer.confirm('确定要删除该应用吗？', function (index) {
+                    layer.msg('操作中', {
+                        icon: 16
+                        , shade: 0.01
+                    });
+
+                    $.post("<{url('admin/api','DelApp')}>", "id=" + data.id, function (data) {
+                        data = JSON.parse(data);
+                        if (data.code === 1) {
+
+                            layer.msg("操作成功！");
+                            myTable.reload();
+                        } else {
+                            layer.msg(data.msg);
+                        }
+
+
+                    });
+
+                    console.log(data.id);
+                });
+            }
+        });
+
+
+        //头工具栏事件
+
+
+        form.render();
+
+    });
+
+
+</script>
