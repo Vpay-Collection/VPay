@@ -13,17 +13,17 @@ class temp extends Model
     }
 
     public function temp_get($id)
-    {//获得临时表
+    {//查找临时表
         return $this->find(array("oid" => $id));
     }
 
     public function temp_del($id)
-    {//获得临时表
+    {//删除临时表
         $this->delete(array("oid" => $id));
     }
 
     public function temp_insert($condition)
-    {//获得临时表
+    {//插入临时表
         if (!$this->temp_getByPrice($condition["price"])) {//只有不存在才插入
             $this->insert_ignore($condition);
             return true;

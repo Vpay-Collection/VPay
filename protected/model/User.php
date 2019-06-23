@@ -3,7 +3,7 @@
 class User
 {
 
-
+//验证登录
     public function login($account, $password)
     {
         $conf = new Config();
@@ -17,14 +17,14 @@ class User
             return false;
         }
     }
-
+//退出登录
     public function logout()
     {
         setcookie("token", "", time() - 60 * 60, "/");
         session_destroy();
         return true;
     }
-
+//判断是否登录
     public function islogin()
     {
         $conf = new Config();

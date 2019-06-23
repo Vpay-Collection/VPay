@@ -1,5 +1,6 @@
 <?php
-
+/*系统设置模块
+ * */
 class Config extends Model
 {
     const UserName = 1;

@@ -1,5 +1,6 @@
 <?php
-
+/*主页统计模块
+ * */
 class Main extends Model
 {
     private $today;
@@ -9,7 +10,7 @@ class Main extends Model
         parent::__construct($table_name);
         $this->today = strtotime(date("Y-m-d"), time());
     }
-
+//取得今天的订单信息
     public function todayOrder()
     {
         $conditions = array(
@@ -19,7 +20,7 @@ class Main extends Model
         );
         return $this->findCount($conditions);
     }
-
+//取得成功的订单信息
     public function todaySuccessOrder()
     {
         $conditions = array(
