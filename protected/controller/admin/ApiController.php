@@ -97,7 +97,7 @@ class ApiController extends BaseController
         $conf = new Config();
         $arr["user"] = arg("user");
         $arr["pass"] = arg("pass");
-
+        $arr["uid"] = arg("uid");
         $arr["key"] = arg("key");
         $arr["wxpay"] = arg("wxpay");
         $arr["zfbpay"] = arg("zfbpay");

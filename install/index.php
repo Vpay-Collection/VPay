@@ -65,6 +65,7 @@ switch ($_GET['step']) {
         $install_error = '';
         $install_recover = '';
         step3($install_error, $install_recover);
+        echo "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><script>function sptips(){alert(\"{$install_error}\");}</script></head><body onload=\"sptips()\"></body></html>";
         break;
     case 4:
 
