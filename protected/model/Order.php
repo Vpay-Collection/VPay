@@ -328,7 +328,9 @@ class Order extends Model
         $arr["price"] = $this->price;
         $arr["param"] = $this->param;
         $arr["type"] = $this->type;
-
+        $arr["appid"] = $this->appid;
+        $arr["isHtml"] = $this->isHtml;
+        //TODO 修改签名部分
         $app = new App();
 
         $res = $app->getData($this->appid, "connect_key");
