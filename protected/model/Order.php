@@ -25,6 +25,8 @@ class Order extends Model
 
     private $orderId;
     private $reallyPrice;
+
+    private $ssid;
     //模块变量
     private $err;//订单产生的错误均放在这里
 
@@ -272,6 +274,7 @@ class Order extends Model
             $this->err = "请传入appid";
             return false;
         }
+
         $this->payId = $arg["payId"];
         if (!$this->payId || $this->payId === "") {
             $this->err = "请传入商户订单号";

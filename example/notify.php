@@ -16,6 +16,7 @@ $_sign = $alipay->getSign($_GET, $conf["key"]);
 
 if ($_sign === $sign) {
     echo json_encode(array("state" => true, "msg" => "支付成功", "data" => "", "count" => "0"));
+
 } else {
     echo json_encode(array("state" => false, "msg" => "支付失败", "data" => "", "count" => "0"));
 }

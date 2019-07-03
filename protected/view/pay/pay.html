@@ -244,8 +244,8 @@
     function check() {
         $.post("<{url('api/api','CheckOrder')}>", "orderId=" + getQueryString("orderId"), function (data) {
             data = JSON.parse(data);
-            if (data.code === -2) intDiff = 0;
-            if (data.code === 1) {
+            if (data.code === -2){intDiff = 0;}
+            else if (data.code === 1) {
                 window.location.href = data.data;
             } else {
 

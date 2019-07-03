@@ -11,7 +11,6 @@ $_GET["isHtml"] = 1;//采用自带的ui
 
 $_GET["appid"] = $conf["appid"];//把appid也参与计算
 
-
 $sign = $alipay->getSign($_GET, $conf["key"]);
 
 $p = http_build_query($_GET). '&sign=' . $sign;
