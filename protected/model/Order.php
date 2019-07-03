@@ -436,7 +436,7 @@ class Order extends Model
                 $user = $Uid;
                 $str = str_replace("[PID]", $user, $str);
                 $str = str_replace("[MONEY]", $this->reallyPrice, $str);
-                $payUrl = urlencode(str_replace("[BEI]", $this->param, $str));
+                $payUrl = urlencode(str_replace("[BEI]", "", $str));
 
 
                 $this->isAuto = 3;//支付宝自动的
