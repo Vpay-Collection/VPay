@@ -86,6 +86,12 @@ class Order extends Model
 
     }
 
+    public function GetPay_id($id, $parm = "*")
+    {
+
+        return $this->find(array("pay_id" => $id), "", $parm);
+
+    }
     //根据orderid取得指定订单信息
 
     public function ChangeState($id, $state, $paytime = "", $closetime = "")
@@ -97,7 +103,15 @@ class Order extends Model
         $this->update(array("id" => $id), $arr);
 
     }
+    public function ChangeStatePay($id, $state, $paytime = "", $closetime = "")
+    {
+        $arr["state"] = $state;
+        $arr["pay_date"] = $state;
+        if ($paytime !== "") $arr["pay_date"] = $paytime;
+        if ($paytime !== "") $arr["close_date"] = $closetime;
+        $this->update(array("pay_id" => $id), $arr);
 
+    }
     //根据指定关闭时间取得订单
 
     public function ChangeState_id($id, $state, $paytime = "", $closetime = "")

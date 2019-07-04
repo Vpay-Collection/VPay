@@ -97,11 +97,51 @@ class ApiController extends BaseController
 
             echo json_encode(array("code" => 1, "msg" => "成功", "data" => $url));
         } else {
-            echo json_encode(array("code" => 1, "msg" => "云订单编号不存在！"));
+            echo json_encode(array("code" => -2, "msg" => "云订单编号不存在！"));
         }
 
     }
+    //查询订单状态（简洁)）
+    public function actionOrderStatus()
+    {
+        $ord = new Order();
+        $res = $ord->GetPay_id(arg("payId"),"state");
 
+        if ($res) {
+            echo json_encode(array("code" => $res['state']));
+        } else {
+            echo json_encode(array("code" => -1, "msg" => "云订单编号不存在！"));
+        }
+
+    }
+    //订单确认
+    public function actionConfirm()
+    {
+        $orderId = arg("payId");
+
+        $ord = new Order();
+        $res = $ord->GetPay_id($orderId, "appid");
+
+        if (!$res) exit(json_encode(array("code" => -1, "msg" => "云端订单号不存在！")));
+
+        $app = new App();
+        $res2 = $app->getData($res["appid"], "connect_key");
+        $key = $res2["connect_key"];
+
+        $alipay = new AlipaySign();
+
+        $sign = $alipay->getSign(array("payId" => $orderId, "key" => $key), $key);
+
+        if ($sign !== arg("sign")) {
+            exit(json_encode(array("code" => -1, "msg" => "签名错误！")));
+        }
+
+
+        $ord->ChangeStatePay($orderId, 3, time());//订单确认号
+
+        exit(json_encode(array("code" => 1, "msg" => "成功！")));
+
+    }
     //关闭订单
     public function actionCloseOrder()
     {

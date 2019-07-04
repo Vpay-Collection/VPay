@@ -105,7 +105,9 @@
                         if (d.state === "2") {
                             return '<span style="color: orange">通知失败</span>';
                         } else if (d.state === "1") {
-                            return '<span style="color: green">完成</span>';
+                            return '<span style="color: green">支付完成</span>';
+                        } else if (d.state === "3") {
+                            return '<span style="color: green">订单已确认</span>';
                         } else if (d.state === "0") {
                             return '<span style="color: orange">待支付</span>';
                         } else if (d.state === "-1") {

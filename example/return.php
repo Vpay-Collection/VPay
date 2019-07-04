@@ -22,10 +22,20 @@ if ($_sign != $sign) {
 
     exit("校验失败，支付失败");
 }
+//此处需要进行确认
+$web=new web();
+$res=$web->get("../../OrderStatus?payId=$payId");
+$json=json_decode($res);
+if(isset($json->code)&&$json->code===1){
+    //这是交易完成
+    $web->get("../../Confirm?payId=$payId&sign=".$alipay->getSign(array("payId"=>$payId), $conf["key"]));
+    //继续业务流程
+    echo "商户订单号：" . $payId . "<br>自定义参数：" . $param . "<br>支付方式：" . $type . "<br>订单金额：" . $price . "<br>实际支付金额：" . $reallyPrice;
+}else if($json->code===3){
+    exit("交易已经完成");
+}
 
 
-//继续业务流程
-echo "商户订单号：" . $payId . "<br>自定义参数：" . $param . "<br>支付方式：" . $type . "<br>订单金额：" . $price . "<br>实际支付金额：" . $reallyPrice;
 
 
 ?>

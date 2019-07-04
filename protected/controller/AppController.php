@@ -150,6 +150,7 @@ class AppController extends BaseController
 
         $ord->ChangeState_id($res["order_id"], Order::OK, time(), time());//更新订单信息
 
+
         $app = new App();
 
         $AppRes = $app->getData($res["appid"], "connect_key,notify_url");
