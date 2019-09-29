@@ -1,14 +1,14 @@
 <div action="" class="layui-form layui-form-pane">
 
     <div class="layui-form-item">
-        <label class="layui-form-label">后台账号</label>
+        <label for="user" class="layui-form-label">后台账号</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="user" lay-verify="required" placeholder="请输入管理员账号"
                    type="text">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">后台密码</label>
+        <label for="pass" class="layui-form-label">后台密码</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="pass" lay-verify="required" placeholder="请输入管理员密码,不修改可以不填"
                    type="text">
@@ -16,7 +16,7 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">订单有效期</label>
+        <label for="close" class="layui-form-label">订单有效期</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="close" lay-verify="required" placeholder="请输入创建的订单几分钟后失效"
                    type="number">
@@ -25,7 +25,7 @@
 
 
     <div class="layui-form-item">
-        <label class="layui-form-label">支付宝UID</label>
+        <label for="uid" class="layui-form-label">支付宝UID</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="uid" lay-verify="required"
                    placeholder="登录网页版支付宝，查看网页源代码，Ctrl+F查找uid;支持任意金额付款，" type="text">
@@ -33,7 +33,7 @@
     </div>
 
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">通讯密钥</label>
+        <label for="key" class="layui-form-label">通讯密钥</label>
         <div class="layui-input-block">
             <textarea class="layui-textarea" id="key" name="connect_key" placeholder="请输入通讯密钥"></textarea>
         </div>
@@ -44,7 +44,7 @@
         <button class="layui-btn" id="random" type="button">随机生成通讯密钥</button>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">区分方式</label>
+        <label for="payQf" class="layui-form-label">区分方式</label>
         <div class="layui-input-block">
             <div class="layui-upload">
                 <select id="payQf">
@@ -62,7 +62,7 @@
                 <button class="layui-btn" id="wxup" type="button">上传收款二维码</button>
                 （此处上传的是无金额的收款二维码）
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="wximg" style="width: 120px;">
+                    <img class="layui-upload-img" id="wximg" style="width: 120px;" alt="微信二维码" src="">
                     <p id="wxcs"></p>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <button class="layui-btn" id="zfbup" type="button">上传收款二维码</button>
                 （此处上传的是无金额的收款二维码）
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="zfbimg" style="width: 120px;">
+                    <img class="layui-upload-img" id="zfbimg" style="width: 120px;" alt="支付宝二维码" src="">
                     <p id="zfbcs"></p>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                                 if (!data.data) {
                                     data = JSON.parse(data);
                                 }
-                                if (data.code === 1) {
+                                if (data.code === Api_Ok) {
                                     $('#wximg').attr('src', "<{url('admin/api','Qr')}>?url=" + data.data);
                                     layer.msg('处理成功');
                                 } else {
@@ -194,7 +194,7 @@
                                 if (!data.data) {
                                     data = JSON.parse(data);
                                 }
-                                if (data.code === 1) {
+                                if (data.code === Api_Ok) {
                                     $('#zfbimg').attr('src', "<{url('admin/api','Qr')}>?url=" + data.data);
                                     layer.msg('处理成功');
                                 } else {
@@ -216,7 +216,7 @@
             }
             , done: function (res) {
                 //如果上传失败
-                if (res.code === -1) {
+                if (res.code === Api_Err) {
                     return layer.msg('上传失败');
                 }
                 if (res.data === "") {
@@ -244,7 +244,9 @@
 
     function save() {
         var user = $("#user").val();
-        var pass = $("#pass").val();
+        var t = new Date().getTime();
+        var pass=$("#pass").val();
+        if(pass!=="")pass = encryptByDES($.trim(pass),t);
         var key = $("#key").val();
         var close = $("#close").val();
         var payQf = $("#payQf").val();
@@ -268,15 +270,15 @@
         }
         var zfbimg = $("#zfbimg").attr("src");
         var uid = $("#uid").val();
-        if (zfbimg === "" || !zfbimg || uid === "") {
+        if (zfbimg === "" && uid === "") {
             layer.msg("请上传支付宝无金额的收款二维码或者填写获得的支付宝UID");
             return;
         }
         wximg = wximg.replace("<{url('admin/api','Qr')}>?url=", "");
         zfbimg = zfbimg.replace("<{url('admin/api','Qr')}>?url=", "");
-        $.post("<{url('admin/api','SaveSetting')}>", "user=" + user + "&pass=" + pass + "&key=" + key + "&wxpay=" + wximg + "&zfbpay=" + zfbimg + "&close=" + close + "&payQf=" + payQf + "&uid=" + uid, function (data) {
+        $.post("<{url('admin/api','SaveSetting')}>", "user=" + user + "&pass=" + pass + "&key=" + key + "&wxpay=" + wximg + "&zfbpay=" + zfbimg + "&close=" + close + "&payQf=" + payQf + "&uid=" + uid+"&_t="+t, function (data) {
             data = JSON.parse(data);
-            if (data.code === 1) {
+            if (data.code === Api_Ok) {
                 getstate();
             }
 
@@ -290,7 +292,7 @@
 
             data = JSON.parse(data);
 
-            if (data.code === 1) {
+            if (data.code === Api_Ok) {
                 $("#user").val(data.data.user);
                 $("#pass").val(data.data.pass);
                 $("#key").val(data.data.key);
@@ -327,5 +329,16 @@
             pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
         }
         return pwd;
+    }
+
+
+
+    function encryptByDES(message, key) {
+        var keyHex = CryptoJS.enc.Utf8.parse(key);
+        var encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        return encrypted.toString();
     }
 </script>

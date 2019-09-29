@@ -35,14 +35,14 @@
         myTable = table.render({
             elem: '#demo'
             , height: 'full-130'
-            , url: "<{url('admin/api','QcodeInfo')}>"
+            , url: "<{url('admin/api','QrInfo')}>"
             , where: {
                 type: 1,
             }
             , cols: [[ //表头
                 {
-                    field: 'state', title: '二维码', templet: function (d) {
-                        return "<img src=<{url('admin/api','Qr')}>?url=" + d.pay_url + "/>";
+                    field: '', title: '二维码', templet: function (d) {
+                        return "<img  src=<{url('admin/api','Qr')}>?url=" + d.pay_url + " >";
                     }
                 },
                 {field: 'price', title: '金额'},
@@ -63,7 +63,7 @@
                     //向服务端发送删除指令
                     $.post("<{url('admin/api','DeleteCode')}>", "id=" + data.id, function (data) {
                         data = JSON.parse(data);
-                        if (data.code === 1) {
+                        if (data.code === Api_Ok) {
                             obj.del(); //删除对应行（tr）的DOM结构
                         }
 
@@ -82,3 +82,4 @@
 
 
 </script>
+

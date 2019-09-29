@@ -26,7 +26,9 @@ class BaseController extends Controller
 
         if (!(arg("a") === "Login" || arg("a") === "login") && !$user->islogin()) {
 
-            $this->tips("登录已经失效，请重新登录！", url("main", "index") . "#login");
+            if(arg("a")=== "Setting"){
+                echo json_encode(array("state"=>Config::Api_Err,"msg"=>"登录失效！请重新登录！","url"=>url("main","index")));
+            }else $this->tips("登录已经失效，请重新登录！", url("main", "index") . "#login");
         }
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta content="zh-cn" http-equiv="Content-Language">
@@ -120,7 +120,28 @@
 <script src="https://lib.baomitu.com/vue/2.5.21/vue.min.js"></script>
 
 <script>
-
+    //后台api数据
+    const Api_Ok=0;//接口状态ok
+    const Api_Err=-1;//接口状态错误
+    //监控端
+    const State_Online=1;//监控在线
+    const State_Offline=0;//监控掉线
+    const State_Nobind=-1;//监控还没绑定
+    //递增递减
+    const PayIncrease=1;//递增
+    const PayReduce=2;//递减
+    //订单状态常量定义
+    const State_Succ = 3;//远程服务器回调成功，订单完成确认
+    const State_Err = 2;//通知失败,回调服务器没有返回正确的响应信息
+    const State_Ok = 1;//支付完成，通知成功
+    const State_Wait = 0;//订单等待支付中
+    const State_Over = -1;//订单超时
+    //支付选择
+    const NeedHtml=1;//需要html
+    const NeedData=0;//我只要支付相关的数据
+    //支付方式
+    const PayWechat=1;
+    const PayAlipay=2;
     function aaa() {
         if ($('#orderDetail').hasClass('detail-open')) {
             $('#orderDetail .detail-ct').slideUp(500, function () {
@@ -213,17 +234,18 @@
 
     $.post("<{url('api/api','GetOrder')}>", "orderId=" + getQueryString("orderId"), function (data) {
         data = JSON.parse(data);
-        if (data.code === 1) {
+        if (data.code === Api_Ok) {
             var time = new Date().getTime() - data.data.date * 1000;
             time = time / 1000;
             time = data.data.timeOut * 60 - time;
 
-            if (data.data.state === -1) {
+            console.log(data.data.state === State_Over.toString(),data.data.state);
+            if (data.data.state === State_Over.toString()) {
                 time = 0;
             }
             timer(time);
 
-            if (data.data.payType === "1") {
+            if (data.data.payType === PayWechat.toString()) {
                 data.data.payType1 = "微信";
             } else {
                 data.data.payType1 = "支付宝";
@@ -242,10 +264,11 @@
     });
 
     function check() {
-        $.post("<{url('api/api','CheckOrder')}>", "orderId=" + getQueryString("orderId"), function (data) {
+        $.post("<{url('api/api','OrderState')}>", "orderId=" + getQueryString("orderId"), function (data) {
             data = JSON.parse(data);
-            if (data.code === -2){intDiff = 0;}
-            else if (data.code === 1) {
+            if (data.state === State_Over.toString()) {
+                clearInterval(myTimer);
+            } else if (data.state >= State_Ok) {
                 window.location.href = data.data;
             } else {
 

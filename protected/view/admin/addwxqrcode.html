@@ -20,7 +20,6 @@
 </script>
 <script>
     var imgs = {}, mytable;
-    var duilie = 0;
     layui.use('upload', function () {
         var $ = layui.jquery
             , upload = layui.upload;
@@ -142,7 +141,7 @@
             });
             return;
         }
-        $.post("<{url('admin/api','AddQrcode')}>", "type=1&pay_url=" + encodeURIComponent(obj[index].url) + "&price=" + obj[index].money, function (data) {
+        $.post("<{url('admin/api','AddQr')}>", "type="+PayWechat+"&pay_url=" + encodeURIComponent(obj[index].url) + "&price=" + obj[index].money, function (data) {
             up(obj, index + 1)
         });
     }

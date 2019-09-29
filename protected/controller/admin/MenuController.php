@@ -116,14 +116,8 @@ class MenuController extends BaseController
 
     public function actionApi()
     {
-        $this->host = $_SERVER["HTTP_HOST"];
-        $conf = new Config();
 
-        $lastheart = $conf->GetData(Config::lastheart);//最后心跳时间
 
-        if ((time() - $lastheart) > 120) {
-            $conf->UpdateData("jkstate", 1);//表示心跳异常
-        }
         $this->display("/admin/api.html");
     }//Api说明
 

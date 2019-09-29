@@ -57,7 +57,7 @@
             $.post("<{url('admin/api','Appcreate')}>", parseParams(data.field), function (data) {
                 data = JSON.parse(data);
                 layer.msg(data.msg);
-                if (data.code === 1) {
+                if (data.code === Api_Ok) {
                     $("#reset").click();
                 }
             });
@@ -88,8 +88,7 @@
                 var value = encodeURIComponent(data[i]);
                 tempArr.push(key + '=' + value);
             }
-            var urlParamsStr = tempArr.join('&');
-            return urlParamsStr;
+            return tempArr.join('&');
         } catch (err) {
             return '';
         }

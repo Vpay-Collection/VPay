@@ -11,23 +11,15 @@ class ApiController extends BaseController
 
         $main = new Main();
 
-        $todayOrder = $main->todayOrder();
-
-
-        $todaySuccessOrder = $main->todaySuccessOrder();
-
-
-        $todayCloseOrder = $main->todayCloseOrder();
-
-        $todayMoney = $main->todayMoney();
-
-
-        $countOrder = $main->countOrder();
-
-        $countMoney = $main->countMoney();
+        $todayOrder = $main->todayOrder();//获得今天订单数量
+        $todaySuccessOrder = $main->todaySuccessOrder();//获得今天成功的订单
+        $todayCloseOrder = $main->todayCloseOrder();//获取今天关闭的订单
+        $todayMoney = $main->todayMoney();//获取今天的收入
+        $countOrder = $main->countOrder();//统计总的成功订单数
+        $countMoney = $main->countMoney();//统计收到的钱
 
         echo json_encode(array(
-            "code" => 1,
+            "code" => Config::Api_Ok,
             "data" => array(
                 "todayOrder" => $todayOrder,
                 "todaySuccessOrder" => $todaySuccessOrder,
@@ -45,18 +37,16 @@ class ApiController extends BaseController
         $conf = new Config();
 
         $user = $conf->GetData(Config::UserName);
+        $key = $conf->GetData(Config::Key);
+        $close = $conf->GetData(Config::ValidityTime);
+        $payQf = $conf->GetData(Config::Payof);
 
-
-        $key = $conf->GetData(Config::key);
-        $close = $conf->GetData(Config::close);
-        $payQf = $conf->GetData(Config::payQf);
-
-        $wxpay = $conf->GetData(Config::wxpay);
-        $zfbpay = $conf->GetData(Config::zfbpay);
-        $uid = $conf->GetData(Config::uid);
+        $wxpay = $conf->GetData(Config::WechatPay);
+        $zfbpay = $conf->GetData(Config::AliPay);
+        $uid = $conf->GetData(Config::Ailuid);
 
         echo json_encode(array(
-            "code" => 1,
+            "code" => Config::Api_Ok,
             "data" => array(
                 "user" => $user,
                 "pass" => "",
@@ -75,16 +65,19 @@ class ApiController extends BaseController
 
         $conf = new Config();
 
-        $jkstate = $conf->GetData(Config::jkstate);
+        $State = $conf->GetData(Config::State);
 
-        $lastheart = $conf->GetData(Config::lastheart);
-        $lastpay = $conf->GetData(Config::lastpay);
-        $key = $conf->GetData(Config::key);
+        $lastheart = $conf->GetData(Config::LastHeart);
+        $lastpay = $conf->GetData(Config::LastPay);
+        $key = $conf->GetData(Config::Key);
+
+
+
 
         echo json_encode(array(
-            "code" => 1,
+            "code" => Config::Api_Ok,
             "data" => array(
-                "jkstate" => $jkstate,
+                "state" => $State,
                 "lastheart" => $lastheart,
                 "lastpay" => $lastpay,
                 "key" => $key,
@@ -95,14 +88,15 @@ class ApiController extends BaseController
     public function actionSaveSetting()
     {
         $conf = new Config();
-        $arr["user"] = arg("user");
-        $arr["pass"] = arg("pass");
-        $arr["uid"] = arg("uid");
-        $arr["key"] = arg("key");
-        $arr["wxpay"] = arg("wxpay");
-        $arr["zfbpay"] = arg("zfbpay");
-        $arr["close"] = arg("close");
-        $arr["payQf"] = arg("payQf");
+        $arr["UserName"] = arg("user");
+        $arr["UserPassword"] = arg("pass");
+        $arr["Ailuid"] = arg("uid");
+        $arr["Key"] = arg("key");
+        $arr["WechatPay"] = arg("wxpay");
+        $arr["AliPay"] = arg("zfbpay");
+        $arr["ValidityTime"] = arg("close");
+        $arr["Payof"] = arg("payQf");
+        $arr["_t"] = arg("_t");
         echo $conf->UpdateDataAll($arr);
     }
 
@@ -116,7 +110,7 @@ class ApiController extends BaseController
                 $file = file_get_contents($_FILES["file"]["tmp_name"]);
                 $b64 = base64_encode($file);
             } else {
-                exit(json_encode(array("code" => 0, "msg" => "失败", "data" => "")));
+                exit(json_encode(array("code" => Config::Api_Err, "msg" => "失败", "data" => "")));
             }
 
         }
@@ -125,7 +119,7 @@ class ApiController extends BaseController
 
         $qrcode = new QrReader(base64_decode($b64), QrReader::SOURCE_TYPE_BLOB);  //图片路径
 
-        echo json_encode(array("code" => 1, "msg" => "成功", "data" => $qrcode->text()));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "成功", "data" => $qrcode->text()));
     }
 
     public function actionQr()
@@ -136,32 +130,32 @@ class ApiController extends BaseController
 
     }
 
-    public function actionQcodeInfo()
+    public function actionQrInfo()
     {
         $p = new PayCode();
-        $result = $p->GetCode(arg("page"), arg("limit"), arg("type"));
+        $result = $p->GetCodeList(arg("page"), arg("limit"), arg("type"));
 
         if ($result) {
             $size = sizeof($result);
-            if ($size) echo json_encode(array("code" => 0, "msg" => "获取成功", "data" => $result, "count" => $size));
-            else echo json_encode(array("code" => 1, "msg" => "暂无数据", "data" => $result, "count" => $size));
+            if ($size) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $result, "count" => $size));
+            else echo json_encode(array("code" => Config::Api_Err, "msg" => "暂无数据", "data" => $result, "count" => $size));
 
 
-        } else  echo json_encode(array("code" => -1, "msg" => "暂无数据", "data" => ""));
+        } else  echo json_encode(array("code" => Config::Api_Err, "msg" => "暂无数据", "data" => ""));
     }
 
     public function actionDeleteCode()
     {
         $p = new PayCode();
         $p->DeleteCode(arg("id"));
-        echo json_encode(array("code" => 1, "msg" => "删除完毕", "data" => ""));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除完毕", "data" => ""));
     }
 
-    public function actionAddQrcode()
+    public function actionAddQr()
     {
         $p = new PayCode();
         $p->CreateCode(arg("pay_url"), arg("price"), arg("type"));
-        echo json_encode(array("code" => 1, "msg" => "保存完毕", "data" => ""));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "保存完毕", "data" => ""));
     }
 
     public function actionOrders()
@@ -170,32 +164,32 @@ class ApiController extends BaseController
         $res = $ord->GetOrders(arg("page"), arg("limit"), arg("type", ""), arg("state", ""));
         if ($res !== false) {
             $count = sizeof($res);
-            if ($count) echo json_encode(array("code" => 0, "msg" => "获取成功", "data" => $res, "count" => $count));
-            else echo json_encode(array("code" => 0, "msg" => "暂无数据", "data" => $res, "count" => $count));
+            if ($count) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count" => $count));
+            else echo json_encode(array("code" => Config::Api_Ok, "msg" => "暂无数据", "data" => $res, "count" => $count));
         } else {
-            echo json_encode(array("code" => -1, "msg" => "获取失败", "data" => "", "count" => "0"));
+            echo json_encode(array("code" => Config::Api_Err, "msg" => "获取失败", "data" => "", "count" => "0"));
         }
     }
 
     public function actionDelOrders()
     {
         $ord = new Order();
-        $ord->DelOrders(arg("id"));
-        echo json_encode(array("code" => 1, "msg" => "删除成功", "data" => "", "count" => "0"));
+        $ord->DelOrderById(arg("id"));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除成功", "data" => "", "count" => "0"));
     }
 
     public function actionDelGqOrder()
     {
         $ord = new Order();
-        $ord->DelGqOrder();
-        echo json_encode(array("code" => 1, "msg" => "删除成功", "data" => "", "count" => "0"));
+        $ord->DelOverOrder();
+        echo json_encode(array("code" =>Config::Api_Ok, "msg" => "删除成功", "data" => "", "count" => "0"));
     }
 
     public function actionDelLastOrder()
     {
         $ord = new Order();
         $ord->DelLastOrder();
-        echo json_encode(array("code" => 1, "msg" => "删除成功", "data" => "", "count" => "0"));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除成功", "data" => "", "count" => "0"));
     }
 
     public function actionAppcreate()
@@ -204,21 +198,21 @@ class ApiController extends BaseController
 
         $app->insert(arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
 
-        echo json_encode(array("code" => 1, "msg" => "添加成功！", "data" => "", "count" => "0"));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "添加成功！"));
     }
 
     public function actionGetApp()
     {//添加应用
         $app = new App();
 
-        $res = $app->get(arg("page"), arg("limit"));
+        $res = $app->getList(arg("page"), arg("limit"));
 
         if ($res) {
             $count = sizeof($res);
-            if ($count === 0) echo json_encode(array("code" => 1, "msg" => "获取成功！", "data" => $res, "count" => $count));
-            else  echo json_encode(array("code" => 0, "msg" => "暂无数据", "data" => $res, "count" => $count));
+            if ($count === 0) echo json_encode(array("code" => Config::Api_Err, "msg" => "暂无数据", "data" => $res, "count" => $count));
+            else  echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count" => $count));
         } else {
-            echo json_encode(array("code" => -1, "msg" => "获取失败", "data" => "", "count" => "0"));
+            echo json_encode(array("code" => Config::Api_Err, "msg" => "没有任何数据", "data" => "", "count" => "0"));
         }
 
 
@@ -230,7 +224,7 @@ class ApiController extends BaseController
 
         $app->del(arg("id"));
 
-        echo json_encode(array("code" => 1, "msg" => "获取成功！", "data" => "", "count" => 0));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除成功！", "data" => "", "count" => 0));
 
 
     }
@@ -239,64 +233,7 @@ class ApiController extends BaseController
     {//使用异步回调接口进行补单
         $ord = new Order();
 
-
-        $res = $ord->GetOrder(arg("id"), "appid,pay_id,type,param,price,really_price,state");
-
-
-        if ($res) {
-
-            $app = new App();
-
-            $AppRes = $app->getData($res["appid"], "connect_key,notify_url");
-
-            $key = $AppRes['connect_key'];
-            //取通讯密钥
-            $url = $AppRes['notify_url'];
-            //取回调地址
-            $arr["payId"] = $res['pay_id'];
-            $arr["param"] = $res['param'];
-            $arr["type"] = $res['type'];
-            $arr["price"] = $res['price'];
-            $arr["reallyPrice"] = $res['really_price'];
-            $arr["key"] = $key;
-            //参数化
-            $alipay = new AlipaySign();
-
-            $sign = $alipay->getSign($arr, $key);
-
-            $arr["sign"] = $sign;
-
-            $arr = array_diff_key($arr, array("key" => $key));
-
-            $p = http_build_query($arr);//封装成url地址参数
-
-            $url = $url . "?" . $p;
-
-            $web = new web();
-
-            $re = $web->get($url);
-
-            $re = json_decode($re);
-
-            if ($re) {
-                if ($re->state) {
-                    $ord->ChangeState(arg("id"), Order::OK);
-                    if ($res['state'] === Order::WAIT) {
-                        $tmp = new temp();
-                        $tmp->temp_del(arg("id"));
-                    }
-
-                    echo json_encode(array("code" => 1, "msg" => $re->msg, "data" => "", "count" => "0"));
-                } else {
-                    echo json_encode(array("code" => -3, "msg" => $re->msg, "data" => "", "count" => "0"));
-                }
-
-            } else {
-                echo json_encode(array("code" => -2, "msg" => "异步回调返回的数据不是标准json数据！", "data" => "", "count" => "0"));
-            }
-        } else {
-            echo json_encode(array("code" => -1, "msg" => "订单不存在", "data" => "", "count" => "0"));
-        }
+        echo $ord->Notify(arg("id"));
 
 
     }

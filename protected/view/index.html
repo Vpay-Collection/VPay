@@ -42,7 +42,7 @@
             <p>3、V免签仅供交流学习使用，请勿用于商业用途。</p>
             <p>4、请遵守相关法律法规，请勿用于非法用途。</p>
             <p>5、Dreamn修改，遵循开源协议。</p>
-            <p><input class="" onclick="window.open('https://github.com/szvone/Vmq','_blank')" type="submit"
+            <p><input class="" onclick="window.open('https://github.com/dreamncn/VPay','_blank')" type="submit"
                       value="获取V免签"/></p>
         </article>
 
@@ -87,15 +87,26 @@
 <script src="/i/js/index/util.js"></script>
 <script src="/i/js/index/main.js"></script>
 <script src="https://lib.baomitu.com/layer/3.1.1/layer.js"></script>
+<script src="/i/js/rollups/tripledes.js"></script>
+<script src="/i/js/components/mode-ecb.js"></script>
 <script>
     function login() {
-        $.post("<{url('admin/main','login')}>", "user=" + $("#user").val() + "&pass=" + $("#pass").val(), function (data) {
+        var t = new Date().getTime();
+        $.post("<{url('admin/main','login')}>", "user=" + $("#user").val() + "&pass=" + encryptByDES($.trim($("#pass").val()),t)+"&_t="+t, function (data) {
             data = JSON.parse(data);
             layer.msg(data.msg);
             if (data.status) {
                 window.location.href = "<{url('admin/main','index')}>";
             }
         });
+    }
+    function encryptByDES(message, key) {
+        var keyHex = CryptoJS.enc.Utf8.parse(key);
+        var encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        return encrypted.toString();
     }
 </script>
 

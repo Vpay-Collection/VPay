@@ -19,9 +19,9 @@
                     <option value="">不限制</option>
                     <option value="-1">过期</option>
                     <option value="0">待支付</option>
-                    <option value="1">完成</option>
+                    <option value="1">支付完成</option>
                     <option value="2">通知失败</option>
-
+                    <option value="3">订单已确认</option>
                 </select>
             </div>
         </div>
@@ -48,6 +48,32 @@
 
 
 <script>
+    var appList=[];
+    function getAppList(){
+        $.ajax({
+            type: "POST",
+            url: "<{url('admin/api','GetApp')}>",
+            success: function(data){
+                data=JSON.parse(data);
+                if(data.code===Api_Ok){
+                    appList=data.data;
+                }
+
+            }
+        });
+    }
+    function getAppName(id){
+        var name="";
+        $.each(appList,function (i,v) {
+            if(v.id===id){
+                name=v.app_name;return false;
+            }
+        });
+        if(name!=="")return name;
+        else return id;
+
+
+    }
     function formatDate(now) {
         if (now === "0") {
             return "无";
@@ -67,7 +93,7 @@
     layui.use(['form', 'table', 'laydate'], function () {
         table = layui.table;
         form = layui.form;
-
+        getAppList();
         //第一个实例
         myTable = table.render({
             elem: '#demo'
@@ -85,13 +111,15 @@
                     }
                 },
                 {field: 'pay_id', title: '商户编号', minWidth: 180},
-                {field: 'order_id', title: '订单编号', minWidth: 180},
-                {field: 'appid', title: '应用编号', minWidth: 90},
+                //{field: 'order_id', title: '订单编号', minWidth: 180},
+                {field: 'appid', title: '应用名称', minWidth: 90 , templet: function (d) {
+                        return getAppName(d.appid);
+                    }},
                 {
                     field: 'type', title: '支付方式', minWidth: 100, templet: function (d) {
-                        if (d.type === "1") {
+                        if (d.type === PayWechat.toString()) {
                             return '微信';
-                        } else if (d.type === "2") {
+                        } else if (d.type === PayAlipay.toString()) {
                             return '支付宝';
                         }
                     }
@@ -102,15 +130,15 @@
 
                 {
                     field: 'state', title: '状态', minWidth: 80, templet: function (d) {
-                        if (d.state === "2") {
+                        if (d.state === State_Err.toString()) {
                             return '<span style="color: orange">通知失败</span>';
-                        } else if (d.state === "1") {
+                        } else if (d.state === State_Ok.toString()) {
                             return '<span style="color: green">支付完成</span>';
-                        } else if (d.state === "3") {
+                        } else if (d.state === State_Succ.toString()) {
                             return '<span style="color: green">订单已确认</span>';
-                        } else if (d.state === "0") {
+                        } else if (d.state === State_Wait.toString()) {
                             return '<span style="color: orange">待支付</span>';
-                        } else if (d.state === "-1") {
+                        } else if (d.state === State_Over.toString()) {
                             return '<span style="color: red">过期</span>';
                         }
                     }
@@ -130,7 +158,8 @@
                 var out = "<p>创建时间：" + formatDate(data.create_date) + "</p>";
                 out += "<p>支付时间：" + formatDate(data.pay_date) + "</p>";
                 out += "<p>关闭时间：" + formatDate(data.close_date) + "</p>";
-                out += "<p>自定义参数：" + data.param + "</p>";
+
+                out += "<p>自定义参数：" + unescape(unescape(data.param).replace(/\\/g,"%")) + "</p>";
                 layer.alert(out);
 
             } else if (layEvent === 'bd') {
@@ -140,9 +169,9 @@
                         , shade: 0.01
                     });
 
-                    $.post("<{url('admin/api','SetBD')}>", "id=" + data.id, function (data) {
-                        data = JSON.parse(data);
-                        if (data.code === 1) {
+                    $.post("<{url('admin/api','SetBD')}>", "id=" + data.order_id, function (datas) {
+                        data = JSON.parse(datas);
+                        if (data.code === Api_Ok) {
                             layer.msg("操作成功！");
                             myTable.reload({
                                 where: {
@@ -150,16 +179,24 @@
                                     type: $("#type").val()
                                 }
                             });
-                        } else if (data.code === -2) {
-                            layer.confirm('补单失败，异步通知返回错误，是否查看通知返回数据？', {
+                        } else if (data.code === Api_Err) {
+                            layer.confirm('补单完成，异步通知返回错误，是否查看通知返回数据？', {
                                 btn: ['查看', '取消'] //按钮
                             }, function () {
-                                alert(data.data);
+
+
+
+                                layer.alert(unescape(unescape(datas).replace(/\\/g,"%")), {
+                                    title: "异步通知返回结果"
+                                });
+
                             }, function () {
 
                             });
                         } else {
-                            layer.msg(data.msg);
+                            layer.alert(unescape(unescape(datas).replace(/\\/g,"%")), {
+                                title: "异步通知返回结果"
+                            });
                         }
 
 
@@ -176,7 +213,7 @@
 
                     $.post("<{url('admin/api','DelOrders')}>", "id=" + data.id, function (data) {
                         data = JSON.parse(data);
-                        if (data.code === 1) {
+                        if (data.code === Api_Ok) {
 
                             layer.msg("操作成功！");
                             myTable.reload({
@@ -230,7 +267,7 @@
 
                         $.post("<{url('admin/api','DelGqOrder')}>", function (data) {
                             data = JSON.parse(data);
-                            if (data.code === 1) {
+                            if (data.code === Api_Ok) {
                                 layer.msg("操作成功！");
                                 myTable.reload({
                                     where: {
@@ -256,7 +293,7 @@
 
                         $.post("<{url('admin/api','DelLastOrder')}>", function (data) {
                             data = JSON.parse(data);
-                            if (data.code === 1) {
+                            if (data.code === Api_Ok) {
                                 layer.msg("操作成功！");
                                 myTable.reload({
                                     where: {

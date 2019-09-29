@@ -1,6 +1,8 @@
 <?php
+
 /*主页统计模块
  * */
+
 class Main extends Model
 {
     private $today;
@@ -10,6 +12,7 @@ class Main extends Model
         parent::__construct($table_name);
         $this->today = strtotime(date("Y-m-d"), time());
     }
+
 //取得今天的订单信息
     public function todayOrder()
     {
@@ -20,6 +23,7 @@ class Main extends Model
         );
         return $this->findCount($conditions);
     }
+
 //取得成功的订单信息
     public function todaySuccessOrder()
     {
@@ -51,9 +55,10 @@ class Main extends Model
         return $this->findSum($conditions, "price");
     }
 
+    //统计支付成功的订单数
     public function countOrder()
     {
-        return $this->findCount(array("state >= 1"));
+        return $this->findCount(array("state >= 1"));//1是支付完成
     }
 
     public function countMoney()

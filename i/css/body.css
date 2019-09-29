@@ -1,30 +1,36 @@
-*{
+* {
     padding: 0;
     margin: 0;
 }
-a{
-    color:#2E5CD5;
+
+a {
+    color: #2E5CD5;
     cursor: pointer;
     text-decoration: none
 }
-a:hover{
-    text-decoration:underline;
+
+a:hover {
+    text-decoration: underline;
 }
-body{
+
+body {
     background: #fff;
-    font-family: "Century Gothic","Microsoft yahei";
+    font-family: "Century Gothic", "Microsoft yahei";
     color: #333;
-    font-size:18px
+    font-size: 18px
 }
-h1{
+
+h1 {
     font-size: 100px;
     font-weight: normal;
     margin-bottom: 12px;
 }
-p{
+
+p {
     line-height: 1.6em;
     /*font-size: 42px*/
 }
+
 footer {
     height: 40px;
     line-height: 20px;
@@ -38,9 +44,10 @@ footer {
     font-size: 12px;
     letter-spacing: 1px;
 }
-footer.a:link,footer.a:active,footer.a:hover,a:visited{
-    color:#fff;
-    text-decoration:none
+
+footer.a:link, footer.a:active, footer.a:hover, a:visited {
+    color: #fff;
+    text-decoration: none
 }
 
 .container {

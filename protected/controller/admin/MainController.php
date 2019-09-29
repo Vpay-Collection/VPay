@@ -9,13 +9,13 @@ class MainController extends BaseController
     // 默认首页
     public function actionIndex()
     {
-        $this->display("admin/aaa.html");
+        $this->display("admin/index.html");
     }
 
     public function actionLogin()
     {//用户登录
         $user = new User();
-        if ($user->login(arg("user"), arg("pass"))) {
+        if ($user->login(arg("user"), arg("pass"), arg("_t"))) {
             echo json_encode(array("status" => true, "msg" => "登录成功！"));
         } else {
 

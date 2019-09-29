@@ -35,7 +35,7 @@
         myTable = table.render({
             elem: '#demo'
             , height: 'full-130'
-            , url: "<{url('admin/api','QcodeInfo')}>"
+            , url: "<{url('admin/api','QrInfo')}>"
             , where: {
                 type: 2,
             }
@@ -63,7 +63,7 @@
                     //向服务端发送删除指令
                     $.post("<{url('admin/api','DeleteCode')}>", "id=" + data.id, function (data) {
                         data = JSON.parse(data);
-                        if (data.code === 1) {
+                        if (data.code === Api_Ok) {
                             obj.del(); //删除对应行（tr）的DOM结构
                         }
 

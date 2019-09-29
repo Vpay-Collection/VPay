@@ -1,5 +1,7 @@
 <style>
-
+    .layui-table-cell {
+        height: auto;
+    }
 
     .layui-table img {
         max-width: 200px;
@@ -133,7 +135,7 @@
             });
             return;
         }
-        $.post("<{url('admin/api','AddQrcode')}>", "type=2&pay_url=" + encodeURIComponent(obj[index].url) + "&price=" + obj[index].money, function (data) {
+        $.post("<{url('admin/api','AddQr')}>", "type="+PayAlipay+"&pay_url=" + encodeURIComponent(obj[index].url) + "&price=" + obj[index].money, function (data) {
             up(obj, index + 1)
         });
     }

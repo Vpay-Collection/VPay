@@ -33,13 +33,13 @@
             , url: "<{url('admin/api','GetApp')}>"
             , cols: [[ //表头
                 {field: 'id', title: 'ID', minWidth: 100},
+                {title: '操作', minWidth: 120, align: 'center', toolbar: '#barDemo'},
                 {field: 'app_name', title: '应用名称', minWidth: 200},
                 {field: 'return_url', title: '同步回调地址', minWidth: 380},
                 {field: 'notify_url', title: '异步回调地址', minWidth: 380},
+                {field: 'connect_key', title: '通讯密钥', minWidth: 400}
 
-                {field: 'connect_key', title: '通讯密钥', minWidth: 400},
 
-                {title: '操作', minWidth: 120, align: 'center', toolbar: '#barDemo'}
 
             ]]
             , page: true
@@ -58,7 +58,7 @@
 
                     $.post("<{url('admin/api','DelApp')}>", "id=" + data.id, function (data) {
                         data = JSON.parse(data);
-                        if (data.code === 1) {
+                        if (data.code === Api_Ok) {
 
                             layer.msg("操作成功！");
                             myTable.reload();
