@@ -116,8 +116,9 @@ class MenuController extends BaseController
 
     public function actionApi()
     {
-        $this->host=((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://'.$_SERVER['HTTP_HOST'];
+        $this->host = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
 
+        $this->host.=$_SERVER['HTTP_HOST'];
         $this->display("/admin/api.html");
     }//Api说明
 
