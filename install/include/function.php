@@ -14,7 +14,7 @@ class check{
     {
         $env_items[] = array('name' => '操作系统', 'min' => '无限制', 'good' => 'linux', 'cur' => PHP_OS, 'status' => 1);
 
-        $env_items[] = array('name' => 'PHP版本', 'min' => '5.4', 'good' => '7.3', 'cur' => PHP_VERSION, 'status' => (PHP_VERSION < 5.4 ? 0 : 1));
+        $env_items[] = array('name' => 'PHP版本', 'min' => '7.0', 'good' => '7.3', 'cur' => PHP_VERSION, 'status' => (PHP_VERSION < 7.0 ? 0 : 1));
 
         $env_items[] = array('name' => '附件上传', 'min' => '未限制', 'good' => '2M', 'cur' => ini_get('upload_max_filesize'), 'status' => 1);
 
@@ -196,7 +196,8 @@ class mysql{
         if (!isset($sql) || empty($sql)) return;
         // $sql = str_replace("\r", "\n", str_replace('#__', $db_prefix, $sql));
         $sql = str_replace("[user]", $admin, $sql);
-        $sql = str_replace("[pass]", hash('sha256',$password.$admin), $sql);
+        //
+        $sql = str_replace("[pass]", hash("sha256",md5($password.md5($admin))), $sql);
         $ret = array();
         $num = 0;
         foreach (explode(";\n", trim($sql)) as $q) {

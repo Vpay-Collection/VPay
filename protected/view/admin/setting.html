@@ -124,7 +124,7 @@
                                 , time: 0
                             });
 
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + escapeComponent(result.split(",")[1]), function (data) {
+                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(result.split(",")[1]), function (data) {
                                 console.log(data);
                                 if (!data.data) {
                                     data = JSON.parse(data);
@@ -190,7 +190,7 @@
                                 , shade: 0.01
                                 , time: 0
                             });
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + escapeComponent(result.split(",")[1]), function (data) {
+                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(result.split(",")[1]), function (data) {
                                 if (!data.data) {
                                     data = JSON.parse(data);
                                 }

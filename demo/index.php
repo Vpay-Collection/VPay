@@ -35,10 +35,10 @@ $param=urlencode("我喜欢你呀~");//必须对字符串进行url编码，自�
 <p>自定义参数：<input id="param" type="text" value="<?php echo $param;?>"/></p>
 <p>支付方式：<select id="type">
         <option value="1">微信支付</option>
-        <option value="2" checked>支付宝支付</option>
+        <option value="2" selected>支付宝支付</option>
     </select></p>
 <p>前端支付ui：<select id="html">
-        <option value="1" checked>使用vpay自己的ui</option>
+        <option value="1" selected>使用vpay自己的ui</option>
         <option value="0">自己写ui支付</option>
     </select></p>
 <button onclick="zf()">支付</button>
