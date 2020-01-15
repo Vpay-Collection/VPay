@@ -96,7 +96,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 **普通更新，直接删除install目录直接覆盖安装即可，注意修改config.php的相关配置文件**
 ####  Ver. 1.2（2020.01.16）
-**本次更新请直接删除原站点进行覆盖更新，手动修改/protected/config.php的配置文件**
+**本次更新请直接删除原站点进行覆盖更新，需要手动修改/protected/config.php的配置文件**
 
 1、添加登录验证码，提高安全性
 
@@ -157,7 +157,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 V免签 - Dreamn修改版遵循 [MIT License](/LICENSE) 开源协议发布，并提供免费使用，请勿用于非法用途。
 
-版权所有Copyright © 2019 by dreamn (https://dreamn.cn)
+版权所有Copyright © 2020 by dreamn (https://dreamn.cn)
 
 All rights reserved。
 
