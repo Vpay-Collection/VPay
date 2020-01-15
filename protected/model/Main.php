@@ -1,5 +1,6 @@
 <?php
-
+namespace model;
+use lib\speed\mvc\Model;
 /*主页统计模块
  * */
 
@@ -21,7 +22,7 @@ class Main extends Model
             ":create_date1" => $this->today,
             ":create_date2" => $this->today + 86400
         );
-        return $this->findCount($conditions);
+        return $this->selectCount($conditions);
     }
 
 //取得成功的订单信息
@@ -32,7 +33,7 @@ class Main extends Model
             ":create_date1" => $this->today,
             ":create_date2" => $this->today + 86400
         );
-        return $this->findCount($conditions);
+        return $this->selectCount($conditions);
     }
 
     public function todayCloseOrder()
@@ -42,7 +43,7 @@ class Main extends Model
             ":create_date1" => $this->today,
             ":create_date2" => $this->today + 86400
         );
-        return $this->findCount($conditions);
+        return $this->selectCount($conditions);
     }
 
     public function todayMoney()
@@ -52,13 +53,13 @@ class Main extends Model
             ":create_date1" => $this->today,
             ":create_date2" => $this->today + 86400
         );
-        return $this->findSum($conditions, "price");
+        return $this->selectSum($conditions, "price");
     }
 
     //统计支付成功的订单数
     public function countOrder()
     {
-        return $this->findCount(array("state >= 1"));//1是支付完成
+        return $this->selectCount(array("state >= 1"));//1是支付完成
     }
 
     public function countMoney()
@@ -66,6 +67,6 @@ class Main extends Model
         $conditions = array(
             "state >= 1"
         );
-        return $this->findSum($conditions, "price");
+        return $this->selectSum($conditions, "price");
     }
 }

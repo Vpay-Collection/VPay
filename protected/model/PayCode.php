@@ -1,5 +1,6 @@
 <?php
-
+namespace model;
+use lib\speed\mvc\Model;
 class PayCode extends Model
 {
 
@@ -12,7 +13,7 @@ class PayCode extends Model
 //获得二维码列表
     public function GetCodeList($page, $limit, $type = Order::PayAlipay)
     {
-        return $this->findAll(array("type" => $type), "id desc", "*", array($page, $limit));
+        return $this->selectAll(array("type" => $type), "id desc", "*", array($page, $limit));
 
     }
 
@@ -26,7 +27,7 @@ class PayCode extends Model
     public function CreateCode($data, $price, $type = Order::PayAlipay)
     {
 
-        $this->insert_ignore(array("pay_url" => $data, "price" => $price, "type" => $type));
+        $this->insertIgnore(array("pay_url" => $data, "price" => $price, "type" => $type));
 
     }
 
@@ -34,7 +35,7 @@ class PayCode extends Model
     public function GetCodeOnly($price, $type = Order::PayAlipay)
     {
 
-        return $this->find(array("price" => $price, "type" => $type));
+        return $this->select(array("price" => $price, "type" => $type));
 
     }
 }

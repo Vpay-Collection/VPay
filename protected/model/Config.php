@@ -1,5 +1,7 @@
 <?php
-
+namespace model;
+use includes\AES;
+use lib\speed\mvc\Model;
 /*系统设置模块
  * */
 
@@ -40,9 +42,10 @@ class Config extends Model
         if ($config["UserPassword"] === "") {
             $config["UserPassword"] = $this->GetData(self::UserPassword);
         }else{
-            $des=new Des();
-            $config["UserPassword"]=$des->encrypt($config["UserPassword"],$config["_t"]);
-            $config["UserPassword"] = hash("sha256",$config["UserPassword"].$config["UserName"]);
+            //
+            $aes=new AES();
+            $config["UserPassword"]=$aes->decrypt($config["UserPassword"],$_SESSION['key']);
+            $config["UserPassword"] = hash("sha256",md5($config["UserPassword"].md5($config["UserName"])));
         }
         foreach ($config as $index => $value) {
             $this->update(array("vkey" => $index), array("vvalue" => $value));
@@ -55,25 +58,25 @@ class Config extends Model
         //具体要查询的数据
         switch ($id) {
             case self::UserName:
-                $query = $this->find(array("vkey" => "UserName"));
+                $query = $this->select(array("vkey" => "UserName"));
                 break;
             case self::UserPassword:
-                $query = $this->find(array("vkey" => "UserPassword"));
+                $query = $this->select(array("vkey" => "UserPassword"));
                 break;
             case self::Install:
-                $query = $this->find(array("vkey" => "Install"));
+                $query = $this->select(array("vkey" => "Install"));
                 break;
             case self::Key:
-                $query = $this->find(array("vkey" => "Key"));
+                $query = $this->select(array("vkey" => "Key"));
                 break;
             case self::LastHeart:
-                $query = $this->find(array("vkey" => "LastHeart"));
+                $query = $this->select(array("vkey" => "LastHeart"));
                 break;
             case self::LastPay:
-                $query = $this->find(array("vkey" => "LastPay"));
+                $query = $this->select(array("vkey" => "LastPay"));
                 break;
             case self::State:
-                $query = $this->find(array("vkey" => "LastHeart"));
+                $query = $this->select(array("vkey" => "LastHeart"));
                 if ($query)
                 {
                     if($query["vvalue"]==="")return self::State_Nobind;
@@ -84,22 +87,22 @@ class Config extends Model
                 else return self::State_Nobind;
                 break;
             case self::ValidityTime:
-                $query = $this->find(array("vkey" => "ValidityTime"));
+                $query = $this->select(array("vkey" => "ValidityTime"));
                 break;
             case self::WechatPay:
-                $query = $this->find(array("vkey" => "WechatPay"));
+                $query = $this->select(array("vkey" => "WechatPay"));
                 break;
             case self::AliPay:
-                $query = $this->find(array("vkey" => "AliPay"));
+                $query = $this->select(array("vkey" => "AliPay"));
                 break;
             case self::Ailuid:
-                $query = $this->find(array("vkey" => "Ailuid"));
+                $query = $this->select(array("vkey" => "Ailuid"));
                 break;
             case self::LastLogin:
-                $query = $this->find(array("vkey" => "LastLogin"));
+                $query = $this->select(array("vkey" => "LastLogin"));
                 break;
             case self::Payof:
-                $query = $this->find(array("vkey" => "Payof"));
+                $query = $this->select(array("vkey" => "Payof"));
                 break;
         }
         if ($query) return $query["vvalue"];

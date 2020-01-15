@@ -3,6 +3,8 @@
 /*
  * 后台请求菜单，并且让菜单显示到主页面上来
  * */
+namespace controller\admin;
+use lib\speed\Speed;
 
 class MenuController extends BaseController
 {
@@ -12,12 +14,12 @@ class MenuController extends BaseController
             array(
                 "name" => "系统设置",
                 "type" => "url",
-                "url" => url("admin/menu", "Setting") . "?t=" . time(),
+                "url" => Speed::url("admin/menu", "Setting") . "?t=" . time(),
             ),
             array(
                 "name" => "监控端设置",
                 "type" => "url",
-                "url" => url("admin/menu", "Monitor") . "?t=" . time(),
+                "url" => Speed::url("admin/menu", "Monitor") . "?t=" . time(),
             ),
             array(
                 "name" => "应用管理",
@@ -26,12 +28,12 @@ class MenuController extends BaseController
                     array(
                         "name" => "添加",
                         "type" => "url",
-                        "url" => url("admin/menu", "AppInsert") . "?t=" . time(),
+                        "url" => Speed::url("admin/menu", "AppInsert") . "?t=" . time(),
                     ),
                     array(
                         "name" => "管理",
                         "type" => "url",
-                        "url" => url("admin/menu", "AppMan") . "?t=" . time(),
+                        "url" => Speed::url("admin/menu", "AppMan") . "?t=" . time(),
                     )
                 ),
             ), array(
@@ -41,12 +43,12 @@ class MenuController extends BaseController
                     array(
                         "name" => "添加",
                         "type" => "url",
-                        "url" => url("admin/menu", "InsertWxQr") . "?t=" . time(),
+                        "url" => Speed::url("admin/menu", "InsertWxQr") . "?t=" . time(),
                     ),
                     array(
                         "name" => "管理",
                         "type" => "url",
-                        "url" => url("admin/menu", "ManaWxQr") . "?t=" . time(),
+                        "url" => Speed::url("admin/menu", "ManaWxQr") . "?t=" . time(),
                     )
                 ),
             ), array(
@@ -56,22 +58,22 @@ class MenuController extends BaseController
                     array(
                         "name" => "添加",
                         "type" => "url",
-                        "url" => url("admin/menu", "InsertAliQr") . "?t=" . time(),
+                        "url" => Speed::url("admin/menu", "InsertAliQr") . "?t=" . time(),
                     ),
                     array(
                         "name" => "管理",
                         "type" => "url",
-                        "url" => url("admin/menu", "ManaAliQr") . "?t=" . time(),
+                        "url" => Speed::url("admin/menu", "ManaAliQr") . "?t=" . time(),
                     )
                 ),
             ), array(
                 "name" => "订单列表",
                 "type" => "url",
-                "url" => url("admin/menu", "OrderList") . "?t=" . time(),
+                "url" =>Speed::url("admin/menu", "OrderList") . "?t=" . time(),
             ), array(
                 "name" => "Api说明",
                 "type" => "url",
-                "url" => url("admin/menu", "Api") . "?t=" . time(),
+                "url" => Speed::url("admin/menu", "Api") . "?t=" . time(),
             )
         );
 
@@ -81,37 +83,37 @@ class MenuController extends BaseController
 
     public function actionSetting()
     {
-        $this->display("/admin/setting.html");
+        $this->display("setting");
     }//系统设置
 
     public function actionMonitor()
     {
-        $this->display("/admin/jk.html");
+        $this->display("jk");
     }//监控设置
 
     public function actionInsertWxQr()
     {
-        $this->display("/admin/addwxqrcode.html");
+        $this->display("addwxqrcode");
     }//添加微信二维码
 
     public function actionManaWxQr()
     {
-        $this->display("/admin/wxqrcodelist.html");
+        $this->display("wxqrcodelist");
     }//管理微信二维码
 
     public function actionInsertAliQr()
     {
-        $this->display("/admin/addzfbqrcode.html");
+        $this->display("addzfbqrcode");
     }//添加支付宝二维码
 
     public function actionManaAliQr()
     {
-        $this->display("/admin/zfbqrcodelist.html");
+        $this->display("zfbqrcodelist");
     }//管理支付宝二维码
 
     public function actionOrderList()
     {
-        $this->display("/admin/orderlist.html");
+        $this->display("orderlist");
     }//订单列表
 
     public function actionApi()
@@ -119,21 +121,21 @@ class MenuController extends BaseController
         $this->host = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
 
         $this->host.=$_SERVER['HTTP_HOST'];
-        $this->display("/admin/api.html");
+        $this->display("api");
     }//Api说明
 
     public function actionMainBody()
     {
-        $this->display("/admin/main.html");
+        $this->display("main");
     }//Api说明
 
     public function actionAppInsert()
     {
-        $this->display("/admin/addapplication.html");
+        $this->display("addapplication");
     }//添加应用
 
     public function actionAppMan()
     {
-        $this->display("/admin/applicationlist.html");
+        $this->display("applicationlist");
     }//应用管理
 }

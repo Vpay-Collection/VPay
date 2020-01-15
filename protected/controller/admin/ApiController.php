@@ -3,6 +3,15 @@
 /*
  * 后台的api请求
  * */
+namespace controller\admin;
+use lib\speed\Speed;
+use model\App;
+use model\Config;
+use model\Main;
+use model\Order;
+use model\PayCode;
+use QRcode;
+use QrReader;
 
 class ApiController extends BaseController
 {
@@ -88,15 +97,15 @@ class ApiController extends BaseController
     public function actionSaveSetting()
     {
         $conf = new Config();
-        $arr["UserName"] = arg("user");
-        $arr["UserPassword"] = arg("pass");
-        $arr["Ailuid"] = arg("uid");
-        $arr["Key"] = arg("key");
-        $arr["WechatPay"] = arg("wxpay");
-        $arr["AliPay"] = arg("zfbpay");
-        $arr["ValidityTime"] = arg("close");
-        $arr["Payof"] = arg("payQf");
-        $arr["_t"] = arg("_t");
+        $arr["UserName"] = Speed::arg("user");
+        $arr["UserPassword"] = Speed::arg("pass");
+        $arr["Ailuid"] =Speed::arg("uid");
+        $arr["Key"] = Speed::arg("key");
+        $arr["WechatPay"] = Speed::arg("wxpay");
+        $arr["AliPay"] = Speed::arg("zfbpay");
+        $arr["ValidityTime"] = Speed::arg("close");
+        $arr["Payof"] = Speed::arg("payQf");
+        $arr["_t"] = Speed::arg("_t");
         echo $conf->UpdateDataAll($arr);
     }
 
@@ -126,14 +135,14 @@ class ApiController extends BaseController
     {
 
         require(APP_DIR . '/protected/lib/phpqrcode/qrlib.php');
-        QRcode::png(arg("url"), false, "H", 6, 2);
+        QRcode::png(Speed::arg("url"), false, "H", 6, 2);
 
     }
 
     public function actionQrInfo()
     {
         $p = new PayCode();
-        $result = $p->GetCodeList(arg("page"), arg("limit"), arg("type"));
+        $result = $p->GetCodeList(Speed::arg("page"), Speed::arg("limit"), Speed::arg("type"));
 
         if ($result) {
             $size = sizeof($result);
@@ -147,21 +156,21 @@ class ApiController extends BaseController
     public function actionDeleteCode()
     {
         $p = new PayCode();
-        $p->DeleteCode(arg("id"));
+        $p->DeleteCode(Speed::arg("id"));
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除完毕", "data" => ""));
     }
 
     public function actionAddQr()
     {
         $p = new PayCode();
-        $p->CreateCode(arg("pay_url"), arg("price"), arg("type"));
+        $p->CreateCode(Speed::arg("pay_url"), Speed::arg("price"), Speed::arg("type"));
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "保存完毕", "data" => ""));
     }
 
     public function actionOrders()
     {
         $ord = new Order();
-        $res = $ord->GetOrders(arg("page"), arg("limit"), arg("type", ""), arg("state", ""));
+        $res = $ord->GetOrders(Speed::arg("page"), Speed::arg("limit"), Speed::arg("type", ""), Speed::arg("state", ""));
         if ($res !== false) {
             $count = sizeof($res);
             if ($count) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count" => $count));
@@ -174,7 +183,7 @@ class ApiController extends BaseController
     public function actionDelOrders()
     {
         $ord = new Order();
-        $ord->DelOrderById(arg("id"));
+        $ord->DelOrderById(Speed::arg("id"));
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除成功", "data" => "", "count" => "0"));
     }
 
@@ -196,7 +205,7 @@ class ApiController extends BaseController
     {//添加应用
         $app = new App();
 
-        $app->insert(arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
+        $app->insertApp(Speed::arg("app_name"), Speed::arg("return_url"), Speed::arg("notify_url"), Speed::arg("connect_key"));
 
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "添加成功！"));
     }
@@ -205,7 +214,7 @@ class ApiController extends BaseController
     {//添加应用
         $app = new App();
 
-        $res = $app->getList(arg("page"), arg("limit"));
+        $res = $app->getList(Speed::arg("page"), Speed::arg("limit"));
 
         if ($res) {
             $count = sizeof($res);
@@ -222,7 +231,7 @@ class ApiController extends BaseController
     {//添加应用
         $app = new App();
 
-        $app->del(arg("id"));
+        $app->del(Speed::arg("id"));
 
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除成功！", "data" => "", "count" => 0));
 
@@ -233,7 +242,7 @@ class ApiController extends BaseController
     {//使用异步回调接口进行补单
         $ord = new Order();
 
-        echo $ord->Notify(arg("id"));
+        echo $ord->Notify(Speed::arg("id"));
 
 
     }

@@ -1,5 +1,6 @@
 <?php
-
+namespace model;
+use lib\speed\mvc\Model;
 class Temp extends Model
 {
     public function __construct($table_name = "pay_tmp_price")
@@ -9,12 +10,12 @@ class Temp extends Model
 
     public function GetAll()
     {//获得所有临时表
-        return $this->findAll();
+        return $this->selectAll();
     }
 
     public function GetByOid($id)
     {//查找临时表
-        return $this->find(array("oid" => $id));
+        return $this->select(array("oid" => $id));
     }
 
 
@@ -22,14 +23,14 @@ class Temp extends Model
     {//插入临时表
         if(!isset($condition["price"]))return false;
         if (!$this->GetByPrice($condition["price"])) {//只有不存在才插入
-            $this->insert_ignore($condition);
+            $this->insertIgnore($condition);
             return true;
         } else return false;//存在直接返回false
     }
 
     public function GetByPrice($price)
     {//通过价格获得
-        return $this->find(array("price" => $price), null, "oid");
+        return $this->select(array("price" => $price), null, "oid");
     }
     //删除过期订单
     public function DelTimeOut(){

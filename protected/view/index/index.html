@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0" name="viewport">
+    <title><{$title}></title>
+    <link href="/i/css/index/main.css" rel="stylesheet"/>
+    <noscript>
+        <link href="/i/css/index/noscript.css" rel="stylesheet"/>
+    </noscript>
+    <link href="/i/img/favicon.ico" rel="shortcut icon"/>
+</head>
+
+<body>
+<div id="wrapper">
+
+    <header id="header">
+        <div class="logo">
+            <span class="icon fa-rmb"></span>
+        </div>
+        <div class="content">
+            <div class="inner">
+                <h1>V免签 - Dreamn修改版</h1>
+
+                <p>个人用户收款解决方案</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#login">登录</a></li>
+                <li><a href="#about">简介</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="main">
+
+        <article id="about">
+            <h2 class="major">简介</h2>
+            <p>1、V免签为个人用户提供支付宝、微信的免签约收款解决方案。</p>
+            <p>2、V免签为开源免费产品，请勿二次出售。</p>
+            <p>3、V免签仅供交流学习使用，请勿用于商业用途。</p>
+            <p>4、请遵守相关法律法规，请勿用于非法用途。</p>
+            <p>5、Dreamn修改，遵循开源协议。</p>
+            <p><input class="" onclick="window.open('https://github.com/dreamncn/VPay','_blank')" type="submit"
+                      value="获取V免签"/></p>
+        </article>
+
+
+        <article id="login">
+            <h2 class="major">登录</h2>
+            <form action="javascript:login();" method="post">
+                <div class="field half first">
+                    <label for="user">账号</label>
+                    <input id="user" name="user" type="text"/>
+                </div>
+                <div class="field half">
+                    <label for="pass">密码</label>
+                    <input id="pass" name="pass" type="password"/>
+                </div>
+                <div class="field half first">
+                    <label for="captcha">验证码</label>
+                    <input id="captcha" name="captcha" type="text"/>
+                </div>
+                <div class="field half">
+                    <label>验证码图案</label>
+                    <img id="img"  onclick="this.src=this.src+'?c='+Math.random();" src="<{url('main','Captcha')}>" alt=""/>
+                </div>
+                <ul class="actions">
+                    <li><input class="special" id="login2" type="submit" value="登录"/></li>
+                    <li><input type="reset" value="清空"/></li>
+                </ul>
+            </form>
+            <br>
+            <div id="result" role="dialog">
+                <p class="h5 margin-top-sm text-black-hint" color id="msg"></p>
+            </div>
+        </article>
+
+    </div>
+
+    <{$year = date("Y")}>
+    <footer id="footer">
+        Copyright © 2015-<{$year}> Dreamn. All Rights Reserved.<br>
+        <a href='http://www.miibeian.gov.cn' style="color: #fff;" target='_blank'>苏ICP备18015450号</a>
+    </footer>
+
+</div>
+
+<div id="bg"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.11.3"></script>
+<script src="https://cdn.jsdelivr.net/gh/ajlkn/skel@3.0.1/dist/skel.min.js"></script>
+<script src="/i/js/index/util.js"></script>
+<script src="/i/js/index/main.js"></script>
+<script src="https://lib.baomitu.com/layer/3.1.1/layer.js"></script>
+<script src="/i/js/index/aes.js"></script>
+<script>
+    function login() {
+        $.get("<{url('admin/main','key')}>", function (d) {
+            const key = d.key;
+            $.ajax({
+                url: "<{url('admin/main','login')}>",
+                type: 'POST',
+                data: {'user':$("#user").val(),'pass':Encrypt($("#pass").val(), key),'captch':$("#captcha").val()},//Encrypt(JSON.stringify(data), key)
+                dataType: "json",
+                timeout : 60000,
+                success: function (data) {
+                    layer.msg(data.msg);
+                    if (data.status) {
+
+                        location.href = "<{url('admin/main','index')}>";
+                    }else{
+                        var img= $("#img");
+                        img.attr('src',img.attr('src')+'?c='+Math.random());
+                    }
+                }
+            });
+        }, "json");
+    }
+</script>
+
+
+</body>
+</html>
+

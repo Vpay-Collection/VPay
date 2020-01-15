@@ -1,4 +1,9 @@
 <?php
+namespace model;
+use includes\AlipaySign;
+use includes\Web;
+use lib\speed\mvc\Model;
+use lib\speed\Speed;
 
 /*订单处理模块
  * */
@@ -48,13 +53,13 @@ class Order extends Model
         if ($type !== "") $conditon["type"] = $type;
         if ($state !== "") $conditon["state"] = $state;
 
-        return $this->findAll($conditon, "id desc", "*", array($page, $limit));
+        return $this->selectAll($conditon, "id desc", "*", array($page, $limit));
     }
 
     //根据id删除订单，并同时删除tmp表格中的信息
     public function DelOrderById($id)
     {
-        $res = $this->find(array("id" => $id),null,'order_id,state');
+        $res = $this->select(array("id" => $id),null,'order_id,state');
         if ($res) {
             $this->delete(array("id" => $id));
             if ($res['state'] === self::State_Wait) {
@@ -68,7 +73,7 @@ class Order extends Model
     //根据payid删除订单，并同时删除tmp表格中的信息
     public function DelOrderByPayId($id)
     {
-        $res = $this->find(array("pay_id" => $id),null,'order_id,state');
+        $res = $this->select(array("pay_id" => $id),null,'order_id,state');
         if ($res) {
             $this->delete(array("pay_id" => $id));
             if ($res['state'] === self::State_Wait) {
@@ -97,21 +102,21 @@ class Order extends Model
     public function GetOrderById($id, $param = "*")
     {
 
-        return $this->find(array("id" => $id), "", $param);
+        return $this->select(array("id" => $id), "", $param);
 
     }
     //根据orderid取得指定订单信息
     public function GetOrderByOrdid($id, $param = "*")
     {
 
-        return $this->find(array("order_id" => $id), "", $param);
+        return $this->select(array("order_id" => $id), "", $param);
 
     }
     //根据payid取得指定订单信息
     public function GetOrderByPayId($id, $param = "*")
     {
 
-        return $this->find(array("pay_id" => $id), "", $param);
+        return $this->select(array("pay_id" => $id), "", $param);
 
     }
 
@@ -154,7 +159,7 @@ class Order extends Model
     public function GetOrderByParam($really_price, $state, $type, $parm = "*")
     {
 
-        return $this->find(array("really_price" => $really_price, "state" => $state, "type" => $type), "", $parm);
+        return $this->select(array("really_price" => $really_price, "state" => $state, "type" => $type), "", $parm);
 
     }
 
@@ -207,11 +212,11 @@ class Order extends Model
             "isAuto"=>$this->isAuto
         );
 
-        $this->insert_ignore($data);
+        $this->insertIgnore($data);
         //直接插入数据库
 
         if ($this->isHtml == self::NeedHtml) {//使用自带的支付接口
-            return array("code" => Config::Api_Ok, "msg" => 'success', "url" => url("api/pay", "index",array("orderId"=>$this->orderId)) , "isHtml" => true);
+            return array("code" => Config::Api_Ok, "msg" => 'success', "url" => Speed::url("api/pay", "index",array("orderId"=>$this->orderId)) , "isHtml" => true);
         } else {//不使用呗
                $data = array(
                 "payId" => $this->payId,
@@ -268,7 +273,7 @@ class Order extends Model
     public function GetOrderClose($data, $parm = "*")
     {
 
-        return $this->findAll(array("close_date" => $data), "", $parm);
+        return $this->selectAll(array("close_date" => $data), "", $parm);
 
     }
 
@@ -281,10 +286,10 @@ class Order extends Model
         if ($res) {
 
             //在通知远程服务器之前，我们收到了app的推送，故认为已经收到钱了，所以先更新支付状态，再通知服务器
-            $this->ChangeStateByOrderId(arg("id"), Order::State_Ok);
+            $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Ok);
             //更新状态为已经支付
             $tmp = new temp();
-            $tmp->DelByOid(arg("id"));
+            $tmp->DelByOid(Speed::arg("id"));
             //不管是不是已支付（我觉得你付过了~不然调用我干嘛），直接删除临时表里面的内容
             $app = new App();
 
@@ -328,13 +333,13 @@ class Order extends Model
                     return json_encode(array("code" => Config::Api_Ok, "msg" => $re->msg));
                 } else {
                     //远程服务器不认可？？？凭啥？我也不知道呀~
-                    $this->ChangeStateByOrderId(arg("id"), Order::State_Err);
+                    $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
                     return json_encode(array("code" => Config::Api_Err, "msg" => $re->msg."苍天饶过谁"));
                 }
 
             } else {
                 //尴尬，解析json出错了~
-                $this->ChangeStateByOrderId(arg("id"), Order::State_Err);
+                $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
                 return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！"));
             }
         } else {
