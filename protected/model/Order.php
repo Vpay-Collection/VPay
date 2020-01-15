@@ -286,10 +286,13 @@ class Order extends Model
         if ($res) {
 
             //在通知远程服务器之前，我们收到了app的推送，故认为已经收到钱了，所以先更新支付状态，再通知服务器
-            $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Ok);
+            $this->ChangeStateByOrderId($id, Order::State_Ok);
+
             //更新状态为已经支付
-            $tmp = new temp();
-            $tmp->DelByOid(Speed::arg("id"));
+            $tmp = new Temp();
+
+            $tmp->DelByOid($id);
+
             //不管是不是已支付（我觉得你付过了~不然调用我干嘛），直接删除临时表里面的内容
             $app = new App();
 

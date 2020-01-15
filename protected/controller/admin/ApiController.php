@@ -105,7 +105,7 @@ class ApiController extends BaseController
         $arr["AliPay"] = Speed::arg("zfbpay");
         $arr["ValidityTime"] = Speed::arg("close");
         $arr["Payof"] = Speed::arg("payQf");
-        $arr["_t"] = Speed::arg("_t");
+
         echo $conf->UpdateDataAll($arr);
     }
 

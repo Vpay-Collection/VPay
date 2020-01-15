@@ -45,6 +45,7 @@ class Config extends Model
             //
             $aes=new AES();
             $config["UserPassword"]=$aes->decrypt($config["UserPassword"],$_SESSION['key']);
+            //var_dump($config["UserPassword"],hash("sha256",md5($config["UserPassword"].md5($config["UserName"]))));
             $config["UserPassword"] = hash("sha256",md5($config["UserPassword"].md5($config["UserName"])));
         }
         foreach ($config as $index => $value) {
@@ -111,7 +112,8 @@ class Config extends Model
 
     public function UpdateData($id, $v)
     {
-        if ($id === "UserPassword") $v = hash("sha256",$v.$this->GetData(self::UserName));//前端使用md5加盐，密码更新使用sha256加盐
+
+        if ($id === "UserPassword") $v = hash("sha256",md5($v.md5($this->GetData(self::UserName))));//前端使用md5加盐，密码更新使用sha256加盐
         $this->update(array("vkey" => $id), array("vvalue" => $v));
     }
 }

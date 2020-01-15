@@ -41,6 +41,7 @@ class Captcha{
     }
     public function Verity($code){
         if(isset( $_SESSION['code'])&& $_SESSION['code']!==false &&isset( $_SESSION['outtime'])&&intval( $_SESSION['outtime'])>intval(time())&& $_SESSION['code']===$code){
+            $_SESSION['code']=false;
             return true;
         }else{
             $_SESSION['code']=false;

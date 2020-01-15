@@ -44,6 +44,7 @@ class User
         $time=$conf->GetData(Config::LastLogin);
         $out=strtotime("+2 hour", $time);
         $cookie = hash("sha256",md5($u).date("Y/m/d").md5($p).$out);
+        //var_dump($p);
         if(isset($_SESSION["outtime"])&&intval($_SESSION["outtime"])>=time()&&isset($token)&&$token===$cookie)return true;
         else return false;
     }

@@ -30,7 +30,7 @@ class BaseController extends Controller
     private function allow(){
         $reg=array(
             'admin'=>array(
-                'main'=>array('login'=>'','key'=>'','index'=>''),
+                'main'=>array('login'=>'','key'=>''),
 
             )
         );
@@ -38,7 +38,7 @@ class BaseController extends Controller
         if(!isset($reg[strtolower(Speed::arg('m'))][strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
             //校验是否有token
             if(!$user->isLogin(Speed::arg('token'))) {
-                $this->jump( Speed::url('main', 'index'). "/#login");
+                $this->tips('登录过期，或未曾登录！', Speed::url('main', 'index'). "/#login");
             }
         }elseif($user->isLogin(Speed::arg('token'))&&!isset($reg[strtolower(Speed::arg('m'))][strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
             //var_dump(Speed::arg('m'),Speed::arg('c'),Speed::arg('a'));

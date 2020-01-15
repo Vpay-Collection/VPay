@@ -124,7 +124,7 @@
                                 , time: 0
                             });
 
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(result.split(",")[1]), function (data) {
+                            $.post("<{url('admin/api','QrScan')}>", "base64=" + escapeComponent(result.split(",")[1]), function (data) {
                                 console.log(data);
                                 if (!data.data) {
                                     data = JSON.parse(data);
@@ -190,7 +190,7 @@
                                 , shade: 0.01
                                 , time: 0
                             });
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(result.split(",")[1]), function (data) {
+                            $.post("<{url('admin/api','QrScan')}>", "base64=" + escapeComponent(result.split(",")[1]), function (data) {
                                 if (!data.data) {
                                     data = JSON.parse(data);
                                 }
@@ -243,10 +243,13 @@
 
 
     function save() {
-        var user = $("#user").val();
-        var t = new Date().getTime();
-        var pass=$("#pass").val();
-        if(pass!=="")pass = encryptByDES($.trim(pass),t);
+        $.get("<{url('admin/main','key')}>", function (d) {
+            var user = $("#user").val();
+            var pass=$("#pass").val();
+            d=JSON.parse(d);
+            console.log(d);
+            if(pass!=="")pass = Encrypt(pass, d.key);
+
         var key = $("#key").val();
         var close = $("#close").val();
         var payQf = $("#payQf").val();
@@ -276,7 +279,7 @@
         }
         wximg = wximg.replace("<{url('admin/api','Qr')}>?url=", "");
         zfbimg = zfbimg.replace("<{url('admin/api','Qr')}>?url=", "");
-        $.post("<{url('admin/api','SaveSetting')}>", "user=" + user + "&pass=" + pass + "&key=" + key + "&wxpay=" + wximg + "&zfbpay=" + zfbimg + "&close=" + close + "&payQf=" + payQf + "&uid=" + uid+"&_t="+t, function (data) {
+        $.post("<{url('admin/api','SaveSetting')}>", "user=" + escape(user) + "&pass=" + escape(pass) + "&key=" + escape(key) + "&wxpay=" + escape(wximg) + "&zfbpay=" + escape(zfbimg) + "&close=" + escape(close) + "&payQf=" + escape(payQf) + "&uid=" + escape(uid), function (data) {
             data = JSON.parse(data);
             if (data.code === Api_Ok) {
                 getstate();
@@ -284,7 +287,9 @@
 
             layer.msg(data.msg);
         });
+        });
     }
+
 
 
     function getstate() {

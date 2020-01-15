@@ -159,7 +159,7 @@ class ApiController extends BaseController
 
         $ord->ChangeStateByPayId($payId, Order::State_Over, time());
 
-        $tmp = new temp();
+        $tmp = new Temp();
         $tmp->DelByOid($res["order_id"]);
         exit(json_encode(array("code" => Config::Api_Ok, "msg" => "成功！")));
     }

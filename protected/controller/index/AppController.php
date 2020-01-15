@@ -76,7 +76,7 @@ class AppController extends BaseController
         //找到等待支付的订单~
         //无订单转账记录已经删掉了~
 
-        $tmp = new temp();
+        $tmp = new Temp();
 
         $tmp->DelByOid($res["order_id"]);//删除临时表
 

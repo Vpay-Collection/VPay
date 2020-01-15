@@ -34,7 +34,7 @@ class Temp extends Model
     }
     //删除过期订单
     public function DelTimeOut(){
-        $this->delete(array("timeout <= ".time()));
+        $this->delete(array("timeout <= ".(string)time()));
     }
     public function DelByOid($id){
         $this->delete(array("oid"=>$id));
