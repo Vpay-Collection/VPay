@@ -24,9 +24,14 @@ class ApiController extends BaseController
         $result = $order->CreateOrder(Speed::arg());
         if (!$result) exit(json_encode(array("code" => Config::Api_Err, "msg" => $order->GetErr())));
         if ($result["isHtml"])
-            $this->jump($result["url"]);
+        {
+            $url="<html lang=''><head><title></title><meta http-equiv='refresh' content='0;url={$result["url"]}'></head><body></body></html>";
+            echo json_encode(array("code" => Config::Api_Ok, "data" => $url));
+        }
+
         else
-            echo json_encode($result);
+            echo json_encode(array("code" => Config::Api_Ok, "data" => $result));
+
     }
 
     //获取订单信息
