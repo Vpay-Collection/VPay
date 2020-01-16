@@ -240,7 +240,7 @@ class mysql{
     function write_config()
     {
         extract($GLOBALS, EXTR_SKIP);
-        $config = ROOT_PATH.'/data/config.php';
+        $config = ROOT_PATH.'/data/Config.php';
         $configfile = @file_get_contents($config);
         $configfile = trim($configfile);
         $configfile = substr($configfile, -2) == '?>' ? substr($configfile, 0, -2) : $configfile;

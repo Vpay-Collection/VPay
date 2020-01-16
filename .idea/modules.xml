@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/VPay.iml" filepath="$PROJECT_DIR$/.idea/VPay.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/php-farme.iml" filepath="$PROJECT_DIR$/.idea/php-farme.iml" />
     </modules>
   </component>
 </project>
