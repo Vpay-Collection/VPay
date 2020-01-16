@@ -19,7 +19,7 @@ class Temp extends Model
     }
 
 
-    public function Insert($condition)
+    public function InsertTemp($condition)
     {//插入临时表
         if(!isset($condition["price"]))return false;
         if (!$this->GetByPrice($condition["price"])) {//只有不存在才插入

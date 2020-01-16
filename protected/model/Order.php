@@ -325,9 +325,9 @@ class Order extends Model
 
             //悄悄告诉远程服务器，我收到钱了，为了防止别人仿冒我，要加上密钥进行验证
 
-            $re = $web->get($url);
+            $re1 = $web->get($url);
 
-            $re = json_decode($re);
+            $re = json_decode($re1);
 
             if ($re) {
                 //远程服务器响应正常，表示认可
@@ -343,7 +343,7 @@ class Order extends Model
             } else {
                 //尴尬，解析json出错了~
                 $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
-                return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！"));
+                return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！".$re1));
             }
         } else {
             //啥？你要我通知服务器这个不存在的订单？
@@ -441,8 +441,9 @@ class Order extends Model
 
     private function GetPayMoney($price, $type,$timeout)
     {
+        $price=floatval($price);
+        $reallyPrice = intval(bcmul($price, 100));
 
-        $reallyPrice = bcmul($price, 100);
 
         $conf = new Config();
 
@@ -460,7 +461,8 @@ class Order extends Model
 
             $temp = new temp();
 
-            $res = $temp->Insert(array("price" => $tmpPrice, "oid" => $this->orderId,"timeout"=>$timeout));//返回尝试插入结果，false表示已经存在
+            $res = $temp->InsertTemp(array("price" => $tmpPrice, "oid" => $this->orderId,"timeout"=>$timeout));//返回尝试插入结果，false表示已经存在
+
 
             //true表示该时间段没有
             if ($res) break;
@@ -469,6 +471,10 @@ class Order extends Model
                 $reallyPrice++;
             } else {//反之递减
                 $reallyPrice--;
+            }
+            if($reallyPrice<=0){
+                $this->err = "该时间段订单量过大，请稍后重试";
+                return false;
             }
         }
 
