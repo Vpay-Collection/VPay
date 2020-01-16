@@ -68,7 +68,13 @@ class Vpay{
         //生成签名后的url
         $web=new Web();
         $result=$web->get($this->conf["CreateOrder"]."?".$p);
-        return $result;
+        $json=json_decode($result);
+        if($json->code===self::Api_Ok)
+            return $json->data;
+        else{
+            $this->err=$json->msg;
+            return false;
+        }
     }
     //签名校验，此处校验的是notify或者return的签名
     private function CheckSign($arg){
