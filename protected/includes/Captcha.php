@@ -30,7 +30,7 @@ class Captcha{
         try {
             $re = $captch->create();
 
-            $_SESSION['code']=$re->getText();
+            $_SESSION['code']=strtolower($re->getText());
 
             $_SESSION['outtime']=strtotime('+5 Minute');//验证码5分钟有效
             $re->output();
@@ -40,6 +40,7 @@ class Captcha{
 
     }
     public function Verity($code){
+        $code=strtolower($code);
         if(isset( $_SESSION['code'])&& $_SESSION['code']!==false &&isset( $_SESSION['outtime'])&&intval( $_SESSION['outtime'])>intval(time())&& $_SESSION['code']===$code){
             $_SESSION['code']=false;
             return true;

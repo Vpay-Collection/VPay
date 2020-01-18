@@ -2,21 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6cb22a63-548b-471d-8e44-55ceef4b8690.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/VPay.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php-farme.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install/data/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/install/data/Config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install/include/function.php" beforeDir="false" afterPath="$PROJECT_DIR$/install/include/function.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/core/Vpay.php" beforeDir="false" afterPath="$PROJECT_DIR$/demo/core/Vpay.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/core/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/demo/core/config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/go.php" beforeDir="false" afterPath="$PROJECT_DIR$/demo/go.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/demo/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/notify.php" beforeDir="false" afterPath="$PROJECT_DIR$/demo/notify.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/return.php" beforeDir="false" afterPath="$PROJECT_DIR$/demo/return.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/includes/Captcha.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/includes/Captcha.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/lib/speed/Error.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/lib/speed/Error.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/model/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/model/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/model/Temp.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/model/Temp.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,19 +95,19 @@
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\speed" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\controller\admin" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\i\js\index" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\captcha" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\protected" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\protected\view\index" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\i" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\controller\admin" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\i\js\index" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\captcha" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\include" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -146,7 +143,9 @@
       <workItem from="1578925917642" duration="70963000" />
       <workItem from="1579107023753" duration="219000" />
       <workItem from="1579172924764" duration="3693000" />
-      <workItem from="1579183321445" duration="2982000" />
+      <workItem from="1579183321445" duration="6439000" />
+      <workItem from="1579308522988" duration="973000" />
+      <workItem from="1579309514385" duration="4853000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -246,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579184116290</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="修改安装程序">
+      <created>1579186723776</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1579186723776</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,7 +286,8 @@
     <MESSAGE value="优化接口api" />
     <MESSAGE value="修改demo接口" />
     <MESSAGE value="核心库不知道为啥被删了" />
-    <option name="LAST_COMMIT_MESSAGE" value="核心库不知道为啥被删了" />
+    <MESSAGE value="修改安装程序" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改安装程序" />
   </component>
   <component name="WindowStateProjectService">
     <state x="340" y="93" key="#Deployment" timestamp="1579107045851">
@@ -313,11 +320,11 @@
     </state>
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="439" y="0" key="CommitChangelistDialog2" timestamp="1579184115102">
+    <state x="439" y="0" key="CommitChangelistDialog2" timestamp="1579186721582">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
-    <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579184115102" />
+    <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579186721582" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1578928592575">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -326,11 +333,11 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state x="93" y="93" width="1277" height="688" key="DirDiffDialog/0.0.1463.874@0.0.1463.874" timestamp="1577991002356" />
-    <state x="538" y="184" key="FileChooserDialogImpl" timestamp="1579175658808">
+    <state x="538" y="184" key="FileChooserDialogImpl" timestamp="1579227099018">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="512" y="195" key="FileChooserDialogImpl/0.0.1463.874@0.0.1463.874" timestamp="1578051893742" />
-    <state x="538" y="184" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579175658808" />
+    <state x="538" y="184" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579227099018" />
     <state x="631" y="314" width="272" height="207" key="Github.ShareDialog" timestamp="1578925871424">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -358,11 +365,11 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
-    <state x="340" y="164" key="Vcs.Push.Dialog.v2" timestamp="1579184254770">
+    <state x="340" y="164" key="Vcs.Push.Dialog.v2" timestamp="1579186769640">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
-    <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579184254770" />
+    <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579186769640" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

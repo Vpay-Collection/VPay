@@ -57,7 +57,9 @@ public static function appError($errno, $errstr, $errfile = '', $errline = 0)
 public static function appShutdown()
 {
     if (error_get_last()) {
-        Error::err(error_get_last());
+        $err=error_get_last();
+       Error::err("Fatal error: {$err['message']} in {$err['file']} on line {$err['line']}");
+
     }
 }
 public static function _err_router($msg){
@@ -66,7 +68,7 @@ public static function _err_router($msg){
     if(!method_exists($name, 'err404')){
         Error::err($msg);
     }else{
-        //var_dump($msg);
+
         $name::err404($__module, $__controller, $__action, $msg);
     }
 }

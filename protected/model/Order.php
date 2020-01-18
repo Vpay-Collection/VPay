@@ -62,10 +62,9 @@ class Order extends Model
         $res = $this->select(array("id" => $id),null,'order_id,state');
         if ($res) {
             $this->delete(array("id" => $id));
-            if ($res['state'] === self::State_Wait) {
-                $this->reset("tmp_price");
-                $this->delete(array("oid" => $res['order_id']));
-            }
+            $this->reset("pay_tmp_price");
+            $this->delete(array("oid" => $res['order_id']));
+            $this->reset("pay_order");
 
         }
 
@@ -76,10 +75,9 @@ class Order extends Model
         $res = $this->select(array("pay_id" => $id),null,'order_id,state');
         if ($res) {
             $this->delete(array("pay_id" => $id));
-            if ($res['state'] === self::State_Wait) {
-                $this->reset("tmp_price");
-                $this->delete(array("oid" => $res['order_id']));
-            }
+            $this->reset("pay_tmp_price");
+            $this->delete(array("oid" => $res['order_id']));
+            $this->reset("pay_order");
 
         }
 
@@ -173,11 +171,12 @@ class Order extends Model
         //检查监控端是否在线
         $conf=new Config();
         if($conf->GetData(Config::State)!==Config::State_Online){
-            $this->err="系统发送错误，暂时不能支付！";//监控掉线
+            $this->err="系统错误，暂时不能支付！";//监控掉线
             return false;
         }
-        //校验关卡,校验订单，取得支付二维码
+        //校验关卡,校验订单
         if (!$this->OrderCheck($arg))return false;
+
         //关闭重复订单,避免多次提交导致支付失败
         $this->DelOrderByPayId($this->payId);
         //订单生成时间

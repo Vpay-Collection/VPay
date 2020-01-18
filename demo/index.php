@@ -4,14 +4,15 @@
  * Date: 2019-09-28
  * Time: 21:48
  */
+session_start();
 include_once dirname(__FILE__).'/core/Vpay.php';
 $vpay=new Vpay();
-
-$payId=$vpay->getPayId();//支付id，直接使用内置函数生成即可，或者使用自己的方法生成
 
 $price=0.01;//价格，对这个商品的定价，这里不一定是死的价格，可以是根据商品id查询的价格，也可以是多个商品合并计算的价格
 
 $param=urlencode("我喜欢你呀~");//必须对字符串进行url编码，自定义参数部分应该是前端传回来的表单信息，比如json数据串，再确认订单后再将这个数据串进行解码，再插入到数据库中，即便漏单了，也可以通过后期补单进行数据入库。
+
+$payId=$vpay->getPayId($price,$param);//支付id，直接使用内置函数生成即可，或者使用自己的方法生成
 
 /*
  * 而且为了安全起见，价格等敏感信息应该通过后端自动提交进行签名，而不是像这个demo一样直接放在前端，放在前端只是为了让大家更好地理解
@@ -44,7 +45,6 @@ $param=urlencode("我喜欢你呀~");//必须对字符串进行url编码，自�
 <button onclick="zf()">支付</button>
 <script src="https://lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script>
 <script>
-    $("#payId").val(new Date().getTime());
 
     function zf() {
         var p = "payId=" + $("#payId").val() + "&price=" + $("#price").val() + "&param=" + $("#param").val() + "&type=" + $("#type").val()+"&html=" + $("#html").val();

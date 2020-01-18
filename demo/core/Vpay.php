@@ -66,8 +66,13 @@ class Vpay{
 
         $p = http_build_query($arg). '&sign=' . $sign;
         //生成签名后的url
+        $_SESSION['timeOut']=strtotime('+'.$this->conf['TimeOut'].' min');
+
         $web=new Web();
         $result=$web->get($this->conf["CreateOrder"]."?".$p);
+
+
+
         $json=json_decode($result);
         if($json->code===self::Api_Ok)
             return $json->data;
@@ -98,8 +103,19 @@ class Vpay{
 
     }
     public function PayReturn($arg){
+        $bool=$this->CheckSign($arg);
+        $payId=$this->checkClient($arg['price'],$arg['param']);
 
-        return $this->CheckSign($arg);
+        //var_dump($bool,$arg);
+        if($bool&&$payId===$arg['payId']){
+            $this->closeClient();
+
+            return true;
+        }else{
+            if($bool)
+                $this->err='支付已完成！请不要重复刷新！';
+            return false;
+        }
     }//此处是同步回调
     public function PayNotify($arg){
         //检查sign
@@ -138,6 +154,7 @@ class Vpay{
 
     }//此处是异步回调
     public function Close($payId){
+        $this->closeClient();
         $web=new Web();
         $res=$web->get($this->conf["CloseOrder"]."?payId=$payId");
         $json=json_decode($res);
@@ -147,8 +164,44 @@ class Vpay{
             return false;
         }else return true;
     }//关闭订单，主要用于用户自己开启了之后使用
-    public function getPayId(){
-       $PayId = date("YmdHms") . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9);
-       return $PayId;
+    public function getPayId($price,$param){
+
+
+
+        if($PayId=$this->checkClient($price,$param)){
+            return $PayId;
+        }else{
+            $clientID=md5(md5($price).sha1(urldecode($param)));
+
+            $_SESSION['clientID']=$clientID;
+
+            $PayId = date("YmdHms") . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9);
+            $_SESSION['payID']=$PayId;
+            return $PayId;
+        }
+
+
+
+
+
     }
+    private function checkClient($price,$param){
+        $param=urldecode($param);
+
+        $clientID=md5(md5($price).sha1($param));
+
+        if(isset($_SESSION['clientID'])&&$_SESSION['clientID']===$clientID){
+            //var_dump(isset($_SESSION['payID']),isset($_SESSION['timeOut']),intval($_SESSION['timeOut']),time());
+            if(isset($_SESSION['payID'])&&isset($_SESSION['timeOut'])&&intval($_SESSION['timeOut'])>time()){
+                 return $_SESSION['payID'];
+            }else return false;
+        }else return false;
+    }
+    private function closeClient(){
+        $_SESSION['clientID']=false;
+        $_SESSION['timeOut']=false;
+        $_SESSION['payID']=false;
+    }
+
+
 }
