@@ -40,7 +40,31 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 1. CentOS 7.0
 2. PHP 7.3 + openssl + PDO
-3. Apache （开启伪静态）/ Nginx(需要自行修改伪静态文件)
+3. Apache / Nginx
+
+## 伪静态
+> Apache
+```<IfModule mod_rewrite.c>
+   RewriteEngine On
+   RewriteRule ^index\.php$ - [L]
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule . index.php [L]
+   </IfModule>
+```
+
+> Nignx
+
+```
+   location / {
+   	if (!-e $request_filename){
+   		rewrite (.*) /index.php;
+   	}
+   }
+   location ^~ /protected {
+   	deny all;
+   }
+```
 
 ## 部署步骤
 
