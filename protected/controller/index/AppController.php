@@ -15,7 +15,8 @@ class AppController extends BaseController
     //进行心跳
     public function actionAppHeart()
     {//app心跳
-        //过期订单在这里关也太麻烦了...放到创建订单的时候关闭刚好~
+        $ord=new Order();
+        $ord->closeEndOrder();//过期订单在这里关也太麻烦了...放到创建订单的时候关闭刚好~
         $conf = new Config();
 
         $key = $conf->GetData(Config::Key);//取出与app通信的密钥

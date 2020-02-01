@@ -167,7 +167,7 @@ class Order extends Model
     public function CreateOrder($arg)
     {
 
-        $this->closeEndOrder();//关闭过期订单
+        $this->closeEndOrder();//关闭过期订单,心跳机制关闭订单合理
         //检查监控端是否在线
         $conf=new Config();
         if($conf->GetData(Config::State)!==Config::State_Online){

@@ -73,7 +73,7 @@ class ApiController extends BaseController
         if(Speed::arg("payId")!==null)$res = $ord->GetOrderByPayId(Speed::arg("payId"), "state,appid");
         else $res = $ord->GetOrderByOrdid(Speed::arg("orderId"), "state,appid");
         //关闭过期订单吧..
-        $ord->closeEndOrder();
+        //$ord->closeEndOrder();
         if ($res) {
             $re="";
             if(intval($res["state"])===Order::State_Ok ||intval($res["state"])===Order::State_Succ||intval($res["state"])===Order::State_Err){
