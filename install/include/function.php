@@ -1,7 +1,4 @@
 <?php
-/**
- * environmental check
- */
 
 class check{
     private $conf;
@@ -259,7 +256,7 @@ class mysql{
         $configfile = str_replace("[pass]", $db_pwd, $configfile);
         $configfile = str_replace("[db]", $db_name, $configfile);
         $configfile = str_replace("[port]", $db_port, $configfile);
-        @file_put_contents(APP_DIR.'/protected/config.php', $configfile);
+        @file_put_contents(APP_DIR.'/protected/Config.php', $configfile);
     }
     private function droptable($table_name)
     {

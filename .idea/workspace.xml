@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="添加伪静态规则">
+    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="修改安装bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/protected/controller/api/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/api/ApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/protected/controller/index/AppController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/index/AppController.php" afterDir="false" />
@@ -50,6 +50,12 @@
   </component>
   <component name="Git.Settings">
     <option name="PATH_TO_GIT" value="/usr/bin/git" />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -144,7 +150,7 @@
       <workItem from="1579337920954" duration="1046000" />
       <workItem from="1579609855407" duration="1825000" />
       <workItem from="1579617323516" duration="446000" />
-      <workItem from="1580542744799" duration="200000" />
+      <workItem from="1580542744799" duration="690000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -279,11 +285,28 @@
       <option name="project" value="LOCAL" />
       <updated>1579338333627</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="修改安装bug">
+      <created>1580542990404</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1580542990404</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -317,7 +340,8 @@
     <MESSAGE value="修复订单多次提交的bug,登录验证码不区分大小写" />
     <MESSAGE value="完善修复" />
     <MESSAGE value="添加伪静态规则" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加伪静态规则" />
+    <MESSAGE value="修改安装bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改安装bug" />
   </component>
   <component name="WindowStateProjectService">
     <state x="340" y="93" key="#Deployment" timestamp="1579617094226">
@@ -350,12 +374,12 @@
     </state>
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="366" y="23" key="CommitChangelistDialog2" timestamp="1580542924195">
+    <state x="366" y="23" key="CommitChangelistDialog2" timestamp="1580543420757">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="366" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1580542924195" />
+    <state x="366" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1580543420757" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1578928592575">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -382,6 +406,10 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state width="210" height="477" key="HiddenNamespacesPopup/0.0.1463.874@0.0.1463.874" timestamp="1578034086943" />
+    <state x="228" y="121" key="IDE.errors.dialog" timestamp="1580543433828">
+      <screen x="0" y="23" width="1280" height="709" />
+    </state>
+    <state x="228" y="121" key="IDE.errors.dialog/0.23.1280.709@0.23.1280.709" timestamp="1580543433828" />
     <state x="499" y="255" key="NewPhpClassDialog" timestamp="1578967295796">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -392,16 +420,17 @@
     </state>
     <state x="548" y="369" key="NewPhpFileDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987198551" />
     <state x="575" y="348" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1579096631944" />
-    <state x="206" y="23" width="997" height="709" key="SettingsEditor" timestamp="1580542944912">
+    <state x="206" y="23" width="997" height="709" key="SettingsEditor" timestamp="1580543430440">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
-    <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580542944912" />
-    <state x="340" y="164" key="Vcs.Push.Dialog.v2" timestamp="1579338337836">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1580543230117">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1580543230117" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -423,11 +452,11 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state width="602" height="337" key="javadoc.popup/0.0.1463.874@0.0.1463.874" timestamp="1578036487013" />
-    <state x="530" y="296" key="publish.login" timestamp="1580542914315">
+    <state x="530" y="296" key="publish.login" timestamp="1580543260085">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="636" y="317" key="publish.login/0.0.1536.824@0.0.1536.824" timestamp="1579173060575" />
-    <state x="530" y="296" key="publish.login/0.23.1280.709@0.23.1280.709" timestamp="1580542914315" />
+    <state x="530" y="296" key="publish.login/0.23.1280.709@0.23.1280.709" timestamp="1580543260085" />
     <state x="498" y="80" key="refactoring.ChangeSignatureDialog" timestamp="1578979993390">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
