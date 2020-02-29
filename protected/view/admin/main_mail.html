@@ -108,8 +108,8 @@
         form.render();
         //监听信息提交
         form.on('submit(mailInfo)', function (data) {
-            data.field.MailNoticeMe = $("input[name='MailNoticeYou']").val();
-            data.field.MailNoticeYou = $("input[name='MailNoticeMe']").val();
+            data.field.MailNoticeMe = $("input[name='MailNoticeMe']").val();
+            data.field.MailNoticeYou = $("input[name='MailNoticeYou']").val();
 
             $.ajax({
                 url: '<{url m="admin" c="Mail" a="Set"}>',
