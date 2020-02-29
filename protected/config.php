@@ -17,7 +17,7 @@ class Config
     {
         return array( // 调试配置
             'host' => array('pay.dreamn.cn', '127.0.0.1'),//localhost改成自己的域名
-            'debug' => 1,//为0不输出调试错误信息
+            'debug' => 0,//为0不输出调试错误信息
             'mysql' => array(//数据库信息
                 'MYSQL_HOST' => 'localhost',
                 'MYSQL_PORT' => '3306',

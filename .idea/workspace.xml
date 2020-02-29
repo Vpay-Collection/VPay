@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="修改安装bug">
+    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="发布问题">
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/api/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/api/ApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/index/AppController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/index/AppController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/model/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/model/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/config.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,19 +94,19 @@
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\speed" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\controller\admin" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\i\js\index" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\captcha" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\protected" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\protected\view\index" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\i" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\speed" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\controller\admin" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\i\js\index" />
+      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\captcha" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -151,6 +151,12 @@
       <workItem from="1579609855407" duration="1825000" />
       <workItem from="1579617323516" duration="446000" />
       <workItem from="1580542744799" duration="690000" />
+      <workItem from="1580543447095" duration="68000" />
+      <workItem from="1581251503154" duration="2016000" />
+      <workItem from="1582698972795" duration="905000" />
+      <workItem from="1582784710022" duration="19505000" />
+      <workItem from="1582942740303" duration="3184000" />
+      <workItem from="1582969568711" duration="1032000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -292,7 +298,28 @@
       <option name="project" value="LOCAL" />
       <updated>1580542990404</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="修改安装bug">
+      <created>1580543465609</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1580543465609</updated>
+    </task>
+    <task id="LOCAL-00022" summary="大改，完善很多地方">
+      <created>1582969860734</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1582969860734</updated>
+    </task>
+    <task id="LOCAL-00023" summary="发布问题">
+      <created>1582970200279</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1582970200279</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,6 +349,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="修改使用sp3.1的例子" />
     <MESSAGE value="优化数据库操作，添加说明文档" />
     <MESSAGE value="添加伪静态" />
@@ -341,14 +370,17 @@
     <MESSAGE value="完善修复" />
     <MESSAGE value="添加伪静态规则" />
     <MESSAGE value="修改安装bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改安装bug" />
+    <MESSAGE value="大改，完善很多地方" />
+    <MESSAGE value="发布问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="发布问题" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="340" y="93" key="#Deployment" timestamp="1579617094226">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="283" y="66" key="#Deployment" timestamp="1582700507544">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="99" key="#Deployment/0.0.1463.874@0.0.1463.874" timestamp="1577976026736" />
     <state x="340" y="93" key="#Deployment/0.0.1536.824@0.0.1536.824" timestamp="1579617094226" />
+    <state x="283" y="66" key="#Deployment/0.23.1280.709@0.23.1280.709" timestamp="1582700507544" />
     <state x="324" y="99" key="#Inspections" timestamp="1578037217865">
       <screen x="0" y="0" width="1463" height="874" />
     </state>
@@ -365,21 +397,22 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state x="324" y="99" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1463.874@0.0.1463.874" timestamp="1578034203355" />
-    <state x="522" y="221" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1578926440074">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="435" y="213" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1581252005623">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="522" y="221" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1578926440074" />
+    <state x="435" y="213" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.709@0.23.1280.709" timestamp="1581252005623" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1578979985880">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="366" y="23" key="CommitChangelistDialog2" timestamp="1580543420757">
+    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1582970651275">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="366" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1580543420757" />
+    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1582970651275" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1578928592575">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -425,12 +458,12 @@
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1580543230117">
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1582970208099">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1580543230117" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1582970208099" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -452,11 +485,11 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state width="602" height="337" key="javadoc.popup/0.0.1463.874@0.0.1463.874" timestamp="1578036487013" />
-    <state x="530" y="296" key="publish.login" timestamp="1580543260085">
+    <state x="530" y="296" key="publish.login" timestamp="1581251551420">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="636" y="317" key="publish.login/0.0.1536.824@0.0.1536.824" timestamp="1579173060575" />
-    <state x="530" y="296" key="publish.login/0.23.1280.709@0.23.1280.709" timestamp="1580543260085" />
+    <state x="530" y="296" key="publish.login/0.23.1280.709@0.23.1280.709" timestamp="1581251551420" />
     <state x="498" y="80" key="refactoring.ChangeSignatureDialog" timestamp="1578979993390">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -466,10 +499,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1579315400159" />
-    <state x="414" y="173" width="706" height="640" key="search.everywhere.popup" timestamp="1578971823896">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup" timestamp="1582970552405">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="394" y="184" width="672" height="678" key="search.everywhere.popup/0.0.1463.874@0.0.1463.874" timestamp="1578045770897" />
     <state x="414" y="173" width="706" height="640" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1578971823896" />
+    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1582970552405" />
   </component>
 </project>
