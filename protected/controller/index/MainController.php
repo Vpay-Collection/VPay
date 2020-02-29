@@ -6,7 +6,7 @@ class MainController extends BaseController
 {
     // 首页
     function actionIndex(){
-        $admin=true;
+        $admin=false;
         if($admin){
             $this->layout='';
             $this->display('main_index');
