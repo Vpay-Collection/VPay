@@ -8,13 +8,13 @@ use lib\speed\mvc\Model;
 class App extends Model
 {
 
-    public function __construct($table_name = "pay_appication")
+    public function __construct()
     {
-        parent::__construct($table_name);
+        parent::__construct('pay_appication');
     }
 
     //添加app
-    public function insertApp($app_name, $return_url, $notify_url, $connect_key)
+    public function add($app_name, $return_url, $notify_url, $connect_key)
     {
         $this->insertIgnore(array(
             "app_name" => $app_name, "return_url" => $return_url, "notify_url" => $notify_url, "connect_key" => $connect_key
@@ -24,16 +24,15 @@ class App extends Model
     //获得app列表的信息
     public function getList($page=null, $limit=null)
     {
-        if($page===null&&$limit===null)return $this->selectAll(null, "id asc", "*");
-        else return $this->selectAll(null, "id asc", "*", array($page, $limit));
+        $arr= null;
+        if($page!=null&&$limit!=null)
+            $arr= array($page, $limit);
+        return $this->selectAll(null, "id asc", "*", $arr);
     }
-
-    //获得所有信息
-
     //获得app信息
     public function getData($id, $param = "*")
     {
-        return $this->select(array("id" => $id), "", $param);
+        return $this->select(array("id" => $id), null, $param);
     }
 
     //删除app

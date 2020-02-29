@@ -19,7 +19,7 @@ class AppController extends BaseController
         $ord->closeEndOrder();//过期订单在这里关也太麻烦了...放到创建订单的时候关闭刚好~
         $conf = new Config();
 
-        $key = $conf->GetData(Config::Key);//取出与app通信的密钥
+        $key = $conf->getData(Config::Key);//取出与app通信的密钥
 
         $t = Speed::arg("t");
 
@@ -35,9 +35,9 @@ class AppController extends BaseController
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "客户端时间错误")));
         }
 
-        $conf->UpdateData("LastHeart", time());
+        $conf->setData("LastHeart", time());
 
-        $conf->UpdateData("State", Config::State_Online);//表示正常监听
+        $conf->setData("State", Config::State_Online);//表示正常监听
 
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "Success！"));
     }
@@ -49,7 +49,7 @@ class AppController extends BaseController
 
         $conf = new Config();
 
-        $key = $conf->GetData(Config::Key);//取出与app通信的密钥
+        $key = $conf->getData(Config::Key);//取出与app通信的密钥
 
         $t = Speed::arg("t");
 
@@ -69,7 +69,7 @@ class AppController extends BaseController
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "客户端时间错误")));
         }
 
-        $conf->UpdateData("LastPay", time());//最后支付时间
+        $conf->setData("LastPay", time());//最后支付时间
 
         $ord = new Order();//对订单进行处理
 

@@ -25,6 +25,10 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 监控端的开源地址位于：[这里](https://github.com/szvone/VmqApk)
 
+在线演示：[这里](https://pay.dreamn.cn/)
+
+本程序启用**付费咨询**，10RMB/次，开源作品，时间有限 咨询地址 -> [点我](https://pay.dreamn.cn/demo/main/index)
+
 > **注意**
 > 1. 本项目为开源项目，本人不可能总会及时修复存在的漏洞
 > 2. 请仔细阅读README,非代码本身问题不予以处理
@@ -120,6 +124,29 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 
 **普通更新，直接删除install目录直接覆盖安装即可，注意修改config.php的相关配置文件**
+
+#### Ver. 1.4 (2020.02.30)
+**普通更新**
+
+1、美化后台UI
+
+2、添加邮件功能
+
+3、修复下一页无效的问题
+
+4、修复微信付款码调用失败的问题
+
+5、修复支付成功无法及时跳转的问题
+
+6、更新demo（集成到了程序中）地址：`/protected/controller/demo` 核心库位于 `/protected/lib/pay` 将`/protected/controller/index/Maincontroller.php`中的`$admin=false;`改成`$admin=true;`即可使用demo 原先位于程序外部的demo依然保留不受影响
+
+7、增加掉线提醒
+
+8、增加日志功能，目录位于`/protected/logs`，按照日期存储，如果对接的时候出现了问题，可以到这里翻一翻日志查看问题
+
+9、完善一些其他的小问题
+
+
 #### Ver. 1.3 (2020.01.18)
 **普通更新**
 

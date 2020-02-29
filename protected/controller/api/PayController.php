@@ -8,12 +8,7 @@ class PayController extends BaseController
 {
 
 
-    //创建订单
-    public function actionIndex()
-    {
-
-        $this->display("pay");
-    }
+    public function actionIndex(){}
 
 
 }

@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="开源个人收款解决方案，支持任意金额">
+    <meta name="keywords" content="Vpay,开源个人收款解决方案,个人支付接口,个人收款,个人收款接口,个人收款接口服务,个人收款回调,个人即时到账">
+    <title>Vpay - 开源个人收款系统</title>
+    <link href="/i/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/i/css/creative.css" rel="stylesheet">
+</head>
+
+<body id="page-top">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Vpay</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" target="_blank" href="<{url m='demo' c='main' a='index'}>">体验</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#multi">介绍</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#contact">联系</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="https://github.com/dreamncn/VPay">源码下载</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#install">收费安装</a>
+                </li>
+                <!--<li class="nav-item">
+                    <a class="nav-link" target="_blank" href="<{url  m='doc' c='main' a='index'}>">开发文档</a>
+                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="masthead text-center text-white d-flex">
+    <div class="container my-auto">
+        <div class="row" style="padding-top: 50px;">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="text-uppercase">
+                    <strong>开源个人收款系统</strong>
+                </h1>
+                <hr>
+            </div>
+            <div class="col-lg-9 mx-auto">
+                <p class="text-faded mb-5">服务端、监控端完全开源。个人微信支付宝账号即可收款，高并发，24h自动回调</p>
+                <a class="btn btn-primary btn-xl" target="_blank" href="<{url  m='demo' c='main' a='index'}>">支付体验</a>
+                <span class="sp">或</span>
+                <a class="btn btn-light btn-xl" target="_blank" href="https://github.com/dreamncn/VPay">源码下载</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="bg-primary" id="multi">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-heading text-white">服务端和安卓监控端全部开源</h2>
+                <hr class="light my-4">
+                <p class="text-faded mb-4">收款即时到账，无需进入第三方账户</p>
+                <p class="text-faded mb-4">免root，免Xposed框架，不修改支付宝/微信客户端</p>
+                <p class="text-faded mb-4">24小时，收款自动回调</p>
+                <p class="text-faded mb-4">提供api文档，二次开发更简单</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-heading">支持多种通知类型</h2>
+                <hr class="my-4">
+                <p class="mb-4" style="color: gray;">支付宝个人收款通知、支付宝商家收款通知、支付宝店员通-店员收款通知</p>
+                <p class="mb-4" style="color: gray;">微信二维码收款通知、微信店员收款通知</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-primary" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-heading text-white">原理和流程</h2>
+                <hr class="light my-4">
+                <p class="text-faded mb-4">Vpay的原理是监控手机微信、支付宝的二维码扫码支付到账通知并回调开发者应用，通知开发者应用订单支付结果</p>
+                <a class="btn btn-light btn-xl">第一步: 用户扫码（发起订单 ）</a><br>
+                <a class="btn btn-light btn-xl">第二步: 监听通知（Vpay监控端，监听支付通知）</a><br>
+                <a class="btn btn-light btn-xl">第三步: 验证支付（Vpay服务端，验证支付参数）</a><br>
+                <a class="btn btn-light btn-xl">第四步: 支付成功（Vpay服务端，返回回调信息）</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="install">
+    <div class="container ">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-heading">收费安装</h2>
+                <hr class="my-4">
+                <p class="mb-4" style="color: gray;">价格：￥60/次</p>
+                <p class="mb-4" style="color: gray;">后期代码更新会及时通知（无其他售后服务）</p>
+                <p class="mb-4" style="color: gray;">适用于希望快速搭建支付平台的程序员</p>
+                <p class="mb-4" style="color: gray;">请在测试中选择支付测试选项中的 "远程搭建服务" 并注明您的邮箱以及环境备注（域名预先解析好,宝塔面板账号密码或者服务器ip和密码/密钥）</p>
+                <p class="mb-4" style="color: gray;">搭建环境要求：linux7.0 宝塔面板</p>
+                <p class="mb-4" style="color: gray;">后续其他Api接入收费，请通过邮件说明</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-primary" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-heading text-white">联系 / 反馈</h2>
+                <hr class="light my-4">
+                <span style="color:#fff;">邮箱: <a style="color:#fff;" href="mailto:dream@dreamn.cn">dream@dreamn.cn</a></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p style="line-height: 50px;color:gray;text-align:center;font-size:14px;">Copyright © 2015-<{date('Y')}></p>
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="/i/js/jquery.min.js"></script>
+<script src="/i/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".js-scroll-trigger").click(function (){
+            var id = $(this).attr("href");
+            $('html, body').animate({
+                scrollTop: $(id).offset().top
+            }, 500);
+        });
+
+        $('.js-scroll-trigger').click(function() {
+            $('.navbar-collapse').collapse('hide');
+        });
+
+        var navbarCollapse = function() {
+            if ($("#mainNav").offset().top > 100) {
+                $("#mainNav").addClass("navbar-shrink");
+            } else {
+                $("#mainNav").removeClass("navbar-shrink");
+            }
+        };
+        navbarCollapse();
+        $(window).scroll(navbarCollapse);
+    });
+
+</script>
+</body>
+</html>

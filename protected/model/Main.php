@@ -8,9 +8,9 @@ class Main extends Model
 {
     private $today;
 
-    public function __construct($table_name = "pay_order")
+    public function __construct()
     {
-        parent::__construct($table_name);
+        parent::__construct("pay_order");
         $this->today = strtotime(date("Y-m-d"), time());
     }
 

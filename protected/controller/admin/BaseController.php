@@ -1,8 +1,5 @@
 <?php
 
-/*
- * 后台基类，所有程序的基础
- * */
 namespace controller\admin;
 
 use lib\speed\mvc\Controller;
@@ -11,41 +8,21 @@ use model\User;
 
 class BaseController extends Controller
 {
-    public $layout = "";//模板文件
+    public $layout = "layout";
 
-    public static function err404($module, $controller, $action, $msg)
-    {
-        header("HTTP/1.0 404 Not Found");
-        $obj = new Controller();
-        $obj->display("error");
-        exit;
-    }
 
     function init()
     {
-        session_start();
         header("Content-type: text/html; charset=utf-8");
-        $this->allow();
-    }
-    private function allow(){
-        $reg=array(
-            'admin'=>array(
-                'main'=>array('login'=>'','key'=>''),
-
-            )
-        );
+        session_start();
         $user=new User();
-        if(!isset($reg[strtolower(Speed::arg('m'))][strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
-            //校验是否有token
-            if(!$user->isLogin(Speed::arg('token'))) {
-                $this->tips('登录过期，或未曾登录！', Speed::url('main', 'index'). "/#login");
-            }
-        }elseif($user->isLogin(Speed::arg('token'))&&!isset($reg[strtolower(Speed::arg('m'))][strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
-            //var_dump(Speed::arg('m'),Speed::arg('c'),Speed::arg('a'));
+        $arr=array(
+            'main'=>array('login'=>'','logout'=>'','receive'=>'','captcha'=>'','key'=>'')
+        );
+        if(!$user->isLogin(Speed::arg('token'))&&!isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
+           $this->jump(Speed::url('admin/main','login'));
+        }elseif ($user->isLogin(Speed::arg('token'))&&Speed::arg('a')!=='key'&&isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
             $this->jump(Speed::url('admin/main','index'));
         }
-
-
     }
-
-}
+} 

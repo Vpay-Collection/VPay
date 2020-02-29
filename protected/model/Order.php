@@ -1,6 +1,7 @@
 <?php
 namespace model;
 use includes\AlipaySign;
+use includes\Email;
 use includes\Web;
 use lib\speed\mvc\Model;
 use lib\speed\Speed;
@@ -41,13 +42,13 @@ class Order extends Model
     private $err;//订单产生的错误均放在这里
 
     //指定表
-    public function __construct($table_name = "pay_order")
+    public function __construct()
     {
-        parent::__construct($table_name);
+        parent::__construct("pay_order");
     }
 
     //后台响应，获取所有的订单
-    public function GetOrders($page, $limit, $type = "", $state = "")
+    public function getOrders($page, $limit, $type = "", $state = "")
     {
         $conditon = NULL;
         if ($type !== "") $conditon["type"] = $type;
@@ -57,7 +58,7 @@ class Order extends Model
     }
 
     //根据id删除订单，并同时删除tmp表格中的信息
-    public function DelOrderById($id)
+    public function delOrderById($id)
     {
         $res = $this->select(array("id" => $id),null,'order_id,state');
         if ($res) {
@@ -70,7 +71,7 @@ class Order extends Model
 
     }
     //根据payid删除订单，并同时删除tmp表格中的信息
-    public function DelOrderByPayId($id)
+    public function delOrderByPayId($id)
     {
         $res = $this->select(array("pay_id" => $id),null,'order_id,state');
         if ($res) {
@@ -83,35 +84,35 @@ class Order extends Model
 
     }
     //删除标记过期的订单
-    public function DelOverOrder()
+    public function delOverOrder()
     {
         $this->delete(array("state" => self::State_Over));
 
     }
 
     //删除检查超过7天的订单
-    public function DelLastOrder()
+    public function delLastOrder()
     {
 
         $this->delete(array("create_date <:create_date", ":create_date" => time() - 604800));
 
     }
     //根据id取得指定订单信息
-    public function GetOrderById($id, $param = "*")
+    public function getOrderById($id, $param = "*")
     {
 
         return $this->select(array("id" => $id), "", $param);
 
     }
     //根据orderid取得指定订单信息
-    public function GetOrderByOrdid($id, $param = "*")
+    public function getOrderByOrdid($id, $param = "*")
     {
 
         return $this->select(array("order_id" => $id), "", $param);
 
     }
     //根据payid取得指定订单信息
-    public function GetOrderByPayId($id, $param = "*")
+    public function getOrderByPayId($id, $param = "*")
     {
 
         return $this->select(array("pay_id" => $id), "", $param);
@@ -120,7 +121,7 @@ class Order extends Model
 
     //根据id修改订单状态
 
-    public function ChangeStateById($id, $state, $paytime = "", $closetime = "")
+    public function changeStateById($id, $state, $paytime = "", $closetime = "")
     {
         $arr["state"] = $state;
         $arr["pay_date"] = $state;
@@ -130,7 +131,7 @@ class Order extends Model
 
     }
 //根据payid修改订单状态
-    public function ChangeStateByPayId($id, $state, $paytime = "", $closetime = "")
+    public function changeStateByPayId($id, $state, $paytime = "", $closetime = "")
     {
         $arr["state"] = $state;
         $arr["pay_date"] = $state;
@@ -142,7 +143,7 @@ class Order extends Model
 
     //根据orderid修改订单状态
 
-    public function ChangeStateByOrderId($id, $state, $paytime = "", $closetime = "")
+    public function changeStateByOrderId($id, $state, $paytime = "", $closetime = "")
     {
         $arr["state"] = $state;
         $arr["pay_date"] = $state;
@@ -154,7 +155,7 @@ class Order extends Model
 
     //根据价格，状态，类型取得订单信息，这个是app推送该订单信息，进行查询的
 
-    public function GetOrderByParam($really_price, $state, $type, $parm = "*")
+    public function getOrderByParam($really_price, $state, $type, $parm = "*")
     {
 
         return $this->select(array("really_price" => $really_price, "state" => $state, "type" => $type), "", $parm);
@@ -164,35 +165,32 @@ class Order extends Model
 
     //创建订单
 
-    public function CreateOrder($arg)
+    public function createOrder($arg)
     {
-
-        $this->closeEndOrder();//关闭过期订单,心跳机制关闭订单合理
-        //检查监控端是否在线
-        $conf=new Config();
-        if($conf->GetData(Config::State)!==Config::State_Online){
+        $this->closeEndOrder();
+        if($this->isOffline()){
             $this->err="系统错误，暂时不能支付！";//监控掉线
             return false;
         }
         //校验关卡,校验订单
-        if (!$this->OrderCheck($arg))return false;
+        if (!$this->orderCheck($arg))return false;
 
         //关闭重复订单,避免多次提交导致支付失败
-        $this->DelOrderByPayId($this->payId);
+        $this->delOrderByPayId($this->payId);
         //订单生成时间
         $createDate = time();
         $conf = new Config();
-        $time = $conf->GetData(Config::ValidityTime);//订单超时时间
+        $time = $conf->getData(Config::ValidityTime);//订单超时时间
         //计算超时时间，上述time单位为分钟
         $timeout=intval($time)*60+$createDate;
         //获得真实的支付金额
-        if (!$this->GetPayMoney($arg["price"], $arg["type"],$timeout))return false;
+        if (!$this->getPayMoney($arg["price"], $arg["type"],$timeout))return false;
         //对参数进行解码，进行url编码防止传输过程中中断
         $json=json_decode(urldecode($arg["param"]));
         //参数中设置了收款原因，只在支付宝自动金额收款有效，只能20个字符左右
         if(isset($json->explain))$this->explain=substr($json->explain,0,20);
         //取得支付二维码
-        if (!$this->GetPayPic())return false;
+        if (!$this->getPayPic())return false;
 
         //入库数据数组
         $data = array(//入库数据准备完毕
@@ -242,13 +240,13 @@ class Order extends Model
 
         $conf = new Config();
 
-        $close_time = $conf->GetData(Config::ValidityTime);//订单关闭的时间
+        $close_time = $conf->getData(Config::ValidityTime);//订单关闭的时间
 
         $close_time = time() - 60 * $close_time;//计算订单关闭时间
 
         $close_date = time();
 
-        $this->ClearOrder($close_time, $close_date);
+        $this->clearOrder($close_time, $close_date);
 
         //清理临时表中的过期信息
         $temp=new Temp();
@@ -259,7 +257,7 @@ class Order extends Model
 
     //根据时间清理
 
-    public function ClearOrder($time, $close_date)
+    public function clearOrder($time, $close_date)
     {
 
         $this->update(array("create_date <= :create_date and state = ".self::State_Wait, "create_date" => $time), array("state" => self::State_Over, "close_date" => $close_date));
@@ -269,7 +267,7 @@ class Order extends Model
 
     //取得已经关闭的订单
 
-    public function GetOrderClose($data, $parm = "*")
+    public function getOrderClose($data, $parm = "*")
     {
 
         return $this->selectAll(array("close_date" => $data), "", $parm);
@@ -278,9 +276,9 @@ class Order extends Model
 
 
     //通知远程服务器，我已经收到钱了
-    public function Notify($id){
+    public function notify($id){
 
-        $res = $this->GetOrderByOrdid($id, "appid,pay_id,type,param,price,really_price,state");
+        $res = $this->getOrderByOrdid($id, "appid,pay_id,type,param,price,really_price,state");
 
         if ($res) {
 
@@ -322,6 +320,7 @@ class Order extends Model
 
             $web = new web();
 
+
             //悄悄告诉远程服务器，我收到钱了，为了防止别人仿冒我，要加上密钥进行验证
 
             $re1 = $web->get($url);
@@ -332,6 +331,15 @@ class Order extends Model
                 //远程服务器响应正常，表示认可
                 if ($re->state===Config::Api_Ok) {
                     //告诉响应接口，好啦响应是成功的~
+                    //发邮件啦啦啦
+                    $conf=new Config();
+                    $mailAddr=$conf->getData('MailRec');
+                    if($conf->getData('MailNoticeYou')==='on'&&Email::isEmail($mailAddr)){
+                        $mail=new Email();
+                        //$str=preg_replace("#\\\u([0-9a-f]{4})#ie", "iconv('UCS-2BE', 'UTF-8', pack('H4', '\\1'))", urldecode($arr["param"]));
+                        $content=$mail->complieNotify(array('notice1'=>"￥".$arr["reallyPrice"],'notice2'=>'原价:<font color="red">￥'.$arr["price"].'</font>','notice3'=>'其他参数：'.urldecode($arr["param"])));
+                        $mail->send($mailAddr,'用户支付通知',$content,'Vpay');
+                    }
                     return json_encode(array("code" => Config::Api_Ok, "msg" => $re->msg));
                 } else {
                     //远程服务器不认可？？？凭啥？我也不知道呀~
@@ -341,8 +349,9 @@ class Order extends Model
 
             } else {
                 //尴尬，解析json出错了~
+                Speed::log($re1);
                 $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
-                return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！".$re1));
+                return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！"));
             }
         } else {
             //啥？你要我通知服务器这个不存在的订单？
@@ -352,7 +361,7 @@ class Order extends Model
     }
     //对创建订单的参数进行检查
 
-    private function OrderCheck($arg)
+    private function orderCheck($arg)
     {
 
         if (!isset($arg["appid"])) {
@@ -407,7 +416,7 @@ class Order extends Model
     }
 
     //对订单的sign进行检查,前提是这些参数必须进行上一步检查通过
-    private function CheckSign()
+    private function checkSign()
     {
         //查找这个app
         $app = new App();
@@ -438,7 +447,7 @@ class Order extends Model
 
     //获取到实际支付的价格，防止订单混乱，在同一时间段出现支付情况时,在随机在0.00-0.10之间徘徊
 
-    private function GetPayMoney($price, $type,$timeout)
+    private function getPayMoney($price, $type,$timeout)
     {
         $price=floatval($price);
         $reallyPrice = intval(bcmul($price, 100));
@@ -446,7 +455,7 @@ class Order extends Model
 
         $conf = new Config();
 
-        $payQf = $conf->GetData(Config::Payof);//如何区分订单？
+        $payQf = $conf->getData(Config::Payof);//如何区分订单？
 
         $this->orderId = date("YmdHms") . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9);
 
@@ -458,9 +467,9 @@ class Order extends Model
         for ($i = 0; $i < 10; $i++) {
             $tmpPrice = $reallyPrice . "-" . $type;
 
-            $temp = new temp();
+            $temp = new Temp();
 
-            $res = $temp->InsertTemp(array("price" => $tmpPrice, "oid" => $this->orderId,"timeout"=>$timeout));//返回尝试插入结果，false表示已经存在
+            $res = $temp->add(array("price" => $tmpPrice, "oid" => $this->orderId,"timeout"=>$timeout));//返回尝试插入结果，false表示已经存在
 
 
             //true表示该时间段没有
@@ -490,17 +499,19 @@ class Order extends Model
 
     }
 
-    private function GetPayPic()
+    private function getPayPic()
     {//取得支付的图片
 
         $conf = new Config();
 
         $payUrl = "";
 
+        //不是移动端访问时才使用这个
         if ($this->type === self::PayAlipay) {//看看是不是支付宝
-            $user = $conf->GetData(Config::Ailuid);//看看有没有uid
+            $user = $conf->getData(Config::Ailuid);//看看有没有uid
             if ($user !== "") {//有uid直接任意二维码
                 $str = "alipays://platformapi/startapp?appId=20000123&actionType=scan&biz_data={\"s\": \"money\",\"u\": \"[PID]\",\"a\": \"[MONEY]\",\"m\":\"[EXP]\"}";
+                //$str='alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=[MONEY]&userId=[PID]&memo=[EXP]';
                 $str = str_replace("[PID]", $user, $str);
                 $str = str_replace("[MONEY]", $this->reallyPrice, $str);
                 $payUrl = urlencode(str_replace("[EXP]", $this->explain, $str));
@@ -513,7 +524,7 @@ class Order extends Model
 
             $pay = new PayCode();
 
-            $_payUrl = $pay->GetCodeOnly($this->price, $this->type);//根据金额取得二维码
+            $_payUrl = $pay->getCodeOnly($this->price, $this->type);//根据金额取得二维码
 
             if ($_payUrl)$payUrl = $_payUrl['pay_url'];//存在该金额的二维码
             $this->isAuto=false;
@@ -521,8 +532,8 @@ class Order extends Model
         //第二波取二维码（上传的支付宝微信收款码）结束，看看有没有成功
         if ($payUrl === "") {
             if ($this->type === self::PayWechat)
-                $payUrl = $conf->GetData(Config::WechatPay);
-            else $payUrl = $conf->GetData(Config::AliPay);
+                $payUrl = $conf->getData(Config::WechatPay);
+            else $payUrl = $conf->getData(Config::AliPay);
             $this->isAuto=true;
         }
         //第三波取二维码（预存的任意金额收款码）结束，看看有没有成功
@@ -535,8 +546,31 @@ class Order extends Model
         }
     }
 
-    public function GetErr()
+    public function getErr()
     {
         return $this->err;
+    }
+
+    /**
+     * 检查监控端是否掉线
+     */
+    public function isOffline(){
+        $conf=new Config();
+        $t=$conf->getData(Config::LastHeart);
+        $jg = time()  - intval($t);
+
+        if ($jg > 100 || $jg < -100) {
+            $conf->setData("State", Config::State_Offline);//表示掉线
+            //准备通知
+            $mailAddr=$conf->getData('MailRec');
+            if($conf->getData('MailNoticeMe')==='on'&&Email::isEmail($mailAddr)){
+                $mail=new Email();
+                $content=$mail->complieNotify(array('notice1'=>"手机端监控已掉线",'notice2'=>'请及时上线','notice3'=>''));
+                $mail->send($mailAddr,'手机端监控掉线通知',$content,'Vpay');
+            }
+            Speed::log($jg);
+            return true;//掉线返回true
+        }
+        return false;
     }
 }

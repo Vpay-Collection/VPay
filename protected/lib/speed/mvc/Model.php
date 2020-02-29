@@ -1,13 +1,10 @@
 <?php
 
-namespace Speed;
-
 namespace lib\speed\mvc;
 
 use lib\speed\Error;
 use PDO;
 use PDOException;
-use PDOStatement;
 
 /**
  * Class Model
@@ -36,6 +33,15 @@ class Model
     }
 
     /**
+     * 输出执行的sql语句
+     * @return array
+     */
+    public function dumpSql()
+    {
+        return $this->sql;
+    }
+
+    /**
      * 重置操作的数据表，便于变换
      * @param $table_name
      */
@@ -43,6 +49,19 @@ class Model
     {
         $this->table_name = $table_name;
 
+    }
+
+    /**
+     * 查询一条数据
+     * @param array $conditions
+     * @param null $sort
+     * @param string $fields
+     * @return bool|mixed
+     */
+    protected function select($conditions = array(), $sort = null, $fields = '*')
+    {
+        $res = $this->selectAll($conditions, $sort, $fields, 1);
+        return !empty($res) ? array_pop($res) : false;
     }
 
     /**
@@ -73,16 +92,161 @@ class Model
     }
 
     /**
-     * 查询一条数据
-     * @param array $conditions
-     * @param null $sort
-     * @param string $fields
-     * @return bool|mixed
+     * condition的处理函数
+     * @param $conditions
+     * @return array
      */
-    protected function select($conditions = array(), $sort = null, $fields = '*')
+    private function _where($conditions)
     {
-        $res = $this->selectAll($conditions, $sort, $fields, 1);
-        return !empty($res) ? array_pop($res) : false;
+
+        $result = array("_where" => " ", "_bindParams" => array());
+        if (is_array($conditions) && !empty($conditions)) {
+
+            $sql = null;
+            $join = array();
+            reset($conditions);
+            $first = key($conditions);
+
+            if (is_int($first) && $sql = $conditions[$first]) unset($conditions[$first]);
+
+
+            foreach ($conditions as $key => $condition) {
+
+                if (is_int($key)) {
+                    $join[] = $condition;
+                    unset($conditions[$key]);
+                    continue;
+                }
+                if (substr($key, 0, 1) != ":") {
+                    unset($conditions[$key]);
+                    $conditions[":" . str_replace('.', '_', $key)] = $condition;
+                }
+                $join[] = "`" . str_replace('.', '`.`', $key) . "` = :" . str_replace('.', '_', $key);
+            }
+
+            if (!$sql) $sql = join(" AND ", $join);
+
+            //var_dump($first,$sql,$conditions);
+            $result["_where"] = " WHERE " . $sql;
+            $result["_bindParams"] = $conditions;
+        }
+        return $result;
+    }
+
+    /**
+     * 直接执行的查询语句
+     * @param $sql
+     * @param array $params
+     * @return mixed
+     */
+    protected function query($sql, $params = array())
+    {
+        return $this->execute($sql, $params, true);
+    }
+
+    /**
+     * 直接执行sql语句
+     * @param string $sql sql语句
+     * @param array $params
+     * @param bool $readonly
+     * @return mixed
+     */
+    public function execute($sql, $params = array(), $readonly = false)
+    {
+        /**
+         * @var $sth PDO
+         */
+        $this->sql[] = $sql;
+
+
+        if ($readonly && !empty($GLOBALS['mysql']['MYSQL_SLAVE'])) {
+            $slave_key = array_rand($GLOBALS['mysql']['MYSQL_SLAVE']);
+            $sth = $this->dbInstance($GLOBALS['mysql']['MYSQL_SLAVE'][$slave_key], 'slave_' . $slave_key)->prepare($sql);
+        } else {
+            $sth = $this->dbInstance($GLOBALS['mysql'], 'master')->prepare($sql);
+        }
+
+        if (is_array($params) && !empty($params)) foreach ($params as $k => &$v) {
+            if (is_int($v)) {
+                $data_type = PDO::PARAM_INT;
+            } elseif (is_bool($v)) {
+                $data_type = PDO::PARAM_BOOL;
+            } elseif (is_null($v)) {
+                $data_type = PDO::PARAM_NULL;
+            } else {
+                $data_type = PDO::PARAM_STR;
+            }
+            $sth->bindParam($k, $v, $data_type);
+        }
+
+        if ($sth->execute()) return $readonly ? $sth->fetchAll(PDO::FETCH_ASSOC) : $sth->rowCount();
+        $err = $sth->errorInfo();
+        Error::err('Database SQL: "' . $sql . '", ErrorInfo: ' . $err[2]);
+        return false;
+    }
+
+    /**
+     * 数据库初始化
+     * @param $db_config
+     * @param $db_config_key
+     * @param bool $force_replace
+     * @return mixed
+     */
+    protected function dbInstance($db_config, $db_config_key, $force_replace = false)
+    {
+        if ($force_replace || empty($GLOBALS['mysql_instances'][$db_config_key])) {
+            try {
+                if (!class_exists("PDO") || !in_array("mysql", PDO::getAvailableDrivers(), true)) {
+                    Error::err('Database Err: PDO or PDO_MYSQL doesn\'t exist!');
+                }
+                $GLOBALS['mysql_instances'][$db_config_key] = new PDO('mysql:dbname=' . $db_config['MYSQL_DB'] . ';host=' . $db_config['MYSQL_HOST'] . ';port=' . $db_config['MYSQL_PORT'], $db_config['MYSQL_USER'], $db_config['MYSQL_PASS'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'' . $db_config['MYSQL_CHARSET'] . '\''));
+            } catch (PDOException $e) {
+                Error::err('Database Err: ' . $e->getMessage());
+            }
+        }
+        return $GLOBALS['mysql_instances'][$db_config_key];
+    }
+
+    /**
+     * 分页处理函数
+     * @param $page
+     * @param int $pageSize
+     * @param int $scope
+     * @param int $total
+     * @return array|null
+     */
+    protected function pager($page, $pageSize = 10, $scope = 10, $total = 0)
+    {
+        $this->page = null;
+        if ($total > $pageSize) {
+            $total_page = ceil($total / $pageSize);
+            $page = min(intval(max($page, 1)), $total_page);
+            $this->page = array(
+                'total_count' => $total,//总数量
+                'page_size' => $pageSize,//一页大小
+                'total_page' => $total_page,//总页数
+                'first_page' => 1,//第一页
+                'prev_page' => ((1 == $page) ? 1 : ($page - 1)),//上一页
+                'next_page' => (($page == $total_page) ? $total_page : ($page + 1)),//下一页
+                'last_page' => $total_page,//最后一页
+                'current_page' => $page,//当前页
+                'all_pages' => array(),//所有页
+                'offset' => ($page - 1) * $pageSize,
+                'limit' => $pageSize,
+            );
+            $scope = (int)$scope;
+            if ($total_page <= $scope) {
+                $this->page['all_pages'] = range(1, $total_page);
+            } elseif ($page <= $scope / 2) {
+                $this->page['all_pages'] = range(1, $scope);
+            } elseif ($page <= $total_page - $scope / 2) {
+                $right = $page + (int)($scope / 2);
+                $this->page['all_pages'] = range($right - $scope + 1, $right);
+            } else {
+                $this->page['all_pages'] = range($total_page - $scope + 1, $total_page);
+            }
+        }
+        return $this->page;
     }
 
     /**
@@ -103,6 +267,18 @@ class Model
     }
 
     /**
+     * 自减
+     * @param $conditions
+     * @param $field
+     * @param int $optval
+     * @return mixed
+     */
+    protected function decr($conditions, $field, $optval = 1)
+    {
+        return $this->incr($conditions, $field, -$optval);
+    }
+
+    /**
      * 自增
      * @param $conditions
      * @param $field
@@ -113,18 +289,6 @@ class Model
     {
         $conditions = $this->_where($conditions);
         return $this->execute("UPDATE " . $this->table_name . " SET `{$field}` = `{$field}` + :M_INCR_VAL " . $conditions["_where"], $conditions["_bindParams"] + array(":M_INCR_VAL" => $optval));
-    }
-
-    /**
-     * 自减
-     * @param $conditions
-     * @param $field
-     * @param int $optval
-     * @return mixed
-     */
-    protected function decr($conditions, $field, $optval = 1)
-    {
-        return $this->incr($conditions, $field, -$optval);
     }
 
     /**
@@ -217,157 +381,5 @@ class Model
         $conditions = $this->_where($conditions);
         $count = $this->query("SELECT SUM($param) AS M_COUNTER FROM " . $this->table_name . $conditions["_where"], $conditions["_bindParams"]);
         return isset($count[0]['M_COUNTER']) && $count[0]['M_COUNTER'] ? $count[0]['M_COUNTER'] : 0;
-    }
-
-    /**
-     * 输出执行的sql语句
-     * @return array
-     */
-    public function dumpSql()
-    {
-        return $this->sql;
-    }
-
-    /**
-     * 分页处理函数
-     * @param $page
-     * @param int $pageSize
-     * @param int $scope
-     * @param int $total
-     * @return array|null
-     */
-    protected function pager($page, $pageSize = 10, $scope = 10, $total = 0)
-    {
-        $this->page = null;
-        if ($total > $pageSize) {
-            $total_page = ceil($total / $pageSize);
-            $page = min(intval(max($page, 1)), $total_page);
-            $this->page = array(
-                'total_count' => $total,//总数量
-                'page_size' => $pageSize,//一页大小
-                'total_page' => $total_page,//总页数
-                'first_page' => 1,//第一页
-                'prev_page' => ((1 == $page) ? 1 : ($page - 1)),//上一页
-                'next_page' => (($page == $total_page) ? $total_page : ($page + 1)),//下一页
-                'last_page' => $total_page,//最后一页
-                'current_page' => $page,//当前页
-                'all_pages' => array(),//所有页
-                'offset' => ($page - 1) * $pageSize,
-                'limit' => $pageSize,
-            );
-            $scope = (int)$scope;
-            if ($total_page <= $scope) {
-                $this->page['all_pages'] = range(1, $total_page);
-            } elseif ($page <= $scope / 2) {
-                $this->page['all_pages'] = range(1, $scope);
-            } elseif ($page <= $total_page - $scope / 2) {
-                $right = $page + (int)($scope / 2);
-                $this->page['all_pages'] = range($right - $scope + 1, $right);
-            } else {
-                $this->page['all_pages'] = range($total_page - $scope + 1, $total_page);
-            }
-        }
-        return $this->page;
-    }
-
-    /**
-     * 直接执行的查询语句
-     * @param $sql
-     * @param array $params
-     * @return mixed
-     */
-    protected function query($sql, $params = array())
-    {
-        return $this->execute($sql, $params, true);
-    }
-
-    /**
-     * 直接执行sql语句
-     * @param string $sql sql语句
-     * @param array $params
-     * @param bool $readonly
-     * @return mixed
-     */
-    public function execute($sql, $params = array(), $readonly = false)
-    {
-        /**
-         * @var $sth PDO
-         */
-        $this->sql[] = $sql;
-
-        if ($readonly && !empty($GLOBALS['mysql']['MYSQL_SLAVE'])) {
-            $slave_key = array_rand($GLOBALS['mysql']['MYSQL_SLAVE']);
-            $sth = $this->dbInstance($GLOBALS['mysql']['MYSQL_SLAVE'][$slave_key], 'slave_' . $slave_key)->prepare($sql);
-        } else {
-            $sth = $this->dbInstance($GLOBALS['mysql'], 'master')->prepare($sql);
-        }
-
-        if (is_array($params) && !empty($params)) foreach ($params as $k => &$v) {
-            if (is_int($v)) {
-                $data_type = PDO::PARAM_INT;
-            } elseif (is_bool($v)) {
-                $data_type = PDO::PARAM_BOOL;
-            } elseif (is_null($v)) {
-                $data_type = PDO::PARAM_NULL;
-            } else {
-                $data_type = PDO::PARAM_STR;
-            }
-            $sth->bindParam($k, $v, $data_type);
-        }
-
-        if ($sth->execute()) return $readonly ? $sth->fetchAll(PDO::FETCH_ASSOC) : $sth->rowCount();
-        $err = $sth->errorInfo();
-        Error::err('Database SQL: "' . $sql . '", ErrorInfo: ' . $err[2]);
-        return false;
-    }
-
-    /**
-     * 数据库初始化
-     * @param $db_config
-     * @param $db_config_key
-     * @param bool $force_replace
-     * @return mixed
-     */
-    protected function dbInstance($db_config, $db_config_key, $force_replace = false)
-    {
-        if ($force_replace || empty($GLOBALS['mysql_instances'][$db_config_key])) {
-            try {
-                if (!class_exists("PDO") || !in_array("mysql", PDO::getAvailableDrivers(), true)) {
-                    Error::err('Database Err: PDO or PDO_MYSQL doesn\'t exist!');
-                }
-                $GLOBALS['mysql_instances'][$db_config_key] = new PDO('mysql:dbname=' . $db_config['MYSQL_DB'] . ';host=' . $db_config['MYSQL_HOST'] . ';port=' . $db_config['MYSQL_PORT'], $db_config['MYSQL_USER'], $db_config['MYSQL_PASS'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'' . $db_config['MYSQL_CHARSET'] . '\''));
-            } catch (PDOException $e) {
-                Error::err('Database Err: ' . $e->getMessage());
-            }
-        }
-        return $GLOBALS['mysql_instances'][$db_config_key];
-    }
-
-    /**
-     * condition的处理函数
-     * @param $conditions
-     * @return array
-     */
-    private function _where($conditions)
-    {
-        $result = array("_where" => " ", "_bindParams" => array());
-        if (is_array($conditions) && !empty($conditions)) {
-            $fieldss = array();
-            $sql = null;
-            $join = array();
-            if (isset($conditions[0]) && $sql = $conditions[0]) unset($conditions[0]);
-            foreach ($conditions as $key => $condition) {
-                if (substr($key, 0, 1) != ":") {
-                    unset($conditions[$key]);
-                    $conditions[":" . $key] = $condition;
-                }
-                $join[] = "`{$key}` = :{$key}";
-            }
-            if (!$sql) $sql = join(" AND ", $join);
-
-            $result["_where"] = " WHERE " . $sql;
-            $result["_bindParams"] = $conditions;
-        }
-        return $result;
     }
 }

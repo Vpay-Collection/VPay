@@ -32,20 +32,18 @@ class Config extends Model
     const PayIncrease=1;//递增
     const PayReduce=2;//递减
 
-    public function __construct($table_name = "pay_settings")
+    public function __construct()
     {
-        parent::__construct($table_name);
+        parent::__construct('pay_settings');
     }
 
-    public function UpdateDataAll($config)
+    public function setDataAll($config)
     {
         if ($config["UserPassword"] === "") {
-            $config["UserPassword"] = $this->GetData(self::UserPassword);
+            $config["UserPassword"] = $this->getData(self::UserPassword);
         }else{
-            //
             $aes=new AES();
             $config["UserPassword"]=$aes->decrypt($config["UserPassword"],$_SESSION['key']);
-            //var_dump($config["UserPassword"],hash("sha256",md5($config["UserPassword"].md5($config["UserName"]))));
             $config["UserPassword"] = hash("sha256",md5($config["UserPassword"].md5($config["UserName"])));
         }
         foreach ($config as $index => $value) {
@@ -54,8 +52,9 @@ class Config extends Model
         return json_encode(array("code" => self::Api_Ok, "msg" => "保存成功!"));
     }
 
-    public function GetData($id)
+    public function getData($id)
     {
+        $query = false;
         //具体要查询的数据
         switch ($id) {
             case self::UserName:
@@ -105,15 +104,16 @@ class Config extends Model
             case self::Payof:
                 $query = $this->select(array("vkey" => "Payof"));
                 break;
+            default:$query = $this->select(array("vkey" => $id));
         }
         if ($query) return $query["vvalue"];
         else return false;
     }
 
-    public function UpdateData($id, $v)
+    public function setData($id, $v)
     {
 
-        if ($id === "UserPassword") $v = hash("sha256",md5($v.md5($this->GetData(self::UserName))));//前端使用md5加盐，密码更新使用sha256加盐
+        if ($id === "UserPassword") $v = hash("sha256",md5($v.md5($this->getData(self::UserName))));//前端使用md5加盐，密码更新使用sha256加盐
         $this->update(array("vkey" => $id), array("vvalue" => $v));
     }
 }

@@ -1,0 +1,71 @@
+$name: orange, blue;
+$color: #FF4806, #2D8CF0;
+/* .test{
+  @each $c in $name{
+     $i:index($name,$c);
+     &:nth-child(#{$i+1}){
+        background: nth($name,$i);
+        width: nth($name,$i);
+     }
+  }
+} */
+
+.okadmin {
+
+  @each $c in $name{
+    $i:index($name,$c);
+    &.#{$c}_theme{
+      /**头部导航*/
+      /* .okadmin-header {
+        .layui-nav-item a {
+          color: nth($color,$i);
+        }
+        .layui-icon, .ok-icon {
+          color: nth($color,$i);
+        }
+        .layui-nav {
+          .layui-nav-mored {
+            border-color: transparent transparent nth($color,$i);
+          }
+          .layui-nav-more {
+            border-color: nth($color,$i) transparent transparent;
+          }
+          .layui-nav-bar {
+            background: nth($color,$i) !important;
+          }
+        }
+      } */
+
+      /**左侧菜单*/
+      .ok-left .okadmin-nav {
+        .layui-nav-bar {
+          background: nth($color,$i);
+        }
+        .layui-nav-item {
+          &.layui-this {
+            a {
+              background: nth($color,$i);
+            }
+          }
+          .layui-nav-child {
+            .layui-this {
+              a {
+                background: nth($color,$i);
+              }
+            }
+          }
+        }
+      }
+
+      /**tab栏*/
+      .ok-tab {
+        .okadmin-tabs-control:hover,
+        .layui-tab-title li.layui-this {
+          color: nth($color,$i);
+        }
+      }
+    }
+
+  }
+}
+

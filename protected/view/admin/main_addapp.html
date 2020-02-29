@@ -1,0 +1,99 @@
+<style>
+    .layui-table-cell {
+        height: auto;
+    }
+
+    .layui-table img {
+        max-width: 200px;
+    }
+</style>
+<form action="" class="layui-form layui-form-pane">
+    <div class="layui-form-item">
+        <label class="layui-form-label">应用名称</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="app_name" placeholder="请输入应用名称"
+                   required type="text">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">同步回调</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="return_url"
+                   placeholder="请输入同步回调地址" required type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">异步回调</label>
+        <div class="layui-input-block">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="notify_url"
+                   placeholder="请输入异步回调地址" required type="text">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">通讯密钥</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" id="connect_key" name="connect_key" placeholder="请输入通讯密钥"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="random" type="button">随机生成通讯密钥</button>
+            <button class="layui-btn" lay-filter="formDemo" lay-submit>创建应用</button>
+            <button class="layui-btn layui-btn-primary" id="reset" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+        var $=layui.$;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            //console.log(parseParams(data.field));
+            //layer.msg(JSON.stringify(data.field));
+            $.post("<{url('admin/api','Appcreate')}>", parseParams(data.field), function (data) {
+                data = JSON.parse(data);
+                layer.msg(data.msg);
+                if (data.code === Api_Ok) {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));
+                }
+            });
+            return false;
+        });
+
+        function randomString(len) {
+            len = len || 32;
+            var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+            /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+            var maxPos = $chars.length;
+            var pwd = '';
+            for (i = 0; i < len; i++) {
+                pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+            }
+            return pwd;
+        }
+
+        function parseParams(data) {
+            try {
+                var tempArr = [];
+                for (var i in data) {
+                    var key = encodeURIComponent(i);
+                    var value = encodeURIComponent(data[i]);
+                    tempArr.push(key + '=' + value);
+                }
+                return tempArr.join('&');
+            } catch (err) {
+                return '';
+            }
+        }
+        $("#random").click(function (e) {
+            $("#connect_key").val(randomString(128));
+        });
+    });
+
+
+
+</script>

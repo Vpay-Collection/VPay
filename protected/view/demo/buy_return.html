@@ -1,0 +1,47 @@
+
+<style type="text/css">
+    .margin-top{ margin-top:1em}
+    .myContent{width: 90%;margin-left: 5%;}
+    .modal-dialog{margin: auto;}
+    .mylable{min-width: 118px;}
+    .input-group-text{border-top-right-radius: 0;border-bottom-right-radius: 0;border-right: 0}
+    .form-control{border-top-right-radius: .25rem;border-bottom-right-radius: .25rem}
+    .myInput{vertical-align: middle;}
+    #qr img{max-width: 100%;display: inline-block!important;}
+    @media screen and (min-width:560px){
+        /* .mylable {
+          margin-left: -24px;
+         } */
+        .pcInput{
+            min-width: 200px;;
+        }
+    }
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+</style>
+
+<div class="form  myContent">
+    <br><br><br>
+    <span class="label label-default">
+			<h2 class="text-center">支付结果<br/></h2>
+			<span style="color: red"><{$result nofilter}><br/></span>
+		</span>
+    <br />
+</div>
+

@@ -1,0 +1,102 @@
+<style>
+    .layui-table-cell {
+        height: auto;
+    }
+
+    .layui-table img {
+        max-width: 200px;
+    }
+</style>
+<table id="demo" lay-filter="test"></table>
+
+<script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="toolbarTpl">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm layui-bg-green" lay-event="add">添加二维码</button>
+    </div>
+</script>
+
+<script>
+    function formatDate(now) {
+        now = new Date(now * 1000);
+        return now.getFullYear()
+            + "-" + (now.getMonth() > 8 ? (now.getMonth() + 1) : "0" + (now.getMonth() + 1))
+            + "-" + (now.getDate() > 9 ? now.getDate() : "0" + now.getDate())
+            + " " + (now.getHours() > 9 ? now.getHours() : "0" + now.getHours())
+            + ":" + (now.getMinutes() > 9 ? now.getMinutes() : "0" + now.getMinutes())
+            + ":" + (now.getSeconds() > 9 ? now.getSeconds() : "0" + now.getSeconds());
+
+    }
+
+    var myTable, table, form;
+    layui.use(['form', 'table', 'laydate','okLayer'], function () {
+        table = layui.table;
+        form = layui.form;
+        let okLayer = layui.okLayer;
+        let $=layui.$;
+        //第一个实例
+        myTable = table.render({
+            elem: '#demo'
+            , height: 'full-40'
+            , url: "<{url('admin/api','QrInfo')}>"
+            ,limit: 15
+            ,page: true
+            ,even: true
+            ,toolbar: "#toolbarTpl"
+            , where: {
+                type: 1,
+            }
+            , cols: [[ //表头
+                {
+                    field: '', title: '二维码', templet: function (d) {
+                        return "<img  src=<{url('admin/api','Qr')}>?url=" + d.pay_url + " >";
+                    }
+                },
+                {field: 'price', title: '金额'},
+                {title: "操作", width: 70, align: 'center', toolbar: '#barDemo'}
+
+            ]]
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'del') {
+                layer.confirm('要删除该二维码么？', function (index) {
+
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.post("<{url('admin/api','DeleteCode')}>", "id=" + data.id, function (data) {
+                        data = JSON.parse(data);
+                        if (data.code === Api_Ok) {
+                            obj.del(); //删除对应行（tr）的DOM结构
+                        }
+
+                        layer.msg(data.msg);
+                    });
+
+                    console.log(data.id);
+                });
+            }
+        });
+
+        table.on('toolbar(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var  layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent==='add'){
+                okLayer.open("添加微信二维码", "<{url m='admin' c='main' a='addWepay'}>" , "90%", "90%", null, function () {
+                    myTable.reload();
+                })
+            }
+        });
+
+        form.render();
+
+    });
+
+
+</script>
+

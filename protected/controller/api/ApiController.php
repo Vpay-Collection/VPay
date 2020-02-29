@@ -44,7 +44,7 @@ class ApiController extends BaseController
 
         if ($res) {
             $conf = new Config();
-            $time = $conf->GetData(Config::ValidityTime);
+            $time = $conf->getData(Config::ValidityTime);
 
             $data = array(
                 "payId" => $res['pay_id'],

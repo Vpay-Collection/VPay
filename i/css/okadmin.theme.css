@@ -1,0 +1,23 @@
+.okadmin.orange_theme .ok-left .okadmin-nav .layui-nav-bar {
+    background: #FF4806; }
+
+.okadmin.orange_theme .ok-left .okadmin-nav .layui-nav-item.layui-this a {
+    background: #FF4806; }
+
+.okadmin.orange_theme .ok-left .okadmin-nav .layui-nav-item .layui-nav-child .layui-this a {
+    background: #FF4806; }
+
+.okadmin.orange_theme .ok-tab .okadmin-tabs-control:hover, .okadmin.orange_theme .ok-tab .layui-tab-title li.layui-this {
+    color: #FF4806; }
+
+.okadmin.blue_theme .ok-left .okadmin-nav .layui-nav-bar {
+    background: #2D8CF0; }
+
+.okadmin.blue_theme .ok-left .okadmin-nav .layui-nav-item.layui-this a {
+    background: #2D8CF0; }
+
+.okadmin.blue_theme .ok-left .okadmin-nav .layui-nav-item .layui-nav-child .layui-this a {
+    background: #2D8CF0; }
+
+.okadmin.blue_theme .ok-tab .okadmin-tabs-control:hover, .okadmin.blue_theme .ok-tab .layui-tab-title li.layui-this {
+    color: #2D8CF0; }

@@ -10,14 +10,6 @@ class BaseController extends Controller
 {
     public $layout = "";//模板文件
 
-    public static function err404($module, $controller, $action, $msg)
-    {
-        header("HTTP/1.0 404 Not Found");
-        $obj = new Controller();
-        $obj->display("error");
-        exit;
-    }
-
     function init()
     {
         //进行校验

@@ -15,7 +15,75 @@ use QrReader;
 
 class ApiController extends BaseController
 {
-    public function actionMainInfo()
+    public function actionNav(){
+        echo json_encode(array(
+            array(
+                "title"=>"控制台",
+                "href"=>Speed::url('admin/main','console'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe654;",
+                "spread"=>true,
+                "isCheck"=> true
+            ),
+            array(
+                "title"=>"系统设置",
+                "href"=>Speed::url('admin/main','setting'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe68a;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+            array(
+                "title"=>"邮件设置",
+                "href"=>Speed::url('admin/main','mail'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe7bd;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+            array(
+                "title"=>"监控端配置",
+                "href"=>Speed::url('admin/main','monitor'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe781;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+            array(
+                "title"=>"应用管理",
+                "href"=>Speed::url('admin/main','app'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe729;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+            array(
+                "title"=>"微信二维码",
+                "href"=>Speed::url('admin/main','wepay'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe70c;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+            array(
+                "title"=>"支付宝二维码",
+                "href"=>Speed::url('admin/main','alipay'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe61a;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+            array(
+                "title"=>"订单列表",
+                "href"=>Speed::url('admin/main','orderlist'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe7d1;",
+                "spread"=>true,
+                "isCheck"=> false
+            ),
+        ));
+    }
+    public function actionConsole()
     {
 
         $main = new Main();
@@ -45,14 +113,14 @@ class ApiController extends BaseController
 
         $conf = new Config();
 
-        $user = $conf->GetData(Config::UserName);
-        $key = $conf->GetData(Config::Key);
-        $close = $conf->GetData(Config::ValidityTime);
-        $payQf = $conf->GetData(Config::Payof);
+        $user = $conf->getData(Config::UserName);
+        $key = $conf->getData(Config::Key);
+        $close = $conf->getData(Config::ValidityTime);
+        $payQf = $conf->getData(Config::Payof);
 
-        $wxpay = $conf->GetData(Config::WechatPay);
-        $zfbpay = $conf->GetData(Config::AliPay);
-        $uid = $conf->GetData(Config::Ailuid);
+        $wxpay = $conf->getData(Config::WechatPay);
+        $zfbpay = $conf->getData(Config::AliPay);
+        $uid = $conf->getData(Config::Ailuid);
 
         echo json_encode(array(
             "code" => Config::Api_Ok,
@@ -74,11 +142,11 @@ class ApiController extends BaseController
 
         $conf = new Config();
 
-        $State = $conf->GetData(Config::State);
+        $State = $conf->getData(Config::State);
 
-        $lastheart = $conf->GetData(Config::LastHeart);
-        $lastpay = $conf->GetData(Config::LastPay);
-        $key = $conf->GetData(Config::Key);
+        $lastheart = $conf->getData(Config::LastHeart);
+        $lastpay = $conf->getData(Config::LastPay);
+        $key = $conf->getData(Config::Key);
 
 
 
@@ -106,7 +174,7 @@ class ApiController extends BaseController
         $arr["ValidityTime"] = Speed::arg("close");
         $arr["Payof"] = Speed::arg("payQf");
 
-        echo $conf->UpdateDataAll($arr);
+        echo $conf->setDataAll($arr);
     }
 
     public function actionQrScan()
@@ -146,7 +214,7 @@ class ApiController extends BaseController
 
         if ($result) {
             $size = sizeof($result);
-            if ($size) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $result, "count" => $size));
+            if ($size) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $result, "count" => ($p->page===null)?$size:$p->page["total_count"]));
             else echo json_encode(array("code" => Config::Api_Err, "msg" => "暂无数据", "data" => $result, "count" => $size));
 
 
@@ -156,14 +224,14 @@ class ApiController extends BaseController
     public function actionDeleteCode()
     {
         $p = new PayCode();
-        $p->DeleteCode(Speed::arg("id"));
+        $p->delCode(Speed::arg("id"));
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除完毕", "data" => ""));
     }
 
     public function actionAddQr()
     {
         $p = new PayCode();
-        $p->CreateCode(Speed::arg("pay_url"), Speed::arg("price"), Speed::arg("type"));
+        $p->addCode(Speed::arg("pay_url"), Speed::arg("price"), Speed::arg("type"));
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "保存完毕", "data" => ""));
     }
 
@@ -173,8 +241,8 @@ class ApiController extends BaseController
         $res = $ord->GetOrders(Speed::arg("page"), Speed::arg("limit"), Speed::arg("type", ""), Speed::arg("state", ""));
         if ($res !== false) {
             $count = sizeof($res);
-            if ($count) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count" => $count));
-            else echo json_encode(array("code" => Config::Api_Ok, "msg" => "暂无数据", "data" => $res, "count" => $count));
+            if ($count) echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count" => ($ord->page===null)?$count:$ord->page["total_count"]));
+            else echo json_encode(array("code" => Config::Api_Ok, "msg" => "暂无数据", "data" => $res, "count" => 0));
         } else {
             echo json_encode(array("code" => Config::Api_Err, "msg" => "获取失败", "data" => "", "count" => "0"));
         }
@@ -205,7 +273,7 @@ class ApiController extends BaseController
     {//添加应用
         $app = new App();
 
-        $app->insertApp(Speed::arg("app_name"), Speed::arg("return_url"), Speed::arg("notify_url"), Speed::arg("connect_key"));
+        $app->add(Speed::arg("app_name"), Speed::arg("return_url"), Speed::arg("notify_url"), Speed::arg("connect_key"));
 
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "添加成功！"));
     }
@@ -219,7 +287,7 @@ class ApiController extends BaseController
         if ($res) {
             $count = sizeof($res);
             if ($count === 0) echo json_encode(array("code" => Config::Api_Err, "msg" => "暂无数据", "data" => $res, "count" => $count));
-            else  echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count" => $count));
+            else  echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count"=>($app->page===null)?$count:$app->page["total_count"]));
         } else {
             echo json_encode(array("code" => Config::Api_Err, "msg" => "没有任何数据", "data" => "", "count" => "0"));
         }
