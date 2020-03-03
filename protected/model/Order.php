@@ -343,6 +343,7 @@ class Order extends Model
                     return json_encode(array("code" => Config::Api_Ok, "msg" => $re->msg));
                 } else {
                     //远程服务器不认可？？？凭啥？我也不知道呀~
+
                     $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
                     return json_encode(array("code" => Config::Api_Err, "msg" => $re->msg."苍天饶过谁"));
                 }
@@ -350,6 +351,14 @@ class Order extends Model
             } else {
                 //尴尬，解析json出错了~
                 Speed::log($re1);
+                $conf=new Config();
+                $mailAddr=$conf->getData('MailRec');
+                if(Email::isEmail($mailAddr)){
+                    $mail=new Email();
+                    //$str=preg_replace("#\\\u([0-9a-f]{4})#ie", "iconv('UCS-2BE', 'UTF-8', pack('H4', '\\1'))", urldecode($arr["param"]));
+                    $content=$mail->complieNotify(array('notice1'=>"支付通知失败,返回结果如下：",'notice2'=>$re1,'notice3'=>'Url：'.$url));
+                    $mail->send($mailAddr,'支付通知失败',$content,'Vpay');
+                }
                 $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
                 return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！"));
             }

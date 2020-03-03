@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_addalipay.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_addalipay.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_mail.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_mail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/model/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/model/Order.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_setting.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_setting.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +155,10 @@
       <workItem from="1582698972795" duration="905000" />
       <workItem from="1582784710022" duration="19505000" />
       <workItem from="1582942740303" duration="3184000" />
-      <workItem from="1582969568711" duration="2107000" />
+      <workItem from="1582969568711" duration="3353000" />
+      <workItem from="1582985733491" duration="312000" />
+      <workItem from="1582993915197" duration="548000" />
+      <workItem from="1583226135940" duration="389000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -326,7 +328,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582970666548</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="修复了几处问题">
+      <created>1582976100580</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1582976100580</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -380,7 +389,8 @@
     <MESSAGE value="大改，完善很多地方" />
     <MESSAGE value="发布问题" />
     <MESSAGE value="1、修改几处调试问题&#10;&#10;2、更新安装教程" />
-    <option name="LAST_COMMIT_MESSAGE" value="1、修改几处调试问题&#10;&#10;2、更新安装教程" />
+    <MESSAGE value="修复了几处问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了几处问题" />
   </component>
   <component name="WindowStateProjectService">
     <state x="283" y="66" key="#Deployment" timestamp="1582700507544">
@@ -415,12 +425,12 @@
     </state>
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1582970666368">
+    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583226782775">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1582970666368" />
+    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583226782775" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1578928592575">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -466,12 +476,12 @@
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1582970672810">
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1582976110671">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1582970672810" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1582976110671" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -480,11 +490,12 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state x="529" y="356" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1463.874@0.0.1463.874" timestamp="1578051499428" />
-    <state x="139" y="53" width="983" height="693" key="find.popup" timestamp="1579617234161">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="116" y="69" width="820" height="597" key="find.popup" timestamp="1583226422898">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="421" y="69" width="621" height="735" key="find.popup/0.0.1463.874@0.0.1463.874" timestamp="1578043827798" />
     <state x="139" y="53" width="983" height="693" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1579617234161" />
+    <state x="116" y="69" width="820" height="597" key="find.popup/0.23.1280.709@0.23.1280.709" timestamp="1583226422898" />
     <state x="626" y="168" key="ftp.server.browser" timestamp="1579617093155">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
