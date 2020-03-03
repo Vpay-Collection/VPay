@@ -438,12 +438,12 @@
     </state>
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583226800366">
+    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583227088429">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583226800366" />
+    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583227088429" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1578928592575">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -489,12 +489,12 @@
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1582976110671">
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583227118978">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1582976110671" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583227118978" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -531,11 +531,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1579315400159" />
-    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup" timestamp="1582970552405">
+    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup" timestamp="1583227234857">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="394" y="184" width="672" height="678" key="search.everywhere.popup/0.0.1463.874@0.0.1463.874" timestamp="1578045770897" />
     <state x="414" y="173" width="706" height="640" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1578971823896" />
-    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1582970552405" />
+    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1583227234857" />
   </component>
 </project>
