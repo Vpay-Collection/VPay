@@ -47,7 +47,8 @@ class Config extends Model
             $config["UserPassword"] = hash("sha256",md5($config["UserPassword"].md5($config["UserName"])));
         }
         foreach ($config as $index => $value) {
-            $this->update(array("vkey" => $index), array("vvalue" => $value));
+            $this->insertDuplicate(array("vkey" => $index,"vvalue" => $value),array("vvalue"));
+            //$this->update(array("vkey" => $index), array("vvalue" => $value));
         }
         return json_encode(array("code" => self::Api_Ok, "msg" => "保存成功!"));
     }
@@ -114,6 +115,6 @@ class Config extends Model
     {
 
         if ($id === "UserPassword") $v = hash("sha256",md5($v.md5($this->getData(self::UserName))));//前端使用md5加盐，密码更新使用sha256加盐
-        $this->update(array("vkey" => $id), array("vvalue" => $v));
+        $this->insertDuplicate(array("vkey" => $id,"vvalue" => $v),array("vvalue"));
     }
 }
