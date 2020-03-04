@@ -139,6 +139,8 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
     - 需要修改的文件为`demo/core/config.php`
     - 需要在后台添加应用，修改上述文件的应用id和通讯密钥
     - 访问地址-> 您的网站域名/demo
+    - 同步回调地址-> 您的网站域名/return.php
+    - 异步回调地址-> 您的网站域名/notify.php
 
 2、内置demo
 
@@ -146,6 +148,8 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
     - 需要修改`protected/controller/index/MainController.php`文件`$admin=false;`为`$admin=true;`
     - 需要在后台添加应用，修改上述文件的应用id和通讯密钥
     - 访问地址-> 您的网站域名
+    - 同步回调地址-> 您的网站域名/demo/buy/return
+    - 异步回调地址-> 您的网站域名/demo/buy/notify
 
 ## 版本内容更新
 
