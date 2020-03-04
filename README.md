@@ -10,7 +10,7 @@
 
 ## 项目简介&功能特性
 
-V免签(PHP) 是基于SpeedPHP(魔改版) + mysql 实现的一套免签支付程序，主要包含以下特色：
+V免签(PHP) 是基于SpeedPHP4 + mysql 实现的一套免签支付程序，主要包含以下特色：
 
 ```
     1. 收款即时到账，无需进入第三方账户，收款更安全
@@ -85,9 +85,15 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 11. 如果显示监听权限正常，还是无法正常运行，那么请确定微信是否关注 “微信支付” 和 “微信收款助手” 这两个公众号
 
 **注意事项**
-本作品基于[SpeedPHP4](https://github.com/dreamncn/SpeedPHP)开发，采用MVC单一入口程序开发规范
-由服务器中间件实现伪静态，故本程序必须放在域名根目录才能正常运行。
-比如说，您的web目录为`/var/www/`,那么本程序所放目录为`/var/www/pay`,确保index.php在`/var/www/pay`目录下
+
+ - 本作品基于[SpeedPHP4](https://github.com/dreamncn/SpeedPHP)开发，采用MVC单一入口程序开发规范
+
+ - 由服务器中间件实现伪静态，故本程序必须放在域名根目录才能正常运行。
+
+ - 比如说，您的web目录为`/var/www/`,那么本程序所放目录为`/var/www/pay`,确保index.php在`/var/www/pay`目录下
+
+
+
 ### V免签客户端设置步骤
 
 （教程为MIUI系统，非MIUI系统请参考教程进行设置）
@@ -124,15 +130,37 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
         `/AppPush`
     - 如果有语音播报，但是客户端访问日志不存在，则表示监听不正常（客户端不是我开发，别找我，谢谢）
 
+### DEMO测试
+
+> 本程序自带两个demo，分别位于根目录的demo目录和protected/controller/demo目录
+
+1、根目录的demo
+
+    - 需要修改的文件为`demo/core/config.php`
+    - 需要在后台添加应用，修改上述文件的应用id和通讯密钥
+    - 访问地址-> 您的网站域名/demo
+
+2、内置demo
+
+    - 需要修改的文件为`protected/lib/pay/config.php`
+    - 需要修改`protected/controller/index/MainController.php`文件`$admin=false;`为`$admin=true;`
+    - 需要在后台添加应用，修改上述文件的应用id和通讯密钥
+    - 访问地址-> 您的网站域名
+
 ## 版本内容更新
 
 
 **普通更新，直接删除install目录直接覆盖安装即可，注意修改config.php的相关配置文件**
+#### Ver. 1.7 (2020.03.04)
+**普通更新**
+
+1、[BUG]修复邮件系统保存失败的bug,感谢@kikij11提醒
+
 
 #### Ver. 1.6 (2020.03.03)
 **普通更新**
 
-1、修复上传二维码失败的问题
+1、[BUG]修复上传二维码失败的问题,感谢@eshao2018提醒
 
 2、更新安装程序的bug
 
@@ -152,11 +180,11 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 2、添加邮件功能
 
-3、修复下一页无效的问题
+3、[BUG]修复下一页无效的问题（一直存在，一直忘了修）
 
-4、修复微信付款码调用失败的问题
+4、[BUG]修复微信付款码调用失败的问题
 
-5、修复支付成功无法及时跳转的问题
+5、[BUG]修复支付成功无法及时跳转的问题
 
 6、更新demo（集成到了程序中）地址：`/protected/controller/demo` 核心库位于 `/protected/lib/pay` 将`/protected/controller/index/Maincontroller.php`中的`$admin=false;`改成`$admin=true;`即可使用demo 原先位于程序外部的demo依然保留不受影响
 
@@ -170,9 +198,9 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 #### Ver. 1.3 (2020.01.18)
 **普通更新**
 
-1、[**严重**]修复了0元购买漏洞
+1、[BUG]修复了0元购买漏洞
 
-2、[**中级**]修复恶意刷取低价购买的漏洞
+2、[BUG]修复恶意刷取低价购买的漏洞
 
 3、完善订单生成api
 
@@ -181,7 +209,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 1、添加登录验证码，提高安全性
 
-2、修改登录密码的加密传输方式，修复上个版本部分时间段无法登录的情况
+2、[BUG]修改登录密码的加密传输方式，修复上个版本部分时间段无法登录的情况
 
 **本次需要重置密码方可登录，可以重置账号为admin密码123**
 **在pay_settings表中字段UserPassword修改成以下数据即可，账号也需要改成admin**
@@ -191,7 +219,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 4、不再对低版本PHP提供支持，仅支持PHP7.0+
 
-5、修复了由于函数大小写导致的补单无反应bug
+5、[BUG]修复了由于函数大小写导致的补单无反应bug
 
 
 
