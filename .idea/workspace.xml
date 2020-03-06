@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="失误...有两个文件没有加入git">
-      <change afterPath="$PROJECT_DIR$/protected/includes/Update.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protected/lib/email/Exception.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protected/lib/email/PHPMailer.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protected/lib/email/POP3.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protected/lib/email/SMTP.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protected/lib/email/autoload.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protected/lib/email/phpmailer.lang-zh_cn.php" afterDir="false" />
+    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="修改README">
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/i/css/oksub.css" beforeDir="false" afterPath="$PROJECT_DIR$/i/css/oksub.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/i/js/okadmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/i/js/okadmin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install/views/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/install/views/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/admin/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/ApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/admin/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/BaseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/admin/MailController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/MailController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/admin/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/MainController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/controller/api/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/api/BaseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/includes/Email.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/includes/Email.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/includes/Web.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/includes/Web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/lib/email/KL_SENDMAIL_PHPMailer.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/lib/email/KL_SENDMAIL_SMTP.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/lib/email/kl_sendmail_phpmailerException.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/lib/json/Json.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/lib/json/Json.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_setting.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_setting.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +173,7 @@
       <workItem from="1583278355074" duration="2345000" />
       <workItem from="1583310665944" duration="289000" />
       <workItem from="1583314525749" duration="12819000" />
-      <workItem from="1583454857481" duration="10388000" />
+      <workItem from="1583454857481" duration="12543000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -429,7 +406,28 @@
       <option name="project" value="LOCAL" />
       <updated>1583314749043</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="修复邮件测试发送没有错误日志的问题&#10;添加在线更新功能">
+      <created>1583474593187</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1583474593187</updated>
+    </task>
+    <task id="LOCAL-00035" summary="修改README">
+      <created>1583474811124</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1583474811124</updated>
+    </task>
+    <task id="LOCAL-00036" summary="修改README">
+      <created>1583475035768</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1583475035768</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -461,8 +459,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="添加错误管理机制" />
-    <MESSAGE value="添加JSON拓展类，解决json_decode偶尔出错的问题&#10;修复linux下因为大小写问题导致的模块无法加载问题" />
     <MESSAGE value="修改config文件位置" />
     <MESSAGE value="主体框架升级" />
     <MESSAGE value="修复补单无反应的bug" />
@@ -486,7 +482,9 @@
     <MESSAGE value="修复邮件保存失败的bug" />
     <MESSAGE value="更新README" />
     <MESSAGE value="失误...有两个文件没有加入git" />
-    <option name="LAST_COMMIT_MESSAGE" value="失误...有两个文件没有加入git" />
+    <MESSAGE value="修复邮件测试发送没有错误日志的问题&#10;添加在线更新功能" />
+    <MESSAGE value="修改README" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改README" />
   </component>
   <component name="WindowStateProjectService">
     <state x="283" y="66" key="#Deployment" timestamp="1582700507544">
@@ -499,10 +497,11 @@
       <screen x="0" y="0" width="1463" height="874" />
     </state>
     <state x="324" y="99" key="#Inspections/0.0.1463.874@0.0.1463.874" timestamp="1578037217865" />
-    <state x="324" y="99" key="#Options" timestamp="1577976013677">
-      <screen x="0" y="0" width="1463" height="874" />
+    <state x="283" y="66" key="#Options" timestamp="1583474821252">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="99" key="#Options/0.0.1463.874@0.0.1463.874" timestamp="1577976013677" />
+    <state x="283" y="66" key="#Options/0.23.1280.709@0.23.1280.709" timestamp="1583474821252" />
     <state x="324" y="99" key="#SQL_Dialects" timestamp="1578047416635">
       <screen x="0" y="0" width="1463" height="874" />
     </state>
@@ -522,12 +521,12 @@
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
     <state x="404" y="182" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.23.1280.709@0.23.1280.709" timestamp="1583471799924" />
-    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583474561314">
+    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583475035417">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583474561314" />
+    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583475035417" />
     <state x="78" y="103" width="1125" height="549" key="DiffContextDialog" timestamp="1583314863268">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
@@ -575,12 +574,12 @@
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583314860431">
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583475041154">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583314860431" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583475041154" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
