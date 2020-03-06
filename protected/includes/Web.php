@@ -39,7 +39,7 @@ class Web
         return $data;
     }
 
-    function get($url,$useragent)
+    function get($url,$useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0")
     {
 
 
