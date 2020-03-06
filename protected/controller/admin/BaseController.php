@@ -9,7 +9,7 @@ use model\User;
 class BaseController extends Controller
 {
     public $layout = "layout";
-    public $version='1.9';
+    public $version='2.0';
 
     function init()
     {
