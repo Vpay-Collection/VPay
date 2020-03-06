@@ -44,7 +44,9 @@
 #login .layui-blue{color:#01aaed!important}
 #login .layui-form-item.layui-input-focus input{border-color:#ff6700!important}
 #login .layui-block{width:100%!important}
-#login{width:100%;height:100%;background-image:url(../img/login-bg.jpg);position:relative;background-size: 100% auto;background-repeat: no-repeat; }
+#login{width:100%;height:100%;background-image:url(../img/login-bg.jpg);position:relative;background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center; }
 #login form.layui-form{padding:0 20px 20px 20px;width:300px;position:absolute;left:50%;top:50%;margin:-150px 0 0 -150px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box;background:#fff;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;box-shadow:0 0 50px #009688}
 #login .login_face{margin:-55px auto 20px;width:100px;height:100px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;border:5px solid #fff;overflow:hidden;box-shadow:0 0 30px #009688;background:#fff}
 #login .login_face img{width:100%}

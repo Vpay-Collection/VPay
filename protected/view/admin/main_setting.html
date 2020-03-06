@@ -28,7 +28,7 @@
         <label for="uid" class="layui-form-label">支付宝UID</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="uid" lay-verify="required"
-                   placeholder="登录网页版支付宝，查看网页源代码，Ctrl+F查找uid;支持任意金额付款，IOS端不支持（现已加入判断函数）" type="text">
+                   placeholder="登录网页版支付宝，查看网页源代码，Ctrl+F查找uid;支持任意金额付款，IOS端不支持（仅部分安卓客户端支持）" type="text">
         </div>
     </div>
 
@@ -50,7 +50,6 @@
                 <select id="payQf">
                     <option value="1">金额递增(同一时间段提交订单,价格递增)</option>
                     <option value="2">金额递减(同一时间段提交订单,价格递减)</option>
-                    <option value="3">金额在0.1上下波动（将上述两种结合)</option>
                 </select>
             </div>
         </div>

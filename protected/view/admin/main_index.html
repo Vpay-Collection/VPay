@@ -40,14 +40,20 @@
                         <i class="layui-icon layui-icon-screen-full"></i>
                     </a>
                 </li>
+                <li class="no-line layui-nav-item layui-hide-xs">
+                    <a id="notice" class="flex-vc pr10 pl10" href="javascript:">
+                        <i class="ok-icon ok-icon-notice icon-head-i" title="系统更新"></i>
 
+                        <cite></cite>
+                    </a>
+                </li>
                 <li class="no-line layui-nav-item">
                     <a href="javascript:">
                         <img src="/i/img/logo.png" class="layui-nav-img">
                         <{$username}>
                     </a>
                     <dl id="userInfo" class="layui-nav-child">
-                        <dd><a href="javascript:void(0)" id="logout">退出登录</a></dd>
+                        <dd><a href="<{url m='admin' c='main' a='logout'}>" id="logout">退出登录</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -123,6 +129,7 @@
     <script>
         var tabUrl='<{url m="admin" c="api" a="nav"}>';
         var version='<{$version}>';
+        var updateUrl='<{url m="admin" c="api" a="update"}>';
     </script>
     <script src="/i/js/okadmin.js"></script>
 	<script type="text/javascript" src="/i/lib/loading/okLoading.js"></script>

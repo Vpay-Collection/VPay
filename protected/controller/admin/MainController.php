@@ -13,9 +13,9 @@ use model\User;
 
 class MainController extends BaseController
 {
+
     // 默认首页
     public function actionIndex(){
-        $this->version='1.4';
         $conf = new Config();
         $u = $conf->getData(Config::UserName);
         $this->username=$u;

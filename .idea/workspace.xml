@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="">
+    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="失误...有两个文件没有加入git">
+      <change afterPath="$PROJECT_DIR$/protected/includes/Update.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protected/lib/email/Exception.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protected/lib/email/PHPMailer.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protected/lib/email/POP3.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protected/lib/email/SMTP.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protected/lib/email/autoload.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/protected/lib/email/phpmailer.lang-zh_cn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/i/css/oksub.css" beforeDir="false" afterPath="$PROJECT_DIR$/i/css/oksub.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/i/js/okadmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/i/js/okadmin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install/views/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/install/views/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/controller/admin/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/controller/admin/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/BaseController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/controller/admin/MailController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/MailController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/controller/admin/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/admin/MainController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/controller/api/BaseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/controller/api/BaseController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/includes/Email.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/includes/Email.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/includes/Web.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/includes/Web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/lib/email/KL_SENDMAIL_PHPMailer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/lib/email/KL_SENDMAIL_SMTP.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/lib/email/kl_sendmail_phpmailerException.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/lib/json/Json.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/lib/json/Json.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/view/admin/main_setting.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/admin/main_setting.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +63,9 @@
     </expand>
     <select />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Pay" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -54,6 +82,13 @@
       </GitPushTagMode>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/dreamncn/VPay.git" />
+      </set>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/protected/lib/speed/mvc/Model.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -87,23 +122,23 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/protected/lib/phpmail" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/protected/lib/phpmail" />
+      <recent name="$PROJECT_DIR$/protected/lib/phpmail/language" />
+      <recent name="$PROJECT_DIR$/protected/lib/email" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\protected" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\protected\view\index" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\php-farme\i" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/protected/lib/phpmail" />
+      <recent name="$PROJECT_DIR$/protected/lib/email" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\speed" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
       <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\controller\admin" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\i\js\index" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\captcha" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -160,7 +195,8 @@
       <workItem from="1583278213072" duration="114000" />
       <workItem from="1583278355074" duration="2345000" />
       <workItem from="1583310665944" duration="289000" />
-      <workItem from="1583314525749" duration="214000" />
+      <workItem from="1583314525749" duration="12819000" />
+      <workItem from="1583454857481" duration="10388000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -386,7 +422,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583314664261</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="失误...有两个文件没有加入git">
+      <created>1583314749043</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1583314749043</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -473,21 +516,23 @@
     </state>
     <state x="522" y="221" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1578926440074" />
     <state x="435" y="213" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.709@0.23.1280.709" timestamp="1581252005623" />
-    <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1578979985880">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="404" y="182" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1583471799924">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583314663946">
+    <state x="404" y="182" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.23.1280.709@0.23.1280.709" timestamp="1583471799924" />
+    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583474561314">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583314663946" />
-    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1578928592575">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583474561314" />
+    <state x="78" y="103" width="1125" height="549" key="DiffContextDialog" timestamp="1583314863268">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1578928592575" />
+    <state x="78" y="103" width="1125" height="549" key="DiffContextDialog/0.23.1280.709@0.23.1280.709" timestamp="1583314863268" />
     <state x="93" y="93" width="1277" height="688" key="DirDiffDialog" timestamp="1577991002356">
       <screen x="0" y="0" width="1463" height="874" />
     </state>
@@ -519,22 +564,23 @@
     </state>
     <state x="475" y="271" key="NewPhpClassDialog/0.0.1463.874@0.0.1463.874" timestamp="1578028716401" />
     <state x="499" y="255" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1578967295796" />
-    <state x="575" y="348" key="NewPhpFileDialog" timestamp="1579096631944">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="479" y="322" key="NewPhpFileDialog" timestamp="1583464729634">
+      <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="548" y="369" key="NewPhpFileDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987198551" />
     <state x="575" y="348" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1579096631944" />
+    <state x="479" y="322" key="NewPhpFileDialog/0.23.1280.709@0.23.1280.709" timestamp="1583464729634" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor" timestamp="1580543430440">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583310913874">
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583314860431">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583310913874" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583314860431" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -571,11 +617,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1579315400159" />
-    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup" timestamp="1583299473732">
+    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup" timestamp="1583408232498">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="394" y="184" width="672" height="678" key="search.everywhere.popup/0.0.1463.874@0.0.1463.874" timestamp="1578045770897" />
     <state x="414" y="173" width="706" height="640" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1578971823896" />
-    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1583299473732" />
+    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1583408232498" />
   </component>
 </project>

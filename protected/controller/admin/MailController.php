@@ -30,7 +30,7 @@ class MailController extends BaseController{
         $this->title="这是一封测试邮件";
         $this->content="测试";
         $content=$this->display("mail/test",true);
-        echo "正在尝试发送邮件！";
+        echo "正在尝试发送邮件！<br>";
         $c=new Config();
         $re=$email->send($c->getData('MailRec'),$this->title,$content,"Vpay",2);
         if($re)echo "测试成功！请到邮箱\"".$c->getData('MailRec')."\"查询！";

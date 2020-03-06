@@ -4,6 +4,7 @@
  * 后台的api请求
  * */
 namespace controller\admin;
+use includes\Update;
 use lib\speed\Speed;
 use model\App;
 use model\Config;
@@ -81,6 +82,16 @@ class ApiController extends BaseController
                 "spread"=>true,
                 "isCheck"=> false
             ),
+        ));
+    }
+    public function actionUpdate(){
+        $update=new Update($this->version);
+        echo json_encode(array(
+            "update"=>$update->boolUpdate(),
+            "log"=>$update->getReason(),
+            "url"=>$update->getUrl(),
+            "lastest"=>$update->getLastest(),
+            "ver"=>$update->getVer(),
         ));
     }
     public function actionConsole()

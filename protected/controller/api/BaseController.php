@@ -9,7 +9,6 @@ use lib\speed\mvc\Controller;
 class BaseController extends Controller
 {
     public $layout = "";//模板文件
-
     function init()
     {
         //进行校验

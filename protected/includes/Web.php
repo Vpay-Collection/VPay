@@ -39,7 +39,7 @@ class Web
         return $data;
     }
 
-    function get($url)
+    function get($url,$useragent)
     {
 
 
@@ -47,7 +47,7 @@ class Web
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 检查证书中是否设置域名
-
+        curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
         //参数为1表示传输数据，为0表示直接输出显示。
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         //参数为0表示不带头文件，为1表示带头文件

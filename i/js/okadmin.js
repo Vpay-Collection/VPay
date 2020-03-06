@@ -61,13 +61,47 @@ layui.use(["element", "layer", "okUtils", "okTab", "okLayer", "okContextMenu", "
 			]
 		});
 	});
+	/**
+	 * 系统公告
+	 */
+	$(document).on("click", "#notice", update);
+	!function () {
+		update();
+	}();
+
+	function update(){
+		$.get(updateUrl, function(result){
+			result=JSON.parse(result);
+			if(result.update){
+				noticeFun("更新提醒：V"+result.lastest+"    当前版本：V"+result.ver,result.log,result.url);
+			}
+		});
+		function noticeFun(title,content,url) {
+			var srcWidth = okUtils.getBodyWidth();
+			layer.open({
+				type: 0, title: title, btn: "前去更新", btnAlign: 'c', content: content,
+				yes: function (index) {
+					window.open(url);
+					layer.close(index);
+				},
+				cancel: function (index) {
+					if (srcWidth > 800) {
+						layer.tips('更新信息在这里', '#notice', {
+							tips: [1, '#000'],
+							time: 2000
+						});
+					}
+				}
+			});
+		}
+	}
 
 	/**
 	 * 添加新窗口
 	 */
 	$("body").on("click", "#navBar .layui-nav-item a, #userInfo a", function () {
 		// 如果不存在子级
-		if ($(this).siblings().length == 0) {
+		if ($(this).siblings().length === 0) {
 			okTab.tabAdd($(this));
 		}
 		// 关闭其他展开的二级标签

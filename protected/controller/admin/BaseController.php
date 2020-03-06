@@ -9,7 +9,7 @@ use model\User;
 class BaseController extends Controller
 {
     public $layout = "layout";
-
+    public $version='1.9';
 
     function init()
     {
@@ -21,7 +21,7 @@ class BaseController extends Controller
         );
         if(!$user->isLogin(Speed::arg('token'))&&!isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
            $this->jump(Speed::url('admin/main','login'));
-        }elseif ($user->isLogin(Speed::arg('token'))&&Speed::arg('a')!=='key'&&isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
+        }elseif ($user->isLogin(Speed::arg('token'))&&Speed::arg('a')!=='key'&&Speed::arg('a')!=='logout'&&isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
             $this->jump(Speed::url('admin/main','index'));
         }
     }
