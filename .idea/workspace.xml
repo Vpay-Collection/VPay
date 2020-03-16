@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/protected/includes/Web.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/includes/Web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/model/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/model/Order.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +173,10 @@
       <workItem from="1583310665944" duration="289000" />
       <workItem from="1583314525749" duration="12819000" />
       <workItem from="1583454857481" duration="12568000" />
-      <workItem from="1583505222185" duration="88000" />
+      <workItem from="1583505222185" duration="553000" />
+      <workItem from="1583572374053" duration="1113000" />
+      <workItem from="1583610785158" duration="1238000" />
+      <workItem from="1584334430424" duration="400000" />
     </task>
     <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
       <created>1578040845641</created>
@@ -434,7 +437,21 @@
       <option name="project" value="LOCAL" />
       <updated>1583476783654</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="修复封装的web类错误">
+      <created>1583505357432</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1583505357432</updated>
+    </task>
+    <task id="LOCAL-00039" summary="修复封装的web类错误">
+      <created>1583505493020</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1583505493020</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -466,7 +483,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="主体框架升级" />
     <MESSAGE value="修复补单无反应的bug" />
     <MESSAGE value="修改安装程序与demo" />
     <MESSAGE value="更新readme" />
@@ -491,7 +507,8 @@
     <MESSAGE value="修复邮件测试发送没有错误日志的问题&#10;添加在线更新功能" />
     <MESSAGE value="修改README" />
     <MESSAGE value="工具类说明" />
-    <option name="LAST_COMMIT_MESSAGE" value="工具类说明" />
+    <MESSAGE value="修复封装的web类错误" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复封装的web类错误" />
   </component>
   <component name="WindowStateProjectService">
     <state x="283" y="66" key="#Deployment" timestamp="1582700507544">
@@ -528,12 +545,12 @@
     <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
     <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
     <state x="404" y="182" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.23.1280.709@0.23.1280.709" timestamp="1583471799924" />
-    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583505357094">
+    <state x="352" y="23" key="CommitChangelistDialog2" timestamp="1583505492832">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
     <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583505357094" />
+    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583505492832" />
     <state x="78" y="103" width="1125" height="549" key="DiffContextDialog" timestamp="1583314863268">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
@@ -581,12 +598,12 @@
     </state>
     <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
     <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583476790551">
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2" timestamp="1583505603431">
       <screen x="0" y="23" width="1280" height="709" />
     </state>
     <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
     <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583476790551" />
+    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583505603431" />
     <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

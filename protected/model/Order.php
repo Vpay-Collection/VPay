@@ -484,7 +484,7 @@ class Order extends Model
             //true表示该时间段没有
             if ($res) break;
 
-            if ($payQf === Config::PayIncrease) {//采用递增来区分价格
+            if (intval($payQf) === Config::PayIncrease) {//采用递增来区分价格
                 $reallyPrice++;
             } else {//反之递减
                 $reallyPrice--;
@@ -568,7 +568,7 @@ class Order extends Model
         $t=$conf->getData(Config::LastHeart);
         $jg = time()  - intval($t);
 
-        if ($jg > 100 || $jg < -100) {
+        if ($jg > 200 || $jg < -200) {
             $conf->setData("State", Config::State_Offline);//表示掉线
             //准备通知
             $mailAddr=$conf->getData('MailRec');
