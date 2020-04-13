@@ -296,7 +296,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 ## 版权声明
 
-V免签 - Dreamn修改版遵循 [MIT License](/LICENSE) 开源协议发布，并提供免费使用，请勿用于非法用途。
+V免签 - Dreamn修改版遵循 [GPL-3.0 License](/LICENSE) 开源协议发布，并提供免费使用，请勿用于非法用途。
 
 版权所有Copyright © 2020 by dreamn (https://dreamn.cn)
 
