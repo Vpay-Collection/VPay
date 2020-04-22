@@ -25,7 +25,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 监控端的开源地址位于：[这里](https://github.com/szvone/VmqApk)
 
-在线演示：[这里] （https://pay.dreamn.cn/）
+在线演示：[这里](https://pay.dreamn.cn/)
 
 接口开发文档:[这里](https://doc.dreamn.cn/doc/Vpay%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/)
 
