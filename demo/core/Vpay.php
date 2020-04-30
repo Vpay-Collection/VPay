@@ -63,16 +63,17 @@ class Vpay{
         $arg["appid"] = $this->conf["Appid"];//把appid也参与计算
 
         $sign = $alipay->getSign($arg, $this->conf["Key"]);
-
-        $p = http_build_query($arg). '&sign=' . $sign;
+        $arg["sign"] =  $sign;
+            // $p = http_build_query($arg). '&sign=' . $sign;
         //生成签名后的url
         $_SESSION['timeOut']=strtotime('+'.$this->conf['TimeOut'].' min');
 
         $web=new Web();
-        $result=$web->get($this->conf["CreateOrder"]."?".$p);
+        //$result=$web->get($this->conf["CreateOrder"]."?".$p);
 
-
-
+       /* var_dump($this->conf["CreateOrder"], http_build_query($arg));
+        exit;*/
+        $result=$web->post($this->conf["CreateOrder"],$arg);
         $json=json_decode($result);
         if($json->code===self::Api_Ok)
             return $json->data;

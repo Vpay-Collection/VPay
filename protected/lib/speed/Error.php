@@ -1,9 +1,9 @@
 <?php
 
-namespace lib\speed;
+namespace app;
 
 use Exception;
-use lib\speed\mvc\Controller;
+use app\lib\speed\mvc\Controller;
 use Throwable;
 
 class Error
@@ -53,6 +53,11 @@ class Error
 
     }
 
+    /**
+     * 直接报错函数
+     * @param $msg
+     * @param array $errinfo
+     */
     public static function err($msg, $errinfo = array())
     {
 
@@ -62,7 +67,7 @@ class Error
             call_user_func($GLOBALS['err_handler'], $msg, $traces);
         } else {
             if (!$GLOBALS['debug']) {
-                Speed::Log($msg, 'warn');
+                logs($msg, 'warn');
                 $obj = new Controller();
                 GLOBAL $__module;
                 $__module = '';
@@ -70,13 +75,19 @@ class Error
             } else {
                 if (ob_get_contents()) {
                     if (!$GLOBALS['debug']) ob_end_clean();
-                    Speed::Log($msg, 'warn');
+                    logs($msg, 'warn');
                 }
             }
             self::display($msg, $traces);
             exit;
         }
     }
+
+    /**
+     * 代码高亮
+     * @param $code
+     * @return string|string[]
+     */
     public static function _err_highlight_code($code)
     {
         $code = preg_replace('/(\/\*\*)/', '///**',$code);
@@ -90,6 +101,12 @@ class Error
         return str_replace(array('//*/','///**','//*'),array('*/','/**','*'),$return);
     }
 
+    /**
+     *
+     * @param $file
+     * @param $line
+     * @return array|mixed
+     */
     public static function _err_getsource($file, $line)
     {
         if (!(file_exists($file) && is_file($file))) {
@@ -115,6 +132,12 @@ class Error
         }
         return $returns;
     }
+
+    /**
+     * 错误渲染
+     * @param $msg
+     * @param $traces
+     */
     public static function display($msg, $traces)
     {
 
@@ -283,10 +306,14 @@ EOF;
         }
     }
 
+    /**
+     * 错误路由
+     * @param $msg
+     */
     public static function _err_router($msg)
     {
         Global $__module, $__controller, $__action;
-        $name = "controller\\$__module\\BaseController";
+        $name = "app\\controller\\$__module\\BaseController";
         if (!method_exists($name, 'err404')) {
             self::err($msg);
         } else {

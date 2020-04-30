@@ -1,6 +1,6 @@
 <?php
 
-namespace speed;
+namespace app\config;
 class Config
 {
     static public function register()
@@ -16,17 +16,17 @@ class Config
     static public function config()
     {
         return array( // 调试配置
-            'host' => array('pay.dreamn.cn', '127.0.0.1'),//localhost改成自己的域名
-            'debug' => 0,//为0不输出调试错误信息
+            'host' => array('localhost', 'a.com',NULL),//localhost改成自己的域名
+            'debug' => 1,//为0不输出调试错误信息
             'mysql' => array(//数据库信息
                 'MYSQL_HOST' => 'localhost',
                 'MYSQL_PORT' => '3306',
-                'MYSQL_USER' => '',
-                'MYSQL_DB' => '',
-                'MYSQL_PASS' => '',
+                'MYSQL_USER' => 'root',
+                'MYSQL_DB' => 'test',
+                'MYSQL_PASS' => 'root',
                 'MYSQL_CHARSET' => 'utf8',
             ),
-            "error" => 'error'//非调试状态出错显示的信息
+            "error" => 'error',//非调试状态出错显示的信息
         );
     }
 
@@ -34,20 +34,10 @@ class Config
     {
         return array(
             'rewrite' => array(
-                'login'                => 'admin/main/login',
-                'logout'               => 'admin/main/logout',
-                'AppHeart'             => 'App/AppHeart',
-                'AppPush'              => 'App/AppPush',
-
-                'CreateOrder'          => 'api/Api/CreateOrder',
-                'OrderState'           => 'api/Api/OrderState',
-                'Confirm'              => 'api/Api/Confirm',
-                'CloseOrder'           => 'api/Api/CloseOrder',
-                'GetOrder'             => "api/Api/GetOrder",
                 '<m>/<c>/<a>' => '<m>/<c>/<a>',
                 '<c>/<a>' => '<c>/<a>',
                 '/' => 'main/index',
-                'admin' => 'admin/main/index',
+                '/admin' => 'admin/main/index',
             ),
         );
     }

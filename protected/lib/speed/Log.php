@@ -1,6 +1,6 @@
 <?php
 
-namespace lib\speed;
+namespace app;
 class Log
 {
     private $handler = null;
@@ -9,6 +9,13 @@ class Log
 
     public function __construct($file = '', $level = 15)
     {
+        $dir_name=dirname($file);
+        //目录不存在就创建
+        if(!file_exists($dir_name))
+        {
+
+            $this->mkdirs($dir_name);
+        }
         $this->handler = fopen($file, 'a');
         $this->level = $level;
     }
@@ -80,5 +87,12 @@ class Log
     public function INFO($msg)
     {
         $this->write(2, $msg);
+    }
+    public function mkdirs($dir)
+    {
+        if(is_dir(dirname($dir))){
+            mkdir($dir);
+        }else  $this->mkdirs(dirname($dir));
+
     }
 }

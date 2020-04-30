@@ -5,8 +5,8 @@
  * Date: 2020/1/6 1:21
  * Description:
  */
-namespace Speed;
-namespace lib\json;
+
+namespace app\lib\json;
 class Services_JSON_Error
 {
     function Services_JSON_Error($message = 'unknown error', $code = null,

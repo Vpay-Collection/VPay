@@ -1,5 +1,5 @@
 <?php
-namespace lib\speed;
+namespace app\lib\speed;
 use ReflectionClass;
 
 class Dump{
@@ -41,7 +41,8 @@ class Dump{
 
 
     private function dumpString($param) {
-        $str = sprintf("<small>string</small> <font color='#cc0000'>'%s'</font> <i>(length=%d)</i> \r\n ",$param,strlen($param));
+
+        $str = sprintf("<small>string</small> <font color='#cc0000'>'%s'</font> <i>(length=%d)</i> \r\n ",htmlspecialchars(chkCode($param)),strlen($param));
         echo $str;
     }
 
@@ -67,7 +68,7 @@ class Dump{
     }
     private function getshow($val){
         switch(gettype($val)){
-            case 'string':return "'".$val."'</font><font><i> (length=".strlen($val).")</i>";break;
+            case 'string':return "'".htmlspecialchars(chkCode($val))."'</font><font><i> (length=".strlen($val).")</i>";break;
             case 'boolean':return $val?'true':'false';break;
             case 'NULL':return 'null';
             default:return $val;
@@ -95,6 +96,10 @@ class Dump{
 
     private function dumpObj($param) {
         $className = get_class($param);
+        if($className=='stdClass'&&$result=json_encode($param)){
+            $this->dumpArr(json_decode($result,true));
+            return;
+        }
         try {
             $reflect = new ReflectionClass($param);
             $prop = $reflect->getDefaultProperties();
@@ -107,7 +112,9 @@ class Dump{
             }
             echo "\r\n";
         } catch (\ReflectionException $e) {
+
         }
 
     }
+
 }

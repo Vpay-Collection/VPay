@@ -1,8 +1,9 @@
 <?php
 
-namespace lib\speed\mvc;
+namespace app\lib\speed\mvc;
 
-use lib\speed\Error;
+
+use app\Error;
 use PDO;
 use PDOException;
 

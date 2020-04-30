@@ -76,7 +76,7 @@ class ApiController extends BaseController
         //$ord->closeEndOrder();
         if ($res) {
             $re="";
-            if(intval($res["state"])===Order::State_Ok ||intval($res["state"])===Order::State_Succ||intval($res["state"])===Order::State_Err){
+            if(intval($res["state" ])===Order::State_Ok ||intval($res["state"])===Order::State_Succ||intval($res["state"])===Order::State_Err){
                 $app=new App();
                 $res2=$app->getData($res["appid"],"return_url,connect_key");
                 $re=$res2["return_url"];

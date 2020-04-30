@@ -1,8 +1,8 @@
 <?php
 
-namespace lib\speed\mvc;
+namespace app\lib\speed\mvc;
 
-use lib\speed\Error;
+use app\Error;
 
 /**
  * Class View
@@ -36,7 +36,6 @@ class View
     public function render($tempalte_name)
     {
         $complied_file = $this->compile($tempalte_name);
-
         @ob_start();
         extract($this->template_vals, EXTR_SKIP);
         $_view_obj = &$this;
@@ -64,10 +63,11 @@ class View
         $template_data = $this->_compile_struct($template_data);
 
         $template_data = $this->_compile_function($template_data);
-        $template_data = str_replace(array('echo url'), 'echo Speed::url', $template_data);
-        $template_data = '<?php namespace Speed;use lib\speed\Speed;use lib\speed\mvc; if(!class_exists("lib\speed\mvc\View", false)) exit("no direct access allowed");?>' . $template_data;
-
+        $template_data = '<?php use app\lib\speed\mvc; if(!class_exists("app\lib\speed\mvc\View", false)) exit("no direct access allowed");?>' . $template_data;
+        $template_data = $this->_complie_script_get($template_data);
+        $template_data = $this->_complie_script_put($template_data);
         $this->_clear_compliedfile($tempalte_name);
+
         $tmp_file = $complied_file . uniqid('_tpl', true);
         if (!file_put_contents($tmp_file, $template_data)) Error::err('Err: File "' . $tmp_file . '" can not be generated.');
 
@@ -165,5 +165,19 @@ class View
             Error::err('Err: Parameters of \'' . $matches[1] . '\' is incorrect!');
         }
         return '<?php echo ' . $matches[1] . '(' . $params . ');?>';
+    }
+
+    public function _complie_script_get($template_data){
+        $isMatched = preg_match_all('/<!--include_start-->([\s\S]*?)<!--include_end-->/', $template_data, $matches);
+        if($isMatched&&$isMatched===1){
+           $script=$matches[1][0];
+            $template_data=str_replace($matches[0][0],'<?php $template_file_script="'.base64_encode($script).'";?>',$template_data);
+        }
+        return $template_data;
+    }
+    public function _complie_script_put($template_data){
+
+        $template_data=str_replace('<!--template_file_script-->','<?php echo isset($template_file_script)?base64_decode($template_file_script):"";?>',$template_data);
+        return $template_data;
     }
 }

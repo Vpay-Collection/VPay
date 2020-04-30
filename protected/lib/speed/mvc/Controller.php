@@ -1,6 +1,6 @@
 <?php
 
-namespace lib\speed\mvc;
+namespace app\lib\speed\mvc;
 
 
 class Controller

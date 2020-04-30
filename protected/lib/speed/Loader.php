@@ -1,11 +1,11 @@
 <?php
 
-namespace lib\speed;
+namespace app;
 class Loader
 {
     public static function register()
     {
-        spl_autoload_register('lib\\speed\\Loader::autoload', true, true);
+        spl_autoload_register('app\\Loader::autoload', true, true);
         $data = scandir(APP_LIB);
         foreach ($data as $value){
             if($value != '.' && $value != '..'){
@@ -15,19 +15,40 @@ class Loader
         }
     }
 
-    public static function autoload($class)
+    public static function autoload($realClass)
     {
-        $class = str_replace('\\', '/', $class);
-        $file = APP_DIR . DS . 'protected' . DS . $class . '.php';
-        //echo $file.'<br >';
-        if (file_exists($file)) include $file;
-        else {
 
-            $class = str_replace('Speed/', '', $class);
-            $file = APP_DIR . DS . 'protected' . DS . $class . '.php';
-            //echo $file.'<br >';
-            if (file_exists($file)) include $file;
+        $namespaceList=array(
+            'app'=>'protected/lib/speed',//重新定义命名空间指向
+            'app/config'=>'protected'
+        );
+
+        $classArr=self::getClass($realClass);
+        $class = $classArr['class']. '.php';
+        $namespace = $classArr['namespace'];
+
+        if(isset($namespaceList[$namespace])){
+            $file=APP_DIR . DS .$namespaceList[$namespace].DS . $class ;
+        }else{
+            $file = APP_DIR . DS . 'protected' . DS.str_replace('app/','',$namespace).DS . $class ;
         }
+        if (file_exists($file)){
+            include $file;
+            if(isset($GLOBALS['debug'])&&$GLOBALS['debug'])
+                logs('[Loader]Load Class "'.$realClass.'"','info');
+            return;
+        }
+        logs('[Loader]We Can\'t find this class "'.$realClass.'"('.$file.') in default Loader , You may have loaded it in another loader','warn');
+    }
+    public static function getClass($class){
+        if(strpos($class,'.'))Error::err('[Loader]"'.$class.'" is not a valid class name！');
+        $name=explode('\\',$class);
+        $size=sizeof($name);
+        $namespace='';
+        for($i=0;$i<$size-1;$i++){
+            $namespace.=$name[$i].(($i<$size-2)?'/':'');
+        }
+        return array('namespace'=>$namespace,'class'=>$name[$size-1]);
     }
 
 }

@@ -109,7 +109,7 @@ INSERT INTO `pay_settings` (`vkey`, `vvalue`) VALUES
 CREATE TABLE IF NOT EXISTS `pay_tmp_price` (
   `price` varchar(255) NOT NULL,
   `oid` varchar(255) NOT NULL,
-  `timeout` datetime NOT NULL COMMENT '过期时间'
+  `timeout` bigint(20) NOT NULL COMMENT '过期时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
