@@ -39,10 +39,20 @@ class Web
         return $data;
     }
 
-    function get($url,$useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0")
+    function get($url,$param=array(),$useragent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0")
     {
 
-
+        if(!is_array($param)){
+            throw new Exception("参数必须为array");
+        }
+        $p=http_build_query($param);
+        if(preg_match('/\?[\d\D]+/',$url)){//matched ?c
+            $url.='&'.$p;
+        }else if(preg_match('/\?$/',$url)){//matched ?$
+            $url.=$p;
+        }else{
+            $url.='?'.$p;
+        }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书

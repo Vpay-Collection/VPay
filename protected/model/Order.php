@@ -174,7 +174,6 @@ class Order extends Model
         }
         //校验关卡,校验订单
         if (!$this->orderCheck($arg))return false;
-
         //关闭重复订单,避免多次提交导致支付失败
         $this->delOrderByPayId($this->payId);
         //订单生成时间
@@ -304,26 +303,23 @@ class Order extends Model
             $arr["type"] = $res['type'];
             $arr["price"] = $res['price'];
             $arr["reallyPrice"] = $res['really_price'];
-            $arr["key"] = $key;
+            //key只做加盐 
+           // $arr["key"] = $key;
             //参数化
             $alipay = new AlipaySign();
 
             $sign = $alipay->getSign($arr, $key);
 
             $arr["sign"] = $sign;
-
-            $arr = array_diff_key($arr, array("key" => $key));
-
-            $p = http_build_query($arr);//封装成url地址参数
-
-            $url = $url . "?" . $p;
-
+            //key只是作为加盐参数，不作为传递参数，所以此处剔除
+           // $arr = array_diff_key($arr, array("key" => $key));
+            
             $web = new web();
 
 
             //悄悄告诉远程服务器，我收到钱了，为了防止别人仿冒我，要加上密钥进行验证
 
-            $re1 = $web->get($url);
+            $re1 = $web->get($url,$arr);
 
             $re = json_decode($re1);
 
@@ -336,8 +332,20 @@ class Order extends Model
                     $mailAddr=$conf->getData('MailRec');
                     if($conf->getData('MailNoticeYou')==='on'&&Email::isEmail($mailAddr)){
                         $mail=new Email();
-                        //$str=preg_replace("#\\\u([0-9a-f]{4})#ie", "iconv('UCS-2BE', 'UTF-8', pack('H4', '\\1'))", urldecode($arr["param"]));
-                        $content=$mail->complieNotify(array('notice1'=>"￥".$arr["reallyPrice"],'notice2'=>'原价:<font color="red">￥'.$arr["price"].'</font>','notice3'=>'其他参数：'.urldecode($arr["param"])));
+                        ob_end_clean();
+                        $json=json_decode(urldecode($arr["param"]));
+                        if($json){
+                            dump($json);
+                        }else dump(urldecode($arr["param"]));
+
+                        $content=<<<EOF
+支付金额： ￥{$arr["price"]}<br>
+实际支付： <font color="red">￥{$arr["reallyPrice"]}</font><br>
+其他参数：<br>
+EOF;
+                        $content=$content.ob_get_contents();
+                        ob_end_clean();
+                       
                         $mail->send($mailAddr,'用户支付通知',$content,'Vpay');
                     }
                     return json_encode(array("code" => Config::Api_Ok, "msg" => $re->msg));
@@ -349,14 +357,15 @@ class Order extends Model
                 }
 
             } else {
-                //尴尬，解析json出错了~
-                Speed::log($re1);
                 $conf=new Config();
                 $mailAddr=$conf->getData('MailRec');
                 if(Email::isEmail($mailAddr)){
                     $mail=new Email();
-                    //$str=preg_replace("#\\\u([0-9a-f]{4})#ie", "iconv('UCS-2BE', 'UTF-8', pack('H4', '\\1'))", urldecode($arr["param"]));
-                    $content=$mail->complieNotify(array('notice1'=>"支付通知失败,返回结果如下：",'notice2'=>$re1,'notice3'=>'Url：'.$url));
+                    $content=<<<EOF
+通知地址： {$url}<br>
+返回结果：<br>
+{$re1}
+EOF;
                     $mail->send($mailAddr,'支付通知失败',$content,'Vpay');
                 }
                 $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
@@ -442,7 +451,8 @@ class Order extends Model
         $arr["type"] = $this->type;
         $arr["appid"] = $this->appid;
         $arr["isHtml"] = $this->isHtml;
-        $arr["key"] = $this->key;
+        //为了安全key只做加盐
+        //$arr["key"] = $this->key;
         //准备签名
         $alipay = new AlipaySign();
         $_sign = $alipay->getSign($arr, $this->key);
@@ -459,6 +469,7 @@ class Order extends Model
     private function getPayMoney($price, $type,$timeout)
     {
         $price=floatval($price);
+
         $reallyPrice = intval(bcmul($price, 100));
 
 
@@ -490,7 +501,7 @@ class Order extends Model
                 $reallyPrice--;
             }
             if($reallyPrice<=0){
-                $this->err = "该时间段订单量过大，请稍后重试";
+                $this->err = "该时间段订单量过大，请换个时间尝试重试";
                 return false;
             }
         }
@@ -498,7 +509,7 @@ class Order extends Model
         //如果循环10次之后还是找不到对应的价格的话，那么返回错误
 
         if ($i>=10) {
-            $this->err = "该时间段订单量过大，请稍后重试";
+            $this->err = "该时间段订单量过大，请换个时间尝试重试";
             return false;
         } else {
             $reallyPrice = bcdiv($reallyPrice, 100, 2);
@@ -519,12 +530,12 @@ class Order extends Model
         if ($this->type === self::PayAlipay) {//看看是不是支付宝
             $user = $conf->getData(Config::Ailuid);//看看有没有uid
             if ($user !== "") {//有uid直接任意二维码
-                $str = "alipays://platformapi/startapp?appId=20000123&actionType=scan&biz_data={\"s\": \"money\",\"u\": \"[PID]\",\"a\": \"[MONEY]\",\"m\":\"[EXP]\"}";
-                //$str='alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=[MONEY]&userId=[PID]&memo=[EXP]';
+                $str = "alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=[MONEY]&userId=[PID]&memo=[EXP]";
+
                 $str = str_replace("[PID]", $user, $str);
                 $str = str_replace("[MONEY]", $this->reallyPrice, $str);
                 $payUrl = urlencode(str_replace("[EXP]", $this->explain, $str));
-                $this->isAuto=false;
+                $this->isAuto=true;
 
             }
         }
@@ -533,7 +544,7 @@ class Order extends Model
 
             $pay = new PayCode();
 
-            $_payUrl = $pay->getCodeOnly($this->price, $this->type);//根据金额取得二维码
+            $_payUrl = $pay->getCodeOnly($this->reallyPrice, $this->type);//根据金额取得二维码，fix bug
 
             if ($_payUrl)$payUrl = $_payUrl['pay_url'];//存在该金额的二维码
             $this->isAuto=false;
@@ -568,7 +579,7 @@ class Order extends Model
         $t=$conf->getData(Config::LastHeart);
         $jg = time()  - intval($t);
 
-        if ($jg > 200 || $jg < -200) {
+        if ($jg > 120 || $jg < -120) {
             $conf->setData("State", Config::State_Offline);//表示掉线
             //准备通知
             $mailAddr=$conf->getData('MailRec');
