@@ -6,7 +6,7 @@
  * Time: 10:20
  */
 
-namespace lib\captcha;
+namespace app\lib\captcha;
 
 /**
  * 验证码接口

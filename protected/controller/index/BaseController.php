@@ -1,8 +1,8 @@
 <?php
 
-namespace controller\index;
+namespace app\controller\index;
 
-use lib\speed\mvc\Controller;
+use app\lib\speed\mvc\Controller;
 
 class BaseController extends Controller
 {

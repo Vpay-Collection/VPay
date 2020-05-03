@@ -1,15 +1,14 @@
 <?php
 
-namespace controller\admin;
+namespace app\controller\admin;
 
-use lib\speed\mvc\Controller;
-use lib\speed\Speed;
-use model\User;
+use app\lib\speed\mvc\Controller;
+use app\model\User;
 
 class BaseController extends Controller
 {
     public $layout = "layout";
-    public $version='2.0';
+    public $version='2.1';
 
     function init()
     {
@@ -19,10 +18,10 @@ class BaseController extends Controller
         $arr=array(
             'main'=>array('login'=>'','logout'=>'','receive'=>'','captcha'=>'','key'=>'')
         );
-        if(!$user->isLogin(Speed::arg('token'))&&!isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
-           $this->jump(Speed::url('admin/main','login'));
-        }elseif ($user->isLogin(Speed::arg('token'))&&Speed::arg('a')!=='key'&&Speed::arg('a')!=='logout'&&isset($arr[strtolower(Speed::arg('c'))][strtolower(Speed::arg('a'))])){
-            $this->jump(Speed::url('admin/main','index'));
+        if(!$user->isLogin(arg('token'))&&!isset($arr[strtolower(arg('c'))][strtolower(arg('a'))])){
+           $this->jump(url('admin/main','login'));
+        }elseif ($user->isLogin(arg('token'))&&arg('a')!=='key'&&arg('a')!=='logout'&&isset($arr[strtolower(arg('c'))][strtolower(arg('a'))])){
+            $this->jump(url('admin/main','index'));
         }
     }
 } 

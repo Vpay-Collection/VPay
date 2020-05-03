@@ -1,10 +1,10 @@
 <?php
-namespace model;
-use includes\AlipaySign;
-use includes\Email;
-use includes\Web;
-use lib\speed\mvc\Model;
-use lib\speed\Speed;
+namespace app\model;
+use app\includes\AlipaySign;
+use app\includes\Email;
+use app\includes\Web;
+use app\lib\speed\mvc\Model;
+use app\lib\speed\Speed;
 
 /*订单处理模块
  * */

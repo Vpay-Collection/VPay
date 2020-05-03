@@ -3,15 +3,16 @@
 /*
  * Api接口
  * */
-namespace controller\api;
+namespace app\controller\api;
 
-use includes\AlipaySign;
-use lib\speed\Speed;
-use model\App;
-use model\Config;
-use model\Order;
-use model\Temp;
-use QRcode;
+use app\includes\AlipaySign;
+
+use app\lib\phpqrcode\Code;
+use app\model\App;
+use app\model\Config;
+use app\model\Order;
+use app\model\Temp;
+
 
 class ApiController extends BaseController
 {
@@ -174,8 +175,7 @@ class ApiController extends BaseController
     public function actionQr()
     {
 
-        require(APP_DIR . '/protected/lib/phpqrcode/qrlib.php');
-        QRcode::png(Speed::arg("url"), false, "H", 6, 2);
+        Code::create(arg('url'),'H',10,APP_I.'img'.DS.'qrLogo.png');
 
     }
 

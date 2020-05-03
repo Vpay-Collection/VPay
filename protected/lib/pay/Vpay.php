@@ -5,7 +5,7 @@
  * Time: 19:51
  * 这个类库可以帮助你轻松地创建订单
  */
-namespace lib\pay;
+namespace app\lib\pay;
 
 use lib\pay\lib\AlipaySign;
 use lib\pay\lib\Web;

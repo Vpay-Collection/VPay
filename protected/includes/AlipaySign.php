@@ -1,5 +1,5 @@
 <?php
-namespace includes;
+namespace app\includes;
 /**
  * Created by PhpStorm.
  * User: dreamn

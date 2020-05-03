@@ -3,13 +3,13 @@
 /*
  * 后台的主页面，主要用于登录检查等
  * */
-namespace controller\admin;
+namespace app\controller\admin;
 
-use includes\AES;
-use includes\Captcha;
-use lib\speed\Speed;
-use model\Config;
-use model\User;
+use app\includes\AES;
+use app\includes\Captcha;
+use app\lib\speed\Speed;
+use app\model\Config;
+use app\model\User;
 
 class MainController extends BaseController
 {
@@ -26,9 +26,9 @@ class MainController extends BaseController
 
     public function actionReceive()
     {//用户登录
-        $userName=Speed::arg("username");
-        $passWd= Speed::arg("password");
-        $captcha=Speed::arg("captcha");
+        $userName=arg("username");
+        $passWd= arg("password");
+        $captcha=arg("captcha");
         $capt=new Captcha();
 
         if(!$capt->Verity($captcha))
@@ -61,7 +61,7 @@ class MainController extends BaseController
     {//用户登出
         $user = new User();
         $user->logout();
-        $this->jump(Speed::url('main', 'index'));
+        $this->jump(url('main', 'index'));
     }
     public function actionCaptcha(){
 

@@ -10,7 +10,7 @@ class Loader
         foreach ($data as $value){
             if($value != '.' && $value != '..'){
                 $file = APP_LIB . DS . $value . DS . 'autoload.php';
-                if (file_exists($file)) include $file;//注册第三方库的自动加载
+                if (file_exists($file)) include_once $file;//注册第三方库的自动加载
             }
         }
     }
@@ -33,7 +33,7 @@ class Loader
             $file = APP_DIR . DS . 'protected' . DS.str_replace('app/','',$namespace).DS . $class ;
         }
         if (file_exists($file)){
-            include $file;
+            include_once $file;
             if(isset($GLOBALS['debug'])&&$GLOBALS['debug'])
                 logs('[Loader]Load Class "'.$realClass.'"','info');
             return;

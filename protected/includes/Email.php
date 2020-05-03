@@ -1,10 +1,8 @@
 <?php
-namespace includes;
+namespace app\includes;
+use app\model\Config;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use lib\speed\mvc\Controller;
-use model\Config;
-
 class Email{
     private $smtp;
     private $port;
@@ -33,20 +31,12 @@ class Email{
             $mail->Password = $this->password;             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
             $mail->SMTPSecure = 'ssl';                    // 允许 TLS 或者ssl协议
             $mail->Port = $this->port;                            // 服务器端口 25 或者465 具体要看邮箱服务器支持
-            $mail->setLanguage('zh_cn',APP_LIB.DS.'phpmail'.DS);
+            $mail->setLanguage('zh_cn',APP_LIB.DS.'email'.DS);
             $mail->Timeout=10;
             $mail->setFrom($this->sendmail, $fromname);  //发件人
             $mail->addAddress($mailto);  // 收件人
             //$mail->addAddress('ellen@example.com');  // 可添加多个收件人
             $mail->addReplyTo($this->sendmail); //回复的时候回复给哪个邮箱 建议和发件人一致
-            //$mail->addCC('cc@example.com');                    //抄送
-            //$mail->addBCC('bcc@example.com');                    //密送
-
-            //发送附件
-            // $mail->addAttachment('../xy.zip');         // 添加附件
-            // $mail->addAttachment('../thumb-1.jpg', 'new.jpg');    // 发送附件并且重命名
-
-            //Content
             $mail->isHTML(true);                                  // 是否以HTML文档格式发送  发送后客户端可直接显示对应HTML内容
             $mail->Subject = $subject;
             $mail->Body    = $content;
@@ -55,22 +45,15 @@ class Email{
             $mail->send();
             return true;
         } catch (Exception $e) {
-            if($debug>0){
-                echo '邮件发送失败: ', $mail->ErrorInfo,'<br>';
+           if($debug>0){
+               echo '邮件发送失败: ', $mail->ErrorInfo,'<br>';
 
-            }
-            return false;
+           }
+           return false;
 
-        }
+       }
     }
-
-    public function complieNotify($arr){
-        $obj=new Controller();
-        $obj->notice1=$arr['notice1'];
-        $obj->notice2=$arr['notice2'];
-        $obj->notice3=$arr['notice3'];
-        return $obj->display('../mail/notify',true);
-    }
+    
 
     public static function isEmail($user_email)
     {

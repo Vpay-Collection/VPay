@@ -1,6 +1,6 @@
 <?php
-namespace includes;
-use lib\captcha\CaptchaBuilder;
+namespace app\includes;
+use app\lib\captcha\CaptchaBuilder;
 
 /**
  * Captcha.php

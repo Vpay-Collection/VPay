@@ -21,9 +21,9 @@ class Config
             'mysql' => array(//数据库信息
                 'MYSQL_HOST' => 'localhost',
                 'MYSQL_PORT' => '3306',
-                'MYSQL_USER' => 'root',
-                'MYSQL_DB' => 'test',
-                'MYSQL_PASS' => 'root',
+                'MYSQL_USER' => 'a_com',
+                'MYSQL_DB' => 'a_com',
+                'MYSQL_PASS' => 'mYiGtXThiYHXRcRe',
                 'MYSQL_CHARSET' => 'utf8',
             ),
             "error" => 'error',//非调试状态出错显示的信息
@@ -34,6 +34,16 @@ class Config
     {
         return array(
             'rewrite' => array(
+                'login'                => 'admin/main/login',
+                'logout'               => 'admin/main/logout',
+                'AppHeart'             => 'App/AppHeart',
+                'AppPush'              => 'App/AppPush',
+
+                'CreateOrder'          => 'api/Api/CreateOrder',
+                'OrderState'           => 'api/Api/OrderState',
+                'Confirm'              => 'api/Api/Confirm',
+                'CloseOrder'           => 'api/Api/CloseOrder',
+                'GetOrder'             => "api/Api/GetOrder",
                 '<m>/<c>/<a>' => '<m>/<c>/<a>',
                 '<c>/<a>' => '<c>/<a>',
                 '/' => 'main/index',

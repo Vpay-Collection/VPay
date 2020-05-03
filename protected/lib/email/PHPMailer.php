@@ -20,7 +20,6 @@
 
 namespace PHPMailer\PHPMailer;
 
-use lib\speed\Speed;
 
 /**
  * PHPMailer - PHP email creation and transport class.

@@ -1,13 +1,10 @@
 <?php
-namespace controller\index;
+namespace app\controller\index;
 /*
  * 手机app推送消息，进行心跳测试等
  * */
 
-use lib\speed\Speed;
-use model\Config;
-use model\Order;
-use model\Temp;
+
 
 class AppController extends BaseController
 {

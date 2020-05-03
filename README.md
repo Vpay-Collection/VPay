@@ -6,7 +6,6 @@
 ![](https://img.shields.io/github/license/dreamncn/VPay)
 ![](https://img.shields.io/github/stars/dreamncn/VPay.svg?label=Stars&style=social)
 
-[原作者的PHP版VPay](https://github.com/szvone/vmqphp)
 
 ## 项目简介&功能特性
 

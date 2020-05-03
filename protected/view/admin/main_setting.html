@@ -1,326 +1,160 @@
 <div action="" class="layui-form layui-form-pane">
-
-    <div class="layui-form-item">
-        <label for="user" class="layui-form-label">后台账号</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="user" lay-verify="required" placeholder="请输入管理员账号"
-                   type="text">
+    <form lay-filter="form" class="layui-form" onsubmit="return false;">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>用户设置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label for="user" class="layui-form-label">后台账号</label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" name="user" class="layui-input" id="user" lay-verify="required"
+                       placeholder="请输入管理员账号" type="text">
+            </div>
+            <div class="layui-form-mid layui-word-aux">修改账号需要与密码一同修改</div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label for="pass" class="layui-form-label">后台密码</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="pass" lay-verify="required" placeholder="请输入管理员密码,不修改可以不填"
-                   type="text">
+        <div class="layui-form-item">
+            <label for="pass" class="layui-form-label">后台密码</label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" name="pass" class="layui-input" id="pass" placeholder="请输入管理员密码" type="text">
+            </div>
+            <div class="layui-form-mid layui-word-aux">不修改就不填</div>
         </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label for="close" class="layui-form-label">订单有效期</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="close" lay-verify="required" placeholder="请输入创建的订单几分钟后失效"
-                   type="number">
-        </div>
-    </div>
-
-
-    <div class="layui-form-item">
-        <label for="uid" class="layui-form-label">支付宝UID</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="uid" lay-verify="required"
-                   placeholder="登录网页版支付宝，查看网页源代码，Ctrl+F查找uid;支持任意金额付款，IOS端不支持（仅部分安卓客户端支持）" type="text">
-        </div>
-    </div>
-
-    <div class="layui-form-item layui-form-text">
-        <label for="key" class="layui-form-label">通讯密钥</label>
-        <div class="layui-input-block">
-            <textarea class="layui-textarea" id="key" name="connect_key" placeholder="请输入App与服务端的通讯密钥"></textarea>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>订单设置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label for="close" class="layui-form-label">订单有效期</label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" name="close" id="close" lay-verify="required"
+                       placeholder="请输入订单有效期" type="number">
+            </div>
+            <div class="layui-form-mid layui-word-aux">订单几分钟失效</div>
         </div>
 
 
-    </div>
-    <div class="layui-form-item">
-        <button class="layui-btn" id="random" type="button">随机生成通讯密钥</button>
-    </div>
-    <div class="layui-form-item">
-        <label for="payQf" class="layui-form-label">区分方式</label>
-        <div class="layui-input-block">
-            <div class="layui-upload">
-                <select id="payQf">
-                    <option value="1">金额递增(同一时间段提交订单,价格递增)</option>
-                    <option value="2">金额递减(同一时间段提交订单,价格递减)</option>
+        <div class="layui-form-item">
+            <label for="uid" class="layui-form-label">支付宝UID</label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="uid" lay-verify="required"
+                       name="uid" placeholder="可以不填写" type="text">
+            </div>
+            <div class="layui-form-mid layui-word-aux">登录网页版支付宝，查看网页源代码，Ctrl+F查找uid;支持任意金额付款，IOS端不支持（仅部分安卓客户端支持）</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="payQf" class="layui-form-label">订单区分</label>
+            <div class="layui-input-inline">
+                <select id="payQf" name="payQf" lay-verify="required">
+                    <option value="1">金额递增</option>
+                    <option value="2">金额递减</option>
                 </select>
             </div>
+            <div class="layui-form-mid layui-word-aux">同一时间段提交订单,价格递增还是递减，用来区分是哪一笔订单。</div>
         </div>
-    </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">微信码</label>
-        <div class="layui-input-block">
-            <div class="layui-upload">
-                <button class="layui-btn" id="wxup" type="button">上传收款二维码</button>
-                （此处上传的是无金额的收款二维码）
-                <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="wximg" style="width: 120px;" alt="微信二维码" src="">
-                    <p id="wxcs"></p>
+        <div class="layui-form-item">
+            <label for="shop" class="layui-form-label">内置商城</label>
+            <div class="layui-input-inline">
+                <select id="shop" name="shop" lay-verify="required">
+                    <option value="0">关闭</option>
+                    <option value="1">开启</option>
+                </select>
+            </div>
+            <div class="layui-form-mid layui-word-aux">内置演示的简单商城~只有支付完成后发送邮件的功能，启用后刷新可见。</div>
+        </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label for="key" class="layui-form-label">通讯密钥</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" id="key" name="key" lay-verify="required"
+                          placeholder="请输入App与服务端的通讯密钥"></textarea>
+            </div>
+
+
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" id="random" type="button">随机生成通讯密钥</button>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>二维码设置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信码</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button class="layui-btn" id="wxup" type="button">上传收款二维码</button>
+                    （此处上传的是无金额的收款二维码）
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="wximg" style="width: 120px;" alt="微信二维码" src="">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">支付宝码</label>
-        <div class="layui-input-block">
-            <div class="layui-upload">
-                <button class="layui-btn" id="zfbup" type="button">上传收款二维码</button>
-                （此处上传的是无金额的收款二维码）
-                <div class="layui-upload-list">
-                    <img class="layui-upload-img" id="zfbimg" style="width: 120px;" alt="支付宝二维码" src="">
-                    <p id="zfbcs"></p>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付宝码</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button class="layui-btn" id="zfbup" type="button">上传收款二维码</button>
+                    （此处上传的是无金额的收款二维码）
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="zfbimg" style="width: 120px;" alt="支付宝二维码" src="">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <div class="layui-form-item">
+            <label class="layui-form-label">二维码logo</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button class="layui-btn" id="logo" type="button">上传二维码logo</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="logoImg" style="width: 120px;" alt="二维码logo"
+                             src="/i/img/qrLogo.png">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="layui-form-item" style="text-align: right;">
-        <button class="layui-btn" id="save">保存</button>
-    </div>
+        <div class="layui-form-item" style="text-align: right;margin-right:5em; ">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formSub">保 存 设 置</button>
+        </div>
 
-
+    </form>
 </div>
-
+<script src="/i/js/aes.js"></script>
 <script>
 
 
     layui.use(['form', 'layer', 'upload'], function () {
-        var  form = layui.form, upload = layui.upload,
-        $=layui.$;
-        function getObjectURL(file) {
-            var url = null ;
-            if (window.createObjectURL!==undefined) { // basic
-                url = window.createObjectURL(file) ;
-            } else if (window.URL!==undefined) { // mozilla(firefox)
-                url = window.URL.createObjectURL(file) ;
-            } else if (window.webkitURL!==undefined) { // webkit or chrome
-                url = window.webkitURL.createObjectURL(file) ;
-            }
-            return url ;
-        }
-        var uploadInst = upload.render({
-            elem: '#wxup'
-            , url: "<{url('admin/api','QrScan')}>"
-            , auto: false
-            , choose: function (obj) {
-                console.log(obj);
-                obj.preview(function (index, file, result) {
-                    qrcode.decode(getObjectURL(file));
-                    qrcode.callback = function (imgMsg) {
-                        console.log(imgMsg);
-                        if (imgMsg !== "") {
-                            $('#wximg').attr('src', "<{url('admin/api','Qr')}>?url=" + imgMsg);
-                        } else {
-                            layer.msg('处理中', {
-                                icon: 16
-                                , shade: 0.01
-                                , time: 0
-                            });
+        var form = layui.form,
+            upload = layui.upload,
+            $ = layui.$;
 
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(result.split(",")[1]), function (data) {
-                                console.log(data);
-                                if (!data.data) {
-                                    data = JSON.parse(data);
-                                }
-                                if (data.code === Api_Ok) {
-                                    $('#wximg').attr('src', "<{url('admin/api','Qr')}>?url=" + data.data);
-                                    layer.msg('处理成功');
-                                } else {
-                                    return layer.msg('处理失败');
-                                }
-
-                            });
-                        }
+        function setImg(elem, elemImg) {
+            upload.render({
+                elem: elem
+                , url: "<{url('admin/api','qr')}>"
+                , auto: true
+                , before: function (obj) {
+                    layer.msg('处理中', {
+                        icon: 16
+                        , shade: 0.01
+                        , time: 0
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code === Api_Err) {
+                        return layer.msg(res.msg, {icon: 5});
                     }
-                });
+                    layer.msg('处理成功', {icon: 6});
 
-            }
-            , before: function (obj) {
-                layer.msg('处理中', {
-                    icon: 16
-                    , shade: 0.01
-                    , time: 0
-                });
-            }
-            , done: function (res) {
-                //如果上传失败
-                if (res.code === -1) {
-                    return layer.msg('上传失败');
-                }
-                if (res.data === "") {
-                    return layer.msg('请上传微信无金额收款二维码');
-                }
-                layer.msg('处理成功');
-
-                $('#wximg').attr('src', "<{url('admin/api','Qr')}>?url=" + res.data);
-            }
-            , error: function () {
-                layer.msg('上传失败');
-                //演示失败状态，并实现重传
-                var demoText = $('#wxcs');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs wxcs">重试</a>');
-                demoText.find('.wxcs').on('click', function () {
-                    uploadInst.upload();
-                });
-            }
-        });
-
-        var uploadInst2 = upload.render({
-            elem: '#zfbup'
-            , url: "<{url('admin/api','QrScan')}>"
-            , auto: false
-            , choose: function (obj) {
-
-                obj.preview(function (index, file, result) {
-                    qrcode.decode(getObjectURL(file));
-                    qrcode.callback = function (imgMsg) {
-
-                        if (imgMsg !== "") {
-                            $('#zfbimg').attr('src', "<{url('admin/api','Qr')}>?url=" + imgMsg);
-                        } else {
-                            layer.msg('处理中', {
-                                icon: 16
-                                , shade: 0.01
-                                , time: 0
-                            });
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(result.split(",")[1]), function (data) {
-                                if (!data.data) {
-                                    data = JSON.parse(data);
-                                }
-                                if (data.code === Api_Ok) {
-                                    $('#zfbimg').attr('src', "<{url('admin/api','Qr')}>?url=" + data.data);
-                                    layer.msg('处理成功');
-                                } else {
-                                    return layer.msg('处理失败');
-                                }
-
-                            });
-                        }
-                    }
-                });
-
-            }
-            , before: function (obj) {
-                layer.msg('处理中', {
-                    icon: 16
-                    , shade: 0.01
-                    , time: 0
-                });
-            }
-            , done: function (res) {
-                //如果上传失败
-                if (res.code === Api_Err) {
-                    return layer.msg('上传失败');
-                }
-                if (res.data === "") {
-                    return layer.msg('请上传支付宝无金额收款二维码');
-                }
-                layer.msg('处理成功');
-
-                $('#zfbimg').attr('src', "<{url('admin/api','Qr')}>?url=" + res.data);
-            }
-            , error: function () {
-                layer.msg('上传失败');
-
-                //演示失败状态，并实现重传
-                var demoText = $('#zfbcs');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs zfbcs">重试</a>');
-                demoText.find('.zfbcs').on('click', function () {
-                    uploadInst2.upload();
-                });
-            }
-        });
-        form.render();
-        $('#save').click(function () {
-            $.get("<{url('admin/main','key')}>", function (d) {
-                var user = $("#user").val();
-                var pass=$("#pass").val();
-                d=JSON.parse(d);
-                if(pass!=="")pass = Encrypt(pass, d.key);
-
-                var key = $("#key").val();
-                var close = $("#close").val();
-                var payQf = $("#payQf").val();
-                if (user === "") {
-                    layer.msg("请输入管理员账号");
-                    return;
-                }
-                if (key === "") {
-                    layer.msg("请输入通讯密钥");
-                    return;
-                }
-
-                if (close === "") {
-                    layer.msg("请输入创建的订单几分钟后失效");
-                    return;
-                }
-                var wximg = $("#wximg").attr("src");
-                if (wximg === "" || !wximg) {
-                    layer.msg("请上传微信无金额的收款二维码");
-                    return;
-                }
-                var zfbimg = $("#zfbimg").attr("src");
-                var uid = $("#uid").val();
-                if (zfbimg === "" && uid === "") {
-                    layer.msg("请上传支付宝无金额的收款二维码或者填写获得的支付宝UID");
-                    return;
-                }
-                wximg = wximg.replace("<{url('admin/api','Qr')}>?url=", "");
-                zfbimg = zfbimg.replace("<{url('admin/api','Qr')}>?url=", "");
-                $.post("<{url('admin/api','SaveSetting')}>", "user=" + escape(user) + "&pass=" + escape(pass) + "&key=" + escape(key) + "&wxpay=" + escape(wximg) + "&zfbpay=" + escape(zfbimg) + "&close=" + escape(close) + "&payQf=" + escape(payQf) + "&uid=" + escape(uid), function (data) {
-                    data = JSON.parse(data);
-                    if (data.code === Api_Ok) {
-                        layer.msg(data.msg);
-                        if(pass!=="")
-                            parent.location.reload();
-                        else getstate();
-                    }else layer.msg(data.msg);
-
-
-                });
-            });
-        });
-
-        function getstate() {
-            $.post("<{url('admin/api','SettingInfo')}>", function (data) {
-
-                data = JSON.parse(data);
-
-                if (data.code === Api_Ok) {
-                    $("#user").val(data.data.user);
-                    $("#pass").val(data.data.pass);
-                    $("#key").val(data.data.key);
-                    $("#uid").val(data.data.uid);
-                    $("#close").val(data.data.close);
-                    $("#payQf").val(data.data.payQf);
-
-                    if (data.data.wxpay !== "") {
-                        $('#wximg').attr('src', "<{url('admin/api','Qr')}>?url=" + data.data.wxpay);
-                    }
-                    if (data.data.zfbpay !== "") {
-                        $('#zfbimg').attr('src', "<{url('admin/api','Qr')}>?url=" + data.data.zfbpay);
-                    }
-                    layui.form.render();
-
-
+                    $(elemImg).attr('src', "<{url('api/api','qr')}>?url=" + res.data);
+                    $(elemImg).attr('value', res.data);
                 }
             });
         }
-
-        getstate();
-
-        $("#random").click(function (e) {
-            $("#key").val(randomString(128));
-        });
 
         function randomString(len) {
             len = len || 32;
@@ -334,8 +168,97 @@
             return pwd;
         }
 
-    });
+        setImg('#wxup', '#wximg');
+        setImg('#zfbup', '#zfbimg');
+        upload.render({
+            elem: '#logo'
+            , url: "<{url('admin/api','logo')}>"
+            , auto: true
+            , before: function (obj) {
+                layer.msg('处理中', {
+                    icon: 16
+                    , shade: 0.01
+                    , time: 0
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code === Api_Err) {
+                    return layer.msg(res.msg, {icon: 5});
+                }
+                layer.msg('处理成功', {icon: 6});
+                $('#logoImg').attr('src', '/i/img/qrLogo.png?t=' + (new Date()).getTime())
+            }
+        });
+        $.ajax({
+            url: "<{url('admin/api','SettingInfo')}>",
+            method: "POST",
+            dataType: "json",
+            success: function (json) {
+                if (json.code === Api_Ok) {
+                    form.val("form", json.data);
+                    if (json.data.wxpay !== "") {
+                        var wx = $('#wximg');
+                        wx.attr('src', "<{url('api/api','Qr')}>?url=" + json.data.wxpay);
+                        wx.attr('value', json.data.wxpay);
+                    }
+                    
+                    if (json.data.zfbpay !== "") {
 
+                        var zfb = $('#zfbimg');
+                        zfb.attr('src', "<{url('api/api','Qr')}>?url=" + json.data.zfbpay);
+                        zfb.attr('value', json.data.zfbpay);
+                    }
+                    form.render();
+                }
+            }
+        });
+
+        form.on('submit(formSub)', function (data) {
+            var wximg = $("#wximg").attr("value");
+            if (wximg === "" || !wximg) {
+                layer.msg("请上传微信无金额的收款二维码", {icon: 5});
+                return;
+            }
+            var zfbimg = $("#zfbimg").attr("value");
+            var uid = $("#uid").val();
+            if (zfbimg === "" && uid === "") {
+                layer.msg("请上传支付宝无金额的收款二维码或者填写获得的支付宝UID", {icon: 5});
+                return;
+            }
+
+            $.get("<{url('admin/main','key')}>", function (d) {
+                var pass = $("#pass").val();
+                d = JSON.parse(d);
+                if (pass !== "") pass = Encrypt(pass, d.key);
+                data.field.pass = pass;
+                data.field.wxpay = wximg;
+                data.field.zfbpay = zfbimg;
+
+                $.ajax({
+                    url: "<{url('admin/api','SaveSetting')}>",
+                    method: "POST",
+                    dataType: 'json',
+                    data: data.field,
+                    success: function (json) {
+                        if (json.code === Api_Ok) {
+                            layer.msg(json.msg, {icon: 6});
+                            if (pass !== "")
+                                parent.location.reload();
+                        } else layer.msg(json.msg, {icon: 5});
+                    }
+
+                });
+
+            });
+        });
+
+        $("#random").click(function (e) {
+            $("#key").val(randomString(128));
+        });
+
+
+    });
 
 
 </script>

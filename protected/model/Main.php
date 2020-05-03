@@ -1,6 +1,6 @@
 <?php
-namespace model;
-use lib\speed\mvc\Model;
+namespace app\model;
+use app\lib\speed\mvc\Model;
 /*主页统计模块
  * */
 

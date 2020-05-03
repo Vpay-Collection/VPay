@@ -1,7 +1,6 @@
 <?php
-namespace includes;
-use lib\json\Json;
-use lib\speed\Speed;
+namespace app\includes;
+
 
 /**
  * Class Update

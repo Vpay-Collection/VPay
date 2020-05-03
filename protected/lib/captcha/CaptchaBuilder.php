@@ -1,6 +1,6 @@
 <?php
 
-namespace lib\captcha;
+namespace app\lib\captcha;
 include APP_LIB.'captcha'.DS.'CaptchaBuilderInterface.php';
 /**
  * Created by PhpStorm.

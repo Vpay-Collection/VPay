@@ -3,8 +3,8 @@
 /*
  * 后台基类，所有程序的基础
  * */
-namespace controller\api;
-use lib\speed\mvc\Controller;
+namespace app\controller\api;
+use app\lib\speed\mvc\Controller;
 
 class BaseController extends Controller
 {
