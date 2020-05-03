@@ -162,8 +162,10 @@ class ApiController extends BaseController
         $lastpay = $conf->getData(Config::LastPay);
         $key = $conf->getData(Config::Key);
 
-
-
+        if(intval($State)===1) {
+            $State=(time()-intval($lastheart))>120?0:1;
+            $conf->setData(Config::State,0);
+        }
 
         echo json_encode(array(
             "code" => Config::Api_Ok,
@@ -194,7 +196,17 @@ class ApiController extends BaseController
 
     public function actionQr()
     {
+        if(arg('base64')!==null){
+            $qr=new  MGQrCodeReader();
+            try{
+                file_put_contents(APP_I.'/img/upload.png',base64_decode(urldecode(arg('base64'))));
+                $data=$qr->read(APP_I.'/img/upload.png');
+            }catch(\Exception $e){
+                exit(json_encode(array("code" => Config::Api_Err, "msg" => "二维码解码失败", "data" => "")));
+            }
 
+            exit(json_encode(array("code" => Config::Api_Ok, "msg" => "成功", "data" =>$data)));
+        }
         if (isset($_FILES["file"])) {
             $local=$_FILES["file"]["tmp_name"];
         } else {

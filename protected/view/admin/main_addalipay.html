@@ -18,157 +18,138 @@
 <script id="barDemo" type="text/html">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script>
-    var imgs = {}, mytable;
-    layui.use(['upload','table'], function () {
-        var $ = layui.jquery
-            , upload = layui.upload;
 
+<script>
+
+    layui.use(['upload', 'table', 'element'], function () {
+        var $ = layui.jquery
+            , upload = layui.upload,
+            table = layui.table,
+            element = layui.element;
+        var imgs = [], mytable;
         mytable = layui.table.render({
             elem: '#test'
             , data: imgs
             , cols: [[
-                {type: 'numbers', title: '序号'}
-
-                , {
-                    field: '', width: 230, title: '二维码', templet: function (data) {
-                        return "<img src='" + data.b64 + "'/>"
+                {field: 'index', width: 80, title: 'ID'},
+                {
+                    field: '', width: 120, title: '二维码', event: 'prev', templet: function (data) {
+                        return "<img  style='width: 100px;height: 100px' src='" + data.b64 + "'/>"
                     }
                 }
-                , {field: 'url', minWidth: 150, title: '内容'}
+                , {field: 'url',  title: '内容'}
                 , {field: 'money', width: 100, title: '金额', edit: "text"}
-                , {title: '操作', minWidth: 80, align: 'center', toolbar: '#barDemo'}
+                , {title: '操作', width: 80, align: 'center', toolbar: '#barDemo',float:"right"}
 
             ]],
             page: true
         });
         //监听工具条
-        layui.table.on('tool(wxqrlist)', function (obj) {
+        table.on('tool(wxqrlist)', function (obj) {
             var data = obj.data;
             if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    imgs = layui.table.cache.test;
-                    mytable.reload({
-                        data: imgs
-                    });
-                    layer.close(index);
+                obj.del();
+                imgs = layui.table.cache.test;
+                mytable.reload({
+                    data: imgs
+                });
+            }else if(obj.event === 'prev'){
+                layer.open({
+                    title: false,
+                    type: 1,
+                    content: "<img  style='max-width: 270px;height: auto' src='" + data.b64 + "'/>"
                 });
             }
         });
 
-        //多文件列表示例
-        var demoListView = $('#demoList')
-            , uploadListIns = upload.render({
-            elem: '#testList'
-            , url: '/upload/'
+        var total = 0;
+        upload.render({
+            elem: '#testList',
+            acceptMime: 'image/*'
             , accept: 'file'
             , multiple: true
             , auto: false
-            , bindAction: '#testListAction'
             , choose: function (obj) {
+
+                var len = Object.keys(obj.pushFile()).length;
                 imgs = [];
-                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-                layer.msg("等待所有二维码识别完毕后手动输入金额，输入完成后点击保存二维码");
-                // layer.msg('处理中', {
-                //     icon: 16
-                //     ,shade: 0.01
-                //     ,time:0
-                // });
+                var index = layer.open({
+                    type: 1,
+                    title: false,
+                    skin: 'layui-layer-molv',
+                    icon: 0,
+                    closeBtn: 0,
+                    shade: [0.8, '#393D49'],
+                    offset: 'auto',
+                    content: ' <div class="layui-layer-dialog layui-layer-border layui-layer-msg"  >\n' +
+                        '        <div id="" class="layui-layer-content">\n' +
+                        '            <i >正在处理图片中....处理完成后请填写金额</i>\n' +
+                        '            <div class="layui-progress" lay-showpercent="true" lay-filter="load">\n' +
+                        '                <div class="layui-progress-bar" lay-percent="0"></div>\n' +
+                        '               </div>\n' +
+                        '        </div>\n' +
+                        '        <span class="layui-layer-setwin"></span></div>'
+                });
 
-                //读取本地文件
                 obj.preview(function (index, file, result) {
-                    // $.post("qr-code/test.php","base64="+encodeURIComponent(result.split(",")[1]),function (data) {
-                    //     console.log(data)
-                    //     if (!data.data) {
-                    //         data = JSON.parse(data);
-                    //     }
-                    //     imgs.push({"index":imgs.length,"money":"","b64":result,"url":data.data});
-                    //     mytable.reload({
-                    //         data: imgs
-                    //     });
-                    // });
-                    //console.log(index)
+                    $.ajax({
+                        url: "<{url c='admin/api' a='qr'}>",
+                        data: {base64: encodeURIComponent(result.split(",")[1])},
+                        dataType: 'json',
+                        method: 'POST',
+                        async: true,
+                        success: function (json) {
+                            total++;
+                            if (json.code === Api_Ok) {
+                                imgs.push({"index": imgs.length+1, "money": "", "b64": result, "url": json.data});
 
-                    qrcode.decode(getObjectURL(file), result);
-                    qrcode.callback = function (imgMsg, img64) {
-
-                        if (imgMsg === "") {
-                            $.post("<{url('admin/api','QrScan')}>", "base64=" + encodeURIComponent(img64.split(",")[1]), function (data) {
-                                console.log(data);
-                                if (!data.data) {
-                                    data = JSON.parse(data);
-                                }
-
-                                imgs.push({"index": imgs.length, "money": "", "b64": img64, "url": data.data});
+                                element.progress('load', (Math.round((parseFloat(total)) / parseFloat(len) * 10000) / 100.00) + "%");
                                 mytable.reload({
                                     data: imgs
                                 });
-                            });
-                        } else {
-                            imgs.push({"index": imgs.length, "money": "", "b64": img64, "url": imgMsg});
-                            mytable.reload({
-                                data: imgs
-                            });
+                            }
+
                         }
+                    });
+                });
+                var int=setInterval(function () {
+                    if(total>=len){
+                        layer.close(index);
+                        clearInterval(int);
                     }
 
-                });
+                }, 500);
+
             }
 
         });
+
 
         $('#saveqr').click(function () {
             var data = layui.table.cache.test;
             for (var i = 0; i < data.length; i++) {
-                if (data[i].money === "" || checkRate(data[i].money === false)) {
-                    layer.msg("序号为" + (i + 1) + "的二维码金额有误，请检查");
+                if (!checkRate(data[i].money)) {
+                    layer.msg("序号为" + (i + 1) + "的二维码金额有误，请检查",{icon:5});
                     return;
                 }
             }
-            up(data, 0);
+            for (i = 0; i < data.length; i++) {
+                $.post("<{url('admin/api','AddQr')}>", "type=" + PayAlipay + "&pay_url=" + encodeURIComponent(data[i].url) + "&price=" + data[i].money);
+            }
+            layer.msg( "保存成功",{icon:6});
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });
-        function up(obj, index) {
-            if (obj.length === index) {
-                layer.msg("操作成功！");
-                imgs = [];
-                mytable.reload({
-                    data: imgs
-                });
-                return;
-            }
-            $.post("<{url('admin/api','AddQr')}>", "type="+PayAlipay+"&pay_url=" + encodeURIComponent(obj[index].url) + "&price=" + obj[index].money, function (data) {
-                up(obj, index + 1)
-            });
-        }
+
+
+
         function checkRate(input) {
 
             var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/
 
+            return re.test(input);
 
-            if (!re.test(input)) {
-
-                return false;
-
-            }
-
-        }
-        function getObjectURL(file) {
-            var url = null;
-            if (window.createObjectURL !== undefined) {
-                url = window.createObjectURL(file);
-            } else if (window.URL !== undefined) {
-                url = window.URL.createObjectURL(file);
-            } else if (window.webkitURL !== undefined) {
-                url = window.webkitURL.createObjectURL(file);
-            }
-            return url;
         }
     });
-
-
-
 
 
 </script>

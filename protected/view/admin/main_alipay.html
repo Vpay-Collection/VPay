@@ -47,12 +47,13 @@
             ,even: true
             ,toolbar: "#toolbarTpl"
             , where: {
-                type: 2,
+                type: PayAlipay,
             }
             , cols: [[ //表头
+                {field: 'id', title: 'ID',width: 80},
                 {
-                    field: '', title: '二维码', templet: function (d) {
-                        return "<img  src=<{url('admin/api','Qr')}>?url=" + d.pay_url + " >";
+                    field: 'pay_url',title: '二维码',event:"prev", templet: function (d) {
+                        return "<img width='50px' src=<{url('api/api','Qr')}>?url=" + d.pay_url + " >";
                     }
                 },
                 {field: 'price', title: '金额'},
@@ -76,10 +77,16 @@
                             obj.del(); //删除对应行（tr）的DOM结构
                         }
 
-                        layer.msg(data.msg);
+                        layer.msg(data.msg,{icon:6});
                     });
 
-                    console.log(data.id);
+                });
+            }
+            else if(obj.event === 'prev'){
+                layer.open({
+                    title: false,
+                    type: 1,
+                    content: "<img  style='max-width: 270px;height: auto' src=<{url('api/api','Qr')}>?url=" + data.pay_url + "/>"
                 });
             }
         });
@@ -87,7 +94,7 @@
         table.on('toolbar(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var  layEvent = obj.event; //获得 lay-event 对应的值
             if(layEvent==='add'){
-                okLayer.open("添加支付宝二维码", "<{url m='admin' c='main' a='addAlipay'}>" , "90%", "90%", null, function () {
+                okLayer.open("添加支付宝二维码", "<{url m='admin' c='main' a='addalipay'}>" , "100%", "100%", null, function () {
                     myTable.reload();
                 })
             }

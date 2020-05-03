@@ -1,8 +1,8 @@
 <?php
-namespace controller\admin;
-use includes\Email;
-use lib\speed\Speed;
-use model\Config;
+namespace app\controller\admin;
+use app\includes\Email;
+use app\lib\speed\Speed;
+use app\model\Config;
 
 class MailController extends BaseController{
     private  $data=array('MailSmtp',"MailPort","MailSend","MailPass","MailRec","MailNoticeMe","MailNoticeYou" );
@@ -27,12 +27,9 @@ class MailController extends BaseController{
     public function actionTest(){
         //发送测试邮件
         $email=new Email();
-        $this->title="这是一封测试邮件";
-        $this->content="测试";
-        $content=$this->display("mail/test",true);
         echo "正在尝试发送邮件！<br>";
         $c=new Config();
-        $re=$email->send($c->getData('MailRec'),$this->title,$content,"Vpay",2);
+        $re=$email->send($c->getData('MailRec'),"这是一封测试邮件",'邮件测试',"Vpay",2);
         if($re)echo "测试成功！请到邮箱\"".$c->getData('MailRec')."\"查询！";
         else echo "测试失败！具体错误原因请查看上边的日志记录！";
     }
