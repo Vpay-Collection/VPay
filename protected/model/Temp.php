@@ -39,11 +39,4 @@ class Temp extends Model
     public function delByOid($id){
         $this->delete(array("oid"=>$id));
     }
-
-    public function getByClient($Client){
-        return $this->select(array("clientID" => $Client));
-    }
-    public function delByClient($Client){
-        return $this->delete(array("clientID" => $Client));
-    }
 }

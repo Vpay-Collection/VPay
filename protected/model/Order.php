@@ -4,7 +4,6 @@ use app\includes\AlipaySign;
 use app\includes\Email;
 use app\includes\Web;
 use app\lib\speed\mvc\Model;
-use app\lib\speed\Speed;
 
 /*订单处理模块
  * */
@@ -212,7 +211,7 @@ class Order extends Model
         //直接插入数据库
 
         if ($this->isHtml == self::NeedHtml) {//使用自带的支付接口
-            return array("code" => Config::Api_Ok, "msg" => 'success', "url" => Speed::url("api/pay", "index",array("orderId"=>$this->orderId)) , "isHtml" => true);
+            return array("code" => Config::Api_Ok, "msg" => 'success', "url" => url("api/pay", "index",array("orderId"=>$this->orderId)) , "isHtml" => true);
         } else {//不使用呗
                $data = array(
                 "payId" => $this->payId,
@@ -352,7 +351,7 @@ EOF;
                 } else {
                     //远程服务器不认可？？？凭啥？我也不知道呀~
 
-                    $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
+                    $this->ChangeStateByOrderId(arg("id"), Order::State_Err);
                     return json_encode(array("code" => Config::Api_Err, "msg" => $re->msg."苍天饶过谁"));
                 }
 
@@ -368,7 +367,7 @@ EOF;
 EOF;
                     $mail->send($mailAddr,'支付通知失败',$content,'Vpay');
                 }
-                $this->ChangeStateByOrderId(Speed::arg("id"), Order::State_Err);
+                $this->ChangeStateByOrderId(arg("id"), Order::State_Err);
                 return json_encode(array("code" => Config::Api_Err, "msg" => "异步回调返回的数据不是标准json数据！"));
             }
         } else {
@@ -531,7 +530,7 @@ EOF;
             $user = $conf->getData(Config::Ailuid);//看看有没有uid
             if ($user !== "") {//有uid直接任意二维码
                 $str = "alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=[MONEY]&userId=[PID]&memo=[EXP]";
-
+                //fix bug
                 $str = str_replace("[PID]", $user, $str);
                 $str = str_replace("[MONEY]", $this->reallyPrice, $str);
                 $payUrl = urlencode(str_replace("[EXP]", $this->explain, $str));
@@ -558,7 +557,7 @@ EOF;
         }
         //第三波取二维码（预存的任意金额收款码）结束，看看有没有成功
         if ($payUrl === "") {//我都这么努力了还没有二维码，哭了
-            $this->err = "请管理员进入后台配置收款信息后再试";
+            $this->err = "请管理员进入后台配置收款信息后再试.";
             return false;
         } else {
             $this->payUrl = $payUrl;//取到二维码啦
@@ -585,10 +584,14 @@ EOF;
             $mailAddr=$conf->getData('MailRec');
             if($conf->getData('MailNoticeMe')==='on'&&Email::isEmail($mailAddr)){
                 $mail=new Email();
-                $content=$mail->complieNotify(array('notice1'=>"手机端监控已掉线",'notice2'=>'请及时上线','notice3'=>''));
+                $content=<<<EOF
+监控端已经掉线<br>
+请及时上线！<br>
+Tips:默认120秒内客户端没有发送心跳请求则认为客户端掉线<br>
+EOF;
                 $mail->send($mailAddr,'手机端监控掉线通知',$content,'Vpay');
             }
-            Speed::log($jg);
+            log($jg);
             return true;//掉线返回true
         }
         return false;
