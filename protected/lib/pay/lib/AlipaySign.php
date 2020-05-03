@@ -5,14 +5,14 @@
  * Date: 2019-09-25
  * Time: 20:30
  */
-namespace lib\pay\lib;
+namespace app\lib\pay\lib\AlipaySign;
 class AlipaySign
 {//支付宝的参数签名算法
     /**
      * 生成签名
-     * @param  [type] $Arr [进行签名的数组]
-     * @param  [type] $key [key值]
-     * @return [type]      [description]
+     * @param $Arr
+     * @param $key
+     * @return string [type]      [description]
      */
     public function getSign($Arr, $key)
     {
@@ -30,7 +30,7 @@ class AlipaySign
         //echo "【string2】".$String."</br>";
         //签名步骤三：sha256加密
 
-        $String = hash('sha256',$key.$String);//强行加盐
+        $String = hash('sha256',$String);
         //echo "【string3】 ".$String."</br>";
         //签名步骤四：所有字符转为大写
         $result_ = strtoupper($String);

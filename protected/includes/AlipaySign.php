@@ -30,7 +30,7 @@ class AlipaySign
         //echo "【string2】".$String."</br>";
         //签名步骤三：sha256加密
 
-        $String = hash('sha256',$key.$String);//强行加盐
+        $String = hash('sha256',$String);
         //echo "【string3】 ".$String."</br>";
         //签名步骤四：所有字符转为大写
         $result_ = strtoupper($String);

@@ -76,11 +76,11 @@ class ApiController extends BaseController
         //关闭过期订单吧..
         //$ord->closeEndOrder();
         if ($res) {
-            $re="";
+            $url="";
             if(intval($res["state" ])===Order::State_Ok ||intval($res["state"])===Order::State_Succ||intval($res["state"])===Order::State_Err){
                 $app=new App();
                 $res2=$app->getData($res["appid"],"return_url,connect_key");
-                $re=$res2["return_url"];
+                $url=$res2["return_url"];
                 //重新签名
                 $res3 = $ord->GetOrderByOrdid(arg("orderId"), "pay_id,param,type,price,really_price");
                 $arr["payId"]=$res3["pay_id"];
@@ -88,16 +88,22 @@ class ApiController extends BaseController
                 $arr["type"]=$res3["type"];
                 $arr["price"]=$res3["price"];
                 $arr["reallyPrice"]=$res3["really_price"];
-                $arr["key"]=$res2["connect_key"];
                 $alipay=new AlipaySign();
                 $arr["sign"]=$alipay->getSign($arr,$res2["connect_key"]);
-                $arr = array_diff_key($arr, array("key" => $arr["key"]));
-                $re= $re."?".http_build_query($arr);//封装成url地址参数
-                //此处重新计算
+
+                $p=http_build_query($arr);
+                if(preg_match('/\?[\d\D]+/',$url)){//matched ?c
+                    $url.='&'.$p;
+                }else if(preg_match('/\?$/',$url)){//matched ?$
+                    $url.=$p;
+                }else{
+                    $url.='?'.$p;
+                }
+
             }
 
 
-            echo json_encode(array("code" => Config::Api_Ok,"state"=>$res["state"],"data"=>$re));
+            echo json_encode(array("code" => Config::Api_Ok,"state"=>$res["state"],"data"=>$url));
         } else {
             echo json_encode(array("code" => Config::Api_Err, "msg" => "云订单编号不存在！"));
         }
@@ -122,9 +128,9 @@ class ApiController extends BaseController
 
         $alipay = new AlipaySign();
 
-        $sign = $alipay->getSign(array("payId" => $payId, "key" => $key), $key);
+        $sign = $alipay->getSign(array("payId" => $payId), $key);
 
-        if ($sign !== arg("sign")) {
+        if (md5($sign) !== md5(arg("sign"))) {
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名错误！")));
         }
 
@@ -151,9 +157,9 @@ class ApiController extends BaseController
 
         $alipay = new AlipaySign();
 
-        $sign = $alipay->getSign(array("orderId" => $payId, "key" => $key), $key);
+        $sign = $alipay->getSign(array("payId" => $payId), $key);
 
-        if ($sign !== arg("sign")) {
+        if (md5($sign) !== md5(arg("sign"))) {
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名错误！")));
         }
 
