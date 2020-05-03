@@ -5,6 +5,9 @@ namespace app\controller\index;
  * */
 
 
+use app\model\Config;
+use app\model\Order;
+use app\model\Temp;
 
 class AppController extends BaseController
 {
@@ -13,17 +16,17 @@ class AppController extends BaseController
     public function actionAppHeart()
     {//app心跳
         $ord=new Order();
-        $ord->closeEndOrder();//过期订单在这里关也太麻烦了...放到创建订单的时候关闭刚好~
+        $ord->closeEndOrder();//清理过期订单
         $conf = new Config();
 
         $key = $conf->getData(Config::Key);//取出与app通信的密钥
 
-        $t = Speed::arg("t");
+        $t = arg("t");
 
         $_sign = $t . $key;
 
-        //客户端脆弱的签名算法...cry...
-        if (md5($_sign) !== Speed::arg("sign")) {
+        
+        if (md5($_sign) !== arg("sign")) {
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名校验不通过")));
         }
 
@@ -36,28 +39,28 @@ class AppController extends BaseController
 
         $conf->setData("State", Config::State_Online);//表示正常监听
 
-        echo json_encode(array("code" => Config::Api_Ok, "msg" => "Success！"));
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "Success"));
     }
 
     //App数据推送,说是收到钱了
     public function actionAppPush()
-    {//因为存在心跳，所以没必要每次都进行清理
+    {
 
 
         $conf = new Config();
 
         $key = $conf->getData(Config::Key);//取出与app通信的密钥
 
-        $t = Speed::arg("t");
+        $t = arg("t");
 
-        $type = Speed::arg("type");
+        $type = arg("type");
 
-        $price = Speed::arg("price");
+        $price = arg("price");
 
         $_sign = $type . $price . $t . $key;
 
 
-        if (md5($_sign) !== Speed::arg("sign")) {
+        if (md5($_sign) !== arg("sign")) {
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名校验不通过")));
         }
 
@@ -72,7 +75,7 @@ class AppController extends BaseController
 
         $res = $ord->GetOrderByParam($price, Order::State_Wait, $type);
         //找到等待支付的订单~
-        //无订单转账记录已经删掉了~
+
         if(!$res)return;
 
         $tmp = new Temp();

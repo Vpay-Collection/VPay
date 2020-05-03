@@ -8,6 +8,7 @@ use app\includes\Update;
 use app\lib\speed\Speed;
 use app\model\App;
 use app\model\Config;
+use app\model\Item;
 use app\model\Main;
 use app\model\Order;
 use app\model\PayCode;
@@ -17,8 +18,7 @@ use MGQrCodeReader\MGQrCodeReader;
 class ApiController extends BaseController
 {
     public function actionNav(){
-
-        echo json_encode(array(
+        $navList=array(
             array(
                 "title"=>"控制台",
                 "href"=>url('admin/main','console'),
@@ -83,7 +83,26 @@ class ApiController extends BaseController
                 "spread"=>true,
                 "isCheck"=> false
             ),
-        ));
+        );
+        $conf=new Config();
+        if(intval($conf->getData(Config::Shop)))
+            $navList[]=  array(
+                "title"=>"商品列表",
+                "href"=>url('admin/main','goodlist'),
+                "fontFamily"=> "ok-icon",
+                "icon"=> "&#xe7c0;",
+                "spread"=>true,
+                "isCheck"=> false
+            );
+        $navList[]=  array(
+            "title"=>"开发文档",
+            "href"=>'https://doc.dreamn.cn/doc/Vpay%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/#/',
+            "fontFamily"=> "ok-icon",
+            "icon"=> "&#xe791;",
+            "spread"=>true,
+            "isCheck"=> false
+        );
+        echo json_encode($navList);
     }
     public function actionUpdate(){
         $update=new Update($this->version);
@@ -341,4 +360,45 @@ class ApiController extends BaseController
 
 
     }
+    public function actionGetGood(){
+        $item = new Item();
+
+        $res = $item->getList(arg("page"), arg("limit"));
+
+        if ($res) {
+            $count = sizeof($res);
+            if ($count === 0) echo json_encode(array("code" => Config::Api_Err, "msg" => "暂无数据", "data" => $res, "count" => $count));
+            else  echo json_encode(array("code" => Config::Api_Ok, "msg" => "获取成功", "data" => $res, "count"=>($item->page===null)?$count:$item->page["total_count"]));
+        } else {
+            echo json_encode(array("code" => Config::Api_Err, "msg" => "没有任何数据", "data" => "", "count" => "0"));
+        }
+    }
+    public function actionSetGood(){
+        $arr['name']=   arg('name');
+        $arr['price']=   arg('price');
+        $arr['msg']=   arg('msg');
+
+        $item=new Item();
+        $item->add($arr);
+        echo json_encode(array("code" => Config::Api_Ok, "msg" => "成功"));
+
+    }
+
+    public function actionGetOne(){
+        $id=arg('id');
+        $item=new Item();
+        $result=$item->getOne($id);
+        if($result){
+            echo json_encode(array("code" => Config::Api_Ok, "data" =>$result ));
+        }else{
+            echo json_encode(array("code" => Config::Api_Err, "msg" => '没有该商品'));
+        }
+    }
+    public function actionDelGood(){
+        $id=arg('id');
+        $item=new Item();
+        $item->del($id);
+        echo json_encode(array("code" => Config::Api_Ok));
+    }
+
 }

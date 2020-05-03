@@ -82,4 +82,6 @@ class MainController extends BaseController
     public function actionAddAlipay(){}
     public function actionOrderlist(){}
     public function actionmail(){}
+    public function actionGoodList(){}
+    public function actionGoodEdit(){}
 }

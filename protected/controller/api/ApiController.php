@@ -22,7 +22,7 @@ class ApiController extends BaseController
     public function actionCreateOrder()
     {
         $order = new Order();
-        $result = $order->CreateOrder(Speed::arg());
+        $result = $order->CreateOrder(arg());
         if (!$result) exit(json_encode(array("code" => Config::Api_Err, "msg" => $order->GetErr())));
         if ($result["isHtml"])
         {
@@ -40,7 +40,7 @@ class ApiController extends BaseController
     {
 
         $ord = new Order();
-        $res = $ord->GetOrderByOrdid(Speed::arg("orderId"));
+        $res = $ord->GetOrderByOrdid(arg("orderId"));
         //所有的查询都必须加上校验功能
 
         if ($res) {
@@ -71,8 +71,8 @@ class ApiController extends BaseController
     public function actionOrderState()
     {
         $ord = new Order();
-        if(Speed::arg("payId")!==null)$res = $ord->GetOrderByPayId(Speed::arg("payId"), "state,appid");
-        else $res = $ord->GetOrderByOrdid(Speed::arg("orderId"), "state,appid");
+        if(arg("payId")!==null)$res = $ord->GetOrderByPayId(arg("payId"), "state,appid");
+        else $res = $ord->GetOrderByOrdid(arg("orderId"), "state,appid");
         //关闭过期订单吧..
         //$ord->closeEndOrder();
         if ($res) {
@@ -82,7 +82,7 @@ class ApiController extends BaseController
                 $res2=$app->getData($res["appid"],"return_url,connect_key");
                 $re=$res2["return_url"];
                 //重新签名
-                $res3 = $ord->GetOrderByOrdid(Speed::arg("orderId"), "pay_id,param,type,price,really_price");
+                $res3 = $ord->GetOrderByOrdid(arg("orderId"), "pay_id,param,type,price,really_price");
                 $arr["payId"]=$res3["pay_id"];
                 $arr["param"]=$res3["param"];
                 $arr["type"]=$res3["type"];
@@ -107,7 +107,7 @@ class ApiController extends BaseController
     //订单确认(远程主机发来确认请求)
     public function actionConfirm()
     {
-        $payId = Speed::arg("payId");
+        $payId = arg("payId");
 
         $ord = new Order();
 
@@ -124,7 +124,7 @@ class ApiController extends BaseController
 
         $sign = $alipay->getSign(array("payId" => $payId, "key" => $key), $key);
 
-        if ($sign !== Speed::arg("sign")) {
+        if ($sign !== arg("sign")) {
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名错误！")));
         }
 
@@ -138,7 +138,7 @@ class ApiController extends BaseController
     //关闭订单
     public function actionCloseOrder()
     {
-        $payId = Speed::arg("payId");
+        $payId = arg("payId");
 
         $ord = new Order();
         $res = $ord->GetOrderByPayId($payId, "appid,state,order_id");
@@ -153,7 +153,7 @@ class ApiController extends BaseController
 
         $sign = $alipay->getSign(array("orderId" => $payId, "key" => $key), $key);
 
-        if ($sign !== Speed::arg("sign")) {
+        if ($sign !== arg("sign")) {
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名错误！")));
         }
 

@@ -276,7 +276,7 @@ class Order extends Model
     //通知远程服务器，我已经收到钱了
     public function notify($id){
 
-        $res = $this->getOrderByOrdid($id, "appid,pay_id,type,param,price,really_price,state");
+        $res = $this->getOrderByOrdid($id, "appid,pay_id,order_id,type,param,price,really_price,state");
 
         if ($res) {
 
@@ -295,7 +295,7 @@ class Order extends Model
 
             $key = $AppRes['connect_key'];
             //取通讯密钥
-            $url = $AppRes['notify_url'];
+            $url = $this->replace($AppRes['notify_url'],$res['pay_id'],$res['order_id']);
             //取回调地址
             $arr["payId"] = $res['pay_id'];
             $arr["param"] = $res['param'];
@@ -595,5 +595,13 @@ EOF;
             return true;//掉线返回true
         }
         return false;
+    }
+    /*
+     * 替换url中的自定义变量
+     * */
+    public function replace($url,$payId,$orderId){
+       $url=str_replace('{payId}',$payId,$url);
+        $url=str_replace('{orderId}',$orderId,$url);
+        return $url;
     }
 }

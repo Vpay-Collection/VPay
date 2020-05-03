@@ -1,0 +1,55 @@
+<!--form表单-->
+<form class="layui-form layui-form-pane ok-form" lay-filter="form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" placeholder="请输入商品名称" autocomplete="off" class="layui-input"
+                   lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品价格</label>
+        <div class="layui-input-block">
+            <input type="text" name="price" placeholder="请输入商品价格" autocomplete="off" class="layui-input"
+                   lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">邮件内容</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="msg" placeholder="请输入邮件内容" autocomplete="off" class="layui-textarea"
+                      lay-verify="required"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        支持变量如下：<br>
+        {payId}  客户端订单号<br>
+        {type}  支付方式<br>
+        {price}  支付的价格<br>
+        {orderId}  创建的订单号<br>
+        {reallyPrice}  真实收到的钱<br>
+    </div>
+    <div class="layui-form-item ">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addArticle">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form','okLayer'], function () {
+        var  form = layui.form;
+        let $=layui.$;
+        var okLayer=layui.okLayer;
+        form.on('submit(addArticle)',function (data) {
+            $.post("<{url('admin/api','setGood')}>", data.field, function (data) {
+                data = JSON.parse(data);
+                layer.msg(data.msg);
+                if (data.code === Api_Ok) {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));
+                }
+            });
+            return false;
+        });
+    });
+</script>
