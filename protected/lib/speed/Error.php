@@ -72,6 +72,7 @@ class Error
                 GLOBAL $__module;
                 $__module = '';
                 $obj->display($GLOBALS['error']);
+                exit;
             } else {
                 if (ob_get_contents()) {
                     if (!$GLOBALS['debug']) ob_end_clean();

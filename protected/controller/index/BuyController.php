@@ -27,7 +27,7 @@ class BuyController extends BaseController
                 $item=new Item();
                 $result=$item->getOne($json->id);
                 if($result){
-                    $content=$this->replace($result['msg'],$_GET['payId'],intval($_GET['type'])===1?'支付宝':'微信',$_GET['price'],$_GET['reallyPrice']);
+                    $content=$this->replace($result['msg'],$_GET['payId'],intval($_GET['type'])===2?'支付宝':'微信',$_GET['price'],$_GET['reallyPrice']);
 
                     $mail->send($json->email,'支付结果通知',$content,'Vpay');
                 }
@@ -58,12 +58,12 @@ ROF;
     public function actionReturn(){
         $Vpay=new Vpay();
         if($Vpay->PayReturn($_GET)){//回调时，验证通过
-            $this->result="<div style='text-align: left;color: firebrick'>";
+            $this->result= "<div style='text-align: left;color: #ed2e15'>";
             $this->result.= "支付成功！！！<br>";
             $this->result.= "后台订单状态必须为“订单已确认”才是真的成功了，否则是失败的<br>";
             $this->result.= "此处的是同步回调，这里不要将数据插入数据库，因为是否支付是没有验证的，数据入库部分请放到异步回调，当你收到钱时，app会推送收钱信息到后台，后台会向该程序发送已收钱的请求<br>";
-            $this->result.= "商户订单号：" . $_GET['payId'] . "<br>自定义参数：" . urldecode($_GET['param']) . "<br>支付方式：" . $_GET['type'] . "<br>订单金额：" . $_GET['price'] . "<br>实际支付金额：" . $_GET['reallyPrice'];
-            $this->result="</div>";
+            $this->result.= "商户订单号：" . $_GET['payId'] . "<br>自定义参数：" . urldecode($_GET['param']) . "<br>支付方式：" . intval($_GET['type'])===1?'微信':'支付宝' . "<br>订单金额：￥" . $_GET['price'] . "<br>实际支付金额：￥" . $_GET['reallyPrice'];
+            $this->result.="</div>";
         }else{
             //没有通过sign验证
             $this->result='<h4 class="text-center">'.$Vpay->getErr().'<br/></h4>';

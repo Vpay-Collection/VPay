@@ -6,6 +6,7 @@
  * Time: 09:54
  */
 namespace app\lib\pay\lib;
+use Exception;
 class Web
 {
     /**

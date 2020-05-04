@@ -16,7 +16,7 @@ class Update{
     public function __construct($version){
         $url="https://api.github.com/repos/dreamncn/VPay/releases/latest";
         $web=new Web();
-        $result=$web->get($url,"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko, By Black Prism) Chrome/99.0 Safari/537.36");
+        $result = $web->get($url, array(), "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko, By Black Prism) Chrome/99.0 Safari/537.36");
 
         $result=json_decode($result,true);
 

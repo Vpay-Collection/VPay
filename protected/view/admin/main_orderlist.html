@@ -165,16 +165,21 @@
                 layer.alert(out);
 
             } else if (layEvent === 'bd') {
+                if(parseInt(data.state)===State_Succ) {
+                    layer.msg("该订单已完成支付并成功回调，不需要补单！",{icon:5});
+                    return;
+                }
                 layer.confirm('确定要补单吗？该操作将会将该订单标记为已支付，并向您的服务器发送订单完成通知', function (index) {
-                    layer.msg('操作中', {
+                    var i=layer.msg('操作中', {
                         icon: 16
-                        , shade: 0.01
+                        , shade: 0.01 ,time:0
                     });
 
                     $.post("<{url('admin/api','SetBD')}>", "id=" + data.order_id, function (datas) {
                         data = JSON.parse(datas);
+                        layer.close(i);
                         if (data.code === Api_Ok) {
-                            layer.msg("操作成功！");
+                            layer.msg("操作成功！",{icon:6});
                             myTable.reload({
                                 where: {
                                     state: $("#state").val(),
@@ -217,7 +222,7 @@
                         data = JSON.parse(data);
                         if (data.code === Api_Ok) {
 
-                            layer.msg("操作成功！");
+                            layer.msg("操作成功！",{icon:6});
                             myTable.reload({
                                 where: {
                                     state: $("#state").val(),
@@ -225,7 +230,7 @@
                                 }
                             });
                         } else {
-                            layer.msg(data.msg);
+                            layer.msg(data.msg,{icon:5});
                         }
 
 
@@ -270,7 +275,7 @@
                         $.post("<{url('admin/api','DelGqOrder')}>", function (data) {
                             data = JSON.parse(data);
                             if (data.code === Api_Ok) {
-                                layer.msg("操作成功！");
+                                layer.msg("操作成功！",{icon:6});
                                 myTable.reload({
                                     where: {
                                         state: $("#state").val(),
@@ -278,7 +283,7 @@
                                     }
                                 });
                             } else {
-                                layer.msg(data.msg);
+                                layer.msg(data.msg,{icon:5});
                             }
 
                         });
@@ -296,7 +301,7 @@
                         $.post("<{url('admin/api','DelLastOrder')}>", function (data) {
                             data = JSON.parse(data);
                             if (data.code === Api_Ok) {
-                                layer.msg("操作成功！");
+                                layer.msg("操作成功！",{icon:6});
                                 myTable.reload({
                                     where: {
                                         state: $("#state").val(),
@@ -304,7 +309,7 @@
                                     }
                                 });
                             } else {
-                                layer.msg(data.msg);
+                                layer.msg(data.msg,{icon:5});
                             }
 
                         });

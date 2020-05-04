@@ -43,7 +43,7 @@ class Web
     {
 
         if(!is_array($param)){
-            throw new Exception("参数必须为array");
+            throw new \Exception("参数必须为array");
         }
         $p=http_build_query($param);
         if(preg_match('/\?[\d\D]+/',$url)){//matched ?c

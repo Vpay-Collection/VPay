@@ -330,19 +330,19 @@ class Order extends Model
                     $mailAddr=$conf->getData('MailRec');
                     if($conf->getData('MailNoticeYou')==='on'&&Email::isEmail($mailAddr)){
                         $mail=new Email();
-                        ob_end_clean();
+
                         $json=json_decode(urldecode($arr["param"]));
                         if($json){
-                            dump($json);
-                        }else dump(urldecode($arr["param"]));
+                            $c=print_r($json,true);
+                        }else $c=print_r((urldecode($arr["param"])),true);
 
                         $content=<<<EOF
 支付金额： ￥{$arr["price"]}<br>
 实际支付： <font color="red">￥{$arr["reallyPrice"]}</font><br>
 其他参数：<br>
 EOF;
-                        $content=$content.ob_get_contents();
-                        ob_end_clean();
+                        $content=$content.$c;
+                      
                        
                         $mail->send($mailAddr,'用户支付通知',$content,'Vpay');
                     }
@@ -534,7 +534,11 @@ EOF;
         if ($this->type === self::PayAlipay) {//看看是不是支付宝
             $user = $conf->getData(Config::Ailuid);//看看有没有uid
             if ($user !== "") {//有uid直接任意二维码
-                $str = "alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=[MONEY]&userId=[PID]&memo=[EXP]";
+                //$str = "alipays://platformapi/startapp?appId=09999988&actionType=toAccount&goBack=NO&amount=[MONEY]&userId=[PID]&memo=[EXP]";
+                /*
+                 * 这个是转账码交易，支付宝手机端只能收到转账消息，无法识别金额
+                 * */
+                $str='alipays://platformapi/startapp?appId=20000123&actionType=scan&biz_data={"s": "[MONEY]","u": "[PID]","a": "[MONEY]","m":"[EXP]"}  ';
                 //fix bug
                 $str = str_replace("[PID]", $user, $str);
                 $str = str_replace("[MONEY]", $this->reallyPrice, $str);
