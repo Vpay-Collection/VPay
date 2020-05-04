@@ -5,7 +5,7 @@
  * Time: 21:48
  */
 session_start();
-include_once dirname(__FILE__).'/core/Vpay.php';
+include_once dirname(__FILE__).'/pay/Vpay.php';
 $vpay=new Vpay();
 
 $price=0.01;//价格，对这个商品的定价，这里不一定是死的价格，可以是根据商品id查询的价格，也可以是多个商品合并计算的价格

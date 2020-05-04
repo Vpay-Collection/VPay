@@ -20,13 +20,18 @@ V免签(PHP) 是基于SpeedPHP4 + mysql 实现的一套免签支付程序，主�
     6. 如果您不熟悉PHP环境的配置，您可以使用Java版本的服务端
 ```
 
+[原作者的PHP版VPay](https://github.com/szvone/vmqphp)
+
 JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 监控端的开源地址位于：[这里](https://github.com/szvone/VmqApk)
 
 在线演示：[这里](https://pay.dreamn.cn/)
 
-本程序启用**付费咨询**，10RMB/次，开源作品，时间有限 咨询地址 -> [点我](https://pay.dreamn.cn/demo/main/index)
+接口开发文档:[这里](https://doc.dreamn.cn/doc/Vpay%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/)
+
+
+本程序启用**预定，**，10元/次，开源作品，时间有限的咨询地址-> [点我] （https://pay.dreamn.cn/demo/main/index）
 
 > **注意**
 > 1. 本项目为开源项目，本人不可能总会及时修复存在的漏洞
@@ -295,7 +300,7 @@ JAVA版的开源地址位于：[这里](https://github.com/szvone/Vmq)
 
 ## 版权声明
 
-V免签 - Dreamn修改版遵循 [MIT License](/LICENSE) 开源协议发布，并提供免费使用，请勿用于非法用途。
+V免签 - Dreamn修改版遵循 [GPL-3.0 License](/LICENSE) 开源协议发布，并提供免费使用，请勿用于非法用途。
 
 版权所有Copyright © 2020 by dreamn (https://dreamn.cn)
 

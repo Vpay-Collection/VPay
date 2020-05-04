@@ -5,7 +5,7 @@
  * Time: 21:49
  */
 session_start();
-include_once dirname(__FILE__).'/core/Vpay.php';
+include_once dirname(__FILE__).'/pay/Vpay.php';
 //封装参数
 $arg["payId"]=$_GET["payId"];
 $arg["price"]=$_GET["price"];

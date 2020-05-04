@@ -4,7 +4,7 @@
  * Date: 2019-09-28
  * Time: 21:49
  */
-include_once dirname(__FILE__).'/core/Vpay.php';
+include_once dirname(__FILE__).'/pay/Vpay.php';
 
 /*
  * 在这里将数据插入数据库，因为这里是后台发来的请求，可以直接信任，你也可以添加自己的方法来验证这个数据是不是来自后台，比如检查请求头啥的~

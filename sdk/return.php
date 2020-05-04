@@ -4,7 +4,7 @@
  * Date: 2019-09-28
  * Time: 21:49
  */
-include_once dirname(__FILE__).'/core/Vpay.php';
+include_once dirname(__FILE__).'/pay/Vpay.php';
 session_start();
 /*
  * 此处的是同步回调，这里不要将数据插入数据库，因为是否支付是没有验证的，数据入库部分请放到异步回调，当你收到钱时，app会推送收钱信息到后台，后台会向该程序发送已收钱的请求
