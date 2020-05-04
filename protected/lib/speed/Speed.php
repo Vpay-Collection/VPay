@@ -51,7 +51,7 @@ class Speed
                 $rule = str_replace('\/\/','\/',$rule);
                 
                 if (preg_match($rule, strtolower($GLOBALS['http_scheme'] . $_SERVER['HTTP_HOST'] . urldecode($_SERVER['REQUEST_URI'])), $matchs)) {
-                    $route = explode("/", $mapper);
+                    $route = explode("/", strtolower($mapper));
                     if (isset($route[2])) {
                         list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
                     } else {
