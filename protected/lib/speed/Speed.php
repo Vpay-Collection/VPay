@@ -49,7 +49,8 @@ class Speed
                         array('\\\\', $GLOBALS['http_scheme'], '/', '<', '>', '.'),
                         array('', '', '\/', '(?P<', '>[\x{4e00}-\x{9fa5}a-zA-Z0-9_-]+)', '\.'), $rule) . '/u';
                 $rule = str_replace('\/\/','\/',$rule);
-                if (preg_match($rule, $GLOBALS['http_scheme'] . $_SERVER['HTTP_HOST'] . urldecode($_SERVER['REQUEST_URI']), $matchs)) {
+                
+                if (preg_match($rule, strtolower($GLOBALS['http_scheme'] . $_SERVER['HTTP_HOST'] . urldecode($_SERVER['REQUEST_URI'])), $matchs)) {
                     $route = explode("/", $mapper);
                     if (isset($route[2])) {
                         list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
@@ -61,6 +62,8 @@ class Speed
                     }
                     break;
                 }
+
+
             }
         }
         $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
@@ -69,7 +72,7 @@ class Speed
         $__module = isset($_REQUEST['m']) ? strtolower($_REQUEST['m']) : 'index';
         $__controller = isset($_REQUEST['c']) ? strtolower($_REQUEST['c']) : 'main';
         $__action = isset($_REQUEST['a']) ? strtolower($_REQUEST['a']) : 'index';
-
+        
     }
 
     static public function createObj()
