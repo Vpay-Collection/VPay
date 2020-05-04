@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="4997732e-d578-44f5-bff6-8534c707fee3" name="Default Changelist" comment="修复核心框架问题">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6cb22a63-548b-471d-8e44-55ceef4b8690.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/lib/pay/Vpay.php" beforeDir="false" afterPath="$PROJECT_DIR$/protected/lib/pay/Vpay.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/view/index/buy_return.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/index/buy_return.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/view/index/shop_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/protected/view/index/shop_index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,68 +37,49 @@
     <expand>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MySQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="a_com@127.0.0.1" type="feb32156:DbDataSourceImpl" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MySQL - @localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="a_com@127.0.0.1" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="a_com@127.0.0.1" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="a_com: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="a_com@127.0.0.1" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="a_com: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="pay_shop: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="a_com@127.0.0.1" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="a_com: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="pay_tmp_price: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
   </component>
-  <component name="FavoritesManager">
-    <favorites_list name="Pay" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="HTML File" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="PATH_TO_GIT" value="/usr/bin/git" />
-    <option name="PUSH_TAGS">
-      <GitPushTagMode>
-        <option name="argument" value="--tags" />
-        <option name="title" value="All" />
-      </GitPushTagMode>
-    </option>
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="hiddenUrls">
-      <set>
-        <option value="https://github.com/dreamncn/VPay.git" />
-      </set>
-    </option>
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/protected/lib/speed/mvc/Model.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-  </component>
-  <component name="IgnoredFileRootStore">
-    <option name="generatedRoots">
-      <set>
-        <option value="D:\百度云同步盘\SourceCode\PHP\php-farme\.idea" />
-      </set>
-    </option>
-  </component>
-  <component name="ProjectId" id="1VqKs6Jwh3oBp8sRe6fy3tyUyxX" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="1bQpO2g7TrU2wRdthrR9X0DOsgR" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="DatabaseDriversLRU" value="mysql&#10;mysql.8" />
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
@@ -97,381 +87,94 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/protected/lib/phpmail" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/install" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/protected/lib/phpmail" />
-      <recent name="$PROJECT_DIR$/protected/lib/phpmail/language" />
-      <recent name="$PROJECT_DIR$/protected/lib/email" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/protected/lib/phpmail" />
-      <recent name="$PROJECT_DIR$/protected/lib/email" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib\speed" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\lib" />
-      <recent name="D:\百度云同步盘\SourceCode\PHP\Pay\protected\controller\admin" />
+      <recent name="$PROJECT_DIR$/install" />
+      <recent name="$PROJECT_DIR$/sdk" />
+      <recent name="$PROJECT_DIR$/install/data" />
     </key>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/i/install" />
+      <recent name="$PROJECT_DIR$/install/data" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9ed1cdd8-250c-4f50-9e38-cfebd4246452" name="Default Changelist" comment="" />
-      <created>1577975388495</created>
+      <changelist id="4997732e-d578-44f5-bff6-8534c707fee3" name="Default Changelist" comment="" />
+      <created>1588574136028</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1577975388495</updated>
-      <workItem from="1577975389956" duration="22633000" />
-      <workItem from="1578036430766" duration="661000" />
-      <workItem from="1578037111902" duration="3281000" />
-      <workItem from="1578040415420" duration="7955000" />
-      <workItem from="1578050404388" duration="2693000" />
-      <workItem from="1578287756918" duration="445000" />
-      <workItem from="1578925363196" duration="369000" />
-      <workItem from="1578925820361" duration="55000" />
-      <workItem from="1578925917642" duration="70963000" />
-      <workItem from="1579107023753" duration="219000" />
-      <workItem from="1579172924764" duration="3693000" />
-      <workItem from="1579183321445" duration="6439000" />
-      <workItem from="1579308522988" duration="973000" />
-      <workItem from="1579309514385" duration="6235000" />
-      <workItem from="1579331594664" duration="252000" />
-      <workItem from="1579337730906" duration="159000" />
-      <workItem from="1579337920954" duration="1046000" />
-      <workItem from="1579609855407" duration="1825000" />
-      <workItem from="1579617323516" duration="446000" />
-      <workItem from="1580542744799" duration="690000" />
-      <workItem from="1580543447095" duration="68000" />
-      <workItem from="1581251503154" duration="2016000" />
-      <workItem from="1582698972795" duration="905000" />
-      <workItem from="1582784710022" duration="19505000" />
-      <workItem from="1582942740303" duration="3184000" />
-      <workItem from="1582969568711" duration="3353000" />
-      <workItem from="1582985733491" duration="312000" />
-      <workItem from="1582993915197" duration="548000" />
-      <workItem from="1583226135940" duration="1527000" />
-      <workItem from="1583278213072" duration="114000" />
-      <workItem from="1583278355074" duration="2345000" />
-      <workItem from="1583310665944" duration="289000" />
-      <workItem from="1583314525749" duration="12819000" />
-      <workItem from="1583454857481" duration="12568000" />
-      <workItem from="1583505222185" duration="553000" />
-      <workItem from="1583572374053" duration="1113000" />
-      <workItem from="1583610785158" duration="1238000" />
-      <workItem from="1584334430424" duration="499000" />
+      <updated>1588574136028</updated>
+      <workItem from="1588574137724" duration="10247000" />
+      <workItem from="1588587258695" duration="4052000" />
     </task>
-    <task id="LOCAL-00001" summary="修改使用sp3.1的例子">
-      <created>1578040845641</created>
+    <task id="LOCAL-00001" summary="更新安装程序">
+      <created>1588578755677</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1578040845641</updated>
+      <updated>1588578755677</updated>
     </task>
-    <task id="LOCAL-00002" summary="优化数据库操作，添加说明文档">
-      <created>1578047936068</created>
+    <task id="LOCAL-00002" summary="更新SDK">
+      <created>1588580710028</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1578047936068</updated>
+      <updated>1588580710028</updated>
     </task>
-    <task id="LOCAL-00003" summary="添加伪静态">
-      <created>1578048159497</created>
+    <task id="LOCAL-00003" summary="更新README">
+      <created>1588583910796</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1578048159497</updated>
+      <updated>1588583910796</updated>
     </task>
-    <task id="LOCAL-00004" summary="添加错误管理机制">
-      <created>1578051520542</created>
+    <task id="LOCAL-00004" summary="修复核心框架问题">
+      <created>1588588616476</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1578051520542</updated>
+      <updated>1588588616476</updated>
     </task>
-    <task id="LOCAL-00005" summary="添加JSON拓展类，解决json_decode偶尔出错的问题&#10;修复linux下因为大小写问题导致的模块无法加载问题">
-      <created>1578287842253</created>
+    <task id="LOCAL-00005" summary="修复核心框架问题">
+      <created>1588588783498</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1578287842253</updated>
+      <updated>1588588783498</updated>
     </task>
-    <task id="LOCAL-00006" summary="修改config文件位置">
-      <created>1578925678498</created>
+    <task id="LOCAL-00006" summary="修复核心框架问题">
+      <created>1588588853692</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1578925678498</updated>
+      <updated>1588588853692</updated>
     </task>
-    <task id="LOCAL-00007" summary="主体框架升级">
-      <created>1579059689407</created>
+    <task id="LOCAL-00007" summary="修复核心框架问题">
+      <created>1588589813182</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1579059689407</updated>
+      <updated>1588589813182</updated>
     </task>
-    <task id="LOCAL-00008" summary="修复补单无反应的bug">
-      <created>1579096067851</created>
+    <task id="LOCAL-00008" summary="更新版本号">
+      <created>1588590109481</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1579096067851</updated>
+      <updated>1588590109481</updated>
     </task>
-    <task id="LOCAL-00009" summary="修改安装程序与demo">
-      <created>1579099456318</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1579099456318</updated>
-    </task>
-    <task id="LOCAL-00010" summary="更新readme">
-      <created>1579099592215</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1579099592215</updated>
-    </task>
-    <task id="LOCAL-00011" summary="修复订单金额错误的问题">
-      <created>1579175593874</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1579175593874</updated>
-    </task>
-    <task id="LOCAL-00012" summary="优化接口api">
-      <created>1579176000481</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1579176000481</updated>
-    </task>
-    <task id="LOCAL-00013" summary="修改demo接口">
-      <created>1579176354199</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1579176354199</updated>
-    </task>
-    <task id="LOCAL-00014" summary="核心库不知道为啥被删了">
-      <created>1579184116290</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1579184116290</updated>
-    </task>
-    <task id="LOCAL-00015" summary="修改安装程序">
-      <created>1579186723776</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1579186723776</updated>
-    </task>
-    <task id="LOCAL-00016" summary="修复订单多次提交的bug,登录验证码不区分大小写">
-      <created>1579315002252</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1579315002252</updated>
-    </task>
-    <task id="LOCAL-00017" summary="完善修复">
-      <created>1579316260863</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1579316260863</updated>
-    </task>
-    <task id="LOCAL-00018" summary="添加伪静态规则">
-      <created>1579331657730</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1579331657730</updated>
-    </task>
-    <task id="LOCAL-00019" summary="添加伪静态规则">
-      <created>1579338333627</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1579338333627</updated>
-    </task>
-    <task id="LOCAL-00020" summary="修改安装bug">
-      <created>1580542990404</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1580542990404</updated>
-    </task>
-    <task id="LOCAL-00021" summary="修改安装bug">
-      <created>1580543465609</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1580543465609</updated>
-    </task>
-    <task id="LOCAL-00022" summary="大改，完善很多地方">
-      <created>1582969860734</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1582969860734</updated>
-    </task>
-    <task id="LOCAL-00023" summary="发布问题">
-      <created>1582970200279</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1582970200279</updated>
-    </task>
-    <task id="LOCAL-00024" summary="1、修改几处调试问题&#10;&#10;2、更新安装教程">
-      <created>1582970666548</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1582970666548</updated>
-    </task>
-    <task id="LOCAL-00025" summary="修复了几处问题">
-      <created>1582976100580</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1582976100580</updated>
-    </task>
-    <task id="LOCAL-00026" summary="修复上传无反应的bug">
-      <created>1583226800695</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1583226800695</updated>
-    </task>
-    <task id="LOCAL-00027" summary="修复安装bug">
-      <created>1583227076689</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1583227076689</updated>
-    </task>
-    <task id="LOCAL-00028" summary="更新README">
-      <created>1583227259059</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1583227259059</updated>
-    </task>
-    <task id="LOCAL-00029" summary="修复邮件保存失败的bug">
-      <created>1583299081655</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1583299081655</updated>
-    </task>
-    <task id="LOCAL-00030" summary="更新README">
-      <created>1583300076856</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1583300076856</updated>
-    </task>
-    <task id="LOCAL-00031" summary="更新README">
-      <created>1583310896444</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1583310896444</updated>
-    </task>
-    <task id="LOCAL-00032" summary="失误...有两个文件没有加入git">
-      <created>1583314664261</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1583314664261</updated>
-    </task>
-    <task id="LOCAL-00033" summary="失误...有两个文件没有加入git">
-      <created>1583314749043</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1583314749043</updated>
-    </task>
-    <task id="LOCAL-00034" summary="修复邮件测试发送没有错误日志的问题&#10;添加在线更新功能">
-      <created>1583474593187</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1583474593187</updated>
-    </task>
-    <task id="LOCAL-00035" summary="修改README">
-      <created>1583474811124</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1583474811124</updated>
-    </task>
-    <task id="LOCAL-00036" summary="修改README">
-      <created>1583475035768</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1583475035768</updated>
-    </task>
-    <task id="LOCAL-00037" summary="工具类说明">
-      <created>1583476783654</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1583476783654</updated>
-    </task>
-    <task id="LOCAL-00038" summary="修复封装的web类错误">
-      <created>1583505357432</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1583505357432</updated>
-    </task>
-    <task id="LOCAL-00039" summary="修复封装的web类错误">
-      <created>1583505493020</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1583505493020</updated>
-    </task>
-    <task id="LOCAL-00040" summary=" 修复递增不生效的问题">
-      <created>1584334941390</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1584334941390</updated>
-    </task>
-    <option name="localTasksCounter" value="41" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ORDER">
-      <list>
-        <option value="0" />
-        <option value="2" />
-        <option value="3" />
-        <option value="1" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -489,170 +192,53 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="修改安装程序与demo" />
-    <MESSAGE value="更新readme" />
-    <MESSAGE value="修复订单金额错误的问题" />
-    <MESSAGE value="优化接口api" />
-    <MESSAGE value="修改demo接口" />
-    <MESSAGE value="核心库不知道为啥被删了" />
-    <MESSAGE value="修改安装程序" />
-    <MESSAGE value="修复订单多次提交的bug,登录验证码不区分大小写" />
-    <MESSAGE value="完善修复" />
-    <MESSAGE value="添加伪静态规则" />
-    <MESSAGE value="修改安装bug" />
-    <MESSAGE value="大改，完善很多地方" />
-    <MESSAGE value="发布问题" />
-    <MESSAGE value="1、修改几处调试问题&#10;&#10;2、更新安装教程" />
-    <MESSAGE value="修复了几处问题" />
-    <MESSAGE value="修复上传无反应的bug" />
-    <MESSAGE value="修复安装bug" />
-    <MESSAGE value="修复邮件保存失败的bug" />
+    <MESSAGE value="更新安装程序" />
+    <MESSAGE value="更新SDK" />
     <MESSAGE value="更新README" />
-    <MESSAGE value="失误...有两个文件没有加入git" />
-    <MESSAGE value="修复邮件测试发送没有错误日志的问题&#10;添加在线更新功能" />
-    <MESSAGE value="修改README" />
-    <MESSAGE value="工具类说明" />
-    <MESSAGE value="修复封装的web类错误" />
-    <MESSAGE value=" 修复递增不生效的问题" />
-    <option name="LAST_COMMIT_MESSAGE" value=" 修复递增不生效的问题" />
+    <MESSAGE value="修复核心框架问题" />
+    <MESSAGE value="更新版本号" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新版本号" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="283" y="66" key="#Deployment" timestamp="1582700507544">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="240" y="52" key="#Deployment" timestamp="1588574924105">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="324" y="99" key="#Deployment/0.0.1463.874@0.0.1463.874" timestamp="1577976026736" />
-    <state x="340" y="93" key="#Deployment/0.0.1536.824@0.0.1536.824" timestamp="1579617094226" />
-    <state x="283" y="66" key="#Deployment/0.23.1280.709@0.23.1280.709" timestamp="1582700507544" />
-    <state x="324" y="99" key="#Inspections" timestamp="1578037217865">
-      <screen x="0" y="0" width="1463" height="874" />
+    <state x="240" y="52" key="#Deployment/0.23.1280.725@0.23.1280.725" timestamp="1588574924105" />
+    <state x="240" y="52" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588575008139">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="324" y="99" key="#Inspections/0.0.1463.874@0.0.1463.874" timestamp="1578037217865" />
-    <state x="283" y="66" key="#Options" timestamp="1583474821252">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="240" y="52" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.725@0.23.1280.725" timestamp="1588575008139" />
+    <state x="280" y="195" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588582111763">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="324" y="99" key="#Options/0.0.1463.874@0.0.1463.874" timestamp="1577976013677" />
-    <state x="283" y="66" key="#Options/0.23.1280.709@0.23.1280.709" timestamp="1583474821252" />
-    <state x="324" y="99" key="#SQL_Dialects" timestamp="1578047416635">
-      <screen x="0" y="0" width="1463" height="874" />
+    <state x="280" y="195" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.725@0.23.1280.725" timestamp="1588582111763" />
+    <state x="105" y="23" key="CommitChangelistDialog2" timestamp="1588590109278">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="324" y="99" key="#SQL_Dialects/0.0.1463.874@0.0.1463.874" timestamp="1578047416635" />
-    <state x="324" y="99" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578034203355">
-      <screen x="0" y="0" width="1463" height="874" />
+    <state x="105" y="23" key="CommitChangelistDialog2/0.23.1280.725@0.23.1280.725" timestamp="1588590109278" />
+    <state x="146" y="107" key="MergeDialog" timestamp="1588584426913">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="324" y="99" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1463.874@0.0.1463.874" timestamp="1578034203355" />
-    <state x="435" y="213" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1581252005623">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="146" y="107" key="MergeDialog/0.23.1280.725@0.23.1280.725" timestamp="1588584426913" />
+    <state x="344" y="109" key="MultipleFileMergeDialog" timestamp="1588584426929">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="522" y="221" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1578926440074" />
-    <state x="435" y="213" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.709@0.23.1280.709" timestamp="1581252005623" />
-    <state x="404" y="182" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1583471799924">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="344" y="109" key="MultipleFileMergeDialog/0.23.1280.725@0.23.1280.725" timestamp="1588584426929" />
+    <state x="171" y="24" key="SettingsEditor" timestamp="1588584310784">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="462" y="196" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987716240" />
-    <state x="485" y="185" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979985880" />
-    <state x="404" y="182" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.23.1280.709@0.23.1280.709" timestamp="1583471799924" />
-    <state x="249" y="23" key="CommitChangelistDialog2" timestamp="1584334940818">
-      <screen x="0" y="23" width="1280" height="714" />
+    <state x="171" y="24" key="SettingsEditor/0.23.1280.725@0.23.1280.725" timestamp="1588584310784" />
+    <state x="240" y="127" key="Vcs.Push.Dialog.v2" timestamp="1588590182569">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="350" y="35" key="CommitChangelistDialog2/0.0.1463.874@0.0.1463.874" timestamp="1578051519259" />
-    <state x="439" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579338332277" />
-    <state x="352" y="23" key="CommitChangelistDialog2/0.23.1280.709@0.23.1280.709" timestamp="1583505492832" />
-    <state x="249" y="23" key="CommitChangelistDialog2/0.23.1280.714@0.23.1280.714" timestamp="1584334940818" />
-    <state x="78" y="103" width="1125" height="549" key="DiffContextDialog" timestamp="1583314863268">
-      <screen x="0" y="23" width="1280" height="709" />
+    <state x="240" y="127" key="Vcs.Push.Dialog.v2/0.23.1280.725@0.23.1280.725" timestamp="1588590182569" />
+    <state x="283" y="143" width="713" height="484" key="find.popup" timestamp="1588593958189">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1578928592575" />
-    <state x="78" y="103" width="1125" height="549" key="DiffContextDialog/0.23.1280.709@0.23.1280.709" timestamp="1583314863268" />
-    <state x="93" y="93" width="1277" height="688" key="DirDiffDialog" timestamp="1577991002356">
-      <screen x="0" y="0" width="1463" height="874" />
+    <state x="283" y="143" width="713" height="484" key="find.popup/0.23.1280.725@0.23.1280.725" timestamp="1588593958189" />
+    <state x="305" y="72" width="670" height="676" key="search.everywhere.popup" timestamp="1588581940030">
+      <screen x="0" y="23" width="1280" height="725" />
     </state>
-    <state x="93" y="93" width="1277" height="688" key="DirDiffDialog/0.0.1463.874@0.0.1463.874" timestamp="1577991002356" />
-    <state x="538" y="184" key="FileChooserDialogImpl" timestamp="1579338987431">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="512" y="195" key="FileChooserDialogImpl/0.0.1463.874@0.0.1463.874" timestamp="1578051893742" />
-    <state x="538" y="184" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579338987431" />
-    <state x="631" y="314" width="272" height="207" key="Github.ShareDialog" timestamp="1578925871424">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="601" y="333" width="272" height="207" key="Github.ShareDialog/0.0.1463.874@0.0.1463.874" timestamp="1578036824438" />
-    <state x="631" y="314" key="Github.ShareDialog/0.0.1536.824@0.0.1536.824" timestamp="1578925871424" />
-    <state x="524" y="146" key="Github.UntrackedFilesDialog" timestamp="1578036855613">
-      <screen x="0" y="0" width="1463" height="874" />
-    </state>
-    <state x="524" y="146" key="Github.UntrackedFilesDialog/0.0.1463.874@0.0.1463.874" timestamp="1578036855613" />
-    <state width="210" height="477" key="HiddenNamespacesPopup" timestamp="1578034086943">
-      <screen x="0" y="0" width="1463" height="874" />
-    </state>
-    <state width="210" height="477" key="HiddenNamespacesPopup/0.0.1463.874@0.0.1463.874" timestamp="1578034086943" />
-    <state x="228" y="121" key="IDE.errors.dialog" timestamp="1580543433828">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="228" y="121" key="IDE.errors.dialog/0.23.1280.709@0.23.1280.709" timestamp="1580543433828" />
-    <state x="499" y="255" key="NewPhpClassDialog" timestamp="1578967295796">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="475" y="271" key="NewPhpClassDialog/0.0.1463.874@0.0.1463.874" timestamp="1578028716401" />
-    <state x="499" y="255" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1578967295796" />
-    <state x="479" y="322" key="NewPhpFileDialog" timestamp="1583464729634">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="548" y="369" key="NewPhpFileDialog/0.0.1463.874@0.0.1463.874" timestamp="1577987198551" />
-    <state x="575" y="348" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1579096631944" />
-    <state x="479" y="322" key="NewPhpFileDialog/0.23.1280.709@0.23.1280.709" timestamp="1583464729634" />
-    <state x="206" y="23" width="997" height="709" key="SettingsEditor" timestamp="1580543430440">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="235" y="83" key="SettingsEditor/0.0.1463.874@0.0.1463.874" timestamp="1578036792235" />
-    <state x="206" y="23" width="997" height="709" key="SettingsEditor/0.23.1280.709@0.23.1280.709" timestamp="1580543430440" />
-    <state x="283" y="165" key="Vcs.Push.Dialog.v2" timestamp="1584334948041">
-      <screen x="0" y="23" width="1280" height="714" />
-    </state>
-    <state x="324" y="174" key="Vcs.Push.Dialog.v2/0.0.1463.874@0.0.1463.874" timestamp="1578051531233" />
-    <state x="340" y="164" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1579338337836" />
-    <state x="283" y="164" key="Vcs.Push.Dialog.v2/0.23.1280.709@0.23.1280.709" timestamp="1583505603431" />
-    <state x="283" y="165" key="Vcs.Push.Dialog.v2/0.23.1280.714@0.23.1280.714" timestamp="1584334948041" />
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1578990170543">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1578990170543" />
-    <state x="529" y="356" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1578051499428">
-      <screen x="0" y="0" width="1463" height="874" />
-    </state>
-    <state x="529" y="356" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1463.874@0.0.1463.874" timestamp="1578051499428" />
-    <state x="116" y="69" width="820" height="597" key="find.popup" timestamp="1583226422898">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="421" y="69" width="621" height="735" key="find.popup/0.0.1463.874@0.0.1463.874" timestamp="1578043827798" />
-    <state x="139" y="53" width="983" height="693" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1579617234161" />
-    <state x="116" y="69" width="820" height="597" key="find.popup/0.23.1280.709@0.23.1280.709" timestamp="1583226422898" />
-    <state x="626" y="168" key="ftp.server.browser" timestamp="1579617093155">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="626" y="168" key="ftp.server.browser/0.0.1536.824@0.0.1536.824" timestamp="1579617093155" />
-    <state width="602" height="337" key="javadoc.popup" timestamp="1578036487013">
-      <screen x="0" y="0" width="1463" height="874" />
-    </state>
-    <state width="602" height="337" key="javadoc.popup/0.0.1463.874@0.0.1463.874" timestamp="1578036487013" />
-    <state x="530" y="296" key="publish.login" timestamp="1581251551420">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="636" y="317" key="publish.login/0.0.1536.824@0.0.1536.824" timestamp="1579173060575" />
-    <state x="530" y="296" key="publish.login/0.23.1280.709@0.23.1280.709" timestamp="1581251551420" />
-    <state x="498" y="80" key="refactoring.ChangeSignatureDialog" timestamp="1578979993390">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="474" y="85" key="refactoring.ChangeSignatureDialog/0.0.1463.874@0.0.1463.874" timestamp="1577977668076" />
-    <state x="498" y="80" key="refactoring.ChangeSignatureDialog/0.0.1536.824@0.0.1536.824" timestamp="1578979993390" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1579315400159">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1579315400159" />
-    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup" timestamp="1583408232498">
-      <screen x="0" y="23" width="1280" height="709" />
-    </state>
-    <state x="394" y="184" width="672" height="678" key="search.everywhere.popup/0.0.1463.874@0.0.1463.874" timestamp="1578045770897" />
-    <state x="414" y="173" width="706" height="640" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1578971823896" />
-    <state x="345" y="172" width="670" height="551" key="search.everywhere.popup/0.23.1280.709@0.23.1280.709" timestamp="1583408232498" />
+    <state x="305" y="72" width="670" height="676" key="search.everywhere.popup/0.23.1280.725@0.23.1280.725" timestamp="1588581940030" />
   </component>
 </project>

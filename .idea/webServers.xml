@@ -2,13 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="c51b8201-06a1-4a89-956d-13168c12d8bb" name="local" url="http://baota1.dreamn.cn">
-        <fileTransfer host="baota1.dreamn.cn" port="21">
-          <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
-          </advancedOptions>
-          <option name="port" value="21" />
-        </fileTransfer>
+      <webServer id="41a261b5-0208-4822-baba-94230ade4b35" name="1" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="$PROJECT_DIR$/../../../../hosts/a.com" accessType="MOUNT" />
       </webServer>
     </option>
   </component>

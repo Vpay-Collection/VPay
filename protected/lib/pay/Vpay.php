@@ -100,7 +100,8 @@ class Vpay{
                 return false;
             }
         }else{
-            $this->err='远程支付站点发生问题，或创建订单的地址有误';
+
+            $this->err='远程支付站点发生问题，或创建订单的地址有误'.$this->conf["CreateOrder"];
             return false;
         }
 
