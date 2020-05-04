@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.15.10
--- https://www.phpmyadmin.net
+-- version 4.9.2
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: 2019-09-29 19:15:42
+-- 主机： localhost
+-- 生成日期： 2020-05-04 14:51:43
 -- 服务器版本： 5.5.62-log
--- PHP Version: 7.3.7
+-- PHP 版本： 7.3.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `vpay_dreamn_cn`
+-- 数据库： `a_com`
 --
 
 -- --------------------------------------------------------
@@ -26,7 +28,7 @@ SET time_zone = "+00:00";
 -- 表的结构 `pay_appication`
 --
 
-CREATE TABLE IF NOT EXISTS `pay_appication` (
+CREATE TABLE `pay_appication` (
   `id` int(11) NOT NULL COMMENT ' 将作为程序的标记',
   `app_name` varchar(255) NOT NULL COMMENT 'app名称',
   `notify_url` varchar(255) NOT NULL COMMENT '异步回调接口',
@@ -34,13 +36,20 @@ CREATE TABLE IF NOT EXISTS `pay_appication` (
   `connect_key` varchar(512) NOT NULL COMMENT '通讯密钥'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- 转存表中的数据 `pay_appication`
+--
+
+INSERT INTO `pay_appication` (`id`, `app_name`, `notify_url`, `return_url`, `connect_key`) VALUES
+(1, '内置商城', 'http://[url]/index/buy/notify', 'http://[url]/index/buy/return', 'YtKWARQRpKDCtQs88cC3Finnic5d7iGasGiHwecyZsPM63MHHrp2GCZEpJesYn5kZpWNmGNDMszBwCb4Sb2iGiJPzT6iG8h34szenda7DeMdDfh5yZ3cNRBTFFA8Y6WZ');
+
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `pay_order`
 --
 
-CREATE TABLE IF NOT EXISTS `pay_order` (
+CREATE TABLE `pay_order` (
   `id` bigint(20) NOT NULL,
   `close_date` bigint(20) NOT NULL,
   `create_date` bigint(20) NOT NULL,
@@ -58,18 +67,21 @@ CREATE TABLE IF NOT EXISTS `pay_order` (
   `isAuto` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `pay_qrcode`
 --
 
-CREATE TABLE IF NOT EXISTS `pay_qrcode` (
+CREATE TABLE `pay_qrcode` (
   `id` bigint(20) NOT NULL,
   `pay_url` varchar(255) DEFAULT NULL,
   `price` double NOT NULL,
   `type` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 -- --------------------------------------------------------
 
@@ -77,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `pay_qrcode` (
 -- 表的结构 `pay_settings`
 --
 
-CREATE TABLE IF NOT EXISTS `pay_settings` (
+CREATE TABLE `pay_settings` (
   `vkey` varchar(255) NOT NULL,
   `vvalue` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -93,12 +105,40 @@ INSERT INTO `pay_settings` (`vkey`, `vvalue`) VALUES
 ('LastHeart', ''),
 ('LastLogin', ''),
 ('LastPay', ''),
+('MailNoticeMe', 'on'),
+('MailNoticeYou', 'on'),
+('MailPass', ''),
+('MailPort', ''),
+('MailRec', ''),
+('MailSend', ''),
+('MailSmtp', ''),
 ('Payof', '2'),
 ('State', '-1'),
 ('UserName', '[user]'),
 ('UserPassword', '[pass]'),
+('UseShop', '0'),
 ('ValidityTime', '5'),
 ('WechatPay', '');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `pay_shop`
+--
+
+CREATE TABLE `pay_shop` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `price` varchar(64) DEFAULT NULL,
+  `msg` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `pay_shop`
+--
+
+INSERT INTO `pay_shop` (`id`, `name`, `price`, `msg`) VALUES
+(1, '测试商品', '0.1', '您已支付成功<br> \n订单号：{payId} <br>\n支付方式：{type} <br>\n支付金额：￥{reallyPrice} <br>\n站长将在24小时内处理，如有疑问请联系dream@dreamn.cn');
 
 -- --------------------------------------------------------
 
@@ -106,66 +146,82 @@ INSERT INTO `pay_settings` (`vkey`, `vvalue`) VALUES
 -- 表的结构 `pay_tmp_price`
 --
 
-CREATE TABLE IF NOT EXISTS `pay_tmp_price` (
+CREATE TABLE `pay_tmp_price` (
   `price` varchar(255) NOT NULL,
   `oid` varchar(255) NOT NULL,
   `timeout` bigint(20) NOT NULL COMMENT '过期时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indexes for dumped tables
+-- 转储表的索引
 --
 
 --
--- Indexes for table `pay_appication`
+-- 表的索引 `pay_appication`
 --
 ALTER TABLE `pay_appication`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pay_order`
+-- 表的索引 `pay_order`
 --
 ALTER TABLE `pay_order`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `pay_id` (`pay_id`);
 
 --
--- Indexes for table `pay_qrcode`
+-- 表的索引 `pay_qrcode`
 --
 ALTER TABLE `pay_qrcode`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pay_settings`
+-- 表的索引 `pay_settings`
 --
 ALTER TABLE `pay_settings`
   ADD PRIMARY KEY (`vkey`);
 
 --
--- Indexes for table `pay_tmp_price`
+-- 表的索引 `pay_shop`
+--
+ALTER TABLE `pay_shop`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `pay_tmp_price`
 --
 ALTER TABLE `pay_tmp_price`
   ADD PRIMARY KEY (`price`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- 在导出的表使用AUTO_INCREMENT
 --
 
 --
--- AUTO_INCREMENT for table `pay_appication`
+-- 使用表AUTO_INCREMENT `pay_appication`
 --
 ALTER TABLE `pay_appication`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT ' 将作为程序的标记';
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT ' 将作为程序的标记', AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT for table `pay_order`
+-- 使用表AUTO_INCREMENT `pay_order`
 --
 ALTER TABLE `pay_order`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
 --
--- AUTO_INCREMENT for table `pay_qrcode`
+-- 使用表AUTO_INCREMENT `pay_qrcode`
 --
 ALTER TABLE `pay_qrcode`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- 使用表AUTO_INCREMENT `pay_shop`
+--
+ALTER TABLE `pay_shop`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

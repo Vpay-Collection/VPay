@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title><?php echo $html_title; ?></title>
-    <link href="/install/css/install.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/install/js/jquery.js"></script>
-    <link href="/install/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/install/js/perfect-scrollbar.min.js"></script>
-    <script type="text/javascript" src="/install/js/jquery.mousewheel.js"></script>
+    <title><?php echo APP_TITLE; ?></title>
+    <link href="/i/install/css/install.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/i/install/js/jquery.js"></script>
+    <link href="/i/install/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/i/install/js/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="/i/install/js/jquery.mousewheel.js"></script>
     <script type="text/javascript">
         var scroll_height = 0;
 
@@ -25,7 +25,7 @@
 </head>
 
 <body>
-<?php echo $html_header; ?>
+<?php include(ROOT_PATH."/views/header.html"); ?>
 <div class="main">
     <div class="step-box" id="step4">
         <div class="text-nav">
@@ -51,6 +51,6 @@
     </div>
     <div class="btn-box"><a href="javascript:void(0);" id="install_process" class="btn btn-primary">正在安装 ...</a></div>
 </div>
-<?php echo $html_footer; ?>
+<?php include(ROOT_PATH."/views/footer.html"); ?>
 </body>
 </html>

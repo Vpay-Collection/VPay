@@ -2,15 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title><?php echo $html_title; ?></title>
-    <link href="/install/css/install.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/install/js/jquery.js"></script>
-    <link href="/install/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="/install/js/perfect-scrollbar.min.js"></script>
-    <script type="text/javascript" src="/install/js/jquery.mousewheel.js"></script>
+    <title><?php echo APP_TITLE; ?></title>
+    <link href="/i/install/css/install.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/i/install/js/jquery.js"></script>
+    <link href="/i/install/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/i/install/js/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="/i/install/js/jquery.mousewheel.js"></script>
 </head>
 <body>
-<?php echo $html_header; ?>
+<?php include(ROOT_PATH."/views/header.html"); ?>
 <div class="main">
     <div class="final-succeed"><span class="ico"></span>
         <h2>程序已成功安装</h2>
@@ -33,13 +33,11 @@
         </ul>
     </div>
     <div class="final-intro">
-        <p><strong>系统管理默认地址:&nbsp;</strong><a href="<?php echo $auto_site_url; ?>/admin"
-                                              target="_blank"><?php echo $auto_site_url; ?>/admin</a></p>
-        <p><strong>网站首页默认地址:&nbsp;</strong><a href="<?php echo $auto_site_url; ?>"
-                                              target="_blank"><?php echo $auto_site_url; ?></a></p>
+        <p><strong>管理员账号:&nbsp;</strong><?php echo $_GET['username']; ?></p>
+        <p><strong>管理员密码:&nbsp;</strong><?php  echo $_GET['password']; ?></p>
     </div>
 </div>
-<?php echo $html_footer; ?>
+<?php include(ROOT_PATH."/views/footer.html"); ?>
 <script type="text/javascript">
     $(document).ready(function () {
         //自定义滚定条

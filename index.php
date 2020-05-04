@@ -7,12 +7,6 @@ namespace app;
 define('APP_DIR', __DIR__);
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_CORE', APP_DIR . DS . 'protected' . DS . 'lib' . DS . 'speed' . DS);
-
-//使用安装程序把下面两行替换即可
-require APP_CORE . 'Base.php';
-Speed::Start();
-/**
-//安装程序
 if (!is_file("./install/lock") && is_file("./install/index.php")) {
     require(APP_DIR . '/install/index.php');
     exit;
@@ -20,5 +14,4 @@ if (!is_file("./install/lock") && is_file("./install/index.php")) {
     require APP_CORE.'Base.php';
     Speed::Start();
 }
-*/
 

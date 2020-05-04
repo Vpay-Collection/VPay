@@ -1,6 +1,8 @@
 <?php
 define("APP_PATH", dirname(dirname(__FILE__)));  //定义根目录
 define("ROOT_PATH", dirname(__FILE__));  //定义根目录
+require ROOT_PATH."/config.php";
+//引入配置文件
 require ROOT_PATH."/include/function.php";
 //引入检查文件
 set_time_limit(0);   //设置运行时间
@@ -13,15 +15,12 @@ if (function_exists('date_default_timezone_set')) {
 }
 
 //判断是否安装过程序
-if (is_file(ROOT_PATH.'/lock') && intval($_GET['step']) !== 5) {
+if (is_file(ROOT_PATH.'/.lock') && intval($_GET['step']) !== 5) {
     @header("Content-type: text/html; charset=UTF-8");
-    echo "系统已经安装过了，如果要重新安装，那么请删除install目录下的lock文件";
+    echo "系统已经安装过了，如果要重新安装，那么请删除install目录下的.lock文件";
     exit;
 }
 
-$html_title = 'V免签安装向导';
-$html_header = file_get_contents(ROOT_PATH."/views/header.html");
-$html_footer = file_get_contents(ROOT_PATH."/views/footer.html");
 
 //传入的数据进行处理
 input($_GET);
@@ -52,8 +51,10 @@ switch ($_GET['step']) {
         break;
 
     case 3:
-        if($_GET["iCheck"]==='mini'){
-            deldir("demo");
+        $func=$_GET["iCheck"];
+        if($func!==''&&function_exists('install_'.$func)){
+            $funcname='install_'.$func;
+            $funcname();
         }
         $sql=new mysql();
         if(!$sql->install() &&$_SERVER['REQUEST_METHOD'] == 'POST' ? true : false){

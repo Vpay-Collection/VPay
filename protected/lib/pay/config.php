@@ -6,8 +6,8 @@
  * 在这里修改配置
  */
 $key="YtKWARQRpKDCtQs88cC3Finnic5d7iGasGiHwecyZsPM63MHHrp2GCZEpJesYn5kZpWNmGNDMszBwCb4Sb2iGiJPzT6iG8h34szenda7DeMdDfh5yZ3cNRBTFFA8Y6WZ"; //该应用的通讯密钥，如果密钥泄露可以重置密钥
-$appid="2";//应用id，在后台应用列表的id部分可以看到
-$url="http://127.0.0.1"; //支付站点的URL
+$appid="1";//应用id，在后台应用列表的id部分可以看到
+$url="http://".$_SERVER['HTTP_HOST']; //支付站点的URL
 
 return array(
     "Appid"=>$appid,//应用id，在后台应用列表的id部分可以看到

@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title><?php echo $html_title; ?></title>
-    <link href="/install/css/install.css" rel="stylesheet" type="text/css">
-    <script src="/install/js/jquery.js"></script>
-    <script src="/install/js/jquery.icheck.min.js"></script>
+    <title><?php echo APP_TITLE; ?></title>
+    <link href="/i/install/css/install.css" rel="stylesheet" type="text/css">
+    <script src="/i/install/js/jquery.js"></script>
+    <script src="/i/install/js/jquery.icheck.min.js"></script>
     <script>
         $(document).ready(function () {
             $('input[type="radio"]').on('ifChecked', function (event) {
@@ -30,7 +30,7 @@
 </head>
 
 <body>
-<?php ECHO $html_header; ?>
+<?php include(ROOT_PATH."/views/header.html"); ?>
 <div class="main">
     <div class="step-box" id="step2">
         <div class="text-nav">
@@ -54,16 +54,22 @@
     <form method="get" id="install_form" action="/">
         <input type="hidden" value="3" name="step">
         <div class="select-install">
+            <?php
+
+                for($i=0;$i<sizeof($GLOBALS['install']);$i++){
+                    $val=$GLOBALS['install'][$i];
+
+             ?>
             <label>
-                <input type="radio" name="iCheck" value="full" id="radio-1" class="green-radio" checked>
-                <h3>完全安装 V 免签(包括demo)</h3>
+                <input type="radio" name="iCheck" value="<?php echo $val['func'];?>" <?php if($i==0)echo 'checked'; ?> class="green-radio">
+                <h3><?php echo $val['name'];?></h3>
 
             </label>
-            <label>
-                <input type="radio" name="iCheck" value="mini" id="radio-2" class="green-radio">
-                <h3>最小安装 V 免签(无demo)</h3>
+            <?php
+                }
 
-            </label>
+            ?>
+
 
         </div>
 
@@ -73,6 +79,6 @@
         </div>
     </form>
 </div>
-<?php ECHO $html_footer; ?>
+<?php include(ROOT_PATH."/views/footer.html"); ?>
 </body>
 </html>

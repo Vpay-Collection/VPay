@@ -16,7 +16,7 @@ class Config
     static public function config()
     {
         return array( // 调试配置
-            'host' => array('localhost', 'a.com',NULL),//localhost改成自己的域名
+            'host' => array('127.0.0.1', 'a.com'),//localhost改成自己的域名
             'debug' => 1,//为0不输出调试错误信息
             'mysql' => array(//数据库信息
                 'MYSQL_HOST' => 'localhost',

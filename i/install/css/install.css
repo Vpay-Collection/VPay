@@ -166,11 +166,11 @@ input.error {
 }
 
 .btn.btn-primary {
-    background-color: #f50;
+    background-color: #007cffde;
 }
 
 .btn.btn-primary:hover, .btn.btn-primary:focus {
-    background-color: #f40;
+    background-color: #007cffa1;
 }
 
 /* Scrollbar jQuery Plugin
@@ -289,7 +289,7 @@ input.error {
 .header .layout .title h2 {
     font-size: 36px;
     line-height: 40px;
-    color: #f50;
+    color: #007cffde;
     display: block;
     height: 40px;
 }
@@ -530,7 +530,7 @@ input.error {
 }
 
 .schedule-line-now {
-    background-color: #f50;
+    background-color: #007cffde;
     height: 8px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -621,12 +621,12 @@ input.error {
 }
 
 #step1 .schedule-point-now span.a {
-    background-color: #f50;
+    background-color: #007cffde;
 }
 
 #step1 .schedule-text span.a {
     font-weight: 600;
-    color: #f50;
+    color: #007cffde;
 }
 
 #step2 .schedule-ico span.a {
@@ -642,12 +642,12 @@ input.error {
 }
 
 #step2 .schedule-point-now span.a, #step2 .schedule-point-now span.b {
-    background-color: #f50;
+    background-color: #007cffde;
 }
 
 #step2 .schedule-text span.a, #step2 .schedule-text span.b {
     font-weight: 600;
-    color: #f50;
+    color: #007cffde;
 }
 
 #step3 .schedule-ico span.a {
@@ -667,12 +667,12 @@ input.error {
 }
 
 #step3 .schedule-point-now span.a, #step3 .schedule-point-now span.b, #step3 .schedule-point-now span.c {
-    background-color: #f50;
+    background-color: #007cffde;
 }
 
 #step3 .schedule-text span.a, #step3 .schedule-text span.b, #step3 .schedule-text span.c {
     font-weight: 600;
-    color: #f50;
+    color: #007cffde;
 }
 
 #step4 .schedule-ico span.a {
@@ -700,12 +700,12 @@ input.error {
 }
 
 #step4 .schedule-point-now span.a, #step4 .schedule-point-now span.b, #step4 .schedule-point-now span.c, #step4 .schedule-point-now span.d {
-    background-color: #f50;
+    background-color: #007cffde;
 }
 
 #step4 .schedule-text span.a, #step4 .schedule-text span.b, #step4 .schedule-text span.c, #step4 .schedule-text span.d {
     font-weight: 600;
-    color: #f50;
+    color: #007cffde;
 }
 
 /* Select Install Module
@@ -802,7 +802,7 @@ input.error {
     font-size: 16px;
     font-weight: 600;
     line-height: 24px;
-    color: #f50;
+    color: #007cffde;
     text-align: center;
     margin-top: 10px;
 }
@@ -837,7 +837,7 @@ input.error {
     font-size: 14px;
     line-height: 24px;
     color: #FFF;
-    background-color: #f50;
+    background-color: #007cffde;
     text-align: left;
     height: 20px;
     padding: 7px 1%;

@@ -1,17 +1,22 @@
 <?php
-namespace Speed;
-class Config{
-    static public function register(){
-        $conf=Config::config();
-        if($_SERVER["HTTP_HOST"]!==$conf['host']){
+
+namespace app\config;
+class Config
+{
+    static public function register()
+    {
+        $conf = Config::config();
+        if (!in_array($_SERVER["HTTP_HOST"], $conf['host'])) {
             exit('域名绑定错误！');
         }
-        $GLOBALS=$conf+Config::route();
+        $GLOBALS = $conf + Config::route();
 
     }
-    static public function config(){
+
+    static public function config()
+    {
         return array( // 调试配置
-            'host'=>'[url]',//localhost改成自己的域名
+            'host' => array('127.0.0.1', '[url]'),//localhost改成自己的域名
             'debug' => 1,//为0不输出调试错误信息
             'mysql' => array(//数据库信息
                 'MYSQL_HOST' => '[host]',
@@ -21,10 +26,12 @@ class Config{
                 'MYSQL_PASS' => '[pass]',
                 'MYSQL_CHARSET' => '[charset]',
             ),
-            "error"=>'error'//非调试状态出错显示的信息
+            "error" => 'error',//非调试状态出错显示的信息
         );
     }
-    static public function route(){
+
+    static public function route()
+    {
         return array(
             'rewrite' => array(
                 'login'                => 'admin/main/login',
@@ -37,11 +44,10 @@ class Config{
                 'Confirm'              => 'api/Api/Confirm',
                 'CloseOrder'           => 'api/Api/CloseOrder',
                 'GetOrder'             => "api/Api/GetOrder",
-
-                '<m>/<c>/<a>'          => '<m>/<c>/<a>',
-                '<c>/<a>'              => '<c>/<a>',
-                '/'                    => 'main/index',
-                'admin'                => 'admin/main/index',
+                '<m>/<c>/<a>' => '<m>/<c>/<a>',
+                '<c>/<a>' => '<c>/<a>',
+                '/' => 'main/index',
+                '/admin' => 'admin/main/index',
             ),
         );
     }

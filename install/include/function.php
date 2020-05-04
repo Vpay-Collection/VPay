@@ -1,22 +1,28 @@
 <?php
-
+error_reporting(0);
 class check{
     private $conf;
+    private $env;
     public function __construct()
     {
-        $this->conf = include_once dirname(__FILE__)."/var.php";
+        $this->conf =$GLOBALS['check']['var'];
+        $this->env =$GLOBALS['check']['env'];
     }
 
     public function env()
     {
-        $env_items[] = array('name' => '操作系统', 'min' => '无限制', 'good' => 'linux', 'cur' => PHP_OS, 'status' => 1);
 
-        $env_items[] = array('name' => 'PHP版本', 'min' => '7.0', 'good' => '7.3', 'cur' => PHP_VERSION, 'status' => (PHP_VERSION < 7.0 ? 0 : 1));
+        $env_items[] = array('name' => 'PHP伪静态', 'min' => '需要', 'good' => '需要', 'cur' => $this->rewrite()?'已配置':'未配置', 'status' =>  $this->rewrite()?1:0);
 
-        $env_items[] = array('name' => '附件上传', 'min' => '未限制', 'good' => '2M', 'cur' => ini_get('upload_max_filesize'), 'status' => 1);
+
+        $env_items[] = array('name' => '操作系统', 'min' =>  $this->env['os']['min'], 'good' => $this->env['os']['good'], 'cur' => PHP_OS, 'status' => $this->env['os']['min']==='不限'?1:(stripos(PHP_OS,$this->env['os']['min'])?1:0));
+
+        $env_items[] = array('name' => 'PHP版本', 'min' => $this->env['php']['min'], 'good' => $this->env['php']['good'], 'cur' => PHP_VERSION, 'status' => (PHP_VERSION < intval($this->env['php']['min']) ? 0 : 1));
+
+        $env_items[] = array('name' => '附件上传', 'min' => $this->env['upload']['min'], 'good' => $this->env['upload']['good'], 'cur' => ini_get('upload_max_filesize'), 'status' => intval(ini_get('upload_max_filesize'))<intval($this->env['upload']['min'])?0:1);
 
         $disk_place = function_exists('disk_free_space') ? floor(disk_free_space(ROOT_PATH) / (1024 * 1024)) : 0;
-        $env_items[] = array('name' => '磁盘空间', 'min' => '100M', 'good' => '>100M', 'cur' => empty($disk_place) ? '未知' : $disk_place . 'M', 'status' => $disk_place < 100 ? 0 : 1);
+        $env_items[] = array('name' => '磁盘空间', 'min' => $this->env['disk']['min'], 'good' => $this->env['disk']['good'], 'cur' => empty($disk_place) ? '未知' : $disk_place . 'M', 'status' => $disk_place < $this->env['disk']['min'] ? 0 : 1);
 
         return $env_items;
     }
@@ -116,6 +122,13 @@ class check{
         return $ext_items;
     }
 
+    public function rewrite(){
+        $url="http://".$_SERVER['HTTP_HOST'].'/protected/Config.php';
+        if(@file_get_contents($url)!=='')return true;
+        else return false;
+
+    }
+
 }
 class mysql{
     private $install_error;
@@ -130,7 +143,8 @@ class mysql{
         $db_name = $_POST['db_name'];
         $admin = $_POST['admin'];
         $password = $_POST['password'];
-        if (!$db_host || !$db_port || !$db_user || !$db_pwd || !$db_name || !$admin || !$password) {
+        $url = $_POST['url'];
+        if (!$db_host || !$db_port || !$db_user || !$db_pwd || !$db_name || !$admin || !$password||!$url) {
             $this->install_error = '输入不完整，请检查';
             return false;
         }
@@ -169,7 +183,7 @@ class mysql{
         $sql = file_get_contents(dirname(dirname(__FILE__))."/data/mysql.sql");
         //判断是否安装测试数据
         $sql = str_replace("\r\n", "\n", $sql);
-        $this->runquery($sql, $mysqli, $admin, $password);
+        $this->runquery($sql, $mysqli, $admin, $password,$url);
         $this->showjsmessage('初始化数据 ... 成功 ');
 
         /**
@@ -187,12 +201,13 @@ class mysql{
         return $this->install_error;
     }
 //execute sql
-    function runquery($sql, $mysqli, $admin, $password)
+    function runquery($sql, $mysqli, $admin, $password,$url)
     {
 //  global $lang, $tablepre, $db;
         if (!isset($sql) || empty($sql)) return;
         // $sql = str_replace("\r", "\n", str_replace('#__', $db_prefix, $sql));
         $sql = str_replace("[user]", $admin, $sql);
+        $sql = str_replace("[url]", $url, $sql);
         //
         $sql = str_replace("[pass]", hash("sha256",md5($password.md5($admin))), $sql);
         $ret = array();
