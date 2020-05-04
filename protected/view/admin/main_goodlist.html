@@ -12,6 +12,7 @@
 <table id="demo" lay-filter="test"></table>
 
 <script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-xs " lay-event="modify">修改</a>
     <a class="layui-btn layui-btn-xs  layui-btn-danger" lay-event="del">删除</a>
 </script>
 
@@ -81,6 +82,10 @@
 
                     });
                     
+                });
+            }else if(layEvent === 'modify'){
+                okLayer.open("修改商品 - "+data.name, "<{url c='admin/main' a='goodedit' }>?id="+data.id, "100%", "100%", null, function (){
+                    myTable.reload();
                 });
             }
         });

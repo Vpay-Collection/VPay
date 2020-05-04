@@ -20,8 +20,10 @@ class ApiController extends BaseController
     //创建订单
     public function actionCreateOrder()
     {
+
         $order = new Order();
         $result = $order->CreateOrder(arg());
+
         if (!$result) exit(json_encode(array("code" => Config::Api_Err, "msg" => $order->GetErr())));
         if ($result["isHtml"])
         {

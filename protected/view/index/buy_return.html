@@ -20,7 +20,7 @@
         p,h2{
            padding: 5px;
         }
-        p{
+        p,.result{
             font-weight: 100;
         }
         h2{
@@ -44,36 +44,14 @@
         </div>
     </blockquote>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-        <legend>支付测试</legend>
+        <legend>支付结果</legend>
     </fieldset>
-    <form class="layui-form layui-form-pane" style="max-width: 500px;margin: 0 auto" lay-filter="Tsetform">
-        <div class="layui-form-item">
-            <label class="layui-form-label">商品选择</label>
-            <div class="layui-input-block">
-                <select name="id" lay-filter="shop" required>
-                    <{foreach $list as $val}>
-                    <option value="<{$val.id}>"><{$val.name}> - ￥<{$val.price}></option>
-                    <{/foreach}>
-                </select>
-            </div>
+    <blockquote class="layui-elem-quote" style="text-align: center">
+        <div class="result" style="margin: 15px">
+            <{$result nofilter}>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">您的邮箱</label>
-            <div class="layui-input-block">
-                <input class="layui-input" name="email" lay-required>
-            </div>
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">留言</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" name="remark" class="layui-textarea"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="alipay">支付宝支付</button>
-            <button class="layui-btn" lay-submit="" lay-filter="wechat">微信支付</button>
-        </div>
-    </form>
+        <a type="button" href='<{url c="main" a="index"}>' target="_self" class="layui-btn layui-btn-normal">返回首页</a>
+    </blockquote>
 </div>
 </body>
 </html>

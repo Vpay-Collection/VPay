@@ -40,4 +40,16 @@ class App extends Model
     {
         $this->delete(array("id" => $id));
     }
+
+    public function getOne(?string $id)
+    {
+       return $this->select(array("id" => $id));
+    }
+
+    public function set(?string $arg, ?string $arg1, ?string $arg2, ?string $arg3, ?string $arg4)
+    {
+        $this->update(array('id'=>$arg),array(
+            "app_name" => $arg1, "return_url" => $arg2, "notify_url" => $arg3, "connect_key" => $arg4
+        ));
+    }
 }

@@ -1,6 +1,7 @@
 <table id="demo" lay-filter="test"></table>
 
 <script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-xs " lay-event="modify">修改</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
     <button id="btn" class="layui-btn layui-btn-xs layui-bg-blue" data-clipboard-text="{{d.connect_key}}" >复制通信密钥</button>
 </script>
@@ -53,7 +54,7 @@
             ,toolbar: "#toolbarTpl"
             , cols: [[ //表头
                 {field: 'id', title: 'ID', width: 60},
-                {title: '操作', width: 168, align: 'center', toolbar: '#barDemo'},
+                {title: '操作', width: 216, align: 'center', toolbar: '#barDemo'},
                 {field: 'app_name', title: '应用名称', minWidth: 200},
                 {field: 'return_url', title: '同步回调地址', minWidth: 380},
                 {field: 'notify_url', title: '异步回调地址', minWidth: 380},
@@ -86,6 +87,11 @@
                     });
 
 
+                });
+            }
+            else if(layEvent === 'modify'){
+                okLayer.open("修改应用 - "+data.app_name, "<{url c='admin/main' a='addApp' }>?id="+data.id,"58%", "97%", null, function (){
+                    myTable.reload();
                 });
             }
 

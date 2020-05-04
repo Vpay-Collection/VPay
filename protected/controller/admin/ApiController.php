@@ -315,11 +315,15 @@ class ApiController extends BaseController
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "删除成功", "data" => "", "count" => "0"));
     }
 
-    public function actionAppcreate()
+    public function actionAppCreate()
     {//添加应用
         $app = new App();
+        if(arg('id','')!==null){
+            $app->set(arg("id"),arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
+        }else{
+            $app->add(arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
+        }
 
-        $app->add(arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
 
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "添加成功！"));
     }
@@ -351,7 +355,16 @@ class ApiController extends BaseController
 
 
     }
-
+    public function actionGetOneApp(){
+        $id=arg('id');
+        $app = new App();
+        $result=$app->getOne($id);
+        if($result){
+            echo json_encode(array("code" => Config::Api_Ok, "data" =>$result ));
+        }else{
+            echo json_encode(array("code" => Config::Api_Err, "msg" => '没有该App'));
+        }
+    }
     public function actionSetBD()
     {//使用异步回调接口进行补单
         $ord = new Order();
@@ -379,12 +392,15 @@ class ApiController extends BaseController
         $arr['msg']=   arg('msg');
 
         $item=new Item();
-        $item->add($arr);
+        if(arg('id','')!=='')
+            $item->set(arg('id'),$arr);
+        else
+            $item->add($arr);
         echo json_encode(array("code" => Config::Api_Ok, "msg" => "成功"));
 
     }
 
-    public function actionGetOne(){
+    public function actionGetOneGood(){
         $id=arg('id');
         $item=new Item();
         $result=$item->getOne($id);

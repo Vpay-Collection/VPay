@@ -35,7 +35,7 @@ class Order extends Model
     private $isAuto=false;//是不是需要手动输入金额
     private $orderId;//本程序创建的订单号
     private $reallyPrice;//真实收到的钱
-    private $explain="";//参数中的说明信息
+    private $explain=null;//参数中的说明信息
 
     //模块变量
     private $err;//订单产生的错误均放在这里
@@ -185,8 +185,7 @@ class Order extends Model
         if (!$this->getPayMoney($arg["price"], $arg["type"],$timeout))return false;
         //对参数进行解码，进行url编码防止传输过程中中断
         $json=json_decode(urldecode($arg["param"]));
-        //参数中设置了收款原因，只在支付宝自动金额收款有效，只能20个字符左右
-        if(isset($json->explain))$this->explain=substr(strval($json->explain),0,20);
+
         //取得支付二维码
         if (!$this->getPayPic())return false;
 
@@ -427,6 +426,8 @@ EOF;
         if (isset($arg["param"])) {
             $this->param = strval($arg["param"]);
         }else $this->param = "";
+        //参数中设置了收款原因，只在支付宝自动金额收款有效，只能20个字符左右
+        if(isset($arg["explain"]))$this->explain=substr(strval($arg["explain"]),0,20);
         //最后校验签名
         if ($this->CheckSign()) return true;
         else return false;
@@ -442,6 +443,7 @@ EOF;
             $this->err = "该应用id不存在，请到后台创建";
             return false;
         }
+
         $this->key = $res["connect_key"];
         //封装用来签名的数组
         $arr["payId"] = $this->payId;
@@ -450,6 +452,9 @@ EOF;
         $arr["type"] = $this->type;
         $arr["appid"] = $this->appid;
         $arr["isHtml"] = $this->isHtml;
+        if($this->explain!==null)
+            $arr["explain"] = $this->explain;
+
         //为了安全key只做加盐
         //$arr["key"] = $this->key;
         //准备签名

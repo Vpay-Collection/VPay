@@ -5,7 +5,7 @@
  * Date: 2019-04-27
  * Time: 09:54
  */
-namespace app\lib\pay\lib\Web;
+namespace app\lib\pay\lib;
 class Web
 {
     /**
@@ -53,6 +53,7 @@ class Web
         }else{
             $url.='?'.$p;
         }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 信任任何证书

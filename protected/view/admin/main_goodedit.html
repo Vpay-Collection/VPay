@@ -26,7 +26,6 @@
         {payId}  客户端订单号<br>
         {type}  支付方式<br>
         {price}  支付的价格<br>
-        {orderId}  创建的订单号<br>
         {reallyPrice}  真实收到的钱<br>
     </div>
     <div class="layui-form-item ">
@@ -41,7 +40,20 @@
         var  form = layui.form;
         let $=layui.$;
         var okLayer=layui.okLayer;
+        function getQueryVariable(variable)
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] === variable){return pair[1];}
+            }
+            return false;
+        }
+        var id= getQueryVariable('id');
         form.on('submit(addArticle)',function (data) {
+            if(id!==false)
+                data.field.id=id;
             $.post("<{url('admin/api','setGood')}>", data.field, function (data) {
                 data = JSON.parse(data);
                 layer.msg(data.msg);
@@ -51,5 +63,19 @@
             });
             return false;
         });
+
+        if(id!==false){
+            $.post("<{url('admin/api','getonegood')}>?id="+id, null, function (data) {
+                data = JSON.parse(data);
+
+                if (data.code === Api_Ok) {
+                    form.val('form',{
+                        'name':data.data.name,
+                        'price':data.data.price,
+                        'msg':data.data.msg,
+                    });
+                }
+            });
+        }
     });
 </script>

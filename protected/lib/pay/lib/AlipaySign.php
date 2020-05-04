@@ -5,7 +5,7 @@
  * Date: 2019-09-25
  * Time: 20:30
  */
-namespace app\lib\pay\lib\AlipaySign;
+namespace app\lib\pay\lib;
 class AlipaySign
 {//支付宝的参数签名算法
     /**

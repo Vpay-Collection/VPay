@@ -9,17 +9,18 @@ use app\model\Item;
 
 class BuyController extends BaseController
 {
+    public $layout="";
     /**
      * 异步回调地址，此处用于处理真正的逻辑
      */
     public function actionNotify(){
+
         $Vpay=new Vpay();
         if($Vpay->PayNotify($_GET)) {//异步回调验证通过
             //业务处理
             $json=json_decode(urldecode(arg("param")));
             //do something
             //可以自己通知用户
-            log(urldecode(arg("param")));
             $mail=new Email();
             if(isset($json->email)&&Email::isEmail($json->email)){
                 //通知用户
@@ -57,12 +58,12 @@ ROF;
     public function actionReturn(){
         $Vpay=new Vpay();
         if($Vpay->PayReturn($_GET)){//回调时，验证通过
-            setcookie('token','');
-            $this->result="";
+            $this->result="<div style='text-align: left;color: firebrick'>";
             $this->result.= "支付成功！！！<br>";
             $this->result.= "后台订单状态必须为“订单已确认”才是真的成功了，否则是失败的<br>";
             $this->result.= "此处的是同步回调，这里不要将数据插入数据库，因为是否支付是没有验证的，数据入库部分请放到异步回调，当你收到钱时，app会推送收钱信息到后台，后台会向该程序发送已收钱的请求<br>";
             $this->result.= "商户订单号：" . $_GET['payId'] . "<br>自定义参数：" . urldecode($_GET['param']) . "<br>支付方式：" . $_GET['type'] . "<br>订单金额：" . $_GET['price'] . "<br>实际支付金额：" . $_GET['reallyPrice'];
+            $this->result="</div>";
         }else{
             //没有通过sign验证
             $this->result='<h4 class="text-center">'.$Vpay->getErr().'<br/></h4>';
@@ -75,7 +76,7 @@ ROF;
      */
     public function actionCreate(){
         $item=new Item();
-        $goodlist=$item->getOne(arg('payGood'));
+        $goodlist=$item->getOne(arg('id'));
 
 
         if(!$goodlist)$this->tips('没有该商品！',url('main','index'));
@@ -87,7 +88,7 @@ ROF;
         if(!Email::isEmail($email))$this->tips('邮箱输入错误！',url('main','index'));
         $remark=arg('remark');
 
-        $param=urlencode(json_encode(array('name'=>$name,'email'=>$email,'remark'=>$remark,'id'=>arg('payGood'))));
+        $param=urlencode(json_encode(array('name'=>$name,'email'=>$email,'remark'=>$remark,'id'=>arg('id'))));
         //附加参数为文本型
         $vpay=new Vpay();
 

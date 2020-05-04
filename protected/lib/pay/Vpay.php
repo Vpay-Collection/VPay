@@ -7,8 +7,9 @@
  */
 namespace app\lib\pay;
 
-use app\lib\pay\lib\AlipaySign\AlipaySign;
-use app\lib\pay\lib\Web\Web;
+
+use app\lib\pay\lib\AlipaySign;
+use app\lib\pay\lib\Web;
 
 class Vpay{
     //后台api数据
@@ -88,7 +89,7 @@ class Vpay{
         $web=new Web();
 
         $result=$web->get($this->conf["CreateOrder"],$arg);
-
+       
 
         $json=json_decode($result);
         if($json){
