@@ -318,7 +318,7 @@ class ApiController extends BaseController
     public function actionAppCreate()
     {//添加应用
         $app = new App();
-        if(arg('id','')!==null){
+        if(arg('id','')!==''){
             $app->set(arg("id"),arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
         }else{
             $app->add(arg("app_name"), arg("return_url"), arg("notify_url"), arg("connect_key"));
