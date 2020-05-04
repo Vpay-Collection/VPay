@@ -42,6 +42,7 @@ class Speed
     {
         if (!empty($GLOBALS['rewrite'])) {
             foreach ($GLOBALS['rewrite'] as $rule => $mapper) {
+                $rule=strtolower($rule);
                 if ('/' == $rule) $rule = '/$';
                 if (0 !== stripos($rule, $GLOBALS['http_scheme']))
                     $rule = $GLOBALS['http_scheme'] . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\') . '/' . $rule;
@@ -51,7 +52,7 @@ class Speed
                 $rule = str_replace('\/\/','\/',$rule);
                 
                 if (preg_match($rule, strtolower($GLOBALS['http_scheme'] . $_SERVER['HTTP_HOST'] . urldecode($_SERVER['REQUEST_URI'])), $matchs)) {
-                    $route = explode("/", strtolower($mapper));
+                    $route = explode("/", $mapper);
                     if (isset($route[2])) {
                         list($_GET['m'], $_GET['c'], $_GET['a']) = $route;
                     } else {
