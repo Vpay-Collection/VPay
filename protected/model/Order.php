@@ -186,7 +186,7 @@ class Order extends Model
         //对参数进行解码，进行url编码防止传输过程中中断
         $json=json_decode(urldecode($arg["param"]));
         //参数中设置了收款原因，只在支付宝自动金额收款有效，只能20个字符左右
-        if(isset($json->explain))$this->explain=substr($json->explain,0,20);
+        if(isset($json->explain))$this->explain=substr(strval($json->explain),0,20);
         //取得支付二维码
         if (!$this->getPayPic())return false;
 

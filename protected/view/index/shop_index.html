@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Vpay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/i/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="/i/css/common.css">
+    <style>
+        .ok-body {
+            padding: 20px;
+        }
+
+        blockquote {
+            font-size: 16px;
+        }
+        .layui-elem-quote {
+            border: 0 solid #009688;
+        }
+        p,h2{
+           padding: 5px;
+        }
+        p{
+            font-weight: 100;
+        }
+        h2{
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body class="ok-body-scroll">
+<div class="ok-body">
+    
+    <blockquote class="layui-elem-quote" style="text-align: center">
+        <h2>优雅的个人自动化收款解决方案</h2>
+        <p>免费、开源，无后门风险</p>
+        <p>支持监听店员收款信息，可使用支付宝微信小号/模拟器挂机，方便IOS用户</p>
+        <p>免root，免xp框架，不修改支付宝/微信客户端，防封更安全</p>
+        <p>收款即时到账，无需进入第三方账户，收款更安全</p>
+        <div style="margin: 15px;">
+            <a type="button" href='https://github.com/dreamncn/VPay' target="_blank" class="layui-btn layui-btn-primary">获取源码</a>
+            <a type="button" href='https://doc.dreamn.cn/doc/Vpay%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/#/' target="_blank" class="layui-btn">开发文档</a>
+            <a type="button" href='https://github.com/szvone/vmqApk/releases' target="_blank" class="layui-btn layui-btn-normal">下载客户端</a>
+        </div>
+    </blockquote>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>支付测试</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" style="max-width: 500px;margin: 0 auto" action="" lay-filter="form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品选择</label>
+            <div class="layui-input-block">
+                <select name="shop" lay-filter="shop">
+                    <{foreach $list as $val}>
+                    <option value="<{$val.id}>"><{$val.name}> - ￥<{$val.price}></option>
+                    <{/foreach}>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">您的邮箱</label>
+            <div class="layui-input-block">
+                <input class="layui-input" name="mail" >
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">留言</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="text" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="alipay">支付宝支付</button>
+            <button class="layui-btn" lay-submit="" lay-filter="wechat">微信支付</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="/i/lib/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['jquery','element','form'], function () {
+        var $ = layui.jquery,
+            element = layui.element,
+            form = layui.form;
+          
+
+    });
+</script>

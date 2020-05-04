@@ -17,8 +17,8 @@ class Code{
        //二维码数据
         //纠错级别：L、M、Q、H
         //二维码图片的大小，单位：点， 1到10
-        \QRcode::png($data, 'qr.png', $errorCorrectionLevel, $matrixPointSize, 2); //不带Logo二维码的文件名
-        $QR = 'qr.png';
+        \QRcode::png($data, APP_TMP.'qr.png', $errorCorrectionLevel, $matrixPointSize, 2); //不带Logo二维码的文件名
+        $QR = APP_TMP.'qr.png';
         if ($logo !== false) {
             $QR = imagecreatefromstring(file_get_contents($QR));
             $logo = imagecreatefromstring(file_get_contents($logo));

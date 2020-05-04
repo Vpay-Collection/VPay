@@ -6,7 +6,6 @@
 namespace app\controller\api;
 
 use app\includes\AlipaySign;
-
 use app\lib\phpqrcode\Code;
 use app\model\App;
 use app\model\Config;

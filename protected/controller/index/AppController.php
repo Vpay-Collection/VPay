@@ -30,9 +30,9 @@ class AppController extends BaseController
             exit(json_encode(array("code" => Config::Api_Err, "msg" => "签名校验不通过")));
         }
 
-        $jg = time() * 1000 - $t;
+        $jg = time() * 1000 - intval($t);
         if ($jg > 50000 || $jg < -50000) {
-            exit(json_encode(array("code" => Config::Api_Err, "msg" => "客户端时间错误")));
+            exit(json_encode(array("code" => Config::Api_Err, "msg" => "客户端时间错误",'data'=>[time(),$t])));
         }
 
         $conf->setData("LastHeart", time());

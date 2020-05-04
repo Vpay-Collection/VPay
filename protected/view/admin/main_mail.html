@@ -117,8 +117,8 @@
                 data:data.field,
                 success:function (data) {
                     data=JSON.parse(data);
-                    if(data.state) layer.msg('保存成功');
-                    else layer.msg(data.msg);
+                    if(data.state) layer.msg('保存成功',{icon:6});
+                    else layer.msg(data.msg,{icon:5});
                 }
             });
 

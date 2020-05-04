@@ -15,12 +15,12 @@ class MailController extends BaseController{
     }
     public function actionSet(){
         foreach ($this->data as $v){
-            if(Speed::arg($v)===null) exit(json_encode(array("state"=>false,"msg"=>"参数错误！".$v)));
+            if(arg($v)===null) exit(json_encode(array("state"=>false,"msg"=>"参数错误！".$v)));
         }
         $conf=new Config();
         //更新选项
         foreach ($this->data as $v){
-            $conf->setData($v,Speed::arg($v));
+            $conf->setData($v,arg($v));
         }
         echo json_encode(array("state"=>true));
     }

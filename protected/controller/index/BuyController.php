@@ -1,19 +1,14 @@
 <?php
-/**
- * RSSController.php
- * User: Dreamn
- * Date: 2020/1/3 23:11
- * Description:
- */
+namespace app\controller\index;
 
-namespace app\controller\shop;
-use includes\Email;
-use lib\pay\Vpay;
-use lib\speed\Speed;
-use model\Config;
 
-class BuyController extends BaseController {
+use app\includes\Email;
+use app\lib\pay\Vpay;
+use app\model\Config;
+use app\model\Item;
 
+class BuyController extends BaseController
+{
     /**
      * 异步回调地址，此处用于处理真正的逻辑
      */
@@ -21,23 +16,32 @@ class BuyController extends BaseController {
         $Vpay=new Vpay();
         if($Vpay->PayNotify($_GET)) {//异步回调验证通过
             //业务处理
-            $json=json_decode(urldecode(Speed::arg("param")));
-           //do something
+            $json=json_decode(urldecode(arg("param")));
+            //do something
             //可以自己通知用户
-            Speed::log(urldecode(Speed::arg("param")));
+            log(urldecode(arg("param")));
             $mail=new Email();
             if(isset($json->email)&&Email::isEmail($json->email)){
                 //通知用户
-                $content=$mail->complieNotify(array('notice1'=>"支付成功",'notice2'=>'您已经成功购买《'.$json->name.'》，站长将在24小时内处理订单','notice3'=>'如有疑问请发邮件到dream@dreamn.cn'));
+                $item=new Item();
+                $result=$item->getOne($json->id);
+                if($result){
+                    $content=$this->replace($result['msg'],$_GET['payId'],intval($_GET['type'])===1?'支付宝':'微信',$_GET['price'],$_GET['reallyPrice']);
 
-                $mail->send($json->email,'支付结果通知',$content,'Vpay');
+                    $mail->send($json->email,'支付结果通知',$content,'Vpay');
+                }
+
 
             }
             //通知作者，id是商品ID
             $conf=new Config();
             $mailAddress=$conf->getData('MailRec');
             if(isset($json->id)&&($json->id==2||$json->id==3)&&Email::isEmail($mailAddress)){
-                $content=$mail->complieNotify(array('notice1'=>"订单通知",'notice2'=>'用户已经购买《'.$json->name.'》请尽快处理','notice3'=>'用户邮箱：'.$json->email.' 用户留言：'.$json->remark));
+                $content=<<<ROF
+用户已经购买 {$json->name} 请尽快处理<br>
+用户邮箱： {$json->email} <br>
+用户留言： {$json->remark} 
+ROF;
                 $mail->send($mailAddress,'新的订单',$content,'Vpay');
             }
             echo json_encode(array("state"=>Vpay::Api_Ok,"msg"=>"okok"));
@@ -70,44 +74,49 @@ class BuyController extends BaseController {
      * 订单创建
      */
     public function actionCreate(){
-        $goodlist=array(
-            '1'=>array('name'=>'0.1支付测试','price'=>0.1),
-            '2'=>array('name'=>'收费远程安装','price'=>60),
-            '3'=>array('name'=>'付费咨询','price'=>10)
-        );
+        $item=new Item();
+        $goodlist=$item->getOne(arg('payGood'));
 
-        $good=Speed::arg('payGood');
-        if(!isset($goodlist[$good]))$this->tips('没有该商品！',Speed::url('demo/main','index'));
 
-        $price=$goodlist[$good]['price'];//价格
-        $name=$goodlist[$good]['name'];//商品名称
+        if(!$goodlist)$this->tips('没有该商品！',url('main','index'));
 
-        $email=Speed::arg('email');
-        if(!Email::isEmail($email))$this->tips('邮箱输入错误！',Speed::url('demo/main','index'));
-        $remark=Speed::arg('remark');
+        $price=$goodlist['price'];//价格
+        $name=$goodlist['name'];//商品名称
 
-        $param=urlencode(json_encode(array('name'=>$name,'email'=>$email,'remark'=>$remark,'id'=>$good)));
+        $email=arg('email');
+        if(!Email::isEmail($email))$this->tips('邮箱输入错误！',url('main','index'));
+        $remark=arg('remark');
+
+        $param=urlencode(json_encode(array('name'=>$name,'email'=>$email,'remark'=>$remark,'id'=>arg('payGood'))));
         //附加参数为文本型
         $vpay=new Vpay();
 
         $payId=$vpay->getPayId($price,$param);
 
-        $type=intval(Speed::arg('payType'))===1?1:2;
+        $type=intval(arg('payType'))===1?1:2;
 
         $html=1;//是否使用自带的支付页面，为0表示不使用自带的支付页面
 
         $arg["payId"]=$payId;
         $arg["price"]=$price;
+        $arg["explain"]='商品 '.$name;//可选
         $arg["param"]=$param;
         $arg["type"]=$type;
 
         $result=$vpay->Create($arg,$html);
-        if($result===false) $this->tips($vpay->getErr(),Speed::url('demo/main','index'));
+        if($result===false) $this->tips($vpay->getErr(),url('main','index'));
         else echo $result;
 
     }
 
-
+    private function replace($msg,$payId,$type,$price,$reallyPrice){
+        $msg=str_replace(array(
+            "{payId}","{type}","{price}","{reallyPrice}"
+        ),array(
+            $payId,$type,$price,$reallyPrice,
+        ),$msg);
+        return $msg;
+}
 
 
 }

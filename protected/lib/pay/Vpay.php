@@ -72,7 +72,11 @@ class Vpay{
         //进行签名
         $alipay = new AlipaySign();
 
-        $arg["isHtml"] = $html;//采用自带的ui或者自己写ui
+        $arg["type"]=intval($arg["type"])===1?1:2;
+
+        $arg["price"]=floatval($arg["price"]);
+
+        $arg["isHtml"] = intval($html)===1?1:0;//采用自带的ui或者自己写ui
 
         $arg["appid"] = $this->conf["Appid"];//把appid也参与计算
 
