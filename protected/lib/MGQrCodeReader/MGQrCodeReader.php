@@ -10,19 +10,11 @@ class MGQrCodeReader{
     private $imgPath;
     private $scaleSize = [100, 200, 300, 400, 500];
 
-    public function __construct($storageParent = null){
-        $rootPath = '';
-        if(is_string($storageParent) && is_dir($storageParent)){
-            // 如果有必要的话，可以由外部设置为 /mnt/ 下的目录提高效率
-            $rootPath = $storageParent;
-        }else{
-            $rootPath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-        }
+    public function __construct(){
 
-        $this->imgPath = $rootPath . 'image_tmp'. DIRECTORY_SEPARATOR;
-        if(!is_dir($this->imgPath)){
-            mkdir($this->imgPath, 420); // 644
-        }
+
+        $this->imgPath = APP_TMP;
+        
     }
     
     public function setScaleSize($sizeArray){

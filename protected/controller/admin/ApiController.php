@@ -5,7 +5,7 @@
  * */
 namespace app\controller\admin;
 use app\includes\Update;
-use app\lib\speed\Speed;
+use app\includes\AES;
 use app\model\App;
 use app\model\Config;
 use app\model\Item;
@@ -226,6 +226,7 @@ class ApiController extends BaseController
 
             exit(json_encode(array("code" => Config::Api_Ok, "msg" => "成功", "data" =>$data)));
         }
+
         if (isset($_FILES["file"])) {
             $local=$_FILES["file"]["tmp_name"];
         } else {

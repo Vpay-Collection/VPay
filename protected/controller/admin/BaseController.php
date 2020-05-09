@@ -8,7 +8,7 @@ use app\model\User;
 class BaseController extends Controller
 {
     public $layout = "layout";
-    public $version='2.2';
+    public $version='2.3';
 
     function init()
     {
