@@ -1,6 +1,6 @@
 <?php
 define('APP_NAME','Vpay');
-define('APP_VER','2.3');
+define('APP_VER','2.4');
 define('APP_UPDATE','2020.05.09');
 define('APP_AUTHOR','Dreamn');
 define('APP_TITLE','V免签安装向导');

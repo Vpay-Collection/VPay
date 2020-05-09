@@ -94,7 +94,8 @@ ROF;
 
         $payId=$vpay->getPayId($price,$param);
 
-        $type=intval(arg('type'))===1?1:2;
+        
+        $type=intval(arg('type'));
 
         $html=1;//是否使用自带的支付页面，为0表示不使用自带的支付页面
 

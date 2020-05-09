@@ -64,13 +64,13 @@
             form = layui.form;
         form.on('submit(alipay)',function () {
             var arr=form.val('Tsetform');
-            arr.type=1;
+            arr.type=2;
             post('<{url c="buy" a="create"}>',arr);
             return false;
         });
         form.on('submit(wechat)',function () {
             var arr=form.val('Tsetform');
-            arr.type=2;
+            arr.type=1;
             post('<{url c="buy" a="create"}>',arr);
             return false;
         });

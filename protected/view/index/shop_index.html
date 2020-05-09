@@ -47,7 +47,7 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend>支付测试</legend>
     </fieldset>
-    <form class="layui-form layui-form-pane" style="max-width: 500px;margin: 0 auto" lay-filter="Tsetform">
+    <form class="layui-form layui-form-pane" style="max-width: 500px;margin: 0 auto" lay-filter="Testform">
         <div class="layui-form-item">
             <label class="layui-form-label">商品选择</label>
             <div class="layui-input-block">
@@ -85,13 +85,13 @@
             element = layui.element,
             form = layui.form;
         form.on('submit(alipay)',function () {
-            var arr=form.val('Tsetform');
+            var arr=form.val('Testform');
             arr.type=1;
             post('<{url c="buy" a="create"}>',arr);
             return false;
         });
         form.on('submit(wechat)',function () {
-            var arr=form.val('Tsetform');
+            var arr=form.val('Testform');
             arr.type=2;
             post('<{url c="buy" a="create"}>',arr);
             return false;

@@ -183,8 +183,6 @@ class Order extends Model
         $timeout=intval($time)*60+$createDate;
         //获得真实的支付金额
         if (!$this->getPayMoney($arg["price"], $arg["type"],$timeout))return false;
-        //对参数进行解码，进行url编码防止传输过程中中断
-        $json=json_decode(urldecode($arg["param"]));
 
         //取得支付二维码
         if (!$this->getPayPic())return false;
