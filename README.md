@@ -26,9 +26,9 @@ Vpay 是基于SpeedPHP4 + mysql 实现的一套免签支付程序，主要包含
 
 原作者的监控端的开源地址位于：[这里](https://github.com/szvone/VmqApk)
 
-在线演示：[这里](https://pay.dreamn.cn/)
+在线演示：[这里](https://pay.ankio.net)
 
-接口开发文档与使用帮助:[这里](https://doc.dreamn.cn/doc/Vpay%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/)
+接口开发文档与使用帮助:[这里](https://doc.ankio.net/doc/Vpay%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3/)
 
 > **注意**
 > 1. 本项目为开源项目，本人不可能总会及时修复存在的漏洞
