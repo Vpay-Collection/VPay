@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../css/okadmin.css">
+    <link rel="stylesheet" href="../../../lib/loading/okLoading.min.css"/>
+    <script type="text/javascript" src="../../../lib/loading/okLoading.min.js"></script>
+    <link rel="stylesheet" href="../../../css/oksub.css"/>
+
+</head>
+<body class="ok-body home">
+<div class="ok-body home">
+    <fieldset class="layui-elem-field layui-field-title" >
+        <legend>收款二维码设置</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信码</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button class="layui-btn layui-bg-blue" id="wxup" type="button">上传收款二维码</button>
+                    （此处上传的是无金额的收款二维码）
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="wximg" style="width: 120px;" alt="微信二维码" src="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付宝码</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button class="layui-btn  layui-bg-blue" id="zfbup" type="button">上传收款二维码</button>
+                    （此处上传的是无金额的收款二维码）
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="zfbimg" style="width: 120px;" alt="支付宝二维码" src="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">二维码logo</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button class="layui-btn  layui-bg-blue" id="logo" type="button">上传二维码logo</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="logoImg" style="width: 120px;" alt="二维码logo"
+                             src="../../../img/logo-item.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="../../../js/common.js"></script>
+<script src="../../../lib/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../js/'
+    });
+    layui.use(["okUtils","okMock","okLayer","form","upload"], function () {
+        let okUtils = layui.okUtils;
+        let okLayer = layui.okLayer;
+        let okMock=layui.okMock;
+        let form=layui.form;
+        let upload = layui.upload;
+
+        okLoading.close();
+
+        function setImg(elem, elemImg) {
+            upload.render({
+                elem: elem
+                , url: "/admin/api/qr?token="+localStorage.getItem("token")
+                , auto: true
+                , before: function (obj) {
+                    layer.msg('处理中', {
+                        icon: 16
+                        , shade: 0.01
+                        , time: 0
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code === 403) {
+                        return layer.msg(res.msg, {icon: 5});
+                    }
+
+                    layui.$(elemImg).attr('src', "/api/api/qr?url=" + res.data);
+                    layui.$(elemImg).attr('value', res.data);
+                    okUtils.ajax(okMock.admin.setting.qr, "post", {type:elem,data: res.data}, true).done(function (response) {
+                        okLayer.time=1000
+                        okLayer.greenTickMsg(response.msg, function () {
+
+                        })
+                    }).fail(function (error) {
+                        okLayer.time=2000
+                        okLayer.redCrossMsg(error)
+                        console.log(error)
+                    });
+                }
+            });
+        }
+        setImg('#wxup', '#wximg');
+        setImg('#zfbup', '#zfbimg');
+
+        upload.render({
+            elem: '#logo'
+            , url: "/admin/api/logo?token="+localStorage.getItem("token")
+            , auto: true
+            , before: function (obj) {
+                layer.msg('处理中', {
+                    icon: 16
+                    , shade: 0.01
+                    , time: 0
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code === 403) {
+                    return layer.msg(res.msg, {icon: 5});
+                }
+                layer.msg('处理成功', {icon: 6});
+                $('#logoImg').attr('src', '/ui/img/qrLogo.png?t=' + (new Date()).getTime())
+            }
+        });
+
+        okUtils.ajax(okMock.admin.data.qr, "post", null, true).done(function (response) {
+            if(response.data['wechat_code']!==""){
+                layui.$('#wximg').attr('src', "/api/api/qr?url=" + response.data['wechat_code']);
+                layui.$('#wximg').attr('value', response.data['wechat_code']);
+            }
+            if(response.data['alipay_code']!==""){
+                layui.$('#zfbimg').attr('src', "/api/api/qr?url=" + response.data['alipay_code']);
+                layui.$('#zfbimg').attr('value', response.data['alipay_code']);
+            }
+
+        }).fail(function (error) {
+            okLayer.time=2000
+            okLayer.redCrossMsg(error)
+            console.log(error)
+        });
+    });
+</script>
+
+</body>
+</html>

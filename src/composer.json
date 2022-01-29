@@ -1,0 +1,19 @@
+{
+    "authors": [
+        {
+            "name": "ankio",
+            "email": "dream@dreamn.cn"
+        }
+    ],
+    "require-dev": {
+        "eaglewu/swoole-ide-helper": "dev-master"
+    },
+    "require": {
+      "ext-sockets": "*",
+      "ext-json": "*",
+      "ext-gd": "*",
+      "ext-openssl": "*",
+        "guzzlehttp/guzzle": "~6.0",
+      "ext-iconv": "*"
+    }
+}
