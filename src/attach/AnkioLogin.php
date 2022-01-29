@@ -12,26 +12,39 @@
 
 namespace app\attach;
 
+use app\core\config\Config;
 use app\core\web\Session;
 use app\lib\HttpClient\HttpClient;
 
 class AnkioLogin
 {
-    private string $site = "https://usertest.ankio.net";
-    private string $id = "hZkcDetGFJhsRDjd5RWsJHsERzArM3By";
-    private string $key = "GbF3726ABKReAa74kWaMJiXWAA6ZBiPBXdDrAK5ECxttNxMaynAjjRh757nDdekZ";
+    private string $site = "";
+    private string $id = "";
+    private string $key = "";
     private static $instance = null;
+
     public static function get(): AnkioLogin
     {
-        if(self::$instance==null)
-            self::$instance=new AnkioLogin();
+        if (self::$instance == null)
+            self::$instance = new AnkioLogin();
+        $all = Config::getInstance("login")->get();
+        self::$instance->set($all["site"], $all["id"], $all["key"]);
         return self::$instance;
-}
+    }
+
+    public function set($site, $id, $key)
+    {
+        $this->site = $site;
+        $this->id = $id;
+        $this->key = $key;
+    }
+
     //前去登录
     public function login(): string
     {
-       return $this->site."/ui/#?i=".$this->id;
+        return $this->site."/ui/#?i=".$this->id;
     }
+
     //兑换登录票据，或者说是登录token
     public function replaceTicket($ticket){
         $http = new HttpClient($this->site);
@@ -40,6 +53,7 @@ class AnkioLogin
         if($response!=null&&$response["code"]==200)return $response["data"];
         return null;
     }
+
     //判断当前用户是否登录
     public function isLogin(): bool
     {
@@ -86,6 +100,6 @@ class AnkioLogin
     {
         $http = new HttpClient($this->site);
         $http->post("/callback/Login/logout",$this->sign(["token"=>Session::getInstance()->get("token")]));
-    //    $response = json_decode($http->getBody(),true);
+        //    $response = json_decode($http->getBody(),true);
     }
 }
