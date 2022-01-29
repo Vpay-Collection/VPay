@@ -20,4 +20,6 @@ pay :
 system:
   app_token: "" #通讯密钥
   app_mode: 1 # 1表示正常模式 2表示Xposed模式
+login:
+    ankio: false #采用集成登录框架进行登录
 

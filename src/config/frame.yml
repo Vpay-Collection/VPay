@@ -9,8 +9,6 @@ websocket_port : 9002
 debug : true
 # 使用伪静态
 rewrite: true
-# 程序完整性检查，会损失一些性能
-check: false
 # 项目名
 app : Vpay
 # 项目升级次数
@@ -21,7 +19,6 @@ verName : 3.0.1
 logValidTime : 30
 # 安装程序模块名
 install :
-# MD5
-md5:
+
 
 
