@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../css/okadmin.css">
+    <link rel="stylesheet" href="../../../lib/loading/okLoading.min.css"/>
+    <script type="text/javascript" src="../../../lib/loading/okLoading.min.js"></script>
+    <link rel="stylesheet" href="../../../css/oksub.css"/>
+
+</head>
+<body class="ok-body home">
+<div class="ok-body home">
+    <fieldset class="layui-elem-field layui-field-title" >
+        <legend>订单和支付配置 <span class="layui-badge layui-bg-blue"><a href="" target="_blank" style="color: white">配置指南</a></span></legend>
+    </fieldset>
+
+    <form class="layui-form layui-form-pane" lay-filter="form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单有效期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="validity_minute" lay-verify="required|number" autocomplete="off" placeholder="最长等待时间" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">订单最长等待时间</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付能力</label>
+            <div class="layui-input-inline">
+                <input type="text" name="max_pay_numbers_in_validity_minute" lay-verify="required|number" placeholder="默认为10" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">在订单有效期内最多支持多少相同金额的订单支付</div>
+        </div>
+        <div class="layui-form-item">
+            <label for="pay_type" class="layui-form-label">订单区分</label>
+            <div class="layui-input-inline">
+                <select id="pay_type" name="pay_type" lay-verify="required">
+                    <option value="1">金额递增</option>
+                    <option value="2">金额递减</option>
+                </select>
+            </div>
+            <div class="layui-form-mid layui-word-aux">通过APP监听的方式，在多笔同金额的订单到达时无法进行区分，所以需要对金额进行递增或递减</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付宝UID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="alipay_uid"  placeholder="支付宝UID" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">（可选）用于生成任意金额的收款码，但是支付宝没有通知</div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" >
+            <legend>Cookie配置（可选）</legend>
+        </fieldset>
+        <div class="layui-form-mid layui-word-aux">如果配置了该选项则优先使用该方案，如果该方案失效则尝试使用APP监听的方案</div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付宝</label>
+            <div class="layui-input-block">
+                <input type="text" name="alipay_cookie" placeholder="请输入Cookie" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">支付宝Cookie用于后台自动刷新订单<a href="https://mbillexprod.alipay.com/enterprise/tradeListQuery.htm">点击这里去登录支付宝</a></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信</label>
+            <div class="layui-input-block">
+                <input type="text" name="wechat_cookie"  placeholder="请输入Cookie" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">微信Cookie用于后台自动刷新订单，但是不能登录电脑版微信，会导致失效。<a href="https://wx.qq.com">点击这里去登录微信</a></div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="save">保存</button>
+        </div>
+    </form>
+
+</div>
+<script src="../../../js/common.js"></script>
+<script src="../../../lib/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../js/'
+    });
+    layui.use(["okUtils","okMock","okLayer","form","jsencrypt"], function () {
+        let okUtils = layui.okUtils;
+        let okLayer = layui.okLayer;
+        let okMock=layui.okMock;
+        let form=layui.form;
+
+
+        okLoading.close();
+        okUtils.ajax(okMock.admin.data.order, "post",null, true).done(function (response) {
+            form.val("form",response.data);
+        }).fail(function (error) {
+            okLayer.time=2000
+            okLayer.redCrossMsg(error)
+            console.log(error)
+        });
+
+        form.on('submit(save)', function(data){
+            var sendData=data.field;
+            okUtils.ajax(okMock.admin.setting.order, "post",sendData, true).done(function (response) {
+                okLayer.time=1000
+                okLayer.greenTickMsg(response.msg, function () {
+                })
+            }).fail(function (error) {
+                okLayer.time=2000
+                okLayer.redCrossMsg(error)
+                console.log(error)
+            });
+            return false;
+        });
+
+    });
+</script>
+
+</body>
+</html>

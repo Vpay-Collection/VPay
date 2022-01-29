@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../../css/okadmin.css">
+    <link rel="stylesheet" href="../../../lib/loading/okLoading.min.css"/>
+    <script type="text/javascript" src="../../../lib/loading/okLoading.min.js"></script>
+    <link rel="stylesheet" href="../../../css/oksub.css"/>
+
+</head>
+<body class="ok-body home">
+<div class="ok-body home">
+    <div class="layui-tab page-content-wrap">
+        <ul class="layui-tab-title">
+            <li class="layui-this">邮件配置</li>
+            <li>邮件测试</li>
+        </ul>
+        <div class="layui-tab-content">
+            <!--邮件配置-->
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form  layui-form-pane" onsubmit="return false;" lay-filter="form" style="width: 90%;padding-top: 20px;">
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Smtp服务器</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" lay-verify="required" name="smtp" placeholder="如ssl://smtp.qq.com"
+                                   type="text" value="ssl://smtp.qq.com">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">建议使用QQ邮箱，采用ssl通信的邮箱需要加上ssl协议标记</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Smtp端口</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" lay-verify="required" name="port" placeholder="例如465"
+                                   type="text" value="465">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">QQ邮箱使用的是465端口，其他服务商邮箱请咨询邮件服务商</div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发信邮箱</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" name="send" placeholder="请输入发信邮箱" type="text">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">发送邮件的邮箱</div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">发信密码</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" name="passwd" placeholder="请输入密码"
+                                   type="password">
+
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">QQ邮箱请使用<a href="https://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28" target="_blank">授权码</a></div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">收信邮箱</label>
+                        <div class="layui-input-inline">
+                            <input autocomplete="off" class="layui-input" name="receive" placeholder="请输入收信邮箱" type="text">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">通知自己的邮箱，不要和上面的通信邮箱设置成一样</div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">通知类型</label>
+                        <div class="layui-input-block">
+                            <input name="sendType" value="1" title="用户发起支付（补单）" type="checkbox">
+                            <input name="sendType" value="2" title="用户支付成功" type="checkbox">
+                            <input name="sendType" value="4"  title="收益日报" type="checkbox">
+                            <input name="sendType" value="8"  title="收益周报" type="checkbox">
+                            <input name="sendType" value="16"  title="Cookie失效" type="checkbox">
+                            <input name="sendType" value="32"  title="监控掉线" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-bg-blue" lay-filter="mailInfo" lay-submit="">保存设置</button>
+                        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                    </div>
+                </form>
+            </div>
+            <!--邮件测试-->
+            <div class="layui-tab-item">
+                <form class="layui-form  layui-form-pane" style="width: 90%;padding-top: 20px;">
+                    <div class="layui-form-item">
+                        <button class="layui-btn layui-bg-blue" lay-filter="mailSend" lay-submit="">发送邮件</button>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">测试结果</label>
+                        <div class="layui-input-block">
+                            <div id="test_result"
+                                 style="padding:10px; border:1px dashed #ccc; overflow:auto;"></div>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="../../../js/common.js"></script>
+<script src="../../../lib/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../js/'
+    });
+    layui.use(["okUtils","okMock","okLayer","form","element"], function () {
+        let okUtils = layui.okUtils;
+        let okLayer = layui.okLayer;
+        let okMock=layui.okMock;
+        let form=layui.form;
+        var element = layui.element;
+
+
+
+
+        okLoading.close();
+        form.on('submit(mailInfo)', function(data){
+            var sendData=data.field;
+            var value = [];
+
+            layui.$('input[name=sendType]:checked').each(function(){
+                value.push(layui.$(this).val());
+            });
+            sendData["sendType"]=value.toString();
+            okUtils.ajax(okMock.admin.setting.mail, "post",sendData, true).done(function (response) {
+                okLayer.time=1000
+                okLayer.greenTickMsg(response.msg, function () {
+
+                })
+            }).fail(function (error) {
+                okLayer.time=2000
+                okLayer.redCrossMsg(error)
+                console.log(error)
+            });
+            return false;
+        });
+
+        form.on('submit(mailSend)', function(data){
+            okUtils.ajax(okMock.admin.setting.mail_test, "post",null, true).done(function (response) {
+                okLayer.time=1000
+                okLayer.greenTickMsg(response.msg, function () {
+                    layui.$("#test_result").html(response.data);
+                });
+            }).fail(function (error) {
+                okLayer.time=2000
+                okLayer.redCrossMsg(error)
+                console.log(error)
+            });
+            return false;
+        });
+
+        okUtils.ajax(okMock.admin.data.mail, "post",null, true).done(function (response) {
+            form.val("form",response.data);
+            const groupCheckbox = layui.$("input[name='sendType']");
+            for (let i = 0; i < groupCheckbox.length; i++) {
+                const val = groupCheckbox[i].value;
+                if(response.data.sendType.split(',').indexOf(val)!==-1){
+                    groupCheckbox[i].checked=true;
+                }
+            }
+            form.render();
+        }).fail(function (error) {
+            okLayer.time=2000
+            okLayer.redCrossMsg(error)
+            console.log(error)
+        });
+
+
+    });
+</script>
+
+</body>
+</html>

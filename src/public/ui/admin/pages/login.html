@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="page-fill">
+<head>
+    <meta charset="UTF-8">
+    <title>Vpay 后台登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="../../img/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../css/oksub.css"/>
+</head>
+<body class="page-fill">
+    <div class="page-fill" id="login">
+        <form class="layui-form">
+
+            <h3 class="title"> Vpay 后台登录 </h3>
+            <div class="layui-form-item input-item">
+                <label for="username"><span class="ok-icon">&#xe736;</span></label>
+                <input type="text" lay-verify="required" name="username" placeholder="请输入账号" autocomplete="off" id="username" class="layui-input">
+            </div>
+            <div class="layui-form-item input-item">
+                <label for="password"><span class="ok-icon">&#xe6c0;</span></label>
+                <input type="password" lay-verify="required|password" name="password" placeholder="请输入密码" autocomplete="off" id="password" class="layui-input">
+
+                <div class="icon-css-view">
+                    <i id="iconShowView" class="ok-icon"
+                       style="color: #889aa4;">&#xe7b2;</i>
+                    <i id="iconHiddenView" class="ok-icon"
+                       style="color: #889aa4;" hidden>&#xe73d;</i>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <button class="layui-btn layui-block login-submit" lay-filter="login" lay-submit="">登录</button>
+            </div>
+
+        </form>
+    </div>
+    <!--js逻辑-->
+    <script src="../../lib/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '../../js/'
+        });
+        layui.use(["form",  "okUtils", "okLayer","okMock","jsencrypt"], function () {
+            let form = layui.form;
+            let $ = layui.jquery;
+            let okUtils = layui.okUtils;
+            let okLayer = layui.okLayer;
+            let okMock = layui.okMock;
+            let jsencrypt=layui.jsencrypt;
+            let password = $("#password");
+
+            okUtils.ajax(okMock.admin.login.isLogin, "post", form.val(), true).done(function (response) {
+                okLayer.greenTickMsg(response.msg, function () {
+                         window.location = "../index.html";
+                })
+            }).fail(function (error) {
+                console.log(error)
+            });
+
+            $("#iconShowView").on('click', function(e){
+                password[0].type = "text";
+                $("#iconShowView")[0].hidden = true;
+                $("#iconHiddenView")[0].hidden = false;
+                form.render();
+            });
+            $("#iconHiddenView").on('click', function(e){
+                password[0].type = "password";
+                $("#iconShowView")[0].hidden = false;
+                $("#iconHiddenView")[0].hidden = true;
+                form.render();
+            });
+
+
+            /**
+             * 表单提交
+             */
+            form.on("submit(login)", function (data) {
+                let sendData=data.field;
+                layer.prompt({
+                    title: '<img src="/admin/Login/captcha"  id="verifyImg" height="50">',
+                    formType: 0,
+                    move:false,
+                    value: '', //初始时的值，默认空字符
+                    maxlength: 140, //可输入文本的最大长度，默认500
+                    success: function(layero, index){
+                        layero.find('input').attr('placeholder',"请输入图形验证码");
+                        $('.layui-layer-title img').css('cursor','crosshair');
+                        layero.on('click','#verifyImg',function(){
+                            let url=$(this).attr('src');
+                            $(this).attr('src',url+"?t="+(new Date()).valueOf());
+                        });
+                    }
+                }, function(value, index, elem){
+                    okUtils.ajax(okMock.admin.login.publicKey, "post",null, true).done(function (response) {
+                        const publicKey = response.data;
+                        sendData["code"]=value;
+                        let JSEncrypt = jsencrypt.JSEncrypt;
+                        const encrypt = new JSEncrypt();
+                        encrypt.setPublicKey(publicKey);
+                        sendData["password"]=encrypt.encrypt(sendData["password"]);
+                        okUtils.ajax(okMock.admin.login.passwd, "post",sendData, true).done(function (response) {
+                            okLayer.time=1000
+                            okLayer.greenTickMsg(response.msg, function () {
+                                localStorage.setItem("token",response.data.token)
+                                window.location = "../index.html";
+                            })
+                        }).fail(function (error) {
+                            okLayer.time=2000
+                            okLayer.redCrossMsg(error)
+                            console.log(error)
+                        });
+                    }).fail(function (error) {
+                        okLayer.time=2000
+                        okLayer.redCrossMsg(error)
+                        console.log(error)
+                    });
+
+
+                });
+
+
+                return false;
+            });
+
+
+        });
+    </script>
+</body>
+</html>

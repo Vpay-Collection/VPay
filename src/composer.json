@@ -1,0 +1,13 @@
+{
+    "authors": [
+        {
+            "name": "ankio",
+            "email": "dream@dreamn.cn"
+        }
+    ],
+    "require": {
+        "ext-sockets": "*",
+      "ext-json": "*"
+
+    }
+}
