@@ -5,6 +5,8 @@
 
 namespace app\lib\Async;
 use app\core\cache\Cache;
+use app\core\debug\Debug;
+use app\core\debug\Log;
 use app\core\utils\StringUtil;
 use app\core\web\Request;
 use app\core\web\Response;
@@ -62,7 +64,14 @@ class Async
             $port = $url_array["port"];
         }
        try{
-           $fp = @fsockopen(($url_array['scheme'] == 'http' ? "" : 'ssl://') . $url_array['host'], $port, $errno, $errstr, 30);
+           $contextOptions = array(
+               'ssl' => array(
+                   'verify_peer' => false,
+                   'verify_peer_name' => false
+               )
+           );
+           $context = stream_context_create($contextOptions);
+           $fp = stream_socket_client(($url_array['scheme'] == 'http' ? "" : 'ssl://') . $url_array['host'].":". $port, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $context);
        }catch (\Exception $e){
            $this->err = '无法向该URL发起请求' . $errstr;
            return false;
@@ -109,7 +118,6 @@ class Async
             $post_str =   PHP_EOL . PHP_EOL . " "; //传递POST数据
         }
         $header .= $post_str;
-
         fwrite($fp, $header);
         fclose($fp);
         return true;
@@ -149,8 +157,6 @@ class Async
     {
         $header = Request::getHeader();
         if (isset($header['Token']) && isset($header['Identify'])) {
-
-
             $data  =   Cache::get($header['Identify']);
 
             if (empty($data)) {

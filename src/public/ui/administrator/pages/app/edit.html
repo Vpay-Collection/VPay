@@ -1,55 +1,50 @@
 
-<style>
-  .layui-table-cell {
-    height: auto;
-  }
+<div class="ok-body home" style="background: white" id="form">
+  <style>
+    .layui-table-cell {
+      height: auto;
+    }
 
-  .layui-table img {
-    max-width: 200px;
-  }
-  form{
-    background: white;
-    padding: 10px;
-  }
-</style>
-<form action="" class="layui-form layui-form-pane" id="form" lay-filter="form">
-  <input value="" name="id" placeholder="" type="text" style="display: none">
-  <div class="layui-form-item">
-    <label class="layui-form-label">应用名称</label>
-    <div class="layui-input-block">
-      <input autocomplete="off" class="layui-input" lay-verify="required" name="app_name" placeholder="请输入应用名称"
-             required type="text">
+    .layui-table img {
+      max-width: 200px;
+    }
+  </style>
+  <form action="" class="layui-form layui-form-pane" lay-filter="form">
+    <input  style="display: none" name="id" value="">
+    <div class="layui-form-item">
+      <label class="layui-form-label">应用名称</label>
+      <div class="layui-input-block">
+        <input autocomplete="off" class="layui-input" lay-verify="required" name="app_name" placeholder="请输入应用名称"
+               required type="text">
+      </div>
     </div>
-  </div>
 
-  <div class="layui-form-item">
-    <label class="layui-form-label">异步回调</label>
-    <div class="layui-input-block">
-      <input autocomplete="off" class="layui-input" lay-verify="required" name="notify_url"
-             placeholder="请输入异步回调地址" required type="text">
+
+    <div class="layui-form-item layui-form-text">
+      <label class="layui-form-label">通讯密钥 <span class="layui-badge layui-bg-blue" id="random" style="color: white">随机生成</span></label>
+      <div class="layui-input-block">
+        <textarea class="layui-textarea" id="connect_key" name="connect_key" placeholder="请输入通讯密钥"></textarea>
+      </div>
     </div>
-  </div>
-  <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">通讯密钥 <span class="layui-badge layui-bg-blue" id="random" style="color: white">随机生成</span></label>
-    <div class="layui-input-block">
-      <textarea class="layui-textarea" id="connect_key" name="connect_key" placeholder="请输入通讯密钥"></textarea>
+    <div class="layui-form-item">
+      <div class="">
+        <button class="layui-btn layui-bg-blue" lay-filter="save" lay-submit>创建应用</button>
+        <button class="layui-btn layui-btn-primary" id="reset" type="reset">重置</button>
+      </div>
     </div>
-  </div>
-  <div class="layui-form-item">
-    <button class="layui-btn" lay-filter="save" lay-submit>创建应用</button>
-    <button class="layui-btn layui-btn-primary" id="reset" type="reset">重置</button>
-  </div>
-</form>
+  </form>
 
-
+</div>
 
 <script>
 
-  layui.use(["utils","request","okLayer","form"], function () {
-    let okUtils = layui.utils;
+  layui.use(["request","okLayer","form"], function () {
+    let request = layui.request;
     let okLayer = layui.okLayer;
-    let request=layui.request;
+
     let form=layui.form;
+
+
 
 
     function randomString(len) {
@@ -63,8 +58,13 @@
       return pwd;
     }
 
-    //okLoading.close();
-
+    request.call("/admin/data/app","POST",null,"#form","正在读取数据...").done(function (response) {
+      form.val("form",response.data);
+    }).fail(function (error) {
+      okLayer.time=2000
+      okLayer.redCrossMsg(error)
+      console.log(error)
+    });
 
     layui.$("#random").on("click",function (e) {
       const token = randomString(64);
@@ -72,15 +72,15 @@
     });
     form.on('submit(save)', function(data){
       var sendData=data.field;
-
-      request.call("/admin/app/edit","post",sendData,"#form","提交中...").done(function (response) {
+      request.call("/admin/app/edit","POST",sendData,"#form","正在保存数据...").done(function (response) {
         okLayer.time=1000
         okLayer.greenTickMsg("操作成功", function () {
-          parent.layui.layer.closeAll();
+          layui.layer.closeAll();
         })
       }).fail(function (error) {
         okLayer.time=2000
         okLayer.redCrossMsg(error)
+        console.log(error)
       });
       return false;
     });

@@ -1,0 +1,211 @@
+<style>
+    .project-list-item {
+        background-color: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 4px;
+        cursor: auto;
+        transition: all .2s;
+    }
+
+    .project-list-item:hover {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+    }
+
+    .project-list-item .project-list-item-cover {
+        width: 100%;
+        height: 150px;
+        display: block;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+
+    .project-list-item-body {
+        padding: 20px;
+    }
+
+    .project-list-item .project-list-item-body > h2 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 12px;
+    }
+
+    .project-list-item .project-list-item-text {
+        height: 44px;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+
+    .project-list-item .project-list-item-desc {
+        position: relative;
+    }
+
+    .project-list-item .project-list-item-desc .time {
+        color: #999;
+        font-size: 12px;
+    }
+
+    .project-list-item .project-list-item-desc .ew-head-list {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .ew-head-list .ew-head-list-item {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 1px solid #fff;
+        margin-left: -10px;
+    }
+
+    .ew-head-list .ew-head-list-item:first-child {
+        margin-left: 0;
+    }
+
+    .time {
+        margin-bottom: 12px;
+    }
+</style>
+<blockquote class="layui-elem-quote quoteBox" style="margin: 1rem">
+    <button class="layui-btn layui-btn-normal" id="addNewProject">添加商品</button>
+</blockquote>
+<div id="demoCardList1" class="layui-row layui-col-space10" style="margin: 1rem"></div>
+
+<script type="text/html" id="demoCardItem1">
+    <div class="layui-col-md4 layui-col-sm6 layui-col-xs12">
+        <div class="project-list-item">
+            <img class="project-list-item-cover" src="{{d.img}}"/>
+            <div class="project-list-item-body">
+
+                <h2>{{d.title}} <span class="layui-badge layui-bg-orange">￥{{d.price}}</span> </h2>
+                <div class="project-list-item-text layui-text">
+                {{#  if(d.isCode == "0"){ }}
+                    【库存:{{d.count}}】
+                {{#  } }}
+                    {{d.description}}</div>
+                <div class="project-list-item-desc">
+                    <div style="padding: 5px;text-align: center">
+                        <button class="layui-btn  layui-btn-primary layui-border-red card-delete"
+                                data="{{encodeURI(JSON.stringify(d))}}" onclick="del(this)">删除
+                        </button>
+                        <button class="layui-btn  layui-btn-primary layui-border-blue card-change"
+                                data="{{encodeURI(JSON.stringify(d))}}" onclick="change(this)">修改
+                        </button>
+                        {{#  if(d.isCode == "0"){ }}
+                        <button class="layui-btn  layui-btn-primary layui-border-green card-in"
+                                data="{{encodeURI(JSON.stringify(d))}}" onclick="go(this)">进入
+                        </button>
+                        {{#  } }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    var change, go, del;
+    layui.use(['jquery', 'okLayer', 'cardTable', 'request', 'form'], function () {
+//encodeURI()
+        //  JSON.stringify()
+        let $ = layui.jquery;
+        let okLayer = layui.okLayer;
+        let cardTable = layui.cardTable;
+        let form = layui.form;
+        let request = layui.request;
+
+        // let tab = layui.tab;
+
+        function loadData() {
+            layui.request.call('/admin/shop/list', "POST", {}, "#tabContent", "数据加载中...").done(function (data) {
+                cardTable.render({
+                    elem: '#demoCardList1',
+                    templet: '#demoCardItem1',
+                    data: data.data
+                })
+            }).fail(function (error) {
+                $("#demoCardList1").html("<div style='text-align: center'>" + error.msg + "</div>")
+            });
+        }
+
+        loadData();
+
+        $("#addNewProject").on("click", function (e) {
+            okLayer.open("新增项目", "/shop/edit", 1, "100%", "100%", function () {
+                console.log("openSuccess")
+            }, function () {
+                loadData();
+            });
+        });
+        let getData = function (e) {
+            return JSON.parse(decodeURI($(e).attr("data")))
+        }
+
+        function removeDuplicatedItem4(ar) {
+            var ret = [],
+                end;
+            ar.sort();
+            end = ar[0];
+            ret.push(ar[0]);
+
+            for (var i = 1; i < ar.length; i++) {
+                if (ar[i] !== end) {
+                    ret.push(ar[i]);
+                    end = ar[i];
+                }
+            }
+
+            return ret;
+        }
+        function appendHtml(html){
+            const h = html;
+            localStorage.setItem("form_html",h);
+            $('#formDemo').html(h);
+            //console.log($('#formDemo'))
+            form.render();
+            $('.code-show').val(localStorage.getItem("form_html"));
+            //$arg
+            var parrent = /name="(.*?)"/g
+            var d = h.match(parrent);
+            var h2 = "";
+            d = removeDuplicatedItem4(d)
+            for (var i = 0; i < d.length; i++) {
+                var name = d[i].replace("name=","").replace("[]","")
+                h2+='<button type="button" class="layui-btn" >$arg['+name+']</button>'
+                //
+            }
+            $("#variable").html(h2)
+        }
+
+        change = function (e) {
+            var data = getData(e)
+           // console.log(data)
+            okLayer.open("修改项目", "/shop/edit", 1, "100%", "100%", function () {
+                form.val("form", data);
+                //console.log(data["params"])
+                appendHtml(data["params"])
+                //
+                // params
+            }, function () {
+                loadData();
+            });
+        }
+        del = function (e) {
+            var data = getData(e)
+            request.call("/admin/shop/del", "POST", {id: data.id}).done(function (data) {
+                okLayer.greenTickMsg("删除成功！", function () {
+                    loadData();
+                });
+            });
+
+        }
+        go = function (e) {
+            var data = getData(e)
+       //     console.log(data.id)
+            var page = '<div lay-id="project-' + data.id.toString() + '" data-url="shop/detail?id=' + data.id.toString() + '"><cite>' + data.title + '</cite></div>';
+
+          //  console.log(page)
+
+            layui.tab().tabAdd(page);
+        }
+    })
+</script>

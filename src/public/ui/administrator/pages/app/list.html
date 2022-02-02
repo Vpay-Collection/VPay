@@ -1,5 +1,10 @@
 
-  <table id="table_app" lay-filter="table_app"></table>
+<div class="ok-body home" style="margin-bottom: 10px">
+  <fieldset class="layui-elem-field layui-field-title" >
+    <legend>APP列表 <span class="layui-badge layui-bg-blue"><a href="" target="_blank" style="color: white">配置指南</a></span></legend>
+  </fieldset>
+
+  <table id="list" lay-filter="list"></table>
 
   <script id="barDemo" type="text/html">
     <a class="layui-btn layui-btn-xs " lay-event="modify">修改</a>
@@ -9,23 +14,20 @@
 
   <script type="text/html" id="toolbarTpl">
     <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm layui-bg-green" lay-event="add">添加APP</button>
+      <button class="layui-btn layui-btn-sm layui-bg-blue" lay-event="add">添加APP</button>
     </div>
   </script>
 
-  <!--<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
--->
+</div>
+
 <script>
-  layui.use(["utils","request","okLayer","table","layer","clipboard"], function () {
-    let okUtils = layui.utils;
-    let request=layui.request;
+
+  layui.use(["request","okLayer","table","clipboard"], function () {
+    let request = layui.request;
     let ClipboardJS = layui.clipboard;
-   // let form=layui.form;
     let table=layui.table;
-    var $=layui.$;
     var clipboard = new ClipboardJS('#btn');
-    let layer = layui.layer;
-    let okLayer = layui.okLayer;
+
 
 
 
@@ -37,11 +39,12 @@
       layer.msg("复制失败");
     });
 
-    //okLoading.close();
+
+
+
 
    let myTable = table.render({
-      elem: '#table_app'
-      , height: 'full-40'
+      elem: '#list'
       , url: "/admin/app/list"
      ,where: {
        "token": localStorage.getItem("token")
@@ -54,23 +57,16 @@
         {field: 'id', title: 'ID', width: 60},
         {title: '操作', width: 216, align: 'center', toolbar: '#barDemo'},
         {field: 'app_name', title: '应用名称', minWidth: 200},
-        {field: 'notify_url', title: '回调地址', minWidth: 380},
         {field: 'connect_key', title: '通讯密钥', minWidth: 400}
       ]]
     });
-
     //监听行工具事件
-    table.on('tool(table_app)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    table.on('tool(list)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
       var data = obj.data //获得当前行数据
               , layEvent = obj.event; //获得 lay-event 对应的值
       if (layEvent === 'del') {
         layer.confirm('确定要删除该应用吗？', function (index) {
-          layer.msg('操作中', {
-            icon: 16
-            , shade: 0.01
-          });
-
-          request.call("/admin/app/del","post",{id:data.id}).done(function (response) {
+          request.call("/admin/app/del","POST",{id:data.id},"#tabContent","正在删除...").done(function (response) {
             layer.msg("操作成功！");
             myTable.reload();
           }).fail(function (error) {
@@ -78,16 +74,17 @@
 
           });
 
+
         });
       }
       else if(layEvent === 'modify'){
-        okLayer.open("修改应用", "app/edit" ,1, "58%", "70%", function (layero, index) {
-          layer.iframeAuto(index);
+        parent.layui.okLayer.open("修改应用", "app/edit" ,1, "58%", "70%", function (layero, index) {
+          parent.layer.iframeAuto(index);
           layui.$("input[name=id]").val(data.id);
           layui.$("input[name=app_name]").val(data.app_name);
           layui.$("input[name=notify_url]").val(data.notify_url);
           layui.$("textarea").val(data.connect_key);
-
+          //  layero.layui.form.val("form",data);
         }, function () {
           myTable.reload();
         })
@@ -97,13 +94,12 @@
 
 
     //头工具栏事件
-    table.on('toolbar(table_app)', function (obj) {
-      const layEvent = obj.event;
-
+    table.on('toolbar(list)', function (obj) {
+      var layEvent=obj.event;
       if(layEvent==="add"){
-        //title, content,type, width, height, successFunction, endFunction
-        okLayer.open("添加应用", "app/edit" ,1, "58%", "70%", function (layero, index) {
-          layer.iframeAuto(index);
+        parent.layui.okLayer.open("添加应用", "app/edit" ,1, "58%", "70%", function (layero, index) {
+          parent.layer.iframeAuto(index);
+          //layero.layui.form.val("form",{});
         }, function () {
           myTable.reload();
         })
@@ -113,5 +109,4 @@
 
   });
 </script>
-
 

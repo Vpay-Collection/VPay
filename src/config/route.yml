@@ -1,4 +1,11 @@
 ---
+'CreateOrder' : 'api/Pay/CreateOrder'
+'OrderState' : 'api/Pay/OrderState'
+'Confirm'  : 'api/Pay/Confirm'
+'CloseOrder' : 'api/Pay/CloseOrder'
+'GetOrder': "api/Pay/GetOrder"
+#
+"captcha.jpg" : "index/user/captcha"
 # index页面路由
 "" : "index/main/index"
 # 默认路由方案

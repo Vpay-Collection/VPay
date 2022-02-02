@@ -1,4 +1,4 @@
-var $ = layui.$;
+const $ = layui.$;
 layui.config({
     base: './js/lib/' //你存放新模块的目录，注意，不是 layui 的模块目录
 }).extend({
@@ -25,8 +25,10 @@ layui.use(['okConfig','route','request'], function(){
     const route = layui.route;
     layui.request.call("/index/user/isLogin","post",{},"#app").done(function (response){
             route.loadPage("home");
-    }).fail(function () {
-            route.loadPage("login")
+    }).fail(function (response) {
+        if(response.data!==null)
+            location.replace(response.data.url)
+       else route.loadPage("login")
     });
 
 });

@@ -5,6 +5,7 @@
 
 namespace app\core\core;
 
+use app\core\debug\Debug;
 use app\core\error\RouteError;
 use app\core\event\EventManager;
 use app\core\mvc\Controller;
@@ -100,10 +101,14 @@ class Clean
         $action_name = $__action;
         if(isDebug())  $GLOBALS["frame"]["clean"][]="响应controller：$__module/$__controller/$__action";
 
+
         if (!self::isAvailableClassname($__module)) new RouteError("错误: 模块 '$__module' 命名不符合规范!");
 
 
-        if (!is_dir(APP_CONTROLLER . $__module)) new RouteError("错误: 模块 '$__module' 不存在!");
+        if (!is_dir(APP_CONTROLLER . $__module)){
+      //      Debug::i("clean","$__module/$__controller/$__action");
+            new RouteError("错误: 模块 '$__module' 不存在!");
+        }
 
         $controller_name = 'app\\controller\\' . $__module . '\\' . $controller_name;
 

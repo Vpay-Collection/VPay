@@ -45,7 +45,7 @@
         <!--左侧导航区域-->
         <div class="layui-side layui-side-menu okadmin-bg-20222A ok-left">
             <div class="layui-side-scroll okadmin-side">
-                <div class="okadmin-logo">AnkioのMock</div>
+                <div class="okadmin-logo">AnkioのVpay</div>
                 <div class="user-photo">
                     <a class="img" title="我的头像">
                         <img src="./img/face.jpg" class="userAvatar head_img">
@@ -267,7 +267,10 @@
                 });
             });
         });
-
+        layui.request.call("/admin/main/userInfo","POST").done(function (data) {
+            $(".head_img").attr("src",data.data.img);
+            $(".head_name").html(data.data.nickName);
+        });
 
 
     });

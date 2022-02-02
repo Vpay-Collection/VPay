@@ -5,6 +5,7 @@
 
 namespace app\extend\ankioTask\core;
 
+use app\core\debug\Log;
 use app\core\mvc\Model;
 use app\lib\Async\Async;
 
@@ -104,6 +105,7 @@ class Tasker extends Model
      * @return void
      */
     public function run(){
+
         $db=self::getInstance();
         $data=$db->select()->table("extend_tasker")->commit();
         foreach ($data as $value){

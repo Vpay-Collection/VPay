@@ -7,7 +7,11 @@
     ],
     "require": {
         "ext-sockets": "*",
-      "ext-json": "*"
-
+      "ext-json": "*",
+      "ext-iconv": "*",
+      "ext-gd": "*",
+      "ext-openssl": "*",
+      "ext-mbstring": "*",
+      "ext-curl": "*"
     }
 }

@@ -1,0 +1,54 @@
+
+<div class="ok-body home">
+    <fieldset class="layui-elem-field layui-field-title" >
+        <legend>网站设置 <span class="layui-badge layui-bg-blue"><a href="" target="_blank" style="color: white">配置指南</a></span></legend>
+    </fieldset>
+
+    <form class="layui-form layui-form-pane" lay-filter="form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">站点名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="siteName" lay-verify="required" autocomplete="off" placeholder="网站名称" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">网站名称</div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="save">保存</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+
+    layui.use(["request","okLayer","form"], function () {
+        let okLayer = layui.okLayer;
+        let request=layui.request;
+        let form=layui.form;
+
+
+        request.call("/admin/data/site", "post",null, "#tabContent","正在加载配置信息...").done(function (response) {
+            form.val("form",response.data);
+        }).fail(function (error) {
+            okLayer.time=2000
+            okLayer.redCrossMsg(error)
+            console.log(error)
+        });
+
+        form.on('submit(save)', function(data){
+            var sendData=data.field;
+            request.call("/admin/setting/site", "post",sendData, "#tabContent","正在保存配置信息...").done(function (response) {
+                okLayer.time=1000
+                okLayer.greenTickMsg(response.msg, function () {
+                })
+            }).fail(function (error) {
+                okLayer.time=2000
+                okLayer.redCrossMsg(error)
+                console.log(error)
+            });
+            return false;
+        });
+
+    });
+</script>
+

@@ -4,7 +4,8 @@ namespace app\controller\admin;
 
 class Console extends  BaseController
 {
-    function data(){
+    function data(): array
+    {
         $console=new \app\model\Console();
         $todayOrder = $console->todayOrder();//获得今天订单数量
         $todaySuccessOrder = $console->todaySuccessOrder();//获得今天成功的订单

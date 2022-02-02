@@ -19,6 +19,8 @@ verName : 3.0.1
 logValidTime : 30
 # 安装程序模块名
 install :
+# admin用户目录
+admin: "administrator"
 
 
 

@@ -1,0 +1,34 @@
+<style>
+blockquote{
+    background-color: #383838!important;
+    color: #F2F2F2;
+}
+</style>
+<blockquote class="layui-elem-quote quoteBox" id="notice" style="max-width: 600px;margin: 20px auto">
+    欢迎光临
+</blockquote>
+<div class="ok-body" id="tabContent">
+
+</div>
+
+<script>
+
+    layui.use([ "route", "request", "okLayer","okConfig"], function () {
+        const route = layui.route,$=layui.$;
+        const request = layui.request;
+        const okLayer = layui.okLayer;
+        route.register(layui.okConfig.routes).init("#tabContent","#bindHomeScript").refresh();//刷新当前页面路由信息
+
+        request.call("/shop/main/info","POST",null,"#tabContent","正在加载配置...").done(function (data) {
+           $("title").html(data.data.name);
+           $("#notice").html(data.data.notice);
+           if(data.data.state==="0"){
+               location.replace("/")
+           }
+        });
+    });
+
+
+</script>
+
+<span id="bindHomeScript"></span>

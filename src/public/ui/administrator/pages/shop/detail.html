@@ -1,0 +1,116 @@
+<div class="ok-body home">
+    <script id="toolbarDemo" type="text/html">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="del">删除卡密</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="import">批量导入卡密</button>
+
+        </div>
+
+    </script>
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script>
+    layui.use(['form', 'table','request','route'], function () {
+        let  table = layui.table;
+        let  form = layui.form;
+        let request = layui.request;
+        let $=layui.$;
+//从1970年开始的毫秒数然后截取10位变成 从1970年开始的秒数
+        function timest() {
+            var tmp = Date.parse( new Date() ).toString();
+            tmp = tmp.substr(0,10);
+            return tmp;
+        }
+
+        //第一个实例
+        let  myTable = table.render({
+            elem: '#demo'
+            , url: "/admin/shop/listItem"
+            , toolbar: '#toolbarDemo'
+            , where: {
+                id: layui.route.param("id"),
+                token: localStorage.getItem("token")
+            }
+            , cols: [[ //表头
+                {type:'checkbox'},
+                {field: 'id', title: 'ID', minWidth: 80 },
+                {field: 'code', title: '卡密', align: 'center'},
+                {
+                     title: '状态', minWidth: 100, templet: function (d) {
+                         if(d.lockItem>timest()){
+                             return '<span style="color: orange">等待用户完成支付</span>';
+                         }else{
+                             return '<span style="color: green">暂未使用</span>';
+                         }
+                    }
+                }
+            ]]
+            , page: true
+        });
+        function tableReload(){
+            myTable.reload({
+                where: {
+                    id: layui.route.param("id"),
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            //  var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'del':
+                    var checkStatus = table.checkStatus('demo');
+                    if (checkStatus.data.length>0) {
+                        var ids = "";
+                        for (var i = 0; i < checkStatus.data.length; i++) {
+                            ids+=","+checkStatus.data[i].id;
+                        }
+                        layer.confirm('确定要删除所有选中卡密吗？', function (index) {
+                            request.call("/admin/shop/delItem","POST",{shopId:layui.route.param("id"),"ids":ids},"#tabContent","删除中...").done(function (response) {
+                                layer.msg("操作成功！",{icon:6});
+                                tableReload();
+                            }).fail(function (response) {
+                                layer.msg(response.msg,{icon:5});
+                            });
+
+                        });
+                    }
+                    else
+                    {
+                        layer.alert("请至少选择一行");
+                    }
+
+
+                    break;
+                case 'import':
+                    layer.prompt({
+                        formType: 2,
+                        value: '',
+                        title: '请输入卡密(一行一个)',
+                       // area: ['80%', '80%'] //自定义文本域宽高
+                    }, function(value, index, elem){
+                        request.call("/admin/shop/import","POST",{shopId:layui.route.param("id"),data:value},"#tabContent","添加中...").done(function (response) {
+                            layer.msg("操作成功！",{icon:6});
+                            layer.close(index);
+                            tableReload();
+                        }).fail(function (response) {
+                            layer.close(index);
+                            layer.msg(response.msg,{icon:5});
+                        });
+
+                    });
+                    break;
+            }
+        });
+
+
+        form.render();
+
+    });
+
+
+</script>

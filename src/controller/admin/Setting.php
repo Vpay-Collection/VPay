@@ -2,68 +2,52 @@
 
 namespace app\controller\admin;
 
+use app\attach\Email;
 use app\core\cache\Cache;
 use app\core\config\Config;
-use app\core\web\Session;
-use app\func\Email;
-use app\lib\Encryption\RSAEncryptHelper;
 
 class Setting extends BaseController
 {
-    function passwd(){
-        $private=APP_STORAGE."key/private.key";
-        $public=APP_STORAGE."key/public.key";
-        $rsa=new RSAEncryptHelper();
-        $rsa->initRSAPath($private,$public);
-        $passwd = $rsa->rsaPrivateDecrypt(arg("password"));
-        $new_password = $rsa->rsaPrivateDecrypt(arg("new_password"));
-        $user = arg("username");
-        $pay =  Config::getInstance("pay")->get();
-        $passwd2 = $pay['user']['passwd'];
-        $hash1=md5($pay['user']['name'].$passwd);
+    function passwd(): array
+    {
+        $username =  arg("username");
+        $oldPasswd = arg("oldPasswd");
+        $newPasswd = arg("newPasswd");
+        $data =  Config::getInstance("pay")->get();
+        $passwd2 = $data["user"]["password"];
+        $hash1=md5($data["user"]["username"].$oldPasswd);
         $hash2=$passwd2;
-        if($hash1===$hash2){
-            $pay['user']['name']=$user;
-            $pay['user']['passwd']=md5($user.$new_password);
-            Config::getInstance("pay")->setAll($pay);
-            Session::getInstance()->set("token",null);
-            Cache::init(3600*24);
-            Cache::set("token",null);
-            return $this->ret(200,"修改成功，请重新登录。");
+        if($hash1===$hash2) {
+            Cache::set("token","");
+            $data["user"]["password"]=md5($username.$newPasswd);
+            $data["user"]["username"]=$username;
+            Config::getInstance("pay")->setAll($data);
+            return $this->ret(200);
         }
-        return $this->ret(403,"密码校验失败，请重新输入密码！");
+        return $this->ret(403, "修改失败");
     }
 
-    function qr(){
-        $pay =  Config::getInstance("pay")->get();
-        if(arg("type")==="#wxup"){
-            $pay["pay"]["wechat_code"]=arg("data");
-        }else{
-            $pay["pay"]["alipay_code"]=arg("data");
-        }
-        Config::getInstance("pay")->setAll($pay);
-        return $this->ret(200,"二维码保存成功");
-    }
 
     function order(){
         $pay =  Config::getInstance("pay")->get();
         $pay["pay"]["validity_minute"]=arg("validity_minute");
-        $pay["pay"]["max_pay_numbers_in_validity_minute"]=arg("max_pay_numbers_in_validity_minute");
-        $pay["pay"]["pay_type"]=arg("pay_type");
-        $pay["pay"]["alipay_uid"]=arg("alipay_uid");
-        $pay["pay"]["alipay_cookie"]=arg("alipay_cookie");
-        $pay["pay"]["wechat_cookie"]=arg("wechat_cookie");
+
+        $pay["pay"]["alipay_private_key"]=arg("alipay_private_key");
+        $pay["pay"]["alipay_public_key"]=arg("alipay_public_key");
+        $pay["pay"]["alipay_id"]=arg("alipay_id");
         Config::getInstance("pay")->setAll($pay);
         return $this->ret(200,"保存成功");
     }
 
-    function app(){
+    function site(){
         $pay =  Config::getInstance("pay")->get();
-        $pay["system"]["app_mode"]=arg("app_mode");
-        $pay["system"]["app_token"]=arg("app_token");
+
+        $pay["pay"]["siteName"]=arg("siteName");
+
         Config::getInstance("pay")->setAll($pay);
         return $this->ret(200,"保存成功");
     }
+
     function mail(){
         $pay =  Config::getInstance("pay")->get();
         $pay["mail"]["smtp"]=arg("smtp");
@@ -75,20 +59,20 @@ class Setting extends BaseController
         Config::getInstance("pay")->setAll($pay);
         return $this->ret(200,"保存成功");
     }
-    function mail_test(){
+    function mail_test(): array
+    {
         $mail = new Email();
-
+        $pay =  Config::getInstance("pay")->get();
         $tplData = [
-            "logo" => "https://thirdwx.qlogo.cn/mmopen/vi_32/xa9aoWxWkauGPxicUx94hG87Ww7cTzcLM4icwwXUxKbnLOpPbbK8l7EuS3XRrFyaIRoZTNtValnELZibBH44Rc4gA/132",
-            "sitename" => "Vpay",
+            "logo" => "http://image.ankio.net/uPic/2022_01_27_22_26_53_1643293613_1643293613307_0id1Z6.jpg",
+            "sitename" => $pay["pay"]["siteName"],
             "title" => "邮件发送测试",
             "body" => "<p>您正在测试邮件发送功能</p>
                          <p><h2 style='text-align: center'>邮件测试</h2></p>
                          <p style='text-indent: 10px'>如果这不是您发出的邮件请忽略。</p>"
         ];
 
-        $file = $mail->complie("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
-        $pay =  Config::getInstance("pay")->get();
+        $file = $mail->complieNotify("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
         ob_start();
         echo "正在尝试发送邮件>>>><br>";
         $bool = $mail->send($pay["mail"]["receive"], "【测试】{$tplData['sitename']}", $file, $tplData['sitename'],1);

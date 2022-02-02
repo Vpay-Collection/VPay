@@ -134,4 +134,17 @@ class StringUtil{
     }
 
 
+    /**
+     * 中文截取无乱码
+     * @param $start
+     * @param $length
+     * @return string|null
+     */
+
+    function sub($start, $length)
+
+    {
+       return mb_substr($this->str,$start,$length);
+    }
+
 }

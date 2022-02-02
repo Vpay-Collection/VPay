@@ -1,0 +1,152 @@
+<div class="body" id="body">
+    <h1 class="mod-title"><span class="ico_log ico-2"></span></h1>
+
+    <div class="mod-ct">
+        <div class="order">
+        </div>
+        <div class="amount" id="timeOut" style="font-size: 20px;color: red;display: none;"><p>订单已过期，请您返回网站重新发起支付</p><br>
+        </div>
+        <div id="orderbody">
+            <div class="amount" id="money"></div>
+            <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
+                <div class="qrcode-img-area" data-role="qrPayImg">
+                    <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading" style="display: none;">加载中</div>
+                    <div style="position: relative;display: inline-block;">
+                        <img src='' alt="加载中..." height="210" id='show_qrcode'
+                             style="display: block;" width="210">
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="time-item">
+
+
+
+                <div class="remainseconds" style="width: 200px;margin: 0 auto;height: 100px;padding: 10px 35px;text-align: center;box-sizing: border-box;">
+                    <div class="time minutes" style="width: 55px;height: 90px;float: left;box-sizing: border-box;"><b style="font-size: 40px;font-weight: 300;box-sizing: border-box;" id="minute_show">00</b> <em style="font-style:normal;color:#888;">分</em></div>
+                    <div class="colon" style="float: left;width: 20px;font-size: 30px;line-height: 50px;font-family: Vernada,Microsoft Yahei;box-sizing: border-box;">:
+                    </div>
+                    <div class="time seconds" style="width: 55px;height: 90px;box-sizing: border-box;float: left;"><b style="font-size: 40px;font-weight: 300;box-sizing: border-box;" id="second_show">00</b> <em style="font-style:normal;color:#888;">秒</em></div>
+                </div>
+
+            </div>
+
+            <div class="tip">
+                <div class="tip-text">
+                    <p>打开<span style="color:red">支付宝</span>「扫一扫」完成支付</p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="tip-text">
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+    layui.use([ "route", "request", "okLayer","okConfig"], function () {
+        const route = layui.route,$=layui.$;
+        const request = layui.request;
+        const okLayer = layui.okLayer;
+        var myTimer,myTimer2;
+        function timer(intDiff) {
+            var i = 0;
+            i++;
+            var day = 0,
+                hour = 0,
+                minute = 0,
+                second = 0;//时间默认值
+            if (intDiff > 0) {
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            // $('#hour_show').html('<s id="h"></s>' + hour);
+            $('#minute_show').html('<s></s>' + minute);
+            $('#second_show').html('<s></s>' + second);
+            if (hour <= 0 && minute <= 0 && second <= 0) {
+                qrcode_timeout();
+                clearInterval(myTimer);
+                clearInterval(myTimer2);
+            }
+            intDiff--;
+
+            myTimer = window.setInterval(function () {
+                i++;
+                var day = 0,
+                    hour = 0,
+                    minute = 0,
+                    second = 0;//时间默认值
+                if (intDiff > 0) {
+                    day = Math.floor(intDiff / (60 * 60 * 24));
+                    hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                    minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                    second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                }
+                if (minute <= 9) minute = '0' + minute;
+                if (hour <= 9) hour = '0' + hour;
+                if (second <= 9) second = '0' + second;
+                // $('#hour_show').html('<s id="h"></s>' + hour);
+                $('#minute_show').html('<s></s>' + minute);
+                $('#second_show').html('<s></s>' + second);
+                if (hour <= 0 && minute <= 0 && second <= 0) {
+                    qrcode_timeout();
+                    clearInterval(myTimer);
+                    clearInterval(myTimer2);
+                }
+                intDiff--;
+            }, 1000);
+        }
+
+        function qrcode_timeout() {
+            $("#orderbody").hide();
+            $("#timeOut").show();
+        }
+
+        function check() {
+             myTimer2 = setInterval(function () {
+                request.call("/api/pay/OrderState","POST", {orderId:route.param("orderId")}).done(function (data) {
+                    if (parseInt(data.data.state) === StateOver) {
+                        clearInterval(myTimer2);
+                    } else if (parseInt(data.data.state) >= StateOk) {
+                        window.location.href = data.data.data;
+                    }
+                }).fail(function (data) {
+                    clearInterval(myTimer2);
+                    qrcode_timeout();
+                });
+            },1000);
+
+        }
+        request.call("/api/pay/GetOrder","POST", {orderId:route.param("orderId")},"#tabContent","正在加载账单...").done(function (data) {
+            $("#show_qrcode").attr("src","/api/api/qr?url="+encodeURIComponent(data.data.img));
+            $("#money").html("￥"+data.data.reallyPrice);
+            var time = new Date().getTime() - data.data.date * 1000;
+            time = time / 1000;
+            time = data.data.timeOut * 60 - time;
+            if (data.data.state === StateOver.toString()) {
+                time = 0;
+            }
+            timer(time);
+            check();
+        }).fail(function (data) {
+            qrcode_timeout();
+            $("#timeOut").html(data.msg);
+           // okLayer.redCrossMsg(data.msg);
+        });
+    });
+
+
+</script>

@@ -16,12 +16,12 @@ class Email{
     public function __construct()
     {
 
-        $conf=Config::getInstance("email")->setLocation(APP_CONF);
-        $this->smtp=$conf->getOne("smtp");
-        $this->port=$conf->getOne("port");
-        $this->sendmail=$conf->getOne("send");
-        $this->password=$conf->getOne("pass");
-        $this->receivemail=$conf->getOne("rec");
+        $conf=Config::getInstance("pay")->setLocation(APP_CONF)->getOne("mail");
+        $this->smtp=$conf["smtp"];
+        $this->port=$conf["port"];
+        $this->sendmail=$conf["send"];
+        $this->password=$conf["passwd"];
+        $this->receivemail=$conf["receive"];
       //  dump($conf->get(),true);
     }
     public function send($mailto,$subject,$content,$fromname,$debug=0){//发送邮件\

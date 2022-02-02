@@ -1,6 +1,6 @@
 user:
-  name : admin #用户名
-  passwd : 'f6fdffe48c908deb0f4c3bd36c032e72' #加密密码
+  username : admin #用户名
+  password : 'f6fdffe48c908deb0f4c3bd36c032e72' #加密密码
 mail:
   smtp : ssl://smtp.exmail.qq.com #邮件服务器
   send : '' #邮件发送账户
@@ -9,17 +9,12 @@ mail:
   receive : ''#邮件接送者
   sendType: "1" # 0 不接收 1 用户发起支付（补单） 2 用户支付成功 4 收益日报 8 收益周报 16 Cookie失效 32 监控掉线
 pay :
-  max_pay_numbers_in_validity_minute : 10 #单方向
   validity_minute: 5
-  pay_type: 1 # 1递增 2递减 3递增递减同时进行
-  alipay_uid : '' # 支付宝的UID
-  alipay_cookie : '' # 支付宝的Cookie
-  wechat_cookie : '' # 微信的Cookie
-  alipay_code : '' #支付宝的二维码
-  wechat_code: '' #微信的二维码
-system:
-  app_token: "" #通讯密钥
-  app_mode: 1 # 1表示正常模式 2表示Xposed模式
-login:
-    ankio: false #采用集成登录框架进行登录
+  alipay_private_key : '' # 支付宝的私钥
+  alipay_public_key : '' # 支付宝的公钥
+  alipay_id: ""
+  alipay_notify: ""
+  alipay_sign_type: ""
+
+login: ""#采用集成登录框架进行登录
 

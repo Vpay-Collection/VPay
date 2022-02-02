@@ -13,6 +13,7 @@
 
 namespace app\core\cache;
 
+use app\core\debug\Debug;
 use app\core\debug\Log;
 
 /**
@@ -93,12 +94,12 @@ class Cache
         } else return false;
     }
 
-	/**
-		 * 获取缓存值
-		 * @param string $key
-		 * @return string
-		 */
-	public static function get(string $key): string
+    /**
+     * 获取缓存值
+     * @param string $key
+     * @return mixed|string
+     */
+	public static function get(string $key)
     {
         $filename = self::fileName($key);
         if (!file_exists($filename) || !is_readable($filename)) {
@@ -116,12 +117,14 @@ class Cache
 
                 flock($file, LOCK_SH);
                 $data = fread($file, filesize($filename));
-                Log::info("cache","读取数据".$data);
+              //  Log::info("cache","读取数据".$data);
+                Debug::i("cache","读取数据".$data);
                 flock($file, LOCK_UN);
                 fclose($file);
                try{
                    return unserialize($data);
                }catch (\Throwable $e){
+                   Debug::i("error","读取数据".$e->getMessage());
                    return "";
                }
             } else return "";

@@ -22,12 +22,11 @@ class App extends BaseController
         $app = new \app\model\App();
         $appName=arg("app_name");
         $id=arg("id","");
-        $url=arg("notify_url");
         $key=arg("connect_key");
         if($id!=""){
-            $app->set($id,$appName,$url,$key);
+            $app->set($id,$appName,$key);
         }else{
-            $app->add($appName,$url,$key);
+            $app->add($appName,$key);
         }
 
 

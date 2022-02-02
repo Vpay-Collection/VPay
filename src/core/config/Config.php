@@ -89,9 +89,9 @@ class Config
     /**
      * 获取配置文件里面一项
      * @param string $key
-     * @return string
+     * @return string|array
      */
-    public function getOne(string $key): string
+    public function getOne(string $key)
     {
         return $this->fileData[$key] ?? "";
     }

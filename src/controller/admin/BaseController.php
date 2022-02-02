@@ -5,26 +5,37 @@
 
 namespace app\controller\admin;
 
+use app\attach\AnkioLogin;
 use app\core\cache\Cache;
+use app\core\config\Config;
 use app\core\mvc\Controller;
 use app\core\web\Session;
 
 class BaseController extends Controller
 {
 
-    public function init()
+    public function init(): ?array
     {
-        parent::init();
         Session::getInstance()->start();
-
-        if(arg('c')!=="login"){
-            $isLogin=$this->logon();
-            if($isLogin!==null)
-                return $isLogin;
+        if(Config::getInstance("pay")->getOne("login")=="ankio"){
+        $bool = AnkioLogin::get()->isLogin();
+        if(!$bool){
+            return $this->ret(403,"未登录");
         }
+        }else{
+            Cache::init(3600*24);
+            $token = Cache::get("token");
+            $isLogin = !($token == null) && md5($token) == md5(arg("token"));
+            if(!$isLogin){
+                return $this->ret(false,"您还未登录");
+            }
+        }
+
+
         return null;
     }
-    public function ret($code,$msg=null,$data=null,$count=0){
+    public function ret($code,$msg=null,$data=null,$count=0): array
+    {
         if(is_bool($code)){
             if($code){
                 $code=200;
@@ -38,13 +49,4 @@ class BaseController extends Controller
         return ["code"=>$code,"msg"=>$msg,"data"=>$data,"count"=>$count];
     }
 
-    public function logon(){
-        Cache::init(3600*24);
-        $token2 = Cache::get("token");
-        $token=Session::getInstance()->get("token");
-        if($token===null||$token2===null||$token2!==$token||$token!==arg("token")){
-            return $this->ret(403,"未登录！");
-        }
-        return null;
-    }
 }

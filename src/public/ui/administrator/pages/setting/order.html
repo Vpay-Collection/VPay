@@ -1,0 +1,73 @@
+
+<div class="ok-body home">
+    <fieldset class="layui-elem-field layui-field-title" >
+        <legend>支付配置 <span class="layui-badge layui-bg-blue"><a href="" target="_blank" style="color: white">配置指南</a></span></legend>
+    </fieldset>
+
+    <form class="layui-form layui-form-pane" lay-filter="form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单有效期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="validity_minute" lay-verify="required|number" autocomplete="off" placeholder="最长等待时间" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">订单最长等待时间</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">APPID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="alipay_id"  placeholder="支付宝APPID" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">支付宝当面付的APPID</div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">私钥 </label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" id="alipay_private_key" name="alipay_private_key" placeholder="请输入私钥"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">公钥 </label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" id="alipay_public_key" name="alipay_public_key" placeholder="请输入公钥"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-bg-blue" lay-submit="" lay-filter="save">保存</button>
+        </div>
+    </form>
+
+</div>
+
+<script>
+
+    layui.use(["request","okLayer","form"], function () {
+        let okLayer = layui.okLayer;
+        let request=layui.request;
+        let form=layui.form;
+
+
+        request.call("/admin/data/order", "post",null, "#tabContent","正在加载配置信息...").done(function (response) {
+            form.val("form",response.data);
+        }).fail(function (error) {
+            okLayer.time=2000
+            okLayer.redCrossMsg(error)
+            console.log(error)
+        });
+
+        form.on('submit(save)', function(data){
+            var sendData=data.field;
+            request.call("/admin/setting/order", "post",sendData, "#tabContent","正在保存配置信息...").done(function (response) {
+                okLayer.time=1000
+                okLayer.greenTickMsg(response.msg, function () {
+                })
+            }).fail(function (error) {
+                okLayer.time=2000
+                okLayer.redCrossMsg(error)
+                console.log(error)
+            });
+            return false;
+        });
+
+    });
+</script>
+

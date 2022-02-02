@@ -5,6 +5,7 @@
 
 namespace app\extend\ankioTask;
 
+use app\core\debug\Log;
 use app\extend\ankioTask\core\Server;
 use app\core\event\EventListener;
 

@@ -31,7 +31,7 @@ layui.define(["element", "jquery", "utils","request","route","okConfig"], functi
     okTab.prototype.data={};
     const layui = parent.layui || layui;
     const okUtils = layui.utils;
-    $ = layui.jquery;
+    const $ = layui.jquery;
     const element = layui.element,
         layer = layui.layer;
     const route = layui.route;

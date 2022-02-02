@@ -16,9 +16,9 @@ class App extends Model
     }
 
     //添加app
-    public function add($app_name, $notify_url, $connect_key)
+    public function add($app_name, $connect_key)
     {
-       return $this->insert(SQL_INSERT_NORMAL)->keyValue([ "app_name" => $app_name, "notify_url" => $notify_url, "connect_key" => $connect_key])->commit();
+       return $this->insert(SQL_INSERT_NORMAL)->keyValue([ "app_name" => $app_name,  "connect_key" => $connect_key])->commit();
     }
 
     //获得app列表的信息
@@ -43,8 +43,8 @@ class App extends Model
        return $this->select()->where(["id" => $id])->commit();
     }
 
-    public function set($id, $app_name, $notify_url, $connect_key)
+    public function set($id, $app_name, $connect_key)
     {
-        $this->update()->set([ "app_name" => $app_name, "notify_url" => $notify_url, "connect_key" => $connect_key])->where(["id"=>$id])->commit();
+        $this->update()->set([ "app_name" => $app_name,"connect_key" => $connect_key])->where(["id"=>$id])->commit();
     }
 }

@@ -48,8 +48,6 @@ class Log
     {
         if (self::$instance == null) {
             self::$instance = new Log();
-            self::$validTime = intval(Config::getInstance("frame")
-                ->getOne("logValidTime"));
         }
 
         return self::$instance->setLevel($tag, $level);

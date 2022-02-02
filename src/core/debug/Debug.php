@@ -12,12 +12,10 @@
 
 namespace app\core\debug;
 
-use app\core\config\Config;
-
 class Debug
 {
     private static ?Debug $instance = null;
-    private static int $validTime = 1;
+    private static int $validTime = 30;
     private $handler;//实例
     /**
      * 输出调试信息
@@ -27,8 +25,8 @@ class Debug
     public static function i($tag, $msg)
     {
         $GLOBALS["frame"][$tag] = $msg;
-       // $self = self::getInstance($tag);
-       // $self->write($msg);
+        $self = self::getInstance($tag);
+        $self->write($msg);
     }
 
     /**

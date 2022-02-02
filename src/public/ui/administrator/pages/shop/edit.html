@@ -1,0 +1,471 @@
+<style>
+    .layui-fluid {
+        margin-top: 15px;
+    }
+
+    .content {
+        min-height: 796px;
+    }
+
+    .nav {
+        text-align: center;
+    }
+
+    .nav button {
+        margin-bottom: 3px;
+        width: 80px;
+    }
+
+    .layui-card-body .layui-btn + .layui-btn {
+        margin-left: 0px;
+    }
+
+    .code-show {
+        min-height: 454px;
+    }
+
+    .js-show {
+        min-height: 200px;
+    }
+
+    .del-form {
+        line-height: initial;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        margin-top: -15px;
+    }
+    button{
+        max-width: 100%;
+    }
+    .layui-card{
+        background: #F2F2F2;
+    }
+    .layui-card-body .layui-btn {
+
+        height: 30px;
+        line-height: 30px;
+        padding: 0 0;
+        background-color: #007396;
+        color: #fff;
+        font-size: 12px;
+
+    }
+    #variable .layui-btn{
+        margin: 3px;
+        width: auto;
+        padding: 5px;
+        height: auto;
+        background-color: #007396;
+    }
+</style>
+<form class="layui-form layui-form-pane" lay-filter="form" style="margin: 0.5rem" id="projectEdit">
+    <input type="text" name="id" autocomplete="off" value="-1" style="display: none" placeholder="" class="layui-input"
+           required>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" autocomplete="off" placeholder="请输入项目名称" class="layui-input" required>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额</label>
+        <div class="layui-input-block">
+            <input type="text" name="price" autocomplete="off" placeholder="请输入金额" class="layui-input" required>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">商品简介</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" name="description" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">商品填写表单设计<span class="layui-badge layui-bg-blue"  style="color: white">设计指南</span></label>
+</div>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md1">
+                <div class="layui-card nav click-but">
+                    <div class="layui-card-header">组件</div>
+                    <div class="layui-card-body">
+                        <button class="layui-btn" type="button" data-size="block" data-type="text">输入框</button>
+                        <button class="layui-btn" type="button" data-size="block" data-type="password">密码框</button>
+                        <button class="layui-btn" type="button"   data-size="block" data-type="select">选择框</button>
+                        <button class="layui-btn"  type="button" data-size="block" data-type="checkbox_a">复选框</button>
+                        <button class="layui-btn"  type="button" data-size="block" data-type="checkbox_b">开关</button>
+                        <button class="layui-btn"  type="button" data-size="block" data-type="radio">单选框</button>
+                        <button class="layui-btn"  type="button" data-size="block" data-type="textarea">文本域</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="layui-col-md5">
+                <div class="layui-card content" >
+                    <div class="layui-card-header">表单预览
+                        <button class="layui-btn layui-btn-sm layui-btn-danger del-form" type="button" data-type="del"><i class="layui-icon">&#xe640;</i></button>
+                    </div>
+                    <div class="layui-card-body code" id="formDemo">
+
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card r-code-html">
+                    <div class="layui-card-header">此处直接编辑HTML</div>
+                    <div class="layui-card-body">
+                        <textarea name="" class="layui-textarea code-show"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space10">
+    <div class="layui-col-md3">
+        <div class="layui-card nav">
+            <div class="layui-card-header">可用变量</div>
+            <div class="layui-card-body" id="variable">
+
+            </div>
+        </div>
+    </div>
+            <div class="layui-col-md9">
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">卡密生成代码(只允许PHP)</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入PHP代码，如果卡密是从外部导入的，此处留空" name="code" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">邮件发送数据(支持html)</label>
+        <div class="layui-input-block">
+            <textarea placeholder="邮件发送代码支持使用变量" name="msg" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn layui-btn-normal" type="button" id="save">保存</button>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', "request", "layer"], function () {
+        var form = layui.form, request = layui.request, layer = layui.layer,$=layui.$;
+        function Base64() {
+            // private property
+            _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+            // public method for encoding
+            this.encode = function (input) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = _utf8_encode(input);
+                while (i < input.length) {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+                    output = output +
+                        _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                        _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+                }
+                return output;
+            }
+
+            // public method for decoding
+            this.decode = function (input) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+                while (i < input.length) {
+                    enc1 = _keyStr.indexOf(input.charAt(i++));
+                    enc2 = _keyStr.indexOf(input.charAt(i++));
+                    enc3 = _keyStr.indexOf(input.charAt(i++));
+                    enc4 = _keyStr.indexOf(input.charAt(i++));
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+                    output = output + String.fromCharCode(chr1);
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+                }
+                output = _utf8_decode(output);
+                return output;
+            }
+
+            // private method for UTF-8 encoding
+            _utf8_encode = function (string) {
+                string = string.replace(/\r\n/g,"\n");
+                var utftext = "";
+                for (var n = 0; n < string.length; n++) {
+                    var c = string.charCodeAt(n);
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    } else if((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    } else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+
+                }
+                return utftext;
+            }
+
+            // private method for UTF-8 decoding
+            _utf8_decode = function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+                while ( i < utftext.length ) {
+                    c = utftext.charCodeAt(i);
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    } else if((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(i+1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        i += 2;
+                    } else {
+                        c2 = utftext.charCodeAt(i+1);
+                        c3 = utftext.charCodeAt(i+2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        i += 3;
+                    }
+                }
+                return string;
+            }
+        }
+        var b64 = new Base64();
+        //监听提交
+        $("#save").on("click", function (data) {
+            request.call("/admin/shop/edit", "POST", {
+                "title":$("input[name=title]").val(),
+                "description":$("textarea[name=description]").val(),
+                "params":b64.encode(getHtml()),
+                "msg":$("textarea[name=msg]").val(),
+                "code":b64.encode($("textarea[name=code]").val()),
+                "price":$("input[name=price]").val(),
+                "id":$("input[name=id]").val()
+            },"#tabContent","正在提交数据中...").done(function (data) {
+                layer.closeAll();
+            });
+
+            return false;
+        });
+       // var key=randStrName();
+
+        var defaultHtml = "  <div class=\"layui-form-item\">\n" +
+            "    <label class=\"layui-form-label\">邮箱</label>\n" +
+            "    <div class=\"layui-input-block\">\n" +
+            "      <input type=\"text\" name=\"mail\" required  lay-verify=\"required|mail\" placeholder=\"请输入您的邮箱\" autocomplete=\"off\" class=\"layui-input\">\n" +
+            "    </div>\n" +
+            "  </div>";
+        clearHtml();
+        $('button').on('click', function () {
+            let _this = $(this),
+                size = _this.data('size'),
+                type = _this.data('type'),
+                html = '';
+             key = randStrName();
+            switch (type) {
+                case 'text':
+                    html = input(type, size)
+                    break;
+                case 'password':
+                    html = input(type, size)
+                    break;
+                case 'select':
+                    html = select(size)
+                    break;
+                case 'checkbox_a':
+                    html = checkbox_a(size)
+                    break;
+                case 'checkbox_b':
+                    html = checkbox_b(size)
+                    break;
+                case 'radio':
+                    html = radio(size)
+                    break;
+                case 'textarea':
+                    html = textarea(size)
+                    break;
+                case 'del':
+                    clearHtml()
+                    //$('#formDemo').html("\n")
+
+                    return false
+                 //   break;
+                default:
+            }
+            appendHtml(html)
+
+
+
+
+        })
+
+        function appendHtml(html){
+            let h = getHtml();
+            h = h||"";
+            if(h!=="") h = h+"\n"+html
+            else h = html;
+            localStorage.setItem("form_html",h);
+            $('#formDemo').html(h);
+            form.render();
+            $('.code-show').val(getHtml());
+
+            //$arg
+           var parrent = /name="(.*?)"/g
+
+            var d = h.match(parrent);
+           var h2 = "";
+           d = removeDuplicatedItem4(d)
+            for (var i = 0; i < d.length; i++) {
+                var name = d[i].replace("name=","").replace("[]","")
+                h2+='<button type="button" class="layui-btn" >$arg['+name+']</button>'
+                //
+            }
+            $("#variable").html(h2)
+        }
+        function removeDuplicatedItem4(ar) {
+            var ret = [],
+                end;
+            ar.sort();
+            end = ar[0];
+            ret.push(ar[0]);
+
+            for (var i = 1; i < ar.length; i++) {
+                if (ar[i] !== end) {
+                    ret.push(ar[i]);
+                    end = ar[i];
+                }
+            }
+
+            return ret;
+        }
+        function getHtml(){
+            return localStorage.getItem("form_html");
+        }
+        function clearHtml(){
+            localStorage.setItem("form_html",defaultHtml);
+            $('#formDemo').html("\n"+defaultHtml)
+            $('.code-show').val(defaultHtml)
+        }
+
+        function input(type, size) {
+            var name = type === 'text' ? '输入框' : (type === 'password' ? '密码框' : '');
+            var html = '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">' + name + '</label>\n' +
+                '    <div class="layui-input-' + size + '">\n' +
+                '      <input type="' + type + '" name="' + key + '" required  lay-verify="required" placeholder="请输入' + name + '内容" autocomplete="off" class="layui-input">\n' +
+                '    </div>\n' +
+                '  </div>\n';
+            return html;
+        }
+
+        function select(size) {
+            var html = '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">选择框</label>\n' +
+                '    <div class="layui-input-' + size + '">\n' +
+                '      <select name="' + key + '" lay-verify="required" lay-search>\n' +
+                '        <option value=""></option>\n' +
+                '        <option value="0">北京</option>\n' +
+                '        <option value="1">上海</option>\n' +
+                '        <option value="2">广州</option>\n' +
+                '        <option value="3">深圳</option>\n' +
+                '        <option value="4">杭州</option>\n' +
+                '      </select>\n' +
+                '    </div>\n' +
+                '  </div>\n';
+            return html;
+        }
+
+        function checkbox_a(size) {
+            var html = '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">复选框</label>\n' +
+                '    <div class="layui-input-' + size + '">\n' +
+                '      <input type="checkbox" name="' + key + '[]" title="写作">\n' +
+                '      <input type="checkbox" name="' + key + '[]" title="阅读" checked>\n' +
+                '      <input type="checkbox" name="' + key + '[]" title="发呆">\n' +
+                '    </div>\n' +
+                '  </div>\n';
+            return html;
+        }
+
+        function checkbox_b(size) {
+            var html = '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">开关</label>\n' +
+                '    <div class="layui-input-' + size + '">\n' +
+                '      <input type="checkbox" name="' + key + '" lay-skin="switch">\n' +
+                '    </div>\n' +
+                '  </div>\n';
+            return html;
+        }
+
+        function radio(size) {
+            var html = '  <div class="layui-form-item">\n' +
+                '    <label class="layui-form-label">单选框</label>\n' +
+                '    <div class="layui-input-' + size + '">\n' +
+                '      <input type="radio" name="' + key + '" value="男" title="男">\n' +
+                '      <input type="radio" name="' + key + '" value="女" title="女" checked>\n' +
+                '    </div>\n' +
+                '  </div>\n';
+            return html;
+        }
+
+        function textarea(size) {
+            var html = '  <div class="layui-form-item layui-form-text">\n' +
+                '    <label class="layui-form-label">文本域</label>\n' +
+                '    <div class="layui-input-' + size + '">\n' +
+                '      <textarea name="' + key + '" placeholder="请输入内容" class="layui-textarea"></textarea>\n' +
+                '    </div>\n' +
+                '  </div>\n';
+            return html;
+        }
+
+        function randStrName() {
+            return Math.random().toString(36).substr(8);
+        }
+
+        //$('.click-but button').click()
+        $('.code-show').bind('input propertychange', function(){
+            var html = $('.code-show').val();
+            localStorage.setItem("form_html",'');
+            $('#formDemo').html("\n")
+            let h = getHtml();
+            h = h||"";
+            if(h!=="") h = h+"\n"+html
+            else h = html;
+            localStorage.setItem("form_html",h);
+            $('#formDemo').html(h);
+            form.render();
+        });
+
+    });
+</script>
