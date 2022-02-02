@@ -83,7 +83,7 @@ class Order extends Model
         $res = $this->select('order_id,state')->where(["pay_id" => $id])->commit();
         if(!empty($res)){
             $this->delete()->where(["pay_id" => $id])->commit();
-            $this->delete()->table("pay_tmp_price")->where(["oid" => $res[0]['order_id']])->commit();
+         //   $this->delete()->table("pay_tmp_price")->where(["oid" => $res[0]['order_id']])->commit();
         }
 
     }
@@ -377,6 +377,10 @@ class Order extends Model
 
         if (!empty($res)) {
             $res = $res[0];
+           $state = $res["state"];
+           if(intval($state)==ConstData::StateSuccess){
+               return ["code"=>ConstData::ApiOk,"msg"=>"该订单已经回调成功，请勿重复回调"];
+           }
             //在通知远程服务器之前，我们收到了app的推送，故认为已经收到钱了，所以先更新支付状态，再通知服务器
             $this->ChangeStateByOrderId($id, ConstData::StateOk);
             //不管是不是已支付（我觉得你付过了~不然调用我干嘛），直接删除临时表里面的内容
@@ -410,8 +414,8 @@ class Order extends Model
 
             $res = json_decode($http->getBody());
             $pay =  Config::getInstance("pay")->get();
-            echo $http->getBody();
-            exitApp('');
+           // echo $http->getBody();
+         //   exitApp('');
             if ($res) {
                 //远程服务器响应正常，表示认可
                 if ($res->state===ConstData::ApiOk) {

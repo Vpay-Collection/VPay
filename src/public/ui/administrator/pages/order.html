@@ -155,7 +155,7 @@
             } else if (layEvent === 'bd') {
                 if(parseInt(data.state)===StateSuccess) {
                     layer.msg("该订单已完成支付并成功回调，不需要补单！",{icon:5});
-                    //return;
+                    return;
                 }
                 layer.confirm('确定要补单吗？该操作将会将该订单标记为已支付，并向您的服务器发送订单完成通知', function (index) {
 

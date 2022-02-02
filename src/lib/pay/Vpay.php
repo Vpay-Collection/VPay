@@ -8,6 +8,7 @@
 namespace app\lib\pay;
 
 
+use app\core\web\Session;
 use app\lib\pay\lib\AlipaySign;
 use app\lib\pay\lib\Web;
 
@@ -47,6 +48,8 @@ class Vpay{
             $this->conf=$conf;
         else
             $this->conf=include(dirname(__FILE__).'/config.php');
+        if(session_status()!==PHP_SESSION_ACTIVE )
+        session_start();
     }
 
     /**
@@ -134,18 +137,9 @@ class Vpay{
         unset($arg['sign']);
  //       $arg = array_diff_key($_GET, array("sign" => $sign));
 
-
-
         $alipay = new AlipaySign();
 
         $_sign = $alipay->getSign($arg, $this->conf["Key"]);
-
-
-       // dump($arg);
-
-       // dump($_sign);
-
-       // dump($sign);
 
         if (md5($sign) !== md5($_sign)) {
             $this->err="sign校验失败！";
@@ -157,10 +151,11 @@ class Vpay{
     }
     public function PayReturn($arg): bool
     {
+        $arg["param"]=base64_decode(urldecode($arg["param"]));
         $bool=$this->CheckSign($arg);
-
+       // dump($bool);
         $payId=$this->checkClient($arg['price'],$arg['param']);
-
+       // dump($payId);
         if($bool&&$payId===$arg['payId']){
             $this->closeClient();
             return true;
@@ -225,7 +220,6 @@ class Vpay{
         $param=['payId'=>$payId];
         $param['sign']=$alipay->getSign($param, $key);
         $url = $this->conf["CloseOrder"] ;
-
         $res=$web->get($url,$param);
         $json=json_decode($res);
 
@@ -239,7 +233,6 @@ class Vpay{
             return $PayId;
         }else{
             $clientID=md5(md5($price).sha1(urldecode($param)));
-
             $_SESSION['clientID']=$clientID;
             $PayId = date("YmdHms") . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9);
             $_SESSION['payID']=$PayId;
@@ -247,10 +240,9 @@ class Vpay{
         }
     }
     private function checkClient($price,$param){
+        //dump($_SESSION);
         $param=urldecode($param);
-
         $clientID=md5(md5($price).sha1($param));
-
         if(isset($_SESSION['clientID'])&&$_SESSION['clientID']===$clientID){
             if(isset($_SESSION['payID'])&&isset($_SESSION['timeOut'])&&intval($_SESSION['timeOut'])>time()){
                 return $_SESSION['payID'];

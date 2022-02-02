@@ -44,7 +44,7 @@
 <body>
 <div style="padding: 24px 48px;"><h1><{$err}></h1>
     <p><span style="font-size:32px;"><{$title}></span></p>
-    <p><span style="font-size:25px;"><{$msg}></span></p>
+    <p><span style="font-size:25px;"><{$msg nofilter}></span></p>
     <span id="jump_box" style="font-size:25px;">
 
     </span>

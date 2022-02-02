@@ -15,13 +15,22 @@ namespace app\controller\shop;
 
 use app\attach\Email;
 use app\core\config\Config;
+use app\core\web\Response;
+use app\core\web\Session;
 use app\lib\pay\Vpay;
 use app\model\Shop;
 use app\model\ShopItem;
 
 class Main extends BaseController
 {
-    function info(){
+    public function init()
+    {
+       Session::getInstance()->start();
+
+    }
+
+    function info(): array
+    {
         $pay =  Config::getInstance("pay")->get();
         return $this->ret(200,null,[
             "name"=> $pay["shop"]["name"],
@@ -73,7 +82,7 @@ class Main extends BaseController
                 $tplData = [
                     "logo" => "http://image.ankio.net/uPic/2022_01_27_22_26_53_1643293613_1643293613307_0id1Z6.jpg",
                     "sitename" =>$pay["pay"]["siteName"],
-                    "title" => "商品购买成功",
+                    "title" => "支付成功",
                     "body" => $this->getMailContent($json->msg,$_POST)
                 ];
 
@@ -93,11 +102,13 @@ class Main extends BaseController
     public function Return()
     {
         $Vpay = new Vpay();
-        dump(arg());
-        if ($Vpay->PayReturn(arg())) {//回调时，验证通过
-
+      //  dump($_GET);
+        if ($Vpay->PayReturn($_GET)) {//回调时，验证通过
+            $param = json_decode(base64_decode(urldecode(arg("param"))),true);
+           // dump($param);
+            Response::msg(false,200,"支付成功",$param["msg"],-1,"/ui/card","返回首页");
         } else {
-
+            Response::msg(true,403,"支付失败","您的支付信息无效！",-1,"/ui/card");
         }
 
     }

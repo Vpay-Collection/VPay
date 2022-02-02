@@ -15,6 +15,7 @@ namespace app\controller\api;
 use app\attach\AlipaySign;
 use app\attach\ConstData;
 use app\core\config\Config;
+use app\core\web\Session;
 use app\model\App;
 use app\model\Order;
 
@@ -22,7 +23,7 @@ class Pay extends BaseController
 {
     public function init()
     {
-       
+       Session::getInstance()->start();
     }
 
     
@@ -99,7 +100,7 @@ class Pay extends BaseController
                 $arr["reallyPrice"]=$res["really_price"];
                 $alipay=new AlipaySign();
                 $arr["sign"]=$alipay->getSign($arr,$res2["connect_key"]);
-
+                $arr["param"] =urlencode(base64_encode($arr["param"]));
                 $p=http_build_query($arr);
                 if(preg_match('/\?[\d\D]+/',$url)){//matched ?c
                     $url.='&'.$p;
