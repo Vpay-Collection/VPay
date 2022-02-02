@@ -135,7 +135,7 @@
         let request = layui.request;
 //判断登录
 
-        request.call("/admin/console/data","POST",null,"#tabContent","正在读取数据...").done(function (response) {
+        request.call("/admin/console/data","POST",null,".content-body","正在读取数据...").done(function (response) {
             layui.$("#todayOrder").html(response.data.todayOrder);
             layui.$("#todaySuccessOrder").html(response.data.todaySuccessOrder);
             layui.$("#countOrder").html(response.data.countOrder);

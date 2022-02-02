@@ -66,11 +66,12 @@
         margin-bottom: 12px;
     }
 </style>
+<div class="ok-body home" >
 <blockquote class="layui-elem-quote quoteBox" style="margin: 1rem">
     <button class="layui-btn layui-btn-normal" id="addNewProject">添加商品</button>
 </blockquote>
 <div id="demoCardList1" class="layui-row layui-col-space10" style="margin: 1rem"></div>
-
+</div>
 <script type="text/html" id="demoCardItem1">
     <div class="layui-col-md4 layui-col-sm6 layui-col-xs12">
         <div class="project-list-item">
@@ -116,7 +117,7 @@
         // let tab = layui.tab;
 
         function loadData() {
-            layui.request.call('/admin/shop/list', "POST", {}, "#tabContent", "数据加载中...").done(function (data) {
+            layui.request.call('/admin/shop/list', "POST", {}, ".content-body", "数据加载中...").done(function (data) {
                 cardTable.render({
                     elem: '#demoCardList1',
                     templet: '#demoCardItem1',

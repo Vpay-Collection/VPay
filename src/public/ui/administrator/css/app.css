@@ -439,5 +439,9 @@ html,body,#app{
     background-color: #2d3a4b;
 }
 #tabContent{
-    min-height: 100%;
+    overflow: scroll;
+    height: auto;
+}
+.ok-body{
+    margin-bottom: 3rem;
 }

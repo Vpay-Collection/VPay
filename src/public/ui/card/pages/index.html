@@ -95,7 +95,7 @@
         // let tab = layui.tab;
 
         function loadData() {
-            request.call('/shop/main/list', "POST", {}, "#tabContent", "数据加载中...").done(function (data) {
+            request.call('/shop/main/list', "POST", {}, ".content-body", "数据加载中...").done(function (data) {
                 let card = cardTable.render({
                     elem: '#demoCardList1',
                     templet: '#demoCardItem1',

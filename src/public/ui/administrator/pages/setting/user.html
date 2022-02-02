@@ -62,7 +62,7 @@
             form.on("submit(changePwd)", function (data) {
                 // console.log(data.field,form.val("form"))
                 //url, type, params, elem,text
-                request.call("/admin/setting/passwd","POST",data.field,"#tabContent","正在提交修改...").done(function (response) {
+                request.call("/admin/setting/passwd","POST",data.field,".content-body","正在提交修改...").done(function (response) {
                     parent.window.location.reload();
                 }).fail(function (error) {
                     okLayer.time=2000;

@@ -15,6 +15,7 @@ layui.define(['jquery','NProgress'], function (exports) {
         },
         show:function (str,dom) {
             if(dom===undefined||dom===null)return;
+
             NProgress.settings.parent=dom;
             NProgress.start();
            // console.log(str)

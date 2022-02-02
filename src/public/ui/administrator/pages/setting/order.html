@@ -20,13 +20,13 @@
             <div class="layui-form-mid layui-word-aux">支付宝当面付的APPID</div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">私钥 </label>
+            <label class="layui-form-label">商户私钥 </label>
             <div class="layui-input-block">
                 <textarea class="layui-textarea" id="alipay_private_key" name="alipay_private_key" placeholder="请输入私钥"></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">公钥 </label>
+            <label class="layui-form-label">支付宝公钥 </label>
             <div class="layui-input-block">
                 <textarea class="layui-textarea" id="alipay_public_key" name="alipay_public_key" placeholder="请输入公钥"></textarea>
             </div>
@@ -46,7 +46,7 @@
         let form=layui.form;
 
 
-        request.call("/admin/data/order", "post",null, "#tabContent","正在加载配置信息...").done(function (response) {
+        request.call("/admin/data/order", "post",null, ".content-body","正在加载配置信息...").done(function (response) {
             form.val("form",response.data);
         }).fail(function (error) {
             okLayer.time=2000
@@ -56,7 +56,7 @@
 
         form.on('submit(save)', function(data){
             var sendData=data.field;
-            request.call("/admin/setting/order", "post",sendData, "#tabContent","正在保存配置信息...").done(function (response) {
+            request.call("/admin/setting/order", "post",sendData, ".content-body","正在保存配置信息...").done(function (response) {
                 okLayer.time=1000
                 okLayer.greenTickMsg(response.msg, function () {
                 })

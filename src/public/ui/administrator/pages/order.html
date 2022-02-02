@@ -1,18 +1,6 @@
 <div class="ok-body home">
 <div action="" class="layui-form layui-form-pane">
     <div class="layui-form-item">
-
-        <div class="layui-inline">
-            <label class="layui-form-label">支付方式</label>
-            <div class="layui-input-inline">
-                <select id="type" lay-filter="type" lay-verify="required">
-                    <option value="">不限制</option>
-                    <option value="1">微信</option>
-                    <option value="2">支付宝</option>
-
-                </select>
-            </div>
-        </div>
         <div class="layui-inline">
             <label class="layui-form-label">订单状态</label>
             <div class="layui-input-inline">
@@ -73,7 +61,7 @@
                 + ":" + (now.getSeconds() > 9 ? now.getSeconds() : "0" + now.getSeconds());
 
         }
-        request.call("/admin/app/list","POST",{},"#tabContent","加载中...").done(function (response) {
+        request.call("/admin/app/list","POST",{},".content-body","加载中...").done(function (response) {
             let html = "<option value=\"\">不限制</option>";
             for(let i=0; i<response.data.length; i++){
                 html+="<option value=\""+response.data[i]["id"]+"\">"+response.data[i]["app_name"]+"</option>";
@@ -90,7 +78,6 @@
             , toolbar: '#toolbarDemo'
             , where: {
                 state: $("#state").val(),
-                type: $("#type").val(),
                 app: $("#application").val(),
                 token: localStorage.getItem("token")
             }
@@ -135,7 +122,6 @@
             myTable.reload({
                 where: {
                     state: $("#state").val(),
-                    type: $("#type").val(),
                     app: $("#application").val(),
                     token: localStorage.getItem("token")
                 }
@@ -149,7 +135,7 @@
                 var out = "<p>创建时间：" + formatDate(data.create_date) + "</p>";
                 out += "<p>支付时间：" + formatDate(data.pay_date) + "</p>";
                 out += "<p>关闭时间：" + formatDate(data.close_date) + "</p>";
-                out += "<p>自定义参数：" + unescape(unescape(data.param).replace(/\\/g,"%")) + "</p>";
+                out += "<p>自定义参数：" + unescape(unescape(data.param).replace("<","&lt;").replace(">","&gt;").replace(/\\/g,"%")) + "</p>";
                 layer.alert(out);
 
             } else if (layEvent === 'bd') {
@@ -158,8 +144,8 @@
                     return;
                 }
                 layer.confirm('确定要补单吗？该操作将会将该订单标记为已支付，并向您的服务器发送订单完成通知', function (index) {
-
-                    request.call("/admin/orders/SetBD","POST",{id:data.order_id},"#tabContent","补单中...").done(function (response) {
+                    layer.closed(index);
+                    request.call("/admin/orders/SetBD","POST",{id:data.order_id},".content-body","补单中...").done(function (response) {
                         layer.msg("操作成功！",{icon:6});
                         tableReload();
                     }).fail(function (response) {
@@ -176,9 +162,9 @@
 
                 });
             } else if (layEvent === 'del') {
-                console.log(data)
                 layer.confirm('确定要删除订单吗？', function (index) {
-                    request.call("/admin/orders/del","POST",{id:data.id},"#tabContent","删除中...").done(function (response) {
+                    layer.closed(index);
+                    request.call("/admin/orders/del","POST",{id:data.id},".content-body","删除中...").done(function (response) {
                         layer.msg("操作成功！",{icon:6});
                         tableReload();
                     }).fail(function (response) {
@@ -205,7 +191,8 @@
             switch (obj.event) {
                 case 'delGq':
                     layer.confirm('确定要删除所有过期订单吗？', function (index) {
-                        request.call("/admin/orders/delGq","POST",{},"#tabContent","删除中...").done(function (response) {
+                        layer.closed(index);
+                        request.call("/admin/orders/delGq","POST",{},".content-body","删除中...").done(function (response) {
                             layer.msg("操作成功！",{icon:6});
                             tableReload();
                         }).fail(function (response) {

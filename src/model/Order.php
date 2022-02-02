@@ -48,15 +48,13 @@ class Order extends Model
      * 后台响应，获取所有的订单
      * @param $page int 第几页
      * @param $limit int 每页数量
-     * @param string $type  支付类型
      * @param string $state 订单状态
      * @param string $app appId
      * @return array|int
      */
-    public function getOrders(int $page, int $limit, string $type = "", string $state = "", string $app = "")
+    public function getOrders(int $page, int $limit,  string $state = "", string $app = "")
     {
         $condition = [];
-        if ($type !== "") $condition["type"] = $type;
         if ($state !== "") $condition["state"] = $state;
         if ($app !== "") $condition["state"] = $state;
         return $this->select()->where($condition)->page($page, $limit)->orderBy("id desc")->commit();

@@ -76,6 +76,10 @@ class Main extends BaseController
             //可以自己通知用户
             //$mail = new Email();
             if (isset($json->mail) && Email::isEmail($json->mail)) {
+                if(isset($json->isCode)&&$json->isCode=="1"&&isset($json->card)&&isset($json->id)){
+                    $shopItem = new ShopItem();
+                    $shopItem->del($json->id,$json->card);
+                }
                 //发送卡密
                 $mail = new Email();
                 $pay = Config::getInstance("pay")->get();
@@ -127,8 +131,13 @@ class Main extends BaseController
         $shopData = $shopData[0];
 
        $shopItem = new ShopItem();
+        $args = arg();
+        unset($args["m"]);
+        unset($args["a"]);
+        unset($args["c"]);
+        unset($args["token"]);
        if($shopData["isCode"]=="1"){
-           $shopItemData = $this->payCode($shopData["code"],arg());
+           $shopItemData = $this->payCode($shopData["code"],$args);
        }else
            $shopItemData = $shopItem->getOne($shopData["id"]);
 
@@ -139,7 +148,8 @@ class Main extends BaseController
 
         $mail = arg('mail');
 
-        $args = arg();
+
+        $args["isCode"]=$shopData["isCode"];
         $args["title"]=$shopData["title"];
         $args["description"]=$shopData["description"];
         $args["card"]=$shopItemData;

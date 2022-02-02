@@ -58,13 +58,7 @@
       return pwd;
     }
 
-    request.call("/admin/data/app","POST",null,"#form","正在读取数据...").done(function (response) {
-      form.val("form",response.data);
-    }).fail(function (error) {
-      okLayer.time=2000
-      okLayer.redCrossMsg(error)
-      console.log(error)
-    });
+
 
     layui.$("#random").on("click",function (e) {
       const token = randomString(64);

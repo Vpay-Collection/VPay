@@ -30,7 +30,6 @@
 
 
 
-
     clipboard.on('success', function(e) {
       layer.msg("复制成功");
     });
@@ -66,7 +65,7 @@
               , layEvent = obj.event; //获得 lay-event 对应的值
       if (layEvent === 'del') {
         layer.confirm('确定要删除该应用吗？', function (index) {
-          request.call("/admin/app/del","POST",{id:data.id},"#tabContent","正在删除...").done(function (response) {
+          request.call("/admin/app/del","POST",{id:data.id},".content-body","正在删除...").done(function (response) {
             layer.msg("操作成功！");
             myTable.reload();
           }).fail(function (error) {

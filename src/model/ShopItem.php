@@ -32,14 +32,14 @@ class ShopItem extends Model
         $this->update()->where(["id"=>$id])->set(["lockItem"=>time()+5*60*60])->commit();
     }
     function getList($shopId){
-        $data = $this->select("count(id) as number")->where(["shopId"=>$shopId,"lockItem<:time",":time"=>time()])->commit();
+        $data = $this->select("count(id) as num")->where(["shopId"=>$shopId,"lockItem<:time",":time"=>time()])->commit();
         if(empty($data)){
             return 0;
         }
-        return $data[0]["number"];
+        return $data[0]["num"];
     }
     function getOne($shopId){
-        $data = $this->select()->where(["shopId"=>$shopId,"lockItem<:time"=>time()])->limit("1")->commit();
+        $data = $this->select()->where(["shopId"=>$shopId,"lockItem<:time",":time"=>time()])->limit("1")->commit();
         if(empty($data)){
             return null;
         }

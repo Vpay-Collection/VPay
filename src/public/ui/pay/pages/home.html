@@ -130,7 +130,7 @@
             },1000);
 
         }
-        request.call("/api/pay/GetOrder","POST", {orderId:route.param("orderId")},"#tabContent","正在加载账单...").done(function (data) {
+        request.call("/api/pay/GetOrder","POST", {orderId:route.param("orderId")},".content-body","正在加载账单...").done(function (data) {
             $("#show_qrcode").attr("src","/api/api/qr?url="+encodeURIComponent(data.data.img));
             $("#money").html("￥"+data.data.reallyPrice);
             var time = new Date().getTime() - data.data.date * 1000;

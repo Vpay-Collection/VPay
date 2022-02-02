@@ -272,7 +272,7 @@
                 "code":b64.encode($("textarea[name=code]").val()),
                 "price":$("input[name=price]").val(),
                 "id":$("input[name=id]").val()
-            },"#tabContent","正在提交数据中...").done(function (data) {
+            },".content-body","正在提交数据中...").done(function (data) {
                 layer.closeAll();
             });
 

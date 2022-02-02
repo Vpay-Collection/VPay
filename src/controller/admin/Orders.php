@@ -19,7 +19,7 @@ class Orders extends BaseController
     function list(): array
     {
         $app = new Order();
-        $res = $app->getOrders(arg("page",1), arg("limit",15));
+        $res = $app->getOrders(arg("page",1), arg("limit",15),arg("state"),arg("app"));
         if (!empty($res)) {
             $count = sizeof($res);
             if ($count === 0) return $this->ret(403,"暂无数据",$res,0);

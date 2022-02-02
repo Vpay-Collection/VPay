@@ -42,7 +42,7 @@
         let form=layui.form;
 
 
-        request.call("/admin/shop/system", "post",null, "#tabContent","正在加载配置信息...").done(function (response) {
+        request.call("/admin/shop/system", "post",null, ".content-body","正在加载配置信息...").done(function (response) {
             form.val("form",response.data);
         }).fail(function (error) {
             okLayer.time=2000
@@ -52,7 +52,7 @@
 
         form.on('submit(save)', function(data){
             var sendData=data.field;
-            request.call("/admin/shop/systemEdit", "post",sendData, "#tabContent","正在保存配置信息...").done(function (response) {
+            request.call("/admin/shop/systemEdit", "post",sendData, ".content-body","正在保存配置信息...").done(function (response) {
                 okLayer.time=1000
                 okLayer.greenTickMsg(response.msg, function () {
                 })

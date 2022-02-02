@@ -15,6 +15,9 @@ pay :
   alipay_id: ""
   alipay_notify: ""
   alipay_sign_type: ""
-
+shop:
+  name : "Ankioの杂货铺"
+  state : 1
+  notice : "欢迎来到Ankioの杂货铺！"
 login: ""#采用集成登录框架进行登录
 

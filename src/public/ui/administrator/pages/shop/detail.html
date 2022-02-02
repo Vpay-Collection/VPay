@@ -34,7 +34,6 @@
             }
             , cols: [[ //表头
                 {type:'checkbox'},
-                {field: 'id', title: 'ID', minWidth: 80 },
                 {field: 'code', title: '卡密', align: 'center'},
                 {
                      title: '状态', minWidth: 100, templet: function (d) {
@@ -70,7 +69,7 @@
                             ids+=","+checkStatus.data[i].id;
                         }
                         layer.confirm('确定要删除所有选中卡密吗？', function (index) {
-                            request.call("/admin/shop/delItem","POST",{shopId:layui.route.param("id"),"ids":ids},"#tabContent","删除中...").done(function (response) {
+                            request.call("/admin/shop/delItem","POST",{shopId:layui.route.param("id"),"ids":ids},".content-body","删除中...").done(function (response) {
                                 layer.msg("操作成功！",{icon:6});
                                 tableReload();
                             }).fail(function (response) {
@@ -88,17 +87,17 @@
                     break;
                 case 'import':
                     layer.prompt({
+                        maxlength:102400,
                         formType: 2,
                         value: '',
                         title: '请输入卡密(一行一个)',
                        // area: ['80%', '80%'] //自定义文本域宽高
                     }, function(value, index, elem){
-                        request.call("/admin/shop/import","POST",{shopId:layui.route.param("id"),data:value},"#tabContent","添加中...").done(function (response) {
+                        layer.close(index);
+                        request.call("/admin/shop/import","POST",{shopId:layui.route.param("id"),data:value},".content-body","添加中...").done(function (response) {
                             layer.msg("操作成功！",{icon:6});
-                            layer.close(index);
                             tableReload();
                         }).fail(function (response) {
-                            layer.close(index);
                             layer.msg(response.msg,{icon:5});
                         });
 

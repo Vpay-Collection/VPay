@@ -81,8 +81,8 @@
                         })
                     }).fail(function (error) {
                         okLayer.time=2000
-                        okLayer.redCrossMsg(error)
-                        console.log(error)
+                        okLayer.redCrossMsg(error.msg)
+                       // console.log(error)
                     });
                 });
             });

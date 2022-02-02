@@ -384,6 +384,7 @@ layui.define([], function(exports) {
     }
 
     function applyCss(element, prop, value) {
+      if(element==null)return
       prop = getStyleProp(prop);
       element.style[prop] = value;
     }
@@ -409,6 +410,7 @@ layui.define([], function(exports) {
    */
 
   function hasClass(element, name) {
+    if(element==null)return
     var list = typeof element == 'string' ? element : classList(element);
     return list.indexOf(' ' + name + ' ') >= 0;
   }
@@ -418,6 +420,7 @@ layui.define([], function(exports) {
    */
 
   function addClass(element, name) {
+    if(element==null)return
     var oldList = classList(element),
         newList = oldList + name;
 
@@ -432,6 +435,7 @@ layui.define([], function(exports) {
    */
 
   function removeClass(element, name) {
+    if(element==null)return
     var oldList = classList(element),
         newList;
 
@@ -451,6 +455,7 @@ layui.define([], function(exports) {
    */
 
   function classList(element) {
+    if(element==null)return
     return (' ' + (element.className || '') + ' ').replace(/\s+/gi, ' ');
   }
 
@@ -459,6 +464,7 @@ layui.define([], function(exports) {
    */
 
   function removeElement(element) {
+    if(element==null)return
     element && element.parentNode && element.parentNode.removeChild(element);
   }
 
