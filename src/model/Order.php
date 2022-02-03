@@ -6,6 +6,7 @@ use app\attach\Email;
 use app\core\config\Config;
 use app\core\debug\Log;
 use app\core\mvc\Model;
+use app\core\utils\StringUtil;
 use app\core\web\Response;
 use app\lib\Alipay\AlipayServiceSend;
 use app\lib\HttpClient\HttpClient;
@@ -28,8 +29,7 @@ class Order extends Model
     private $isAuto=false;//是不是需要手动输入金额
     private $orderId;//本程序创建的订单号
     private $explain=null;//参数中的说明信息
-    private string $discount;//使用的优惠券
-    private  $reallyPrice;//真实需要支付的金额
+     private  $reallyPrice;//真实需要支付的金额
     private $notifyUrl;//异步通知
     private $returnUrl;//同步通知
     //模块变量
@@ -216,7 +216,7 @@ class Order extends Model
         //计算超时时间，上述time单位为分钟
         $timeout=intval($time)*60+$createDate;
         //获得真实的支付金额，进行优惠券核销
-        $this->getPayMoney($this->price,$this->discount,$this->appid);
+        $this->getPayMoney($this->price);
         //生成内部订单
         $this->orderId = date("YmdHms") . rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9);
         //生成支付地址
@@ -227,8 +227,7 @@ class Order extends Model
             "create_date" => $createDate,
             "order_id" => $this->orderId,
             "param" => $this->param,
-            "discount" => $this->discount,
-            "pay_date" => 0,//订单支付时间
+           "pay_date" => 0,//订单支付时间
             "pay_id" => $this->payId,
             "price" => $this->price,
             "really_price" => $this->reallyPrice,
@@ -284,8 +283,7 @@ class Order extends Model
                 "orderId" => $this->orderId,
                 "title" => $this->explain,
                  "param" => $this->param,
-                   "discount" => $this->discount,
-                "price" => $this->price,
+                 "price" => $this->price,
                 "reallyPrice" => $this->reallyPrice,
                // "payUrl" => $this->payUrl,
                 "state" => ConstData::StateWait,
@@ -419,7 +417,7 @@ class Order extends Model
                 if ($res->state===ConstData::ApiOk) {
                     //告诉响应接口，好啦响应是成功的~
                     //发邮件啦啦啦
-                    if(intval($pay["mail"]["sendType"])>=2&&Email::isEmail($pay["mail"]["receive"])){
+                    if(StringUtil::get($pay["mail"]["sendType"])->contains("1")&&Email::isEmail($pay["mail"]["receive"])){
                         $json=json_decode(urldecode($arr["param"]));
                         if($json){
                             $c=print_r($json,true);
@@ -429,13 +427,13 @@ class Order extends Model
 
                         $count = doubleval($arr["price"])-doubleval($arr["reallyPrice"]);
                         $tplData = [
-                            "logo" => "http://image.ankio.net/uPic/2022_01_27_22_26_53_1643293613_1643293613307_0id1Z6.jpg",
+                            "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
                             "sitename" =>$pay["pay"]["siteName"],
                             "title" => "用户支付成功通知",
                             "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：{$c}</p>"
                         ];
 
-                        $file = $mail->complieNotify("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
+                        $file = $mail->complieNotify("#009688", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
                         $mail->send($pay["mail"]["receive"], "{$tplData['sitename']}", $file, $tplData['sitename']);
                     }
                     return ["code" => ConstData::ApiOk, "msg" => $res->msg];
@@ -449,6 +447,27 @@ class Order extends Model
                 Log::info("notify","支付回调失败！");
                 Log::info("notify","通知地址： {$notify_url}！");
                 Log::info("notify","返回结果： {$http->getBody()}！");
+
+                if(StringUtil::get($pay["mail"]["sendType"])->contains("2")&&Email::isEmail($pay["mail"]["receive"])){
+                    $json=json_decode(urldecode($arr["param"]));
+                    if($json){
+                        $c=print_r($json,true);
+                    }else $c=print_r((urldecode($arr["param"])),true);
+
+                    $mail = new Email();
+
+                    $count = doubleval($arr["price"])-doubleval($arr["reallyPrice"]);
+                    $tplData = [
+                        "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
+                        "sitename" =>$pay["pay"]["siteName"],
+                        "title" => "支付回调失败",
+                        "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：{$c}</p><p>通知地址:{$notify_url}</p><p>返回结果:{$http->getBody()}</p>"
+                    ];
+
+                    $file = $mail->complieNotify("#FF5722", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
+                    $mail->send($pay["mail"]["receive"], "{$tplData['sitename']}", $file, $tplData['sitename']);
+                }
+
                 $this->ChangeStateByOrderId(arg("id"), ConstData::StateError);
                 return ["code" => ConstData::ApiError, "msg" => "异步回调返回的数据不是标准json数据！"];
             }
@@ -501,11 +520,7 @@ class Order extends Model
             return false;
         }
         $this->param = urldecode(base64_decode(strval($arg["param"])));
-        if (!isset($arg["discount"])) {
-            $this->err = "请传入优惠券，无优惠券请留空";
-            return false;
-        }
-        $this->discount = strval($arg["discount"]);
+
         if(!isset($arg["explain"])){
             $this->err = "请传入收款原因";
             return false;
@@ -548,7 +563,6 @@ class Order extends Model
         $arr["appid"] = $this->appid;
         $arr["isHtml"] = $this->isHtml;
         $arr["explain"] = $this->explain;
-        $arr["discount"] = $this->discount;
         $arr["notifyUrl"] = $this->notifyUrl;
         $arr["returnUrl"] = $this->returnUrl;
         $arr["t"]= $this->t;
@@ -566,21 +580,10 @@ class Order extends Model
 
     //获取到实际支付的价格
 
-    private function getPayMoney($price, $discount, $appid)
+    private function getPayMoney($price)
     {
         $price=doubleval($price);
-        $disCount = new Discount();
-        $count = $disCount->getByText($discount,$appid);
-        if(!empty($count)){
-            $data = $count[0];
-            //优惠券核销
-            $disCount->del($data["id"]);
-            if(doubleval($data["price"])>$price){
-                $this->reallyPrice = 0;
-            }else{
-                $this->reallyPrice = $price - doubleval($data["price"]);
-            }
-        }
+
         $this->reallyPrice = $price;
     }
 

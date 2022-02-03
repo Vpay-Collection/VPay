@@ -11,13 +11,19 @@ layui.config({
 
 layui.use(['route','request'], function(){
     //设置title
-    layui.$("title").html("AnkioのVpay")
-    layui.$(".app_name").text("AnkioのVpay")
+    layui.$("title").html("AnkioのVpay 安装")
+    layui.$(".app_name").text("AnkioのVpay 安装")
     //设置路由
     if(window.location.hash.indexOf("#")===-1)
         window.location.hash="#/"
     const route = layui.route;
-    route.loadPage("home");
+    layui.request.call("/index/install/isInstall","post",null,"#app","loading...").done(function (response) {
+        route.loadPage("home");
+    }).fail(function (response) {
+       location.replace("/")
+    });
+
+
 });
 
 

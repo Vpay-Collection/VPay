@@ -52,6 +52,9 @@ class ShopItem extends Model
     function del($id,$shopId){
         return $this->delete()->where(["id"=>$id,"shopId"=>$shopId])->commit();
     }
+    function delCard($id,$card){
+        return $this->delete()->where(["code"=>$card,"shopId"=>$id])->commit();
+    }
     /**
      * 后台响应，获取所有的订单
      * @param $page int 第几页

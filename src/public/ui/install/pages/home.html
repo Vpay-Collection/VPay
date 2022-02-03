@@ -1,0 +1,47 @@
+<style>
+    div.btn{
+        cursor:pointer;
+    }
+</style>
+<div class="ok-body" style="max-width:900px;color: #F2F2F2;text-align: center;margin: 1rem auto 0;">
+    <div class="header">
+        <div class="layout">
+            <div class="title">
+                <h1>Vpay 3.0</h1>
+                <h3>系统安装向导</h3>
+            </div>
+            <div class="version">版本: v3.0（62）</div>
+        </div>
+    </div>
+
+    <div id="bindHome"></div>
+
+    <div class="footer">
+        <h5>Powered by <font class="blue">Ankio</font><font class="orange"></font></h5>
+        <h6>版权所有 Copyright © 2022 by <a href="https://github.com/dreamncn/VPay" target="_blank">Vpay</a></h6>
+    </div>
+</div>
+
+<script>
+
+    layui.use([ "route", "request", "okLayer"], function () {
+        route = layui.route
+        route.register([
+            {
+                path: "/",
+                page: "step/01",
+                callback: function (path) {
+                }
+            },
+            {
+                path: "",
+                page: "step/01",
+                callback: function (path) {
+                }
+            }
+        ]).init("#bindHome","#bindHomeScript").refresh();//刷新当前页面路由信息
+    });
+
+
+</script>
+<span id="bindHomeScript"></span>

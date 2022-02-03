@@ -5,6 +5,8 @@ namespace app\controller\admin;
 use app\attach\Email;
 use app\core\cache\Cache;
 use app\core\config\Config;
+use app\core\utils\StringUtil;
+use app\extend\ankioTask\core\Tasker;
 
 class Setting extends BaseController
 {
@@ -55,8 +57,18 @@ class Setting extends BaseController
         $pay["mail"]["passwd"]=arg("passwd");
         $pay["mail"]["port"]=arg("port");
         $pay["mail"]["receive"]=arg("receive");
-        $pay["mail"]["sendType"]=arg("sendType");
+        $pay["mail"]["sendType"]=arg("sendType","0");
         Config::getInstance("pay")->setAll($pay);
+
+        $tasker=Tasker::getInstance();
+        $tasker->clean();
+
+        if(StringUtil::get(arg("sendType","0"))->contains("4")){
+            $tasker->add($tasker->cycleNDay(0,23,50),url('task','tasker','taskEveryDay'),"taskEveryDay",-1);
+        }
+
+
+
         return $this->ret(200,"保存成功");
     }
     function mail_test(): array
@@ -64,7 +76,7 @@ class Setting extends BaseController
         $mail = new Email();
         $pay =  Config::getInstance("pay")->get();
         $tplData = [
-            "logo" => "http://image.ankio.net/uPic/2022_01_27_22_26_53_1643293613_1643293613307_0id1Z6.jpg",
+            "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
             "sitename" => $pay["pay"]["siteName"],
             "title" => "邮件发送测试",
             "body" => "<p>您正在测试邮件发送功能</p>

@@ -1,6 +1,6 @@
 const $ = layui.$;
 layui.config({
-    base: './js/lib/' //你存放新模块的目录，注意，不是 layui 的模块目录
+    base: '../static/js/lib/' //你存放新模块的目录，注意，不是 layui 的模块目录
 }).extend({
     route: 'route',
     request: 'request',
@@ -14,7 +14,30 @@ layui.config({
     utils: 'utils',
     cardTable: 'cardTable',
     clipboard: 'clipboard',
-})
+});
+layui.okConfig =  {
+    name:"AnkioのVpay",
+    // 主题色orange_theme|blue_theme
+    theme: "blue_theme",
+    // 导航箭头ok-arrow2|ok-arrow3,不填为默认样式
+    menuArrow: "ok-arrow2",
+    baseUrl: "",
+    isDebug: true,
+    routes:[
+        {
+            path: "/",
+            page: "console",
+            callback: function (path) {
+            }
+        },
+        {
+            path: "",
+            page: "console",
+            callback: function (path) {
+            }
+        }
+    ]
+};
 layui.use(['okConfig','route','request'], function(){
     //设置title
     layui.$("title").html(layui.okConfig.name)

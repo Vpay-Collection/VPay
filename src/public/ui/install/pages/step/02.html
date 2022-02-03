@@ -1,0 +1,148 @@
+<style>
+    table tr{
+        color: #0C0C0C;
+    }
+    tbody{
+        text-align: left;
+    }
+</style>
+<div class="main">
+    <div class="step-box" id="step1">
+        <div class="text-nav">
+            <h1>步骤1.</h1>
+            <h2>开始安装</h2>
+            <h5>检测服务器环境及文件目录权限</h5>
+        </div>
+
+    </div>
+    <div class="content-box">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" id="env">
+
+        </table>
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" id="dirfile">
+
+        </table>
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" id="func">
+
+
+        </table>
+
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" id="ext">
+        </table>
+    </div>
+    <div class="btn-box"><div  class="btn btn-primary" id="last">上一步</div><div  id="next"
+                                                                               class="btn btn-primary">下一步</div></div>
+</div>
+<script>
+
+</script>
+
+<script>
+    layui.use(['jquery', 'route','request'], function () {
+//encodeURI()
+        //  JSON.stringify()
+        let $ = layui.jquery;
+        let request = layui.request;
+        let route = layui.route;
+
+        request.call("/index/install/check",'post',null,"#bindHome","检测中...").done(function (response) {
+
+
+            var env = '<caption>\n' +
+                '                环境检查\n' +
+                '            </caption>\n' +
+                '            <tr>\n' +
+                '                <th scope="col">项目</th>\n' +
+                '                <th width="25%" scope="col">程序所需</th>\n' +
+                '                <th width="25%" scope="col">最佳配置推荐</th>\n' +
+                '                <th width="25%" scope="col">当前服务器</th>\n' +
+                '            </tr>';
+            for (var i = 0; i < response.data.env.length ; i++) {
+                var status = response.data.env[i].status?'yes':'no';
+                env+='            <tr>\n' +
+                    '                <td scope="row">'+response.data.env[i].name+'</td>\n' +
+                    '                <td>'+response.data.env[i].min+'</td>\n' +
+                    '                <td>'+response.data.env[i].good+'</td>\n' +
+                    '                <td><span class="'+status+'"><i></i>'+response.data.env[i].cur+'</span>\n' +
+                    '                </td>\n' +
+                    '            </tr>'
+            }
+            $("#env").html(env)
+
+            var dirfile = '<caption>\n' +
+                '                目录、文件权限检查\n' +
+                '            </caption>\n' +
+                '            <tr>\n' +
+                '                <th scope="col">目录文件</th>\n' +
+                '                <th width="25%" scope="col">所需状态</th>\n' +
+                '                <th width="25%" scope="col">当前状态</th>\n' +
+                '            </tr>';
+
+            for ( i = 0; i < response.data.dirfile.length ; i++) {
+                var status = response.data.dirfile[i].status?'yes':'no';
+                var status2 = response.data.dirfile[i].status?'可写':'不可写';
+                dirfile+='            <tr>\n' +
+                    '                <td scope="row">'+response.data.dirfile[i].path+'</td>\n' +
+                    '                <td>可写</td>\n' +
+                    '                <td><span class="'+status+'"><i></i>'+status2+'</span>\n' +
+                    '                </td>\n' +
+                    '            </tr>'
+            }
+            $("#dirfile").html(dirfile)
+
+            var func = '  <caption>\n' +
+                '                函数检查\n' +
+                '            </caption>\n' +
+                '            <tr>\n' +
+                '                <th scope="col">目录文件</th>\n' +
+                '                <th width="25%" scope="col">所需状态</th>\n' +
+                '                <th width="25%" scope="col">当前状态</th>\n' +
+                '            </tr>';
+
+            for ( i = 0; i < response.data.func.length ; i++) {
+                var status = response.data.func[i].status?'yes':'no';
+                var status2 = response.data.func[i].status?'支持':'不支持';
+                func+='            <tr>\n' +
+                    '                <td scope="row">'+response.data.func[i].name+'</td>\n' +
+                    '                <td>支持</td>\n' +
+                    '                <td><span class="'+status+'"><i></i>'+status2+'</span>\n' +
+                    '                </td>\n' +
+                    '            </tr>'
+            }
+            $("#func").html(func)
+
+            var ext = ' <caption>\n' +
+                '                PHP拓展检查\n' +
+                '            </caption>\n' +
+                '            <tr>\n' +
+                '                <th scope="col">拓展名称</th>\n' +
+                '                <th width="25%" scope="col">所需状态</th>\n' +
+                '                <th width="25%" scope="col">当前状态</th>\n' +
+                '            </tr>';
+
+            for ( i = 0; i < response.data.ext.length ; i++) {
+                var status = response.data.ext[i].status?'yes':'no';
+                var status2 = response.data.ext[i].status?'支持':'不支持';
+                ext+='            <tr>\n' +
+                    '                <td scope="row">'+response.data.ext[i].name+'</td>\n' +
+                    '                <td>支持</td>\n' +
+                    '                <td><span class="'+status+'"><i></i>'+status2+'</span>\n' +
+                    '                </td>\n' +
+                    '            </tr>'
+            }
+            $("#ext").html(ext)
+        })
+
+            $('#next').on('click', function () {
+                if (typeof ($('.no').html()) == 'undefined') {
+                    $(this).attr('href', '?step=2');
+                } else {
+                    alert($('.no').eq(0).parent().parent().find('td:first').html() + ' 未通过检测!');
+                    $(this).attr('href', '###');
+                }
+            });
+
+
+
+    })
+</script>

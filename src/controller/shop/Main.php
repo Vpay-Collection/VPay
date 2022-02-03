@@ -76,15 +76,15 @@ class Main extends BaseController
             //可以自己通知用户
             //$mail = new Email();
             if (isset($json->mail) && Email::isEmail($json->mail)) {
-                if(isset($json->isCode)&&$json->isCode=="1"&&isset($json->card)&&isset($json->id)){
+                if(isset($json->isCode)&&$json->isCode=="0"&&isset($json->card)&&isset($json->id)){
                     $shopItem = new ShopItem();
-                    $shopItem->del($json->id,$json->card);
+                    $shopItem->delCard($json->id,$json->card);
                 }
                 //发送卡密
                 $mail = new Email();
                 $pay = Config::getInstance("pay")->get();
                 $tplData = [
-                    "logo" => "http://image.ankio.net/uPic/2022_01_27_22_26_53_1643293613_1643293613307_0id1Z6.jpg",
+                    "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
                     "sitename" =>$pay["pay"]["siteName"],
                     "title" => "支付成功",
                     "body" => $this->getMailContent($json->msg,$_POST)
@@ -171,7 +171,6 @@ class Main extends BaseController
         $arr["price"] = $price;
         $arr["param"] = $params;
         $arr["explain"] = $name;
-        $arr["discount"] = arg("discount","");
         $arr["notifyUrl"] = url("shop","main","notify");
         $arr["returnUrl"] =  url("shop","main","return");
 

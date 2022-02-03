@@ -16,7 +16,21 @@ blockquote{
     layui.use([ "route", "request"], function () {
         const route = layui.route,$=layui.$;
         const request = layui.request;
-        route.register(layui.okConfig.routes).init("#tabContent","#bindHomeScript").refresh();//刷新当前页面路由信息
+
+        route.register([
+            {
+                path: "/",
+                page: "index",
+                callback: function (path) {
+                }
+            },
+            {
+                path: "",
+                page: "index",
+                callback: function (path) {
+                }
+            }
+        ]).init("#tabContent","#bindHomeScript").refresh();//刷新当前页面路由信息
 
         request.call("/shop/main/info","POST",null,".content-body","正在加载配置...").done(function (data) {
            $("title").html(data.data.name);

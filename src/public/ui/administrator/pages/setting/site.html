@@ -31,7 +31,7 @@
             form.val("form",response.data);
         }).fail(function (error) {
             okLayer.time=2000
-            okLayer.redCrossMsg(error)
+            okLayer.redCrossMsg(error.msg)
             console.log(error)
         });
 
@@ -43,7 +43,7 @@
                 })
             }).fail(function (error) {
                 okLayer.time=2000
-                okLayer.redCrossMsg(error)
+                okLayer.redCrossMsg(error.msg)
                 console.log(error)
             });
             return false;

@@ -75,6 +75,8 @@ class Shop extends BaseController
             $app->add($title,$description,$code,$price,$msg,$params,$img);
         }
 
+        $app->removeUseless();
+
 
         return $this->ret(200);
     }

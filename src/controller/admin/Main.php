@@ -13,7 +13,9 @@
 namespace app\controller\admin;
 
 use app\core\config\Config;
+use app\core\utils\FileUtil;
 use app\core\web\Session;
+use app\lib\Upload\FileUpload;
 
 class Main extends BaseController
 {
@@ -51,6 +53,7 @@ class Main extends BaseController
         ];
         if(Config::getInstance("pay")->getOne("login")=="ankio"){
             unset($settings[0]);
+            $settings = array_values($settings);
         }
         return $this->ret(200,null,[
             [
@@ -125,4 +128,15 @@ class Main extends BaseController
         return $this->ret(200,"",["img"=>Session::getInstance()->get("img"),"nickName"=>Session::getInstance()->get("nickName")]);
     }
 
+    function img(){
+        $upload  = new FileUpload();
+        $upload->set("path",APP_PUBLIC."ui".DS."static".DS."img");
+      $result =   $upload->upload("file");
+      if($result){
+          $file = APP_PUBLIC."ui".DS."static".DS."img".DS."face.jpg";
+          rename($upload->getFilePath(),$file);
+          return $this->ret(200);
+      }
+      return $this->ret(403,$upload->getErrorMsg());
+    }
 }

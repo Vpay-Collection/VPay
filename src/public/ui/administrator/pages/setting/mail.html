@@ -62,7 +62,6 @@
                             <input name="sendType" value="1" title="用户支付成功" type="checkbox">
                             <input name="sendType" value="2" title="回调失败" type="checkbox">
                             <input name="sendType" value="4" title="收益日报" type="checkbox">
-                            <input name="sendType" value="8" title="收益周报" type="checkbox">
                         </div>
                     </div>
             <div class="layui-form-item">
@@ -92,9 +91,7 @@
 
 
 <script>
-    layui.config({
-        base: '../../../js/'
-    });
+
     layui.use(["utils","request","okLayer","form","element"], function () {
         let okUtils = layui.utils;
         let okLayer = layui.okLayer;
@@ -119,7 +116,7 @@
                 })
             }).fail(function (error) {
                 okLayer.time=2000
-                okLayer.redCrossMsg(error)
+                okLayer.redCrossMsg(error.msg)
                 console.log(error)
             });
             return false;
@@ -133,7 +130,7 @@
                 });
             }).fail(function (error) {
                 okLayer.time=2000
-                okLayer.redCrossMsg(error)
+                okLayer.redCrossMsg(error.msg)
                 console.log(error)
             });
             return false;
@@ -150,7 +147,7 @@
             form.render();
         }).fail(function (error) {
             okLayer.time=2000
-            okLayer.redCrossMsg(error)
+            okLayer.redCrossMsg(error.msg)
             console.log(error)
         });
 

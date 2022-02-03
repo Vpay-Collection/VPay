@@ -30,7 +30,7 @@
                 <li class="no-line layui-nav-item">
 
                     <a href="javascript:" id="header_right">
-                        <img src="./img/face.jpg" class="layui-nav-img head_img head_name" alt="empty">
+                        <img src="./img/face.jpg" class="layui-nav-img head_img  " alt="empty"><span class="head_name"></span>
                     </a>
 
                     <dl id="userInfo" class="layui-nav-child">
@@ -47,8 +47,8 @@
             <div class="layui-side-scroll okadmin-side">
                 <div class="okadmin-logo">AnkioのVpay</div>
                 <div class="user-photo">
-                    <a class="img" title="我的头像">
-                        <img src="./img/face.jpg" class="userAvatar head_img">
+                    <a class="img" title="点我修改网站图标">
+                        <img src="../static/img/face.jpg" id="systemImg" class="head_img">
                     </a>
                     <p>你好！<span class="userName head_name"></span>, 欢迎登录</p>
                 </div>
@@ -104,8 +104,8 @@
 <script>
 
     let objOkTab = "";
-    layui.use(["element", "form", "layer", "utils", "request", "tab", "okLayer"], function () {
-        const okUtils = layui.utils;
+    layui.use(["element", "form", "layer", "upload", "request", "tab", "okLayer"], function () {
+        const upload = layui.upload;
         const $ = layui.jquery;
         const layer = layui.layer;
         const okLayer = layui.okLayer;
@@ -268,10 +268,19 @@
             });
         });
         layui.request.call("/admin/main/userInfo","POST").done(function (data) {
-            $(".head_img").attr("src",data.data.img);
+            $(".layui-nav-img").attr("src",data.data.img);
             $(".head_name").html(data.data.nickName);
         });
 
+        upload.render({
+            elem: '#systemImg'
+            ,url: '/admin/main/img' //此处配置你自己的上传接口即可
+            ,accept: 'img' //普通文件
+            ,done: function(res){
+                layer.msg('上传成功');
+                $("#systemImg").attr("../static/img/face.jpg?t="+new Date())
+            }
+        });
 
     });
 

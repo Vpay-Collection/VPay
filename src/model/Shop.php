@@ -13,6 +13,8 @@
 namespace app\model;
 
 use app\core\mvc\Model;
+use app\core\utils\FileUtil;
+use app\core\utils\StringUtil;
 
 class Shop extends Model
 {
@@ -59,6 +61,27 @@ class Shop extends Model
     public function getAll(int $page, int $limit,$param="*")
     {
         return $this->select($param)->page($page, $limit)->orderBy("id desc")->commit();
+    }
+
+    public function removeUseless()
+    {
+        $data =  $this->select()->commit();
+        $images = scandir(APP_PUBLIC.DS."ui".DS."img".DS);
+        foreach ($images as $img){
+            if(StringUtil::get($img)->startsWith("."))continue;
+            $find = false;
+            foreach ($data as $item){
+                if(DS."ui".DS."img".DS.$img == $item["img"]){
+                    $find = true;
+                    break;
+                }
+            }
+            if(!$find){
+                unlink(APP_PUBLIC.DS."ui".DS."img".DS.$img);
+            }
+            //DS."ui".DS."img".DS
+        }
+
     }
 
 }

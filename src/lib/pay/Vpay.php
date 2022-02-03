@@ -70,9 +70,7 @@ class Vpay{
         if(!isset($arg["param"])){
             $this->err="请传入param,不需要参数请留空~";return false;
         }
-        if(!isset($arg["discount"])){
-            $this->err="请传入优惠券码,不需要参数请留空~";return false;
-        }
+
         if(!isset($arg["explain"])){
             $this->err="请传入收款原因";return false;
         }
@@ -92,7 +90,6 @@ class Vpay{
         $arr["appid"] = $this->conf["Appid"];
         $arr["isHtml"] = intval($html)===1?1:0;
         $arr["explain"] = $arg["explain"];
-        $arr["discount"] = $arg["discount"];
         $arr["notifyUrl"] = $arg["notifyUrl"];
         $arr["returnUrl"] = $arg["returnUrl"];
         $arr["t"] = time();
