@@ -63,7 +63,7 @@ class Shop extends Model
         return $this->select($param)->page($page, $limit)->orderBy("id desc")->commit();
     }
 
-    public function removeUseless()
+    public function removeUseless($add)
     {
         $data =  $this->select()->commit();
         $images = scandir(APP_PUBLIC.DS."ui".DS."img".DS);
@@ -71,7 +71,7 @@ class Shop extends Model
             if(StringUtil::get($img)->startsWith("."))continue;
             $find = false;
             foreach ($data as $item){
-                if(DS."ui".DS."img".DS.$img == $item["img"]){
+                if(DS."ui".DS."img".DS.$img == $item["img"]||$add==DS."ui".DS."img".DS.$img){
                     $find = true;
                     break;
                 }

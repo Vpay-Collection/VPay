@@ -88,10 +88,7 @@ class Install extends BaseController
     }
     function set(){
         $arg = $_POST;
-        foreach ($arg as $key=>$value){
-            if($value=="")
-                return $this->ret(403,"不允许有字段为空");
-        }
+
 
 
         try{

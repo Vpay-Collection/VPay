@@ -7,7 +7,9 @@ namespace app\core\release;
 
 
 use app\core\config\Config;
+use app\core\utils\FileUtil;
 use app\core\utils\StringUtil;
+use app\core\utils\ZipUtil;
 
 class Release
 {
@@ -27,22 +29,6 @@ class Release
         }
     }
 
-    public static function check(){
-        $fh = fopen('php://stdin', 'r');
-        echo "\n[项目打包程序]项目是否进行完整性校验(y/n)：";
-        $str = fread($fh, 1);
-        fclose($fh);
-
-        if ($str == "y") {
-            //继续打包
-            Config::getInstance("frame")->setLocation(dirname(APP_DIR) . "/release/temp/config/")->set("check", true);
-            echo "\n[项目打包程序]进行完整性校验";
-        } else {
-            Config::getInstance("frame")->setLocation(dirname(APP_DIR) . "/release/temp/config/")->set("check", false);
-            echo "\n[项目打包程序]不进行完整性校验";
-        }
-    }
-
     public static function package()
     {
         $new = dirname(APP_DIR) . "/release/temp";
@@ -58,21 +44,6 @@ class Release
         file_put_contents($new . "/storage/trash/.storage","");
         FileUtil::cleanDir($new . "/storage/view/");//清空文件夹
         file_put_contents($new . "/storage/view/.storage","");
-        //删除命令行响应代码
-        $rep = ' if(isset($_SERVER[\'CLEAN_CONSOLE\'])&&$_SERVER[\'CLEAN_CONSOLE\']){
-            if($_SERVER["REQUEST_URI"]=="clean_check"){
-                FileCheck::run();
-
-            }else if($_SERVER["REQUEST_URI"]=="clean_release"){
-                Release::run();
-            }else if($_SERVER["REQUEST_URI"]=="clean_clean"){
-                Release::clean();
-            }
-
-            exitApp("命令行执行完毕");
-        }';
-
-        file_put_contents($new . "/vendor/core/Clean.php", str_replace($rep, "", file_get_contents($new . "/vendor/core/Clean.php")));
 
         Config::getInstance("frame")->setLocation($new . "/config/")->set("debug", false);//关闭调试模式
         $hosts = Config::getInstance("frame")->setLocation($new . "/config/")->getOne("host");
@@ -89,7 +60,6 @@ class Release
                 unset($hosts[$i]);
             } else if (StringUtil::get($str)->startsWith("\n")) {
                 echo "[项目打包程序]{$hosts[$i]}无需修改。";
-                continue;
             } else {
                 $hosts[$i] = str_replace("\n", "", $str);
                 echo "[项目打包程序]域名修改为  {$hosts[$i]} 。";
@@ -139,7 +109,6 @@ class Release
 
         Config::getInstance("frame")->setLocation($new . "/config/")->set("md5",  FileCheck::getMd5($new,$new));
 
-        self::check();
         $fileName=dirname(APP_DIR) . "/release/".$appName."_".$verName."(".$verCode.").zip";
 
         $zip=new ZipUtil();

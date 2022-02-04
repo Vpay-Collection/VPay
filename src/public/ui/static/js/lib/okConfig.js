@@ -6,7 +6,7 @@ layui.define(function(exports){ //提示：模块也可以依赖其它模块，�
         // 导航箭头ok-arrow2|ok-arrow3,不填为默认样式
         menuArrow: "ok-arrow2",
         baseUrl: "",
-        isDebug: true,
+        isDebug: false,
         routes:[
             {
                 path: "/",

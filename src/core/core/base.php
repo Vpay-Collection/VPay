@@ -9,7 +9,6 @@ use app\core\error\Error;
 use app\core\event\EventManager;
 
 // 全局变量清空
-$GLOBALS          = [];
 //框架加载的开始时间
 $GLOBALS['frame_start'] = microtime(true);
 //定义使用的时区

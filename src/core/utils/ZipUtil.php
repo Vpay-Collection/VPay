@@ -45,7 +45,7 @@ class ZipUtil
                 }
             }
         }
-        @closedir($path);
+        @closedir($handler);
     }
 }
 

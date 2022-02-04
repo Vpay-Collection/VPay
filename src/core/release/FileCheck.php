@@ -108,6 +108,7 @@ class FileCheck
             '/(\$\w+)\(/'=>"可能导致不可控的函数执行，请尽量明确执行函数。",
             ];
 
+        self::$no_check[]="/core";
         self::$no_check[]="/vendor";
         self::$no_check[]="/public/index.php";
         $file=self::getAllfile(APP_DIR);
@@ -115,6 +116,7 @@ class FileCheck
         unset(self::$no_check[sizeof(self::$no_check)-1]);
         unset(self::$no_check[sizeof(self::$no_check)-1]);
         self::doFile($file,function ($f) use ($functions) {
+            if(!StringUtil::get($f)->endsWith(".php"))return;
             foreach ($functions as $key=>$value){
                 preg_match_all($key,strtolower(file_get_contents($f)),$matches);
               //  dump($matches);

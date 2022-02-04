@@ -13,6 +13,7 @@
       "ext-openssl": "*",
       "ext-mbstring": "*",
       "ext-curl": "*",
-      "ext-pdo": "*"
+      "ext-pdo": "*",
+      "ext-zip": "*"
     }
 }

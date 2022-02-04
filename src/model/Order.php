@@ -395,8 +395,6 @@ class Order extends Model
 
             $res = json_decode($http->getBody());
             $pay =  Config::getInstance("pay")->get();
-           // echo $http->getBody();
-         //   exitApp('');
             if ($res) {
                 //远程服务器响应正常，表示认可
                 if ($res->state===ConstData::ApiOk) {

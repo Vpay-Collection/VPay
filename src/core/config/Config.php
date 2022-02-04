@@ -110,9 +110,9 @@ class Config
     /**
      * 设置单个配置文件数组
      * @param string $key 参数名称
-     * @param string $val 参数数据
+     * @param  $val
      */
-    public function set(string $key, string $val)
+    public function set(string $key,  $val)
     {
         $this->fileData[$key] = $val;
         $file = $this->path . $this->fileName;
