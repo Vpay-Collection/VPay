@@ -89,7 +89,7 @@ class User extends BaseController
             Cache::set("token",$token);
 
             Session::getInstance()->set("nickName",$user);
-            Session::getInstance()->set("img","./img/face.jpg");
+            Session::getInstance()->set("img","../static/img/face.jpg");
 
 
             return $this->ret(200,"登录成功",['token'=>$token]);
