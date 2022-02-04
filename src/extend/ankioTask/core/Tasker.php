@@ -219,6 +219,9 @@ class Tasker extends Model
      //if($day!=0||$month!=0||)
         if($loop==0){
             $retTime = strtotime(date("Y-m-d"),time())+$time;
+            while($retTime<time()){
+                $retTime = strtotime(date("Y-m-d","+1 Day"))+$time;
+            }
         }else{
             $retTime = time()+$time;
         }
