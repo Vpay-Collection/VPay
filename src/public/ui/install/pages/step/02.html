@@ -38,13 +38,13 @@
 </script>
 
 <script>
-    layui.use(['jquery', 'route','request'], function () {
+    layui.use(['jquery', 'route','request','okLayer'], function () {
 //encodeURI()
         //  JSON.stringify()
         let $ = layui.jquery;
         let request = layui.request;
         let route = layui.route;
-
+        let okLayer=layui.okLayer;
         request.call("/index/install/check",'post',null,"#bindHome","检测中...").done(function (response) {
 
 
@@ -132,14 +132,16 @@
             }
             $("#ext").html(ext)
         })
+        $('#last').on('click', function () {
+            route.go("step/01");
+        });
 
             $('#next').on('click', function () {
-                if (typeof ($('.no').html()) == 'undefined') {
-                    $(this).attr('href', '?step=2');
-                } else {
-                    alert($('.no').eq(0).parent().parent().find('td:first').html() + ' 未通过检测!');
-                    $(this).attr('href', '###');
+                if (typeof ($('.no').html()) != 'undefined') {
+                    okLayer.redCrossMsg($('.no').eq(0).parent().parent().find('td:first').html() + ' 未通过检测!');
+                    return;
                 }
+                route.go("step/03");
             });
 
 

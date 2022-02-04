@@ -51,7 +51,7 @@ input[type="text"], input[type="password"] {
     color: #7E8C8C;
     line-height: 20px;
     text-indent: 6px;
-    height: 20px;
+   /* height: 20px;*/
     padding: 8px 5px;
     border: 2px solid #BEC3C7;
     -webkit-border-radius: 5px;
@@ -101,9 +101,6 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] {
     cursor: default;
 }
 
-input[type="text"], input[type="password"] {
-    width: 290px;
-}
 
 input.error {
     border-color: #F30;
@@ -905,91 +902,9 @@ input.error {
     color: #F33;
 }
 
-/* Fill the form
--------------------------------------- */
-.form-box {
-    
-    margin: 0 auto;
-}
-
-.form-box fieldset {
-    border-width: 1px 0 0 0;
-    border-style: solid;
-    border-color: #ECF0F1;
-}
-
-.form-box legend {
-    font-size: 18px;
-    line-height: 24px;
-    color: #7E8C8D;
-}
-
-.form-box div {
-    height: 40px;
-    margin: 10px 0 0 0;
-    clear: both;
-}
-
-.form-box div label {
-    font-size: 12px;
-    line-height: 40px;
-    color: #94A5A5;
-    text-indent: 80px;
-    display: block;
-    width: 220px;
-    height: 40px;
-    float: left;
-}
-
-.form-box div span {
-    vertical-align: middle;
-    display: inline-block;
-    width: 300px;
-    height: 40px;
-    position: relative;
-    z-index: 1;
-}
-
-.form-box div span input {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-}
-
-.form-box div span font {
-    line-height: 20px;
-    background: url(../img/install_bg.png) no-repeat -540px 2px;
-    height: 20px;
-    padding-left: 20px;
-    position: absolute;
-    z-index: 9;
-    top: 10px;
-    right: 5px;
-}
-
-.form-box div.icheckbox_flat-green {
-    clear: none;
-}
-
-.form-box div h4 {
-    font-size: 14px;
-    line-height: 40px;
-    color: #94A5A5;
-    float: left;
-    height: 40px;
-    margin-left: 6px;
-}
-
-.form-box div em {
-    color: #BEC3C6;
-    margin-left: 20px;
-}
-
 /* Installation is complete
 -------------------------------------- */
 .final-succeed {
-    
     height: 85px;
     margin: 10px auto 0 auto;
     position: relative;

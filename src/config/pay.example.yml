@@ -7,14 +7,13 @@ mail:
   passwd : ''#邮件发送密码
   port : ''#邮件发送端口
   receive : ''#邮件接送者
-  sendType: "1" # 0 不接收 1 用户发起支付（补单） 2 用户支付成功 4 收益日报 8 收益周报 16 Cookie失效 32 监控掉线
+  sendType: "0"  # 0 不接收 1 用户支付成功  4收益日报 8 收益周报 2 回调失败
 pay :
   validity_minute: 5
   alipay_private_key : '' # 支付宝的私钥
   alipay_public_key : '' # 支付宝的公钥
+  siteName: "AnkioのVpay"
   alipay_id: ""
-  alipay_notify: ""
-  alipay_sign_type: ""
 shop:
   name : "Ankioの杂货铺"
   state : 1

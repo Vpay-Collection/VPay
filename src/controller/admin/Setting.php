@@ -64,7 +64,7 @@ class Setting extends BaseController
         $tasker->clean();
 
         if(StringUtil::get(arg("sendType","0"))->contains("4")){
-            $tasker->add($tasker->cycleNDay(0,23,50),url('task','tasker','taskEveryDay'),"taskEveryDay",-1);
+            $tasker->add($tasker->cycleNDay(0,23,50),url('task','tasker','taskEveryDay'),"taskEveryDay",-1,false);
         }
 
 

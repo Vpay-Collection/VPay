@@ -18,7 +18,7 @@ verName : 3.0.1
 # 日志有效期(天)
 logValidTime : 30
 # 安装程序模块名
-install :
+install : index/install/start
 # admin用户目录
 admin: "administrator"
 

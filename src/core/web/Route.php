@@ -9,7 +9,7 @@ use app\core\cache\Cache;
 use app\core\config\Config;
 use app\core\error\RouteError;
 use app\core\event\EventManager;
-
+use app\core\utils\StringUtil;
 
 
 /**
@@ -227,12 +227,12 @@ class Route
      */
     private static function isInstall(){
 
-        if($GLOBALS["frame"]["install"]!==""&&!is_file(APP_CONF.'install.lock')){
-            global $__module;
-            if($__module===$GLOBALS["frame"]["install"])return;
+        if($GLOBALS["frame"]["install"]!==""&&!is_file(APP_CACHE.'install.lock')){
+            global $__controller;
+            if(StringUtil::get($GLOBALS["frame"]["install"])->contains($__controller))return;
 
             //没有锁
-            Response::location(self::url($GLOBALS["frame"]["install"], "main", "index"));
+            Response::location($GLOBALS["frame"]["install"]);
         }
     }
 

@@ -1,0 +1,107 @@
+<style>
+    .layui-input, .layui-form-label{
+        color: #F2F2F2;
+        background-color: #2F4056!important;
+    }
+    .layui-form-item{
+        margin: 15px auto;
+        width: fit-content;
+    }
+
+</style>
+<div class="main">
+    <div class="step-box" id="step1">
+        <div class="text-nav">
+            <h1>步骤2.</h1>
+            <h2>系统配置</h2>
+            <h5>提前配置基本信息</h5>
+        </div>
+
+    </div>
+
+    <form class="layui-form layui-form-pane" lay-filter="form" action="" onsubmit="return false">
+        <fieldset class="layui-elem-field layui-field-title" >
+            <legend>数据库配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="db_host" required  lay-verify="required" placeholder="请输入数据库地址" value="localhost" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库账号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="db_username" required  lay-verify="required" placeholder="请输入数据库账号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="db_password" required  lay-verify="required" placeholder="请输入数据库密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库端口</label>
+            <div class="layui-input-inline">
+                <input type="text" name="db_port" value="3306" required  lay-verify="required" placeholder="请输入数据库端口" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据库名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="db_db" required  lay-verify="required" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title" >
+            <legend>后台配置</legend>
+        </fieldset>
+        <div class="layui-form-item">
+            <label class="layui-form-label">后台访问地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="bg_admin" required value="administrator"  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">后台账号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="bg_username" required  lay-verify="required" placeholder="请输入后台账号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">后台密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="bg_password" required  lay-verify="required" placeholder="请输入后台密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+    <div class="btn-box"><div  class="btn btn-primary" id="last">上一步</div><div  id="next"
+                                                                               class="btn btn-primary">安装</div></div>
+</div>
+
+<script>
+    layui.use(['jquery', 'route','request','okLayer','form'], function () {
+//encodeURI()
+        //  JSON.stringify()
+        let $ = layui.jquery;
+        let request = layui.request;
+        let route = layui.route;
+        let okLayer=layui.okLayer;
+        let form=layui.form;
+        $('#last').on('click', function () {
+            route.go("step/02");
+        });
+
+        $('#next').on('click', function () {
+            request.call("/index/install/set","post",form.val('form'),null,"#app","数据提交中...").done(function (data) {
+                route.go("step/04");
+            }).fail(function (data) {
+                okLayer.redCrossMsg(data.msg);
+            });
+
+        });
+
+
+
+    })
+</script>

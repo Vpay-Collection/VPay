@@ -141,8 +141,13 @@ class Check{
 
     public function rewrite(): bool
     {
-        $url= $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].'/index/main/isLogin';
-        $result = @file_get_contents($url);
+        $url= $GLOBALS['http_scheme'].$_SERVER['HTTP_HOST'].'/index/install/checkOut';
+        $result = file_get_contents($url, false, stream_context_create([
+            "ssl" => [
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ],
+        ]));
         if(StringUtil::get($result)->startsWith("{"))return true;
         else return false;
 

@@ -179,21 +179,6 @@ class Order extends Model
         $this->update()->where(["order_id" => $id])->set($arr)->commit();
     }
 
-    /**
-     * 根据价格，状态，类型取得订单信息，这个是app推送该订单信息，进行查询的
-     * @param $really_price
-     * @param $state
-     * @param $type
-     * @param string $param
-     * @return array|int
-     */
-
-    public function getOrderByParam($really_price, $state, $type, string $param = "*")
-    {
-
-        return $this->select($param)->where(["really_price" => $really_price, "state" => $state, "type" => $type])->commit();
-
-    }
 
 
     /**

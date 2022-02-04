@@ -1,0 +1,40 @@
+
+<div class="final-succeed"><span class="ico"></span>
+  <h2>程序已成功安装</h2>
+  <h5>选择您要进入的页面</h5>
+</div>
+<div class="final-site-nav">
+  <div class="arrow"></div>
+  <ul>
+    <li class="shop">
+      <div class="ico"></div>
+      <h5><a href="/ui/card" target="_blank">内置发卡商城</a></h5>
+      <h6>内置发卡商城</h6>
+    </li>
+
+    <li class="admin">
+      <div class="ico"></div>
+      <h5><a href="/ui/administrator" target="_blank" id="background">系统后台</a></h5>
+      <h6>系统后台</h6>
+    </li>
+  </ul>
+</div>
+
+<script>
+  layui.use(['request','okLayer'], function () {
+//encodeURI()
+    //  JSON.stringify()
+    let $ = layui.$;
+    let request = layui.request;
+    let okLayer=layui.okLayer;
+
+
+    request.call("/index/install/success","post",null,null,"#app","稍等...").done(function (data) {
+    $("#background").attr("href","/ui/"+data.data.admin)
+    }).fail(function (data) {
+      okLayer.redCrossMsg(data.msg);
+    });
+
+
+  })
+</script>
