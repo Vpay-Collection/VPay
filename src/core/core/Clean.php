@@ -33,7 +33,9 @@ class Clean
     {
         //框架开始类
         self::Init();
-        if(isDebug())  $GLOBALS["frame"]["clean"][]="框架初始化完毕";
+        if(isDebug()) {
+            $GLOBALS["frame"]["clean"][]="框架初始化完毕";
+        }
         if(!self::isConsole()){
             Route::rewrite();
             if(isDebug())  $GLOBALS["frame"]["clean"][]="路由完毕";
@@ -165,7 +167,6 @@ class Clean
                     $result["frame"]["time"]["执行时间"] = (microtime(true) - $GLOBALS['frame_start']) . "ms";
                     $result["frame"]["time"]["模板编译时间"] = $GLOBALS["frame"]["time"]["tpl_time"] . "ms";
                     $result["frame"]["time"]["路由时间"] = $GLOBALS["frame"]["time"]["route_time"] . "ms";
-                    $result["frame"]["路由"] = Request::getHeader();
                     $result["frame"]["frame"]["response"]["method"] = $_SERVER['REQUEST_METHOD'];
                     $result["frame"]["frame"]["response"]["headers"] = Request::getHeader();
                     $result["frame"]["框架日志"] = $GLOBALS["frame"]["clean"];

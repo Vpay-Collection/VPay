@@ -15,6 +15,7 @@ namespace app\core\cache;
 
 use app\core\debug\Debug;
 use app\core\debug\Log;
+use app\core\utils\FileUtil;
 
 /**
  * Class Cache
@@ -105,7 +106,7 @@ class Cache
         if (!file_exists($filename) || !is_readable($filename)) {
             return "";
         }
-        if (time() < (filemtime($filename) + self::$cache_expire)) {
+        if (self::$cache_expire==-1||time() < (filemtime($filename) + self::$cache_expire)) {
             $file = fopen($filename, "r");
             if ($file) {
 	            if(self::$cache_security){
@@ -118,7 +119,7 @@ class Cache
                 flock($file, LOCK_SH);
                 $data = fread($file, filesize($filename));
               //  Log::info("cache","读取数据".$data);
-                Debug::i("cache","读取数据".$data);
+               // Debug::i("cache","读取数据".$data);
                 flock($file, LOCK_UN);
                 fclose($file);
                try{
@@ -132,6 +133,13 @@ class Cache
             self::del($key);
             return "";
         }
+    }
+
+    /**
+     * 清空缓存
+     */
+    public static function clean(){
+        FileUtil::cleanDir(self::$cache_path);
     }
 
 }

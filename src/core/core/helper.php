@@ -6,6 +6,7 @@
 use app\core\debug\Debug;
 use app\core\debug\Dump;
 use app\core\mvc\Controller;
+use app\core\web\Request;
 use app\core\web\Route;
 
 /*数据库常量*/
@@ -151,6 +152,24 @@ function exitApp(string $msg, string $tpl=null, string $path='', array $data=[])
     if(isDebug()){
         $GLOBALS["frame"]["clean"][] = $msg;
         $GLOBALS["frame"]["time"]["resp_time"]=(microtime(true)-$GLOBALS['frame_start']);
+
+        $result["frame"]["time"]["执行时间"] = (microtime(true) - $GLOBALS['frame_start']) . "ms";
+        $result["frame"]["time"]["模板编译时间"] = $GLOBALS["frame"]["time"]["tpl_time"] . "ms";
+        $result["frame"]["time"]["路由时间"] = $GLOBALS["frame"]["time"]["route_time"] . "ms";
+        $result["frame"]["frame"]["response"]["method"] = $_SERVER['REQUEST_METHOD'];
+        $result["frame"]["frame"]["response"]["headers"] = Request::getHeader();
+        $result["frame"]["框架日志"] = $GLOBALS["frame"]["clean"];
+        $result["frame"]["路由"] = $GLOBALS["frame"]["route"];
+        $result["frame"]["sql"] = $GLOBALS["frame"]["sql"];
+        $result["frame"]["文件加载"] = $GLOBALS["frame"]["file"];
+        $g = $GLOBALS;
+        unset($g["frame"]);
+        $result["frame"]["time"]["response"]["全局变量"] = $g;
+        $result["frame"]["time"]["response"]["参数信息"] = arg();
+
+        $data = print_r($result,true);
+        Debug::i("frame",$data);
+
     }
     exit();
 }

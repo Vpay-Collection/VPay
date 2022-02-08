@@ -7,6 +7,7 @@ namespace app\core\web;
 
 use app\core\cache\Cache;
 use app\core\config\Config;
+use app\core\debug\Log;
 use app\core\error\RouteError;
 use app\core\event\EventManager;
 use app\core\utils\StringUtil;
@@ -128,6 +129,7 @@ class Route
                 if(isDebug()) $GLOBALS["frame"]["route"][]="无有效路由缓存";
                 $route_arr = self::convertUrl();
                 if (!isset($route_arr['m']) || !isset($route_arr['a']) || !isset($route_arr['c'])) {
+                    Log::info("route",$url);
                     new RouteError("错误的路由! 我们需要至少三个参数.");
                 }
                 $route_arr = array_merge($_GET, $route_arr);//get中的参数直接覆盖
