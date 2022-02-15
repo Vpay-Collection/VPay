@@ -40,7 +40,7 @@ class Tasker extends BaseController
 
 
         $tplData = [
-            "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
+            "logo" => APP_PUBLIC."ui".DS."static".DS."img".DS."face.jpg",
             "sitename" =>$pay["pay"]["siteName"],
             "title" => "收益日报 - ".date("Y年m月d日"),
             "body" => "<p>今日总订单：<span>{$data['todayOrder']}</span></p><p>今日成功：<span>{$data['todaySuccessOrder']}</span></p><p>今日失败：<span>{$data['todayCloseOrder']}</span></p><p>今日总收入：<span>{$data['todayMoney']}</span></p><p>历史订单数：<span>{$data['countOrder']}</span></p><p>历史收入：<span>{$data['countMoney']}</span></p>"

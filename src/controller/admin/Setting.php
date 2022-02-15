@@ -66,7 +66,7 @@ class Setting extends BaseController
         if(StringUtil::get(arg("sendType","0"))->contains("4")){
             $tasker->add($tasker->cycleNDay(0,23,50),url('task','tasker','taskEveryDay'),"taskEveryDay",-1,false);
         }
-
+        //$tasker->test(url('task','tasker','taskEveryDay'),"taskEveryDay");
 
 
         return $this->ret(200,"保存成功");

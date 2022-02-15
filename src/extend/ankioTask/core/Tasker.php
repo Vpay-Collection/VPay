@@ -127,6 +127,9 @@ class Tasker extends Model
         }
     }
 
+    public function test($url,$identify){
+        $this->startTasker($url,$identify);
+    }
     /**
      * 以天为周期
      * @param $hour int 小时
