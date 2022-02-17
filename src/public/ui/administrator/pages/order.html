@@ -144,7 +144,7 @@
                     return;
                 }
                 layer.confirm('确定要补单吗？该操作将会将该订单标记为已支付，并向您的服务器发送订单完成通知', function (index) {
-                    layer.closed(index);
+                    layer.close(index);
                     request.call("/admin/orders/SetBD","POST",{id:data.order_id},".content-body","补单中...").done(function (response) {
                         layer.msg("操作成功！",{icon:6});
                         tableReload();
@@ -163,7 +163,7 @@
                 });
             } else if (layEvent === 'del') {
                 layer.confirm('确定要删除订单吗？', function (index) {
-                    layer.closed(index);
+                    layer.close(index);
                     request.call("/admin/orders/del","POST",{id:data.id},".content-body","删除中...").done(function (response) {
                         layer.msg("操作成功！",{icon:6});
                         tableReload();
@@ -191,7 +191,7 @@
             switch (obj.event) {
                 case 'delGq':
                     layer.confirm('确定要删除所有过期订单吗？', function (index) {
-                        layer.closed(index);
+                        layer.close(index);
                         request.call("/admin/orders/delGq","POST",{},".content-body","删除中...").done(function (response) {
                             layer.msg("操作成功！",{icon:6});
                             tableReload();
