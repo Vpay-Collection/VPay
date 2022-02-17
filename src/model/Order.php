@@ -411,7 +411,7 @@ class Order extends Model
 
                         $count = doubleval($arr["price"])-doubleval($arr["reallyPrice"]);
                         $tplData = [
-                            "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
+                            "logo" => APP_PUBLIC."ui".DS."static".DS."img".DS."face.jpg",
                             "sitename" =>$pay["pay"]["siteName"],
                             "title" => "用户支付成功通知",
                             "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：{$c}</p>"
@@ -442,7 +442,7 @@ class Order extends Model
 
                     $count = doubleval($arr["price"])-doubleval($arr["reallyPrice"]);
                     $tplData = [
-                        "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
+                        "logo" => APP_PUBLIC."ui".DS."static".DS."img".DS."face.jpg",
                         "sitename" =>$pay["pay"]["siteName"],
                         "title" => "支付回调失败",
                         "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：{$c}</p><p>通知地址:{$notify_url}</p><p>返回结果:{$http->getBody()}</p>"
