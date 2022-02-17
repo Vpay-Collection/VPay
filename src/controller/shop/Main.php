@@ -91,7 +91,8 @@ class Main extends BaseController
                 ];
 
                 $file = $mail->complieNotify("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
-                $mail->send($pay["mail"]["receive"], "{$tplData['sitename']}", $file, $tplData['sitename']);
+              //  $mail->send($pay["mail"]["receive"], "{$tplData['sitename']}", $file, $tplData['sitename']);
+                $mail->send($json->mail, "{$tplData['sitename']}", $file, $tplData['sitename']);
             }
             return $this->ret(200);
           //  dump($json,true);
