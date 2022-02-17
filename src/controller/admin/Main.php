@@ -14,6 +14,7 @@ namespace app\controller\admin;
 
 use app\core\config\Config;
 use app\core\utils\FileUtil;
+use app\core\web\Response;
 use app\core\web\Session;
 use app\lib\Upload\FileUpload;
 
@@ -133,7 +134,7 @@ class Main extends BaseController
         $upload->set("path",APP_PUBLIC."ui".DS."static".DS."img");
       $result =   $upload->upload("file");
       if($result){
-          $file = APP_PUBLIC."ui".DS."static".DS."img".DS."face.jpg";
+          $file = Response::getAddress().DS."static".DS."img".DS."face.jpg";
           rename($upload->getFilePath(),$file);
           return $this->ret(200);
       }

@@ -6,6 +6,7 @@ use app\attach\Email;
 use app\core\cache\Cache;
 use app\core\config\Config;
 use app\core\utils\StringUtil;
+use app\core\web\Response;
 use app\extend\ankioTask\core\Tasker;
 
 class Setting extends BaseController
@@ -76,7 +77,7 @@ class Setting extends BaseController
         $mail = new Email();
         $pay =  Config::getInstance("pay")->get();
         $tplData = [
-            "logo" => APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
+            "logo" => Response::getAddress().DS."ui".DS.Config::getInstance("frame")->getOne("admin").DS."img".DS."face.jpg",
             "sitename" => $pay["pay"]["siteName"],
             "title" => "邮件发送测试",
             "body" => "<p>您正在测试邮件发送功能</p>
