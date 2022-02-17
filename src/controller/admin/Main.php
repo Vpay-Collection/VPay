@@ -134,7 +134,7 @@ class Main extends BaseController
         $upload->set("path",APP_PUBLIC."ui".DS."static".DS."img");
       $result =   $upload->upload("file");
       if($result){
-          $file = Response::getAddress().DS."static".DS."img".DS."face.jpg";
+          $file = Response::getAddress().DS."ui".DS."static".DS."img".DS."face.jpg";
           rename($upload->getFilePath(),$file);
           return $this->ret(200);
       }

@@ -84,7 +84,7 @@ class Main extends BaseController
                 $mail = new Email();
                 $pay = Config::getInstance("pay")->get();
                 $tplData = [
-                    "logo" => Response::getAddress().DS."static".DS."img".DS."face.jpg",
+                    "logo" => Response::getAddress().DS."ui".DS."static".DS."img".DS."face.jpg",
                     "sitename" =>$pay["pay"]["siteName"],
                     "title" => "支付成功",
                     "body" => $this->getMailContent($json->msg,$_POST)
