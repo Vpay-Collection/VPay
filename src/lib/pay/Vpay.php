@@ -7,10 +7,8 @@
  */
 namespace app\lib\pay;
 
-
-use app\core\web\Session;
 use app\lib\pay\lib\AlipaySign;
-use app\lib\pay\lib\Web;
+use app\lib\pay\lib\HttpClient;
 
 class Vpay{
     //后台api数据
@@ -102,13 +100,16 @@ class Vpay{
         //生成签名后的url
         $_SESSION['timeOut']=strtotime('+'.$this->conf['TimeOut'].' min');
 
-        $web=new Web();
 
-        $result=$web->get($this->conf["CreateOrder"],$arr);
+        $httpClient = new HttpClient($this->conf["base"]);
+        $httpClient->get($this->conf["CreateOrder"],$arr);
+        $result = $httpClient->getBody();
+
 
       //  dump($arr,true);
 
         $json=json_decode($result);
+
         if($json){
             if($json->code===self::ApiOk)
                 return $json->data;
@@ -117,8 +118,6 @@ class Vpay{
                 return false;
             }
         }else{
-            echo $result;
-
            // print_r($result);
             $this->err='远程支付站点发生问题，或创建订单的地址有误'.$this->conf["CreateOrder"]."<br>".$result;
             return false;
@@ -168,9 +167,9 @@ class Vpay{
         if(!$this->CheckSign($arg))return false;
         //检查是否支付
         $payId = $arg["payId"];
-        $web = new web();
-        $res = $web->get($this->conf["OrderState"] ,array('payId'=>$payId));
-
+        $httpClient = new HttpClient($this->conf["base"]);
+        $httpClient->get($this->conf["OrderState"] ,array('payId'=>$payId));
+        $res = $httpClient->getBody();
 
         $json = json_decode($res);
 
@@ -186,7 +185,7 @@ class Vpay{
                 $param['sign']=$alipay->getSign($param, $key);
                 $url = $this->conf["Confirm"] ;
                 //交易要确认
-             $data =   $web->get($url,$param);
+            $httpClient->get($url,$param);
              // echo $data;
             //    dump($data,true);
                 $this->err="交易已确认！";
@@ -211,13 +210,14 @@ class Vpay{
     public function Close($payId): bool
     {
         $this->closeClient();
-        $web=new Web();
+        $httpClient = new HttpClient($this->conf["base"]);
         $alipay=new AlipaySign();
         $key = $this->conf["Key"];
         $param=['payId'=>$payId];
         $param['sign']=$alipay->getSign($param, $key);
         $url = $this->conf["CloseOrder"] ;
-        $res=$web->get($url,$param);
+        $httpClient->get($url,$param);
+        $res = $httpClient->getBody();
         $json=json_decode($res);
 
         if($json->code===self::ApiError){

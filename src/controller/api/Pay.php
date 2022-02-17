@@ -26,14 +26,12 @@ class Pay extends BaseController
        Session::getInstance()->start();
     }
 
-    
-
     //创建订单
     public function CreateOrder(): array
     {
-
         $order = new Order();
         $result = $order->CreateOrder(arg());
+
         if (!$result){
             return $this->ret(ConstData::ApiError,$order->GetErr());
         }

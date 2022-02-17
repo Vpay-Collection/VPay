@@ -54,6 +54,7 @@ class Order extends Model
      */
     public function getOrders(int $page, int $limit,  string $state = "", string $app = "")
     {
+        $this->closeEndOrder();
         $condition = [];
         if ($state !== "") $condition["state"] = $state;
         if ($app !== "") $condition["state"] = $state;
