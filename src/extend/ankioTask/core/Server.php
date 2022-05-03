@@ -94,7 +94,7 @@ class Server extends Model
         do {
             $file = fopen(APP_TRASH."task.lock", "w+");
             flock($file, LOCK_EX ) or die("Can't lock");
-            Debug::i("task","10s pass....");
+            //Debug::i("task","10s pass....");
             $this->lock(time());//更新锁定时间
             //循环扫描
             Tasker::getInstance()->run();

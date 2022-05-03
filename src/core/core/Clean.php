@@ -163,49 +163,11 @@ class Clean
         if($result!=null){
             if(is_array($result)){
                 @header('content-type:application/json');
-                if(isDebug()) {
-                    $result["frame"]["time"]["执行时间"] = (microtime(true) - $GLOBALS['frame_start']) . "ms";
-                    $result["frame"]["time"]["模板编译时间"] = $GLOBALS["frame"]["time"]["tpl_time"] . "ms";
-                    $result["frame"]["time"]["路由时间"] = $GLOBALS["frame"]["time"]["route_time"] . "ms";
-                    $result["frame"]["frame"]["response"]["method"] = $_SERVER['REQUEST_METHOD'];
-                    $result["frame"]["frame"]["response"]["headers"] = Request::getHeader();
-                    $result["frame"]["框架日志"] = $GLOBALS["frame"]["clean"];
-                    $result["frame"]["路由"] = $GLOBALS["frame"]["route"];
-                    $result["frame"]["sql"] = $GLOBALS["frame"]["sql"];
-                    $result["frame"]["文件加载"] = $GLOBALS["frame"]["file"];
-                    $g = $GLOBALS;
-                    unset($g["frame"]);
-                    $result["frame"]["time"]["response"]["全局变量"] = $g;
-                    $result["frame"]["time"]["response"]["参数信息"] = arg();
-                }
                 echo json_encode($result);
             }else if($controller_obj->isEncode()){
                 echo htmlspecialchars($result,ENT_QUOTES,"UTF-8",true);
             }else{
-
-                if(isDebug())  {
-                    $GLOBALS["frame"]["time"]["resp_time"]=(microtime(true)-$GLOBALS['frame_start']);
-                    $GLOBALS["frame"]["clean"][]="执行完毕";
-                    $g = $GLOBALS;
-                    unset($g["frame"]);
-                    $GLOBALS["frame"]["response"]["method"]=$_SERVER['REQUEST_METHOD'] ;
-                    $GLOBALS["frame"]["response"]["headers"]=Request::getHeader();
-                    $GLOBALS["frame"]["response"]["globals"]=$g;
-                    $GLOBALS["frame"]["response"]["param"]=arg();
-                    $controller_obj2 = new Controller();
-                    $controller_obj2->setAutoPathDir(APP_INNER."tip");
-                    $controller_obj2->setEncode(false);
-                    $__module = "";
-                    $controller_obj2->setArray($GLOBALS["frame"]);
-                    //dump($GLOBALS["frame"],true);
-                    echo $result.$controller_obj2->display("float");
-                }else{
-                    echo $result;
-                }
-
-
-
-
+                echo $result;
             }
         }
         exitApp("框架执行完毕，退出。");

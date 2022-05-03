@@ -90,8 +90,8 @@ class Tasker extends Model
         $minute=$package[0];$hour=$package[1];$day=$package[2];$month=$package[3];$week=$package[4];
         $time=$this->getNext($minute,$hour,$day,$month,$week,$loop?1:0);
 
-        Debug::i("tasker","添加定时任务：$identify");
-        Debug::i("tasker","下次执行时间为：".date("Y-m-d H:i:s",$time));
+   //     Debug::i("tasker","添加定时任务：$identify");
+       // Debug::i("tasker","下次执行时间为：".date("Y-m-d H:i:s",$time));
 
         return self::getInstance()->insert(SQL_INSERT_NORMAL)->table("extend_tasker")->keyValue(
             ["minute"=>$minute,
@@ -121,7 +121,7 @@ class Tasker extends Model
             }elseif($value["next"]<=time()){
                 $time=$this->getNext($value["minute"],$value["hour"],$value["day"],$value["month"],$value["week"],intval($value["loop"]));
                 $db->update()->table("extend_tasker")->where(["id"=>$value["id"]])->set(["times=times-1","next"=>$time])->commit();
-                Debug::i("tasker","下次执行时间为：".date("Y-m-d H:i:s",$time));
+            //    Debug::i("tasker","下次执行时间为：".date("Y-m-d H:i:s",$time));
                 $this->startTasker($value["url"],$value["identify"]);
             }
         }
