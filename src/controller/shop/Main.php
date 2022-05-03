@@ -158,7 +158,7 @@ class Main extends BaseController
         $params = json_encode($args);
 
 
-        if (!Email::isEmail($mail))return $this->ret(403,"邮箱填写错误");
+        if ($mail!==null&&!Email::isEmail($mail))return $this->ret(403,"邮箱填写错误");
 
         //附加参数为文本型
         $vpay = new Vpay();

@@ -62,21 +62,34 @@
         margin-bottom: 12px;
     }
 
+    .one-line{
+        display: inline-block;
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+        text-overflow:ellipsis;
+    }
+
+
 </style>
 
 <div id="demoCardList1" class="layui-row layui-col-space10" style="margin: 1rem"></div>
 
 <script type="text/html" id="demoCardItem1">
-    <div class="layui-col-md4 layui-col-sm6 layui-col-xs12 layui-col-lg3">
+    <div class="layui-col-md6 layui-col-sm6 layui-col-xs12 layui-col-lg6">
         <div class="project-list-item">
             <img class="project-list-item-cover" src="{{d.img}}"/>
             <div class="project-list-item-body">
 
-                <h2>{{d.title}} <span class="layui-badge layui-bg-orange">￥{{d.price}}</span> </h2>
-                <div class="project-list-item-text layui-text">
+                <h2 class="one-line">{{d.title}}  </h2>
+                <div class="one-line">
+                    <span class="layui-badge layui-bg-orange">￥{{d.price}}</span>
                     {{#  if(d.isCode == "0"){ }}
-                    【库存:{{d.count}}】
+                    <span class="layui-badge layui-bg-blue" >库存:{{d.count}}</span>
                     {{#  } }}
+                </div>
+                <div class="project-list-item-text layui-text one-line">
+
                     {{d.description}}</div>
             </div>
         </div>

@@ -12,14 +12,14 @@
         background-color: #2F4056;
     }
 </style>
-<div style="margin: 0 auto;max-width: 600px;">
+<div style="padding: 10px">
 <div class="layui-row layui-col-space30"  >
     <div class=" layui-col-md6 layui-col-xs12 layui-col-sm6">
         <img id="img" src="" style="width: 100%;height: 150px; border-radius: 10px;">
     </div>
     <div class="layui-col-md6 layui-col-xs12 layui-col-sm6 layui-col-space12" style="color: #F2F2F2">
-        <div ><h2><span id="title" style="color: #F2F2F2"></span> <span class="layui-badge " ><span id="price"></span></span></h2></div>
-        <div ><h3><span id="description" style="color: #ffffff"></span></h3></div>
+        <div ><h2><span id="title" style="color: #F2F2F2"></span> </h2></div>
+        <div ><h3><span id="price" style="font-size: 22px;color: rgb(215,62,62)"></span></h3></div>
         </div>
     </div>
 
@@ -30,6 +30,7 @@
         <button class="layui-btn" type="button" lay-submit="" lay-filter="save">支付宝支付</button>
     </div>
 </form>
+    <div id="description" style="color: #ffffff;border-top: solid;font-size: 18px;padding: 10px"></div>
 </div>
 <script>
     layui.use(['jquery','form', 'request','okLayer', 'route'], function () {

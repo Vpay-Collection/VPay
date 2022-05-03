@@ -9,15 +9,23 @@ layui.define(['jquery','NProgress'], function (exports) {
             $(dom).find(".ok-loading").fadeTo("slow",0.01,function () {
                 $(this).slideUp("slow",function () {
                     $(this).remove();
-                    NProgress.done();
+                   try{
+                       NProgress.done();
+                   }catch (e) {
+                       
+                   }
                 })
             });
         },
         show:function (str,dom) {
             if(dom===undefined||dom===null)return;
 
-            NProgress.settings.parent=dom;
-            NProgress.start();
+         try{
+             NProgress.settings.parent=dom;
+             NProgress.start();
+         }catch (e) {
+             
+         }
            // console.log(str)
           str = str||"Loading...";
             dom = dom||"#app"
