@@ -11,7 +11,7 @@ class Api extends BaseController
 {
     function qr()
     {
-        Code::create(urldecode(arg('url')),'H',10,APP_PUBLIC."ui".DS.Config::getInstance("frame")->getOne("admin").DS.'img/face.jpg');
+        Code::create(urldecode(arg('url')),'H',10,APP_PUBLIC."ui".DS."static".DS.'img/face.jpg');
     }
 
 
