@@ -368,7 +368,7 @@ class Order extends Model
             //不管是不是已支付（我觉得你付过了~不然调用我干嘛），直接删除临时表里面的内容
             $app = new App();
 
-            $AppRes = $app->getData($res["appid"], "connect_key");
+            $AppRes = $app->getData($res["appid"]);
 
             if(empty($AppRes)){
                 return ["code"=>ConstData::ApiError,"msg"=>"不存在这个应用"];
@@ -441,6 +441,7 @@ class Order extends Model
                     $mail = new Email();
 
                     $count = doubleval($arr["price"])-doubleval($arr["reallyPrice"]);
+               //     dump ($AppRes,true);
                     $tplData = [
                         "logo" => Response::getAddress().DS."ui".DS."static".DS."img".DS."face.jpg",
                         "sitename" =>$pay["pay"]["siteName"],
