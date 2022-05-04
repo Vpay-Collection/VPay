@@ -395,11 +395,12 @@ class Order extends Model
             $http = new HttpClient($notify_url);
             $http->post($notify_url,$arr);
 
-            $res = json_decode($http->getBody());
+            $resBody = $http->getBody();
+            $res = json_decode($resBody);
             $pay =  Config::getInstance("pay")->get();
             if ($res) {
                 //远程服务器响应正常，表示认可
-                if ($res->state===ConstData::ApiOk) {
+                if ($res->code===ConstData::ApiOk) {
                     //告诉响应接口，好啦响应是成功的~
                     //发邮件啦啦啦
                     if(StringUtil::get($pay["mail"]["sendType"])->contains("1")&&Email::isEmail($pay["mail"]["receive"])){
@@ -455,7 +456,7 @@ class Order extends Model
                 }
 
                 $this->ChangeStateByOrderId(arg("id"), ConstData::StateError);
-                return ["code" => ConstData::ApiError, "msg" => "异步回调返回的数据不是标准json数据！"];
+                return ["code" => ConstData::ApiError, "msg" => "异步回调返回的数据不是标准json数据！{$resBody}"];
             }
         } else {
             //啥？你要我通知服务器这个不存在的订单？

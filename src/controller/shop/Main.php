@@ -81,8 +81,8 @@ class Main extends BaseController
                     $shopItem = new ShopItem();
                     $shopItem->delCard($json["id"],$json["card"]);
                     $card = $json["card"];
-                }elseif (isset($json["isCode"])&&$json["isCode"]!="0"){
-                    $card = $this->payCode("1",$json);
+                }elseif (isset($json["isCode"])&&$json["isCode"]!="0"&&isset($json["code"])){
+                    $card = $this->payCode($json["code"],$json);
                 }
             
                 
@@ -104,7 +104,7 @@ class Main extends BaseController
                     $mail->send ($json["mail"], "{$tplData['sitename']}", $file, $tplData['sitename']);
                 }
             
-            return $this->ret(200);
+            return $this->ret(0);
           //  dump($json,true);
 
         }
@@ -147,11 +147,15 @@ class Main extends BaseController
         unset($args["a"]);
         unset($args["c"]);
         unset($args["token"]);
-        $shopItemData = "";
-       if($shopData["isCode"]!="1")
+       $shopItemData = "";
+       if($shopData["isCode"]=="0"){
            $shopItemData = $shopItem->getOne($shopData["id"]);
+           if($shopItemData==null)
+               return $this->ret(403,"该商品已售罄！");
+       }
+        
 
-      if($shopItemData==null) return $this->ret(403,"该商品已售罄！");
+     
 
         $price = $shopData['price'];//价格
         $name = $shopData['title'];//商品名称
@@ -164,6 +168,7 @@ class Main extends BaseController
         $args["description"]=$shopData["description"];
         $args["card"]=$shopItemData;
         $args["msg"]=$shopData["msg"];
+        $args["code"]=$shopData["code"];
         $params = json_encode($args);
 
 
