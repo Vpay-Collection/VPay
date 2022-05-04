@@ -72,28 +72,38 @@ class Main extends BaseController
         $Vpay = new Vpay();
         if ($Vpay->PayNotify($_POST)) {//异步回调验证通过
             //业务处理
-            $json = json_decode(base64_decode(urldecode(arg("param"))));
+            $json = json_decode(base64_decode(urldecode(arg("param"))),true);
             //可以自己通知用户
             //$mail = new Email();
-            if (isset($json->mail) && Email::isEmail($json->mail)) {
-                if(isset($json->isCode)&&$json->isCode=="0"&&isset($json->card)&&isset($json->id)){
+           
+            $card = "";
+                if(isset($json["isCode"])&&$json["isCode"]=="0"&&isset($json["card"])&&isset($json["id"])){
                     $shopItem = new ShopItem();
-                    $shopItem->delCard($json->id,$json->card);
+                    $shopItem->delCard($json["id"],$json["card"]);
+                    $card = $json["card"];
+                }elseif (isset($json["isCode"])&&$json["isCode"]!="0"){
+                    $card = $this->payCode("1",$json);
                 }
-                //发送卡密
-                $mail = new Email();
-                $pay = Config::getInstance("pay")->get();
-                $tplData = [
-                    "logo" => Response::getAddress().DS."ui".DS."static".DS."img".DS."face.jpg",
-                    "sitename" =>$pay["pay"]["siteName"],
-                    "title" => "支付成功",
-                    "body" => $this->getMailContent($json->msg,$_POST)
-                ];
-
-                $file = $mail->complieNotify("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
-              //  $mail->send($pay["mail"]["receive"], "{$tplData['sitename']}", $file, $tplData['sitename']);
-                $mail->send($json->mail, "{$tplData['sitename']}", $file, $tplData['sitename']);
-            }
+            
+                
+                if (isset($json->mail) && Email::isEmail($json->mail)) {
+                    $json["card"] = $card;
+                    $msg =$this->getMailContent($json["msg"],$json);
+                    //发送卡密
+                    $mail = new Email();
+                    $pay = Config::getInstance ("pay")->get ();
+                    $tplData = [
+                        "logo" => Response::getAddress () . DS . "ui" . DS . "static" . DS . "img" . DS . "face.jpg",
+                        "sitename" => $pay["pay"]["siteName"],
+                        "title" => "支付成功",
+                        "body" => $this->getMailContent ($$msg, $_POST)
+                    ];
+    
+                    $file = $mail->complieNotify ("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
+                    //  $mail->send($pay["mail"]["receive"], "{$tplData['sitename']}", $file, $tplData['sitename']);
+                    $mail->send ($json["mail"], "{$tplData['sitename']}", $file, $tplData['sitename']);
+                }
+            
             return $this->ret(200);
           //  dump($json,true);
 
@@ -137,9 +147,8 @@ class Main extends BaseController
         unset($args["a"]);
         unset($args["c"]);
         unset($args["token"]);
-       if($shopData["isCode"]=="1"){
-           $shopItemData = $this->payCode($shopData["code"],$args);
-       }else
+        $shopItemData = "";
+       if($shopData["isCode"]!="1")
            $shopItemData = $shopItem->getOne($shopData["id"]);
 
       if($shopItemData==null) return $this->ret(403,"该商品已售罄！");
@@ -154,7 +163,7 @@ class Main extends BaseController
         $args["title"]=$shopData["title"];
         $args["description"]=$shopData["description"];
         $args["card"]=$shopItemData;
-        $args["msg"]=$this->getMailContent($shopData["msg"],$args);
+        $args["msg"]=$shopData["msg"];
         $params = json_encode($args);
 
 
