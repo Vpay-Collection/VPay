@@ -96,7 +96,7 @@ class Main extends BaseController
                         "logo" => Response::getAddress () . DS . "ui" . DS . "static" . DS . "img" . DS . "face.jpg",
                         "sitename" => $pay["pay"]["siteName"],
                         "title" => "支付成功",
-                        "body" => $this->getMailContent ($$msg, $_POST)
+                        "body" => $this->getMailContent ($msg, $_POST)
                     ];
     
                     $file = $mail->complieNotify ("#4076c4", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);

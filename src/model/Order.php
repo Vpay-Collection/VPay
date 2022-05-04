@@ -416,7 +416,7 @@ class Order extends Model
                             "logo" => Response::getAddress().DS."ui".DS."static".DS."img".DS."face.jpg",
                             "sitename" =>$pay["pay"]["siteName"],
                             "title" => "用户支付成功通知",
-                            "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：{$c}</p>"
+                            "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：".print_r (base64_decode ($c),true)."</p>"
                         ];
 
                         $file = $mail->complieNotify("#009688", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
@@ -448,7 +448,7 @@ class Order extends Model
                         "logo" => Response::getAddress().DS."ui".DS."static".DS."img".DS."face.jpg",
                         "sitename" =>$pay["pay"]["siteName"],
                         "title" => "支付回调失败",
-                        "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：{$c}</p><p>通知地址:{$notify_url}</p><p>返回结果:{$http->getBody()}</p>"
+                        "body" => "<p>支付站点：{$AppRes["app_name"]}</p><p>商品信息：{$arr["title"]}</p><p>支付金额：{$arr["reallyPrice"]}</p><p>优惠金额：{$count}</p><p>其他参数：".print_r (base64_decode ($c),true)."</p><p>通知地址:{$notify_url}</p><p>返回结果:{$http->getBody()}</p>"
                     ];
 
                     $file = $mail->complieNotify("#FF5722", "#fff", $tplData["logo"], $tplData["sitename"], $tplData["title"], $tplData["body"]);
