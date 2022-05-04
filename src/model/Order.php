@@ -378,6 +378,7 @@ class Order extends Model
 
             $notify_url = $res["notifyUrl"];
             //取回调地址
+            $arr["title"]= $res["title"];
             $arr["payId"] = $res['pay_id'];
             $arr["param"] = urlencode(base64_encode($res['param']));
             $arr["price"] = $res['price'];

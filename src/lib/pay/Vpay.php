@@ -7,6 +7,7 @@
  */
 namespace app\lib\pay;
 
+use app\core\debug\Log;
 use app\lib\pay\lib\AlipaySign;
 use app\lib\pay\lib\HttpClient;
 
@@ -185,7 +186,8 @@ class Vpay{
                 $param['sign']=$alipay->getSign($param, $key);
                 $url = $this->conf["Confirm"] ;
                 //交易要确认
-            $httpClient->get($url,$param);
+                $httpClient = new HttpClient($this->conf["base"]);
+                $httpClient->get($url,$param);
              // echo $data;
             //    dump($data,true);
                 $this->err="交易已确认！";
