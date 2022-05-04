@@ -150,15 +150,12 @@ class Vpay{
     {
         $arg["param"]=base64_decode(urldecode($arg["param"]));
         $bool=$this->CheckSign($arg);
-       // dump($bool);
-        $payId=$this->checkClient($arg['price'],$arg['param']);
-       // dump($payId);
-        if($bool&&$payId===$arg['payId']){
+        //$payId=$this->checkClient($arg['price'],$arg['param']);
+        if($bool){
             $this->closeClient();
             return true;
         }else{
-            if($bool)
-                $this->err='支付已完成！请不要重复刷新！';
+         //   if($bool)$this->err='支付已完成！请不要重复刷新！';
             return false;
         }
     }//此处是同步回调
@@ -239,7 +236,6 @@ class Vpay{
         }
     }
     private function checkClient($price,$param){
-        //dump($_SESSION);
         $param=urldecode($param);
         $clientID=md5(md5($price).sha1($param));
         if(isset($_SESSION['clientID'])&&$_SESSION['clientID']===$clientID){

@@ -81,8 +81,12 @@ class Main extends BaseController
                     $shopItem = new ShopItem();
                     $shopItem->delCard($json["id"],$json["card"]);
                     $card = $json["card"];
-                }elseif (isset($json["isCode"])&&$json["isCode"]!="0"&&isset($json["code"])){
-                    $card = $this->payCode($json["code"],$json);
+                }elseif (isset($json["isCode"])&&$json["isCode"]=="1"&&isset($json["id"])){
+                    $shop = new Shop();
+                    $code = $shop->get ($json["id"],"code");
+                    if(!empty($code)){
+                        $card = $this->payCode($code[0]["code"],$json);
+                    }
                 }
             
                 
@@ -123,7 +127,7 @@ class Main extends BaseController
            // dump($param);
             Response::msg(false,200,"支付成功",$param["msg"],-1,"/ui/card","返回首页");
         } else {
-            Response::msg(true,403,"支付失败","您的支付信息无效！",-1,"/ui/card");
+            Response::msg(true,403,"支付失败","您的支付信息无效！".$Vpay->getErr (),-1,"/ui/card");
         }
 
     }
@@ -168,7 +172,7 @@ class Main extends BaseController
         $args["description"]=$shopData["description"];
         $args["card"]=$shopItemData;
         $args["msg"]=$shopData["msg"];
-        $args["code"]=$shopData["code"];
+       // $args["code"]=$shopData["code"];
         $params = json_encode($args);
 
 
