@@ -1,0 +1,7 @@
+@media (min-width: 1400px) {
+    main,
+    header,
+    #main-navbar {
+        padding-left: 240px;
+    }
+}

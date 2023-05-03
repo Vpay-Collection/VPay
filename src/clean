@@ -1,0 +1,71 @@
+#!/usr/bin/env php
+<?php
+
+use cleanphp\App;
+use library\release\common\Release;
+
+
+const BASE_DIR = __DIR__;
+function help()
+{
+    echo <<<EOF
+Usage: ./clean [options] 
+Options:
+  release                       发布安装包.
+    -v,--version                发布版本
+    -n,--name                   指定打包的子模块名称
+    -m,--model                  是否只发布子模块
+    -s,--single                 发布为单文件应用
+    -c,--compress               发布时进行代码压缩
+  start  [<m>/<c>/<a>]          命令行模式下执行controller               
+EOF;
+    return null;
+}
+
+
+if (!isset($argv[1]))
+    return help();
+
+switch ($argv[1]) {
+    case "release":
+        spl_autoload_register(function ($raw) {
+            $real_class = str_replace("\\", DIRECTORY_SEPARATOR, $raw) . ".php";
+            //拼接类名文件
+            $file = __DIR__ . DIRECTORY_SEPARATOR . $real_class;
+            //存在就加载
+            if (file_exists($file)) {
+                include_once $file;
+            }
+        }, true, true);
+        if (!class_exists("library\\release\\common\\Release")) {
+            exit("请先导入缺失的Library: Release");
+        }
+
+        $version = "0.0.1";
+        $name = "main";
+        $single = in_array('-s', $argv);
+        $compress = in_array('-c', $argv);
+
+        foreach ($argv as $value) {
+            switch (substr($value, 0, 2)) {
+
+                case "-v":
+                    $version = substr($value, 3);
+                    break;
+                case "-n":
+                    $name = substr($value, 3);
+                    break;
+            }
+        }
+        Release::package($compress, $single, $name, $version);
+        break;
+    case "start":
+        $_SERVER["REQUEST_URI"] = $argv[2] ?? "";
+        $_SERVER["HTTP_HOST"] = "localhost";
+        define('APP_DIR', dirname(__FILE__));//定义运行根目录
+        require_once APP_DIR . DIRECTORY_SEPARATOR . "cleanphp" . DIRECTORY_SEPARATOR . "App.php";
+        App::run(true);
+        break;
+    default:
+        help();
+}
