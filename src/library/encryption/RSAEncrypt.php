@@ -124,7 +124,7 @@ class RSAEncrypt
         if (!is_string($encrypted)) {
             return null;
         }
-        return (openssl_private_decrypt(base64_decode($encrypted), $decrypted, $this->getPrivateKey())) ?? null;
+        return (openssl_private_decrypt(base64_decode($encrypted), $decrypted, $this->getPrivateKey())) ? $decrypted:null;
     }
 
 
@@ -163,6 +163,6 @@ class RSAEncrypt
         if (!is_string($encrypted)) {
             return null;
         }
-        return (openssl_public_decrypt(base64_decode($encrypted), $decrypted, $this->getPublicKey())) ?? null;
+        return (openssl_public_decrypt(base64_decode($encrypted), $decrypted, $this->getPublicKey())) ? $decrypted:null;
     }
 }

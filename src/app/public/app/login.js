@@ -12,13 +12,15 @@ $("#submit_captcha").off().on("click", function () {
     $.get("/ankio/login/key", function (d) {
         const encrypt = new JSEncrypt();
         encrypt.setPublicKey(d.data);
-
+        var passwd = $("input[name=password]").val();
+        console.log(passwd);
+        passwd = encrypt.encrypt(passwd);
         $.post(
             '/ankio/login/login',
             {
-                'code': $("#code").val(),
+                'code': $("#captcha_code").val(),
                 'username': $("input[name=username]").val(),
-                'password': encrypt.encrypt($("input[name=password]").val()),
+                'password': passwd,
             }, function (data) {
                 if (data.code === 200) {
                     console.log(data);

@@ -3,24 +3,10 @@
   <component name="PublishConfigData" autoUpload="Always" serverName="ftp" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
     <option name="confirmBeforeUploading" value="false" />
     <serverData>
-      <paths name="cleanphp">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
       <paths name="ftp">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/src" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="library">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

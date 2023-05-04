@@ -124,7 +124,7 @@ class Password extends BaseEngine
             return false;
         }
         $passwd = $rsa->rsaPrivateDecrypt(arg("password"));
-        dumps($passwd);
+     //   dumps($passwd,arg("password"));
         $user = arg("username");
         $data = Config::getConfig('login');
         $hash = md5($data["username"] . $passwd);
