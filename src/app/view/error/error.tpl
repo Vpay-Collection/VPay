@@ -49,7 +49,7 @@
                     </p>
                     {if $time!==-1}
                         <a href="{$url}" class="btn btn-primary">
-                            {lang('%s秒后自动跳转','<span id="jump"></span>')}
+                            {sprintf('%s秒后自动跳转','<span id="jump"></span>')}
                         </a>
                     {else}
                         <a class="btn btn-primary" href="{$url}" role="button">{$desc}</a>

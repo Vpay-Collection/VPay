@@ -52,7 +52,7 @@ class Password extends BaseEngine
                 if (!$this->login()) {
                     $result = EngineManager::getEngine()->render(401, '登录失败');
                 } else {
-                    $result = EngineManager::getEngine()->render(200, '登录成功',Session::getInstance()->get("redirect"));
+                    $result = EngineManager::getEngine()->render(200, '登录成功', Session::getInstance()->get("redirect", url("admin", "main", "index")));
                 }
                 break;
             }
@@ -95,6 +95,8 @@ class Password extends BaseEngine
         $token2 = Cache::init()->get('token');
         $device2 = Cache::init()->get('device');
 
+        // dumps($token,$token2,$device,$device2, $this->getDevice());
+
         if ($token !== $token2 || $device !== $device2 || $device !== $this->getDevice()) {
             $this->logout();
             return false;
@@ -106,7 +108,7 @@ class Password extends BaseEngine
     function logout(): void
     {
         Session::getInstance()->destroy();
-        Cache::init()->del('login');
+        Cache::init()->del('token');
     }
 
     function login(): bool
@@ -133,11 +135,10 @@ class Password extends BaseEngine
             $token = sha1($hash . md5($timeout));
 
             $ua = Request::getHeaderValue('User-Agent') ?? 'NO UA';
-            $device = sha1(Request::getClientIP() . $ua);
+            $device = $this->getDevice();
 
             Session::getInstance()->set('token', $token);
             Session::getInstance()->set('device', $device);
-
             Cache::init()->set('token', $token);
             Cache::init()->set('device', $device);
 
@@ -188,7 +189,12 @@ class Password extends BaseEngine
 
     function getLoginUrl(): string
     {
-        Session::getInstance()->set('redirect',Request::getNowAddress());
-        return url('index', 'main', 'login', ['redirect' => Request::getNowAddress()]);
+        $redirect = arg("redirect", Request::getNowAddress());
+        $parse_url = parse_url($redirect);
+        if (!isset($parse_url['host']) || !isset($parse_url['scheme']) || $parse_url['host'] !== Request::getDomainNoPort()) {
+            $redirect = Request::getNowAddress();
+        }
+        Session::getInstance()->set('redirect', $redirect);
+        return url('index', 'main', 'login', ['redirect' => $redirect]);
     }
 }

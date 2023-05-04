@@ -15,7 +15,8 @@
 namespace app\controller\api;
 
 use app\Application;
-use core\base\Controller;
+use cleanphp\base\Controller;
+use cleanphp\engine\EngineManager;
 
 class BaseController extends Controller
 {
@@ -25,6 +26,6 @@ class BaseController extends Controller
 
     public function json($code = 200, $msg = "OK", $data = null, $count = 0): string
     {
-        return Application::json($code, $msg, $data, $count);
+        return EngineManager::getEngine()->render($code, $msg, $data, $count);
     }
 }

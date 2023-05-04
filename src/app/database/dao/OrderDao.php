@@ -14,10 +14,11 @@
 
 namespace app\database\dao;
 
+use app\database\model\AppModel;
 use app\database\model\OrderModel;
+use cleanphp\base\Config;
 use library\database\exception\DbFieldError;
 use library\database\object\Dao;
-use library\database\object\Field;
 use library\database\operation\SelectOperation;
 
 
@@ -42,7 +43,7 @@ class OrderDao extends Dao
      */
     public function closeTimeoutOrder()
     {
-        $close_time = Config::getConfig("pay")['timeout'];
+        $close_time = Config::getConfig("app")['timeout'];
         $close_time = time() - 60 * $close_time;//计算订单关闭时间
         $close_date = time();
         $this->update()
@@ -60,6 +61,30 @@ class OrderDao extends Dao
     public function getRecently(int $count = 5)
     {
         return $this->select()->where(['state' => OrderModel::SUCCESS])->limit($count)->orderBy("id", SelectOperation::SORT_ASC)->commit();
+    }
+
+    /**
+     * 统计数据
+     * @return array
+     */
+    public function countData(): array
+    {
+        $all = AppDao::getInstance()->getAll();
+        $start = strtotime(date('Y-m-d', strtotime("-0 day")));
+        $end = time();
+        $result = [];
+        for ($i = 0; $i < 7; $i++) {
+            /**
+             * @var $all AppModel[]
+             */
+            foreach ($all as $item) {
+                $result[$item->id][strtotime($start)] = $this->getCount(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS]);
+            }
+            $end = $start;
+            $start = strtotime(date('Y-m-d', strtotime("-$i day")));
+        }
+
+        return $result;
     }
 
     /**

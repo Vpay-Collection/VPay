@@ -15,14 +15,18 @@
 namespace app\controller\admin;
 
 use app\database\dao\OrderDao;
+use cleanphp\engine\EngineManager;
 
 class Main extends BaseController
 {
 
-    function console()
+    function index()
     {
-        $this->eng()->setData("total_price", OrderDao::getInstance()->getTotal());
-        $this->eng()->setData("today_price", OrderDao::getInstance()->getToday());
-        $this->eng()->setData("payments", OrderDao::getInstance()->getRecently(5));
+        EngineManager::getEngine()
+            ->setData("total_price", OrderDao::getInstance()->getTotal())
+            ->setData("today_price", OrderDao::getInstance()->getToday())
+            ->setData("payments", OrderDao::getInstance()->getRecently(10))
+            ->setData("count", OrderDao::getInstance()->countData());
+        //TODO 模板文件中的渲染逻辑需要数据支撑
     }
 }

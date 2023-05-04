@@ -4,8 +4,8 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <meta name="description" content="{lang('Vpay')}">
-    <meta name="keywords" content="{lang('Vpay')}"/>
+    <meta name="description" content="{sprintf('Vpay')}">
+    <meta name="keywords" content="{sprintf('Vpay')}"/>
     <title>Vpay管理后台</title>
     {include file="layout_headers"}
 </head>

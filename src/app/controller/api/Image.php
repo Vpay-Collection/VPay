@@ -14,7 +14,7 @@
 
 namespace app\controller\api;
 
-use core\base\Variables;
+use cleanphp\base\Variables;
 use library\qrcode\Code;
 
 class Image extends BaseController

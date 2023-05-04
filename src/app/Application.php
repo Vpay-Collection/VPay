@@ -18,7 +18,6 @@ use cleanphp\App;
 use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
 use cleanphp\base\MainApp;
-use cleanphp\base\Request;
 use cleanphp\base\Response;
 use cleanphp\base\Session;
 use cleanphp\base\Variables;
@@ -62,19 +61,6 @@ EOF
                 EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
             }
 
-            //   Variables::set("__request_module__", $__module);
-            //            Variables::set("__request_controller__", $__controller);
-            //            Variables::set("__request_action__", $__action);
-
-            $addr = Variables::get("__request_module__") . "/" . Variables::get("__request_controller__") . "/" . Variables::get("__request_action__");
-            $domain = Request::getDomainNoPort();
-            if (
-                ($string->startsWith("api_wechat") && $domain !== "i.dreamn.cn") ||
-                (!$string->startsWith("api_wechat") && $domain == "i.dreamn.cn" && $addr !== "index/main/image")
-            ) {
-                (new Response())->render(EngineManager::getEngine()->setLayout(null)->renderMsg(true, 401, "Unauthorized", "You do not have permission to access！"))->send();
-            }
-
         }
 
 
@@ -91,8 +77,6 @@ EOF
 
     function onFrameworkStart()
     {
-
-
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
             $data = ["code" => $data['code'], "msg" => $data['msg'], "data" => $data['data'][0]];

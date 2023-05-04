@@ -11,7 +11,7 @@
                                 style="color: hsl(218, 81%, 95%)"
                             >
                                 {$app['title']} <br/>
-                                <span style="color: hsl(218, 81%, 75%)">{lang('统一认证登录')}</span>
+                                <span style="color: hsl(218, 81%, 75%)">{sprintf('统一认证登录')}</span>
                             </h1>
                             <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
                                 如果动物光吃不胖，那它肚子里一定有了寄生虫。如果百姓勤劳而不能致富，那社会一定有了吸血鬼。
@@ -86,7 +86,7 @@
                                                         <input type="email" name="email" id="email" class="form-control"
                                                                autocomplete="false"/>
                                                         <label class="form-label" for="email"
-                                                        >{lang("邮箱")}</label
+                                                        >{sprintf("邮箱")}</label
                                                         >
                                                     </div>
                                                     <div class="row">
@@ -100,14 +100,14 @@
                                                                         maxlength="4"
                                                                 />
                                                                 <label class="form-label"
-                                                                       for="code">{lang("邮箱验证码")}</label>
+                                                                       for="code">{sprintf("邮箱验证码")}</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-4">
                                                             <button type="button" id="send_image"
                                                                     data-mdb-toggle="modal" data-mdb-target="#captcha"
                                                                     class="btn btn-primary btn-block mb-4">
-                                                                {lang("发送")}
+                                                                {sprintf("发送")}
                                                             </button>
                                                         </div>
                                                     </div>
@@ -118,13 +118,13 @@
 
                                                     <!-- 2 column grid layout -->
                                                     <div class="row mb-4 ms-1">
-                                                        {lang("未注册邮箱验证后自动登录")}
+                                                        {sprintf("未注册邮箱验证后自动登录")}
 
                                                     </div>
 
                                                     <!-- Submit button -->
                                                     <button type="submit" class="btn btn-primary btn-block mb-4">
-                                                        {lang("登录")}
+                                                        {sprintf("登录")}
                                                     </button>
 
                                                 </form>
@@ -169,11 +169,11 @@
                                                     <div class="col-12">
                                                         <div class="alert " role="alert" data-mdb-color="success"
                                                              id="support">
-                                                            {lang("当前设备支持生物识别，请根据页面提示完成生物识别进行登录。")}
+                                                            {sprintf("当前设备支持生物识别，请根据页面提示完成生物识别进行登录。")}
                                                         </div>
                                                         <div class="alert " role="alert" data-mdb-color="warning"
                                                              id="unSupport">
-                                                            {lang("当前设备不支持生物识别，请更换设备后再试。")}
+                                                            {sprintf("当前设备不支持生物识别，请更换设备后再试。")}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -201,7 +201,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">{lang("请输入验证码")}</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">{sprintf("请输入验证码")}</h5>
                         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -215,7 +215,7 @@
                                             minlength="1"
                                             maxlength="2"
                                     />
-                                    <label class="form-label" for="captcha_code">{lang("验证码")}</label>
+                                    <label class="form-label" for="captcha_code">{sprintf("验证码")}</label>
                                 </div>
                             </div>
                             <div class="col-4">
@@ -230,9 +230,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">{lang("关闭")}</button>
+                        <button type="button" class="btn btn-secondary"
+                                data-mdb-dismiss="modal">{sprintf("关闭")}</button>
                         <button type="button" class="btn btn-primary" data-mdb-dismiss="modal"
-                                id="submit_captcha">{lang("确认")}</button>
+                                id="submit_captcha">{sprintf("确认")}</button>
                     </div>
                 </div>
             </div>

@@ -31,7 +31,7 @@ class Main extends Controller
         if (Config::getConfig("shop")['state']) {
             Response::location(url("shop", "main", "index"));
         }
-        (new Response())->render(EngineManager::getEngine()->renderMsg(false, 403, lang("Forbidden"), lang("You have no access!"), -1, "https://github.com/Vpay-Collection/VPay", "Github"))->send();
+        (new Response())->render(EngineManager::getEngine()->renderMsg(false, 403, sprintf("Forbidden"), sprintf("You have no access!"), -1, "https://github.com/Vpay-Collection/VPay", "Github"))->send();
     }
 
     function login()

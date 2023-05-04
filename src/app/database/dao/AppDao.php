@@ -37,4 +37,9 @@ class AppDao extends Dao
     {
         return $this->find(null, ['app_id' => $appid]);
     }
+
+    public function getAllApp()
+    {
+        return $this->select()->commit(false);
+    }
 }
