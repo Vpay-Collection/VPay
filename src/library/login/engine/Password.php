@@ -52,7 +52,7 @@ class Password extends BaseEngine
                 if (!$this->login()) {
                     $result = EngineManager::getEngine()->render(401, '登录失败');
                 } else {
-                    $result = EngineManager::getEngine()->render(200, '登录成功');
+                    $result = EngineManager::getEngine()->render(200, '登录成功',Session::getInstance()->get("redirect"));
                 }
                 break;
             }
@@ -188,6 +188,7 @@ class Password extends BaseEngine
 
     function getLoginUrl(): string
     {
+        Session::getInstance()->set('redirect',Request::getNowAddress());
         return url('index', 'main', 'login', ['redirect' => Request::getNowAddress()]);
     }
 }
