@@ -21,7 +21,7 @@ class Image extends BaseController
 {
     function qrcode()
     {
-        Code::create(urldecode(arg('url', "")), Variables::getStoragePath("logo.jpg"));
+        Code::encode(urldecode(arg('url', "")));
     }
 
 }

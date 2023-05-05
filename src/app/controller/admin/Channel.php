@@ -24,7 +24,10 @@ class Channel extends BaseController
 {
     function index()
     {
-        EngineManager::getEngine()->setArray(Config::getConfig("channel"));
+        //  EngineManager::getEngine()->setArray(Config::getConfig("channel"));
+        foreach (Config::getConfig("channel") as $key => $value) {
+            EngineManager::getEngine()->setData($key, url("api", "image", "qrcode", ['url' => $value]));
+        }
         $last = Cache::init()->get("last_heart");
         $online = false;
         if (time() - $last <= 120) {

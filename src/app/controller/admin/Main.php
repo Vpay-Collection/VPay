@@ -15,7 +15,9 @@
 namespace app\controller\admin;
 
 use app\database\dao\OrderDao;
+use cleanphp\base\Response;
 use cleanphp\engine\EngineManager;
+use library\login\LoginManager;
 
 class Main extends BaseController
 {
@@ -28,5 +30,11 @@ class Main extends BaseController
             ->setData("payments", OrderDao::getInstance()->getRecently(10))
             ->setData("count", OrderDao::getInstance()->countData());
         //TODO 模板文件中的渲染逻辑需要数据支撑
+    }
+
+    function logout()
+    {
+        LoginManager::init()->logout();
+        Response::location(url("admin", "main", "index"));
     }
 }

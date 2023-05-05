@@ -43,4 +43,5 @@ abstract class BaseEngine
         return md5($ip . $ua);
     }
 
+    abstract function getUser(): array;
 }

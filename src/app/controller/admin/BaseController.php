@@ -15,6 +15,8 @@
 namespace app\controller\admin;
 
 
+use app\utils\GithubUpdater;
+use cleanphp\base\Config;
 use cleanphp\base\Controller;
 use cleanphp\base\Cookie;
 use cleanphp\base\Request;
@@ -29,11 +31,19 @@ class BaseController extends Controller
         if (!LoginManager::init()->isLogin()) {
             Response::location(LoginManager::init()->getLoginUrl());
         }
+        $user = LoginManager::init()->getUser();
+        $result = GithubUpdater::init("Vpay-Collection/Vpay")->check(Config::getConfig("frame")["version"], $new, $download, $body);
         EngineManager::getEngine()->setLayout("layout")
             ->setData("theme", Cookie::getInstance()->get("theme", "light"))
             ->setData("color", Cookie::getInstance()->get("theme") === "dark" ? "dark" : "white")
             ->setData("pjax", Request::isPjax())
             ->setData("host", Request::getNowAddress())
+            ->setData("username", $user["username"])
+            ->setData("image", $user["image"])
+            ->setData("update", $result)
+            ->setData("new_version", $new)
+            ->setData("download", $download)
+            ->setData("body", $body)
             ->setData("nav", [
                 [
                     'name' => "概览",

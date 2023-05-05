@@ -25,7 +25,7 @@
                                     <strong>重要:</strong> 请先下载安装安卓监控客户端
                                     <a href="https://github.com/Vpay-Collection/vpay-android" class="btn btn-primary">Github下载</a>
                                 </div>
-                                <form class="mt-4">
+                                <form class="mt-4" id="form_app">
                                     <!-- Email input -->
                                     <div class="form-outline mb-4">
                                         <input type="text" id="key" name="key" class="form-control" value="{$key}"/>
@@ -46,7 +46,9 @@
 
 
                                     <!-- Submit button -->
-                                    <button type="submit" class="btn btn-primary btn-block">保存</button>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">保存</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -128,11 +130,11 @@
                                 </div>
                             </div>
 
-
-                            <button type="button" class="btn btn-primary mb-2" id="updateInfo">
-                                更新收款码
-                            </button>
-
+                            <div class="text-center  mb-2">
+                                <button type="button" class="btn btn-primary" id="updateInfo">
+                                    更新收款码
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

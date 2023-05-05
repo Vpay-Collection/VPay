@@ -33,6 +33,7 @@
             data-mdb-hidden="false"
             data-mdb-accordion="true"
     >
+
         <a
                 class="ripple d-flex justify-content-center py-4"
                 href="javascript:void(0)"
@@ -113,18 +114,36 @@
 
             <!-- Right links -->
             <ul class="navbar-nav ms-auto d-flex flex-row">
+                {if $update}
+                    <li class="nav-item dropdown">
+                        <a
+                                class="nav-link me-3 me-lg-0 dropdown-toggle hidden-arrow"
+                                href="javascript:void(0)"
+                                data-mdb-toggle="modal" data-mdb-target="#updateModal"
+                                id="navbarDropdownMenuLink"
+                                role="button"
+                        >
+                            <i class="fas fa-bell"></i>
+                            <span class="badge rounded-pill badge-notification bg-danger"
+                            >1</span
+                            >
+                        </a>
+                    </li>
+                {/if}
 
 
                 <!-- Avatar -->
                 <li class="nav-item dropdown">
+
                     <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
                        id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <img src=" " class="rounded-circle me-2" height="22" alt="Avatar"
+                        <img src="{$image}" class="rounded-circle me-2" height="22" alt="Avatar"
                              loading="lazy"/>
+                        {$username}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
 
-                        <li><a class="dropdown-item" href="{url('user','main','logout')}">退出登录</a></li>
+                        <li><a class="dropdown-item" href="{url('admin','main','logout')}">退出登录</a></li>
                     </ul>
                 </li>
             </ul>
@@ -147,12 +166,66 @@
     </div>
 </main>
 <!--Main layout-->
-
+<div class="modal top fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true"
+     data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog   modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">新版本 {$new_version}</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {$body nofilter}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                    关闭
+                </button>
+                <a type="button" href="{$download}" target="_blank" class="btn btn-primary"
+                   data-mdb-dismiss="modal">下载</a>
+            </div>
+        </div>
+    </div>
+</div>
 <!--Footer-->
 <footer>
 
 </footer>
 <!--Footer-->
+
+<div
+        class="alert fade"
+        id="success_msg"
+        role="alert"
+        data-mdb-color="success"
+        data-mdb-position="top-right"
+        data-mdb-stacking="true"
+        data-mdb-width="200px"
+        data-mdb-append-to-body="true"
+        data-mdb-hidden="true"
+        data-mdb-autohide="true"
+        data-mdb-delay="2000"
+>
+    <i class="fas fa-check-circle me-3"></i>
+    <span id="success_msg_body"></span>
+</div>
+
+<div
+        class="alert fade"
+        id="error_msg"
+        role="alert"
+        data-mdb-color="danger"
+        data-mdb-position="top-right"
+        data-mdb-stacking="true"
+        data-mdb-width="200px"
+        data-mdb-append-to-body="true"
+        data-mdb-hidden="true"
+        data-mdb-autohide="true"
+        data-mdb-delay="2000"
+>
+    <i class="fas fa-times-circle me-3"></i>
+    <span id="error_msg_body"></span>
+</div>
 
 
 </body>

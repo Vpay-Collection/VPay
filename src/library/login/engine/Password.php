@@ -197,4 +197,13 @@ class Password extends BaseEngine
         Session::getInstance()->set('redirect', $redirect);
         return url('index', 'main', 'login', ['redirect' => $redirect]);
     }
+
+    function getUser(): array
+    {
+        return [
+            'id' => 0,
+            'username' => Config::getConfig('login')["username"],
+            'image' => Config::getConfig('login')["image"]
+        ];
+    }
 }

@@ -59,40 +59,6 @@
 
 </div>
 
-<div
-        class="alert fade"
-        id="success_msg"
-        role="alert"
-        data-mdb-color="success"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-check-circle me-3"></i>
-    <span id="success_msg_body"></span>
-</div>
-
-<div
-        class="alert fade"
-        id="error_msg"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-times-circle me-3"></i>
-    <span id="error_msg_body"></span>
-</div>
-
 
 {include file="layout_scripts"}
 <script src="../../public/app/user.js?v={$__version}" defer></script>

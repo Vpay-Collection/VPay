@@ -77,7 +77,6 @@ class ImageUpload
     /**
      * 删除图片
      * @param $image
-     * @param $type
      * @return void
      */
     public function delImage($image)
@@ -102,7 +101,7 @@ class ImageUpload
         try {
             $upload->upload(function (UploadFile &$file) {
                 //图片压缩
-                ImageCompress::compress($file->tmp_name);
+                //      ImageCompress::compress($file->tmp_name);
                 return false;
             });
             $files = $upload->getUploadFiles()[0];

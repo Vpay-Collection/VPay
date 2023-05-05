@@ -9,4 +9,6 @@
 <script type="text/javascript" src="../../public/plugins/js/file-upload.min.js?v={$__version}" defer></script>
 <script src="../../public/app/form.js?v={$__version}" defer></script>
 <script src="../../public/app/page.js?v={$__version}" defer></script>
+
+<script src="../../public/app/console.js?v={$__version}" defer></script>
 <script src="../../public/app/index.js?v={$__version}" defer></script>

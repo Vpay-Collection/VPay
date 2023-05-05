@@ -14,35 +14,32 @@
 
 namespace app\controller\api_admin;
 
-use app\Application;
-use core\base\Controller;
-use core\base\Response;
-use core\base\Variables;
-use core\objects\StringBuilder;
-use library\database\object\Field;
-use library\user\login\Login;
+use cleanphp\base\Controller;
+use cleanphp\base\Variables;
+use cleanphp\engine\EngineManager;
+use cleanphp\objects\StringBuilder;
+use library\login\LoginManager;
 
 class BaseController extends Controller
 {
     public function __init(): ?string
     {
-        if (!Login::isLogin()) {
-            return Application::json(403, null, "/login");
+
+        if (!LoginManager::init()->isLogin()) {
+            return EngineManager::getEngine()->render(403, null, LoginManager::init()->getLoginUrl());
         }
         return null;
     }
 
     public function json($code = 200, $msg = "OK", $data = null, $count = 0): string
     {
-        return Application::json($code, $msg, $data, $count);
+        return EngineManager::getEngine()->render($code, $msg, $data, $count);
     }
 
     function log(): string
     {
-        $file = arg('file', '');
-        if (!Field::isName($file)) return $this->json(404, "无日志");
         $dirs = scandir(Variables::getStoragePath('logs'));
-        $dirs[] = date('Y-m-d') . DS . $file . 'cleanphp.log';
+        $dirs[] = date('Y-m-d') . DS . 'cleanphp.log';
         $array = [];
         foreach ($dirs as $dir) {
             $new = Variables::getStoragePath('logs', $dir);
@@ -52,9 +49,10 @@ class BaseController extends Controller
                 if ($file_handle) {
                     while (!feof($file_handle)) { //判断是否到最后一行
                         $line = fgets($file_handle, 4096); //读取一行文本
-                        if ((new StringBuilder($line))->contains("[ $file ]")) {
+                        if ((new StringBuilder($line))->contains("[ AppChannel ]")) {
                             $array[] = trim($line);
                         }
+                        if (sizeof($array) > 500) break;//最多读500行日志
                     }
                 }
                 fclose($file_handle);//关闭文件
