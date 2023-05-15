@@ -14,15 +14,15 @@
 
 namespace app\task;
 
-use app\controller\admin\Order;
 use app\database\dao\OrderDao;
 use app\database\model\OrderModel;
-use cleanphp\base\EventManager;
+use cleanphp\base\Config;
 use cleanphp\cache\Cache;
 use cleanphp\file\Log;
 use library\http\HttpClient;
 use library\http\HttpException;
 use library\login\SignUtils;
+use library\mail\AnkioMail;
 use library\task\TaskerAbstract;
 use library\task\TaskerManager;
 use library\task\TaskerTime;
@@ -45,7 +45,7 @@ class NotifyTasker extends TaskerAbstract
      */
     public function getTimeOut(): int
     {
-        return 300;//理论上时间不会超过5分钟
+        return 600;//理论上时间不会超过5分钟
     }
 
     /**
@@ -61,6 +61,12 @@ class NotifyTasker extends TaskerAbstract
             if ($http->getBody() !== "success") throw new HttpException("回调接口没有输出 success 字符");
             $this->order->state = OrderModel::SUCCESS;
             OrderDao::getInstance()->updateModel($this->order);
+            if (Config::getConfig("mail")['pay_success']) {
+                $file = AnkioMail::compileNotify("#1abc9c", "#fff", Config::getConfig("login")['image'], "Vpay", "支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) . JSON_UNESCAPED_UNICODE) . "</p>");
+
+                AnkioMail::send(Config::getConfig("mail")['received'], "支付成功", $file, "Vpay");
+            }
+
         } catch (HttpException $e) {
             Log::record("Notify", "回调失败：" . $e->getMessage());
             $time = Cache::init()->get($this->order->order_id . "_fail");
@@ -89,15 +95,31 @@ class NotifyTasker extends TaskerAbstract
                     break;
                 default:
                     Log::record("Notify", "多次回调失败不再尝试回调：" . $e->getMessage());
-                    EventManager::trigger("__notify_error_finally__", $this->order);
+
+
+                    $file = AnkioMail::compileNotify("#e74c3c", "#fff", Config::getConfig("login")['image'], "Vpay", "异步回调失败", "<p>订单{$this->order->order_id}异步回调失败<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) . JSON_UNESCAPED_UNICODE) . "</p>");
+
+                    AnkioMail::send(Config::getConfig("mail")['received'], "异步回调失败", $file, "Vpay");
+
                     return;
             }
             Cache::init()->set($this->order->order_id . "_fail", ++$time);
-            EventManager::trigger("__notify_error__", $this->order);
             //处理失败的定时任务
             TaskerManager::add(TaskerTime::nMinute($next), new NotifyTasker($this->order, $this->key), "异步回调任务_" . $this->order->order_id);
         }
 
+    }
+
+    private function getPayType($type): string
+    {
+        switch ($type) {
+            case OrderModel::PAY_ALIPAY:
+                return "支付宝";
+            case OrderModel::PAY_QQ;
+                return "QQ";
+            default:
+                return "微信";
+        }
     }
 
     /**
