@@ -52,7 +52,12 @@ class Password extends BaseEngine
                 if (!$this->login()) {
                     $result = EngineManager::getEngine()->render(401, '登录失败');
                 } else {
-                    $result = EngineManager::getEngine()->render(200, '登录成功', Session::getInstance()->get("redirect", url("admin", "main", "index")));
+                    $redirect = arg("redirect", Request::getNowAddress());
+                    $parse_url = parse_url($redirect);
+                    if (!isset($parse_url['host']) || !isset($parse_url['scheme']) || $parse_url['host'] !== Request::getDomainNoPort()) {
+                        $redirect = Request::getNowAddress();
+                    }
+                    $result = EngineManager::getEngine()->render(200, '登录成功', $redirect);
                 }
                 break;
             }
@@ -197,13 +202,7 @@ class Password extends BaseEngine
 
     function getLoginUrl(): string
     {
-        $redirect = arg("redirect", Request::getNowAddress());
-        $parse_url = parse_url($redirect);
-        if (!isset($parse_url['host']) || !isset($parse_url['scheme']) || $parse_url['host'] !== Request::getDomainNoPort()) {
-            $redirect = Request::getNowAddress();
-        }
-        Session::getInstance()->set('redirect', $redirect);
-        return url('index', 'main', 'login', ['redirect' => $redirect]);
+        return url('index', 'main', 'login', ['redirect' => Request::getNowAddress()]);
     }
 
     function getUser(): array

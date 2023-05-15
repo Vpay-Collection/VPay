@@ -126,6 +126,11 @@ class Pay extends BaseController
         return $this->json(self::API_SUCCESS, null, $orderObject->order);
     }
 
+    /**
+     * 获取同步回调的URL
+     * @param OrderModel $orderModel
+     * @return string
+     */
     private function getReturnUrl(OrderModel $orderModel): string
     {
         $url = parse_url($orderModel->return_url);
