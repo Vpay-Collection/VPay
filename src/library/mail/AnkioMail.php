@@ -14,8 +14,6 @@
 
 namespace library\mail;
 
-use cleanphp\App;
-
 
 class AnkioMail
 {
@@ -28,6 +26,7 @@ class AnkioMail
      */
     static function send(string $mailto, string $subject, string $content, string $fromname, $debug = false)
     {
+        //TODO 此处添加统一邮件发送逻辑
         return (new Email())->send($mailto, $subject, $content, $fromname, $debug ? 1 : 0);
     }
 

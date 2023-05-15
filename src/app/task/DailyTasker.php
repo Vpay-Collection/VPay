@@ -14,9 +14,13 @@
 
 namespace app\task;
 
+use app\database\dao\OrderDao;
+use cleanphp\base\Config;
+use library\mail\AnkioMail;
+use library\task\TaskerAbstract;
 use Throwable;
 
-class MailTasker extends \library\task\TaskerAbstract
+class DailyTasker extends TaskerAbstract
 {
 
     /**
@@ -24,7 +28,7 @@ class MailTasker extends \library\task\TaskerAbstract
      */
     public function getTimeOut(): int
     {
-        // TODO: Implement getTimeOut() method.
+        return 600;
     }
 
     /**
@@ -32,7 +36,11 @@ class MailTasker extends \library\task\TaskerAbstract
      */
     public function onStart()
     {
-        // TODO: Implement onStart() method.
+
+        $file = AnkioMail::compileNotify("#FF5722", "#fff", Config::getConfig("login")['image'], "Vpay", "日报 - " . date("Y-m-d"), "<p>今日总收入：￥<span>" . OrderDao::getInstance()->getToday() . "</span></p><p>累计收入：￥<span>" . OrderDao::getInstance()->getTotal() . "</span></p>");
+
+        AnkioMail::send(Config::getConfig("mail")['received'], "日报 - " . date("Y-m-d"), $file, "Vpay");
+
     }
 
     /**
@@ -40,7 +48,7 @@ class MailTasker extends \library\task\TaskerAbstract
      */
     public function onStop()
     {
-        // TODO: Implement onStop() method.
+
     }
 
     /**
@@ -48,6 +56,6 @@ class MailTasker extends \library\task\TaskerAbstract
      */
     public function onAbort(Throwable $e)
     {
-        // TODO: Implement onAbort() method.
+
     }
 }

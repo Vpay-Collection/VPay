@@ -14,9 +14,13 @@
 
 namespace app\controller\api_admin;
 
+use app\task\DailyTasker;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
+use cleanphp\cache\Cache;
 use library\mail\AnkioMail;
+use library\task\TaskerManager;
+use library\task\TaskerTime;
 
 class Notice extends BaseController
 {
@@ -44,10 +48,17 @@ class Notice extends BaseController
             $value = post($key, $value);
         }
         Config::setConfig('mail', $this->config);
+        //日报需要处理定时任务
+        if ($this->config['pay_daily']) {
+            Cache::init()->set("pay_daily", TaskerManager::add(TaskerTime::day(23, 50), new DailyTasker(), "Vpay日报"));
+        } else {
+            TaskerManager::del(Cache::init()->get("pay_daily"));
+        }
+
         return $this->json(200, "更新成功");
     }
 
-    function test()
+    function test(): string
     {
         $file = AnkioMail::compileNotify(
             "#4caf50",
