@@ -12,11 +12,11 @@
  * Description :
  */
 
-namespace app\objects;
+namespace app\objects\order;
 
 use app\database\dao\AppDao;
 use app\database\model\AppModel;
-use library\pay\Sign;
+use library\login\SignUtils;
 use library\verity\VerityException;
 use library\verity\VerityObject;
 use library\verity\VerityRule;
@@ -25,7 +25,7 @@ class BaseSignObject extends VerityObject
 {
     public string $sign = "";//签名
     public int $t = 0;//时间戳
-    public string $app_id = "";//应用
+    public string $appid = "";//应用
 
     private ?AppModel $appModel = null;
 
@@ -36,13 +36,13 @@ class BaseSignObject extends VerityObject
     {
         parent::__construct($item);
         $array = $this->toArray();
-        $data = AppDao::getInstance()->getByAppId($this->app_id);
+        $data = AppDao::getInstance()->getByAppId($this->appid);
         if (empty($data)) {
             throw new VerityException('应用不存在');
         }
         $this->appModel = $data;
         $key = $data->app_key;
-        if (!Sign::checkSign($array, $key)) {
+        if (!SignUtils::checkSign($array, $key)) {
             throw new VerityException('签名验证失败');
         }
         if (time() - $this->t > 300) {
@@ -59,7 +59,7 @@ class BaseSignObject extends VerityObject
         return [
             't' => new VerityRule('^\d{10}$', "时间戳错误", false),
             'sign' => new VerityRule('^\w{64}$', "签名错误", false),
-            'appid' => new VerityRule('^\w{16}$', "发起订单的应用错误", false)
+            // 'appid' => new VerityRule('^\w{16}$', "发起订单的应用错误", false)
         ];
     }
 

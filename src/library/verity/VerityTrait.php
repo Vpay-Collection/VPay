@@ -26,6 +26,7 @@ trait VerityTrait
     {
         if (!is_string($val)) return;
         $rules = $this->getRules();
+
         /**
          * @var $rule ?VerityRule
          */

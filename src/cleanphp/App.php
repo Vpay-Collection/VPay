@@ -29,6 +29,7 @@ use cleanphp\engine\EngineManager;
 
 use cleanphp\exception\ExitApp;
 
+use cleanphp\file\File;
 use cleanphp\file\Log;
 use cleanphp\process\Async;
 
@@ -73,6 +74,16 @@ class App
 
             Loader::register();// 注册自动加载
             App::$debug && Log::record("Frame", "框架启动...");
+
+            $config = APP_DIR . DS . "app" . DS . "config.php";
+            $config_example = APP_DIR . DS . "app" . DS . "config_example.php";
+            if (!file_exists($config)) {
+                if (file_exists($config_example)) {
+                    File::copy($config_example, $config);
+                } else {
+                    exit("缺少配置文件config.php");
+                }
+            }
             Config::register();// 加载配置文件
             if (self::$cli) {
 

@@ -36,12 +36,9 @@ class Application implements MainApp
     {
         //作为资源服务器，会话有效期至少持续60天
         Session::getInstance()->start(3600 * 24 * 60);
-        if (!App::$cli) {
             $string = new StringBuilder(Variables::get("__request_module__"));
-
             if ($string->startsWith("api")) {
                 EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
-
             } else {
                 EngineManager::setDefaultEngine(new ViewEngine());
                 EngineManager::getEngine()->setData("__version", "0.0.1");
@@ -60,8 +57,6 @@ EOF
                 }
                 EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
             }
-
-        }
 
 
     }

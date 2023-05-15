@@ -17,11 +17,13 @@ use library\qrcode\src\Decoder\{Decoder,
     DecoderResult,
     GDLuminanceSource,
     IMagickLuminanceSource,
-    LuminanceSourceInterface
+    LuminanceSourceInterface,
+    QRCodeDecoderException
 };
 use library\qrcode\src\Output\{QRCodeOutputException, QROutputInterface};
 use library\qrcode\src\Settings\SettingsContainerInterface;
 use library\qrcode\src\Common\{EccLevel, ECICharset, MaskPattern, Mode, Version};
+use Throwable;
 use function class_exists;
 use function class_implements;
 use function in_array;
@@ -491,6 +493,7 @@ class QRCode
      * Reads a QR Code from a given file
      *
      * @noinspection PhpUndefinedMethodInspection
+     *      * @throws Throwable|QRCodeDecoderException
      */
     public function readFromFile(string $path): DecoderResult
     {
@@ -509,6 +512,7 @@ class QRCode
 
     /**
      * Reads a QR Code from the given luminance source
+     * @throws
      */
     public function readFromSource(LuminanceSourceInterface $source): DecoderResult
     {

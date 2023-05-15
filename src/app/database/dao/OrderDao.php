@@ -16,10 +16,15 @@ namespace app\database\dao;
 
 use app\database\model\AppModel;
 use app\database\model\OrderModel;
+use app\exception\OrderNotFoundException;
+use app\task\NotifyTasker;
 use cleanphp\base\Config;
 use library\database\exception\DbFieldError;
 use library\database\object\Dao;
 use library\database\operation\SelectOperation;
+use library\login\SignUtils;
+use library\task\TaskerManager;
+use library\task\TaskerTime;
 
 
 class OrderDao extends Dao
@@ -107,54 +112,67 @@ class OrderDao extends Dao
 
 
     /**
-     * 支付成功回调
-     * @param OrderModel $model
-     * @return void
-     */
-    function callback(OrderModel $model)
-    {
-        //订单支付成功回调
-        $model->state = OrderModel::PAID;
-        $this->updateModel($model);
-
-    }
-
-    /**
      * 通知服务器支付成功
      * @param $order_id
+     * @param $key
      * @return void
      * @throws OrderNotFoundException
      */
-    public function notify($order_id)
+    public function notify($order_id, $key)
     {
+        /**@var $model OrderModel */
         $model = $this->find(null, ['order_id' => $order_id]);
         if (empty($model)) {
             throw new OrderNotFoundException("找不到订单信息");
         }
+        $model->pay_time = time();
+        $model->state = OrderModel::PAID;
+        $model->close_time = time();
+        $this->updateModel($model);
+        TaskerManager::add(TaskerTime::nMinute(0), new NotifyTasker($model, $key), "异步回调任务_" . $model->order_id);
         //不要阻塞当前进程
-        go(function () use ($model) {
-            $this->callback($model);
-        });
     }
 
     /**
-     * 根据服务端支付方式获取订单数
-     * @param $server_type int 服务端支付方式支持{@link OrderModel::APP_ALIPAY}(App监控的支付宝)/{@link OrderModel::APP_WECHAT}(App监控的微信)/{@link OrderModel::OFFICIAL_ALIPAY}(官方渠道的支付宝)
-     * @param int $price
+     * 根据PAY_TYPE支付方式获取订单数
+     * @param $pay_type int 服务端支付方式支持{@link OrderModel::PAY_ALIPAY}(App监控的支付宝)/{@link OrderModel::PAY_WECHAT}(App监控的微信)/{@link OrderModel::PAY_QQ}(App监控的QQ)
+     * @param float $price
      * @return array|int
      */
-    public function getWaitOrderByPayType(int $server_type, int $price = 0): ?OrderModel
+    public function getWaitOrderByPayType(int $pay_type, float $price = 0): ?OrderModel
     {
         $condition = [];
         if ($price !== 0) {
-            $condition['price'] = $price;
+            $condition['real_price'] = $price;
         }
-        $timeout = Config::getConfig('pay')['timeout'];
-        $condition[] = "create_time > " . (time() - $timeout);
-        $condition['server_type'] = $server_type;
+        $timeout = Config::getConfig('app')['timeout'];
+        $condition[] = "create_time > " . (time() - $timeout * 60);
+        $condition['pay_type'] = $pay_type;
         $condition['state'] = OrderModel::WAIT;
         return $this->find(null, $condition);
     }
 
+
+    public function getByOrderId($id): ?OrderModel
+    {
+        $this->closeTimeoutOrder();
+        return $this->find(null, ["order_id" => $id, "state" => OrderModel::WAIT]);
+    }
+
+    public function getByOrderIdNoFilter($id): ?OrderModel
+    {
+        $this->closeTimeoutOrder();
+        return $this->find(null, ["order_id" => $id]);
+    }
+
+    public function closeOrder($order, $app)
+    {
+        $this->update()->where(['order_id' => $order, 'appid' => $app])->commit();
+    }
+
+    public function getOrderByApp($order, $app): ?OrderModel
+    {
+        return $this->find(null, ['order_id' => $order, 'appid' => $app]);
+    }
 
 }

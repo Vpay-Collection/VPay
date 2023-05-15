@@ -40,7 +40,7 @@ class Password extends BaseEngine
         switch (strtolower($action)) {
             case 'islogin':
             {
-                if ($this->isLogin()) {
+                if (!$this->isLogin()) {
                     $result = EngineManager::getEngine()->render(401, '未登录');
                 } else {
                     $result = EngineManager::getEngine()->render(200, '已登录');
@@ -58,7 +58,9 @@ class Password extends BaseEngine
             }
             case 'change':
             {
-                if (!$this->change()) {
+                if (!$this->isLogin()) {
+                    $result = EngineManager::getEngine()->render(401, '未登录');
+                } elseif (!$this->change()) {
                     $result = EngineManager::getEngine()->render(401, '修改失败');
                 } else {
                     $result = EngineManager::getEngine()->render(200, '修改成功');
@@ -105,6 +107,23 @@ class Password extends BaseEngine
         return true;
     }
 
+    function setLogin()
+    {
+        $data = Config::getConfig('login');
+        $hash = md5($data["username"] . $data["password"]);
+        $timeout = time() + 3600 * 24;
+        $token = sha1($hash . md5($timeout));
+
+        $device = $this->getDevice();
+
+        Session::getInstance()->set('token', $token);
+        Session::getInstance()->set('device', $device);
+        Cache::init()->set('token', $token);
+        Cache::init()->set('device', $device);
+
+        EventManager::trigger("__login_success__");
+    }
+
     function logout(): void
     {
         Session::getInstance()->destroy();
@@ -129,20 +148,9 @@ class Password extends BaseEngine
      //   dumps($passwd,arg("password"));
         $user = arg("username");
         $data = Config::getConfig('login');
-        $hash = md5($data["username"] . $passwd);
+
         if (md5($data["username"] . $passwd) === $data["password"] && $user === $data["username"]) {
-            $timeout = time() + 3600 * 24;
-            $token = sha1($hash . md5($timeout));
-
-            $ua = Request::getHeaderValue('User-Agent') ?? 'NO UA';
-            $device = $this->getDevice();
-
-            Session::getInstance()->set('token', $token);
-            Session::getInstance()->set('device', $device);
-            Cache::init()->set('token', $token);
-            Cache::init()->set('device', $device);
-
-            EventManager::trigger("__login_success__");
+            $this->setLogin();
             return true;
         }
         return false;

@@ -21,7 +21,7 @@ abstract class TaskerAbstract
 {
 
     /**
-     * 该任务最长的运行时间
+     * 该任务最长的运行时间，单位秒，为0不限制
      * @return int
      */
     abstract public function getTimeOut(): int;

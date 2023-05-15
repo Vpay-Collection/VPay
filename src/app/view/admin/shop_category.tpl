@@ -36,22 +36,7 @@
     </section>
 </div>
 
-<div
-        class="alert fade"
-        id="error_msg"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-times-circle me-3"></i>
-    <span id="error_msg_body"></span>
-</div>
+
 
 <div class="modal fade" id="addOrUpdate" tabindex="-1" aria-labelledby="addOrUpdateTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -68,8 +53,8 @@
                         <label class="form-label" for="form_id"></label>
                     </div>
                     <div class="form-outline mb-4">
-                        <input type="text" class="form-control" id="category_name" name="category_name"/>
-                        <label class="form-label" for="category_name">分类名称</label>
+                        <input type="text" class="form-control" id="name" name="name"/>
+                        <label class="form-label" for="name">分类名称</label>
                     </div>
 
 

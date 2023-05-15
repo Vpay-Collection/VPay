@@ -15,12 +15,16 @@
 namespace app\controller\api;
 
 use app\database\dao\OrderDao;
+use app\database\model\OrderModel;
 use app\exception\OrderNotFoundException;
 use app\objects\app\HeartObject;
 use app\objects\app\PushObject;
-use core\base\Json;
-use core\config\Config;
-use core\file\Log;
+
+use cleanphp\base\Config;
+use cleanphp\base\Json;
+use cleanphp\cache\Cache;
+use cleanphp\file\Log;
+use library\login\SignUtils;
 use library\verity\VerityException;
 
 class App extends BaseController
@@ -40,12 +44,10 @@ class App extends BaseController
     {
         try {
             $heart = new HeartObject(get(), $this->key);
-            $config = Config::getConfig("app");
-            $config['last'] = date("Y-m-d H:i:s");
-            $config['ver'] = $heart->ver;
-            Config::setConfig('app', $config);
-            return $this->json(200);
+            Cache::init()->set("last_heart", time());
+            return $this->json(200, "心跳成功");
         } catch (VerityException $exception) {
+            Log::record("app_channel", "心跳异常：" . $exception->getMessage());
             return $this->json(400, $exception->getMessage());
         }
     }
@@ -56,7 +58,7 @@ class App extends BaseController
      */
     function push(): string
     {
-        Log::record("app_server", "收到App推送：" . Json::encode(get()));
+        Log::record("app_channel", "收到App推送：" . Json::encode(arg()));
         try {
             $push = new PushObject(get(), $this->key);
         } catch (VerityException $exception) {
@@ -67,11 +69,12 @@ class App extends BaseController
             return $this->json(500, '无订单待确认！');
         }
         try {
-            OrderDao::getInstance()->notify($result->order_id);
+            OrderDao::getInstance()->notify($result->order_id, $this->key);
         } catch (OrderNotFoundException $e) {
             return $this->json(500, '无订单待确认！');
         }
         return $this->json(200);
     }
+
 
 }

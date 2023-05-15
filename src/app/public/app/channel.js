@@ -20,18 +20,23 @@ $(".file-upload-input").off().on('fileAdd.mdb.fileUpload', function (e) {
         contentType: false,
         success: function (ret) {
             if (ret.code !== 200) {
-                $("#error_msg_body").text(data.msg);
+                $("#error_msg_body").text(ret.msg);
                 mdb.Alert.getInstance(document.getElementById('error_msg')).show();
             } else {
                 sessionStorage.setItem("image_" + id, ret.data);
+                $("#success_msg_body").text("上传成功");
+                mdb.Alert.getInstance(document.getElementById('success_msg')).show();
             }
         }
     });
 });
-$("#saveOrUpdate").off().on("click", function () {
-    var data = form.val("form");
-
-    $.post("/api/user/app/addOrUpdate", data, function () {
-
+$("#updateInfo").off().on("click", function () {
+    $.post("/api/admin/channel/set", {
+        "image_alipay": sessionStorage.getItem("image_alipay"),
+        "image_wechat": sessionStorage.getItem("image_wechat"),
+        "image_qq": sessionStorage.getItem("image_qq"),
+    }, function (data) {
+        $("#success_msg_body").text(data.msg);
+        mdb.Alert.getInstance(document.getElementById('success_msg')).show();
     });
 });

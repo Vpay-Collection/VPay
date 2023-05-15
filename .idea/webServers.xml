@@ -2,10 +2,17 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="f53e21f9-6d83-49c0-905a-3f036f5eb202" name="ftp" url="http://103.150.181.43">
-        <fileTransfer host="103.150.181.43" port="21">
+      <webServer id="f53e21f9-6d83-49c0-905a-3f036f5eb202" name="ftp" url="http://43.156.9.245">
+        <fileTransfer host="43.156.9.245" port="21">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" keepAliveCommand="CWD" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="c4ee1a91-3e18-4613-925b-512894c974da" name="nas" url="http://10.244.88.9">
+        <fileTransfer rootFolder="/MacOS/SourceCode/PHP/Vpay4" host="10.244.88.9" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>

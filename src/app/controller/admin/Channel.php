@@ -16,6 +16,7 @@ namespace app\controller\admin;
 
 use cleanphp\base\Config;
 use cleanphp\base\Request;
+use cleanphp\base\Response;
 use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
@@ -26,11 +27,11 @@ class Channel extends BaseController
     {
         //  EngineManager::getEngine()->setArray(Config::getConfig("channel"));
         foreach (Config::getConfig("channel") as $key => $value) {
-            EngineManager::getEngine()->setData($key, url("api", "image", "qrcode", ['url' => $value]));
+            EngineManager::getEngine()->setData($key, url("api", "image", "qrcode", ['url' => $value, "type" => ".png"]));
         }
         $last = Cache::init()->get("last_heart");
         $online = false;
-        if (time() - $last <= 120) {
+        if (time() - $last <= 60 * 10) {
             $online = true;
         }
         EngineManager::getEngine()->setData("last_heart", date("Y-m-d H:i:s", $last));
@@ -46,7 +47,7 @@ class Channel extends BaseController
         setArray($app)->
         setData("qrcode", url("api", "image", "qrcode", [
             'url' => json_encode([
-                'url' => Variables::get("__http_scheme__") . Request::getDomain(),
+                'url' => Response::getHttpScheme() . Request::getDomain(),
                 'key' => $key
             ])
         ]));

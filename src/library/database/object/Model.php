@@ -29,6 +29,9 @@ abstract class Model extends ArgObject
 
     public function onParseType(string $key, &$val, $demo)
     {
+        if (is_bool($demo)) {
+            $val = ($val === "1" || $val === 1 || $val === "true" || $val === true);
+        }
         if ($this->fromDb && is_string($demo) && !(new StringBuilder($key))->endsWith("nofilter")) {
             $val = htmlspecialchars($val);
         }
@@ -48,17 +51,13 @@ abstract class Model extends ArgObject
      */
     abstract function getPrimaryKey();
 
-    /*  function copy($new): Model
-      {
-          $ret = get_object_vars($new);
-          $old_ = get_object_vars($this);
-          $cls = new (get_class($this));
-          foreach ($ret as $key => $value) {
-              if(in_array($key,$old_) && $cls->$key !== $value){
-                  $this->$key = $value;
-              }
-          }
-          return $this;
-      }*/
+
+    public function onToArray($key, &$value)
+    {
+        if (is_bool($value)) {
+            $value = $value ? 1 : 0;
+        }
+    }
+
 
 }

@@ -51,6 +51,7 @@ class SignUtils
 
     public static function sign(array $array, $key): array
     {
+
         $array['sign'] = self::getSign($array, $key);
         return $array;
     }

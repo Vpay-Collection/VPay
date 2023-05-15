@@ -61,7 +61,7 @@
         <div class="card mb-4">
             <div class="card-header py-3  border-0">
                 <strong>最近订单</strong>
-                <a href="{url('admin','order','detail')}" class="btn btn-primary float-end">详情</a>
+                <a href="{url('admin','order','index')}" class="btn btn-primary float-end">详情</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

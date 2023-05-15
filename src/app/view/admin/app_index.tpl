@@ -36,22 +36,7 @@
     </section>
 </div>
 
-<div
-        class="alert fade"
-        id="error_msg"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-times-circle me-3"></i>
-    <span id="error_msg_body"></span>
-</div>
+
 
 <div class="modal fade" id="addOrUpdate" tabindex="-1" aria-labelledby="addOrUpdateTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -76,7 +61,7 @@
                         <input
                                 id="file-upload"
                                 type="file"
-                                name="icon"
+                                name="app_image"
                                 data-mdb-file-upload="file-upload"
                                 class="file-upload-input"
                                 data-mdb-multiple="false"
@@ -101,5 +86,5 @@
 
 
     {include file="layout_scripts"}
-    {*TODO AppJS*}
-<script src="../../public/app/app.js?v={$__version}" defer></script>
+
+    <script src="../../public/app/app.js?v={$__version}" defer></script>

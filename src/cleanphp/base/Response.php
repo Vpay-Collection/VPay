@@ -14,6 +14,7 @@ namespace cleanphp\base;
 
 
 use cleanphp\App;
+use cleanphp\exception\ExitApp;
 use cleanphp\objects\StringBuilder;
 
 /**
@@ -49,6 +50,7 @@ class Response
         if ($timeout !== 0) {
             header("refresh:$timeout," . $url);
         } else {
+            http_response_code(302);
             header("Location:{$url}");
         }
         App::exit(sprintf("发生强制跳转：%s", $url));

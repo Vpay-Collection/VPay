@@ -18,7 +18,7 @@
                                 <div id="dnd-default-value" class="file-upload-wrapper shadow-5"
                                      style="max-width: 300px">
                                     <input type="file" class="file-upload-input" id="image"
-                                           data-mdb-default-file=""
+                                           data-mdb-default-file="{$image}"
                                            data-mdb-multiple="false"
                                            data-mdb-remove-btn="删除"
                                            data-mdb-accepted-extensions="image/*"
@@ -36,14 +36,14 @@
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="password" name="password" id="password" class="form-control"
+                                <input type="password" name="old" id="old" class="form-control"
                                        value=""/>
-                                <label class="form-label" for="password">登录密码</label>
+                                <label class="form-label" for="old">原有的登录密码</label>
                             </div>
                             <div class="form-outline mb-4">
-                                <input type="password" name="new_password" id="new_password" class="form-control"
+                                <input type="password" name="new" id="new" class="form-control"
                                        value=""/>
-                                <label class="form-label" for="new_password">再次重复登录密码</label>
+                                <label class="form-label" for="new">新的登录密码</label>
                             </div>
                             <button type="button" class="btn btn-primary mb-2" id="updateInfo">
                                 更新信息

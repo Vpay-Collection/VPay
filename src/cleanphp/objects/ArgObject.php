@@ -28,8 +28,9 @@ class ArgObject
             if (isset($item[$key])) {
                 $data = $item[$key];
             }
-            $data = parse_type($val, $data);
+
             $this->onParseType($key, $data, $val);
+            $data = parse_type($val, $data);
             $this->$key = $data;
         }
     }

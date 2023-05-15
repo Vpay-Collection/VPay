@@ -12,9 +12,11 @@
  * Description :
  */
 
-namespace app\objects;
+namespace app\objects\order;
 
 use app\database\model\OrderModel;
+use cleanphp\base\Config;
+use library\verity\VerityException;
 use library\verity\VerityRule;
 
 class CreateOrderObject extends BaseSignObject
@@ -26,6 +28,25 @@ class CreateOrderObject extends BaseSignObject
     public float $price = 0.00;//支付金额
 
     public string $param = "{}";//其他参数
+
+
+    public string $pay_image = "";
+
+    public function __construct(array $item = [])
+    {
+        parent::__construct($item);
+        $this->pay_image = "";
+        if ($this->pay_type === OrderModel::PAY_ALIPAY) {
+            $this->pay_image = Config::getConfig("channel")["alipay"];
+        } elseif ($this->pay_type === OrderModel::PAY_WECHAT) {
+            $this->pay_image = Config::getConfig("channel")["wechat"];
+        } elseif ($this->pay_type === OrderModel::PAY_QQ) {
+            $this->pay_image = Config::getConfig("channel")["qq"];
+        }
+        if (empty($this->pay_image)) {
+            throw new VerityException("当前收款渠道未配置收款码，请等待站长配置后再试", "pay_type", $this->pay_type);
+        }
+    }
 
     /**
      * 转化为订单类
@@ -39,8 +60,7 @@ class CreateOrderObject extends BaseSignObject
     function getRules(): array
     {
         return array_merge(parent::getRules(), [
-            'pay_type' => new VerityRule("^0|1$", "支付类型错误", false),
-            'app_item' => new VerityRule('', "请传输收款信息", false),
+            'pay_type' => new VerityRule("^1|2|3$", "请传输收款信息", false),
             'notify_url' => new VerityRule('', "请传入异步通知链接", false),
             'return_url' => new VerityRule('', "请传入同步通知链接", false),
             'price' => new VerityRule(VerityRule::FLOAT_AND_INT, '金额必须为浮点数', false)

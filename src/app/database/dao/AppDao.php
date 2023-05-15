@@ -24,7 +24,6 @@ class AppDao extends Dao
     {
         parent::__construct(AppModel::class);
     }
-
     /**
      * @inheritDoc
      */
@@ -33,13 +32,21 @@ class AppDao extends Dao
         return "application";
     }
 
-    public function getByAppId($appid): AppModel
+    public function getByAppId($appid): ?AppModel
     {
-        return $this->find(null, ['app_id' => $appid]);
+
+        return $this->find(null, ['id' => $appid]);
     }
 
     public function getAllApp()
     {
         return $this->select()->commit(false);
     }
+
+    public function del($id)
+    {
+        if ($id === 0) return;
+        $this->delete()->where(['id' => $id])->commit();
+    }
+
 }

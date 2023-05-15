@@ -65,10 +65,10 @@
                             上传完成请点击保存完成配置
                         </div>
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="file-upload-wrapper shadow-5"
-                                         style="max-width: 300px">
+                                         style="width: 200px">
                                         <input type="file" class="file-upload-input" id="alipay"
                                                data-mdb-default-file="{$alipay}"
                                                data-mdb-multiple="false"
@@ -81,10 +81,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="file-upload-wrapper shadow-5"
-                                         style="max-width: 300px">
+                                         style="width: 200px">
                                         <input type="file" class="file-upload-input" id="wechat"
                                                data-mdb-default-file="{$wechat}"
                                                data-mdb-multiple="false"
@@ -97,38 +97,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="file-upload-wrapper shadow-5"
-                                         style="max-width: 300px">
+                                         style="width: 200px">
                                         <input type="file" class="file-upload-input" id="union"
-                                               data-mdb-default-file="{$union}"
+                                               data-mdb-default-file="{$qq}"
                                                data-mdb-multiple="false"
                                                data-mdb-remove-btn="删除"
                                                data-mdb-accepted-extensions="image/*"
-                                               data-mdb-preview-msg="上传云闪付收款码"
-                                               data-mdb-default-msg="上传云闪付收款码"
+                                               data-mdb-preview-msg="上传QQ收款码"
+                                               data-mdb-default-msg="上传QQ收款码"
                                                data-mdb-format-error="不支持该文件 (支持的格式为 ~~~)"
                                                data-mdb-file-upload="file-upload"/>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
-                                <div class="d-flex justify-content-center mb-4">
-                                    <div class="file-upload-wrapper shadow-5"
-                                         style="max-width: 300px">
-                                        <input type="file" class="file-upload-input" id="digital"
-                                               data-mdb-default-file="{$digital}"
-                                               data-mdb-multiple="false"
-                                               data-mdb-remove-btn="删除"
-                                               data-mdb-accepted-extensions="image/*"
-                                               data-mdb-preview-msg="上传数字人民币收款码"
-                                               data-mdb-default-msg="上传数字人民币收款码"
-                                               data-mdb-format-error="不支持该文件 (支持的格式为 ~~~)"
-                                               data-mdb-file-upload="file-upload"/>
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <div class="text-center  mb-2">
                                 <button type="button" class="btn btn-primary" id="updateInfo">
@@ -144,41 +129,8 @@
 
 </div>
 
-<div
-        class="alert fade"
-        id="success_msg"
-        role="alert"
-        data-mdb-color="success"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-check-circle me-3"></i>
-    <span id="success_msg_body"></span>
-</div>
-
-<div
-        class="alert fade"
-        id="error_msg"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-times-circle me-3"></i>
-    <span id="error_msg_body"></span>
-</div>
 
 
 {include file="layout_scripts"}
-{*TODO 此处需要完善js逻辑*}
+
 <script src="../../public/app/channel.js?v={$__version}" defer></script>

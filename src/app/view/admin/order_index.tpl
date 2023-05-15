@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row ">
-                            <div class="col">
+                            <div class="col-12 col-lg-3 mb-2">
                                 <select class="select" name="app" id="app">
                                     <option value="">不区分</option>
                                     {foreach $app as $item}
@@ -18,13 +18,13 @@
                                 </select>
                                 <label class="form-label select-label" for="app">应用</label>
                             </div>
-                            <div class="col">
+                            <div class="col-12 col-lg-3 mb-2">
                                 <div class="form-outline">
                                     <input type="text" id="form_name" class="form-control" name="name"/>
                                     <label class="form-label" for="form_name">商品名称</label>
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-12 col-lg-3 mb-2">
                                 <select class="select" name="status" id="status">
                                     <option value="">不区分</option>
                                     <option value="1">等待支付</option>
@@ -34,7 +34,7 @@
                                 </select>
                                 <label class="form-label select-label" for="status">订单状态</label>
                             </div>
-                            <div class="col">
+                            <div class="col-12 col-lg-3 mb-2">
                                 <button type="button" id="search" class="btn btn-primary">查找</button>
                             </div>
                         </div>

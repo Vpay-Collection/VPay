@@ -54,7 +54,7 @@ abstract class Dao
     static function getInstance(string $model = null): Dao
     {
         $cls = get_called_class();
-        $instance = Variables::get($cls) ?? new static($model);
+        $instance = Variables::get($cls) ?? new static();
         Variables::set($cls, $instance);
         return $instance;
     }
@@ -296,11 +296,11 @@ abstract class Dao
     }
 
 
-    function getAll(?array $fields = [], array $where = [], ?int $start = null, int $size = 10, &$page = null)
+    function getAll(?array $fields = [], array $where = [], ?int $start = null, int $size = 10, &$page = null, $object = true)
     {
         if ($fields === null) $fields = [];
         if ($start === null) return $this->select(...$fields)->where($where)->commit();
-        return $this->select(...$fields)->page($start, $size, 10, $page)->where($where)->commit();
+        return $this->select(...$fields)->page($start, $size, 10, $page)->where($where)->commit($object);
     }
 
 

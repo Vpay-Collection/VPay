@@ -9,6 +9,7 @@ use cleanphp\App;
 use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
 use cleanphp\file\Log;
+use library\mail\phpmail\Exception;
 
 /**
  * Class Tasker
@@ -110,9 +111,21 @@ class TaskerManager
     {
         if (sizeof($package) != 5) return false;
         [$minute, $hour, $day, $month, $week] = $package;
+        if ([$minute, $hour, $day, $month, $week] === [0, 0, 0, 0, 0]) {
+            //属于立即执行
+            go(function () use ($taskerAbstract) {
+                try {
+                    $taskerAbstract->onStart();
+                } catch (\Throwable $exception) {
+                    $taskerAbstract->onAbort($exception);
+                } finally {
+                    $taskerAbstract->onStop();
+                }
+
+            }, $taskerAbstract->getTimeOut());
+        }
         $time = self::getNext($minute, $hour, $day, $month, $week, $loop ? 1 : 0);
         $task = new TaskInfo();
-        $task->times = $times;
         $task->name = $name;
         $task->minute = $minute;
         $task->hour = $hour;
@@ -167,9 +180,11 @@ class TaskerManager
                         $task->onStart();
                     } catch (\Throwable $e) {
                         $task->onAbort($e);
+                    } finally {
+                        App::$debug && Log::record("Tasker", "异步执行结束：");
+                        $task->onStop();
                     }
-                    App::$debug && Log::record("Tasker", "异步执行结束：");
-                    $task->onStop();
+
                 }, $timeout);
             }
         }

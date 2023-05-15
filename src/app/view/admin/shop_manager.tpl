@@ -1,5 +1,8 @@
 <!-- Container for demo purpose -->
-<link rel="stylesheet" href="../../public/plugins/css/wysiwyg.min.css?v={$__version}" media="none"
+<link rel="stylesheet" href="../../public/app/dist/ui/trumbowyg.min.css?v={$__version}" media="none"
+      onload="this.media='all'">
+<link rel="stylesheet" href="../../public/app/dist/plugins/colors/ui/trumbowyg.colors.min.css?v={$__version}"
+      media="none"
       onload="this.media='all'">
 <div class="container my-5 py-5">
 
@@ -11,9 +14,32 @@
             <div class="col-12 mb-2">
                 <div class="card">
                     <div class="card-body">
-                        <button type="button" id="addApp" class="btn btn-primary" data-mdb-toggle="modal"
-                                data-mdb-target="#addOrUpdate">添加商品
-                        </button>
+
+                        <div class="row ">
+                            <div class="col-12 col-lg-3 mb-4">
+                                <button type="button" id="addApp" class="btn btn-primary" data-mdb-toggle="modal"
+                                        data-mdb-target="#addOrUpdate">添加商品
+                                </button>
+                            </div>
+                            <div class="col-12 col-lg-3 mb-4">
+                                <select class="select" name="item_category" id="item_category">
+                                    <option value="" selected>不限</option>
+                                    {foreach $category as $item}
+                                        <option value="{$item.id}">{$item.name }</option>
+                                    {/foreach}
+                                </select>
+                                <label class="form-label select-label" for="item_category">分类</label>
+                            </div>
+                            <div class="col-12 col-lg-3 mb-4">
+                                <div class="form-outline">
+                                    <input type="text" id="form_name" class="form-control" name="name"/>
+                                    <label class="form-label" for="form_name">商品名称</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 mb-4">
+                                <button type="button" id="search" class="btn btn-primary">查找</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,25 +64,9 @@
     </section>
 </div>
 
-<div
-        class="alert fade"
-        id="error_msg"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-times-circle me-3"></i>
-    <span id="error_msg_body"></span>
-</div>
 
 <div class="modal fade" id="addOrUpdate" tabindex="-1" aria-labelledby="addOrUpdateTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addOrUpdateTitle" data-add="新增商品"
@@ -95,19 +105,31 @@
                     </div>
                     <div class="col mb-4">
                         <select class="select" name="item_category" id="item_category">
-                            <option value="">不区分</option>
                             {foreach $category as $item}
-                                <option value="{$item.id}">{$item.name }</option>
+                                <option value="{$item.id}" {if $item@index==0}selected{/if}>{$item.name }</option>
                             {/foreach}
                         </select>
                         <label class="form-label select-label" for="item_category">商品分类</label>
                     </div>
-                    <div class="chips chips-placeholder mb-4" data-mdb-label-text="请输入允许用户输入的字段名"></div>
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control" id="inputs" name="inputs"/>
+                        <label class="form-label" for="inputs">允许用户输入的字段名（逗号分割）</label>
+                    </div>
                     <div class="form-outline mb-4">
                         <input type="text" class="form-control" id="webhook" name="webhook"/>
                         <label class="form-label" for="webhook">WebHook</label>
                     </div>
-                    <div class="wysiwyg mb-4" data-mdb-wysiwyg="wysiwyg"></div>
+                    <div class="form-check mb-4 text-start">
+                        <input class="form-check-input" type="checkbox" value="1"
+                               name="auto" id="auto"/>
+                        <label class="form-check-label"
+                               for="auto">自动向用户邮箱发送WebHook的响应内容</label>
+                    </div>
+                    <div class=" mb-4 ">
+                        <div id="trumbowyg">
+
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -121,7 +143,7 @@
 
 
     {include file="layout_scripts"}
-
-    <script src="../../public/plugins/js/wysiwyg.min.js?v={$__version}" defer></script>
-    {*TODO SHopManagerJS*}
-    <script src="../../public/app/app.js?v={$__version}" defer></script>
+    <script src="../../public/app/dist/trumbowyg.min.js?v={$__version}" defer></script>
+    <script src="../../public/app/dist/langs/zh_cn.min.js?v={$__version}" defer></script>
+    <script src="../../public/app/dist/plugins/colors/trumbowyg.colors.min.js?v={$__version}" defer></script>
+    <script src="../../public/app/shop.js?v={$__version}" defer></script>

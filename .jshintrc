@@ -1,6 +1,6 @@
 {
   "bitwise": false,
-  "camelcase": true,
+  "camelcase": false,
   "curly": true,
   "eqeqeq": true,
   "es3": false,
@@ -24,7 +24,7 @@
   "nocomma": true,
   "noempty": false,
   "nonbsp": true,
-  "nonew": true,
+  "nonew": false,
   "notypeof": false,
   "quotmark": false,
   "shadow": false,
@@ -65,6 +65,7 @@
     "form": true,
     "Pagination": true,
     "FileUpload": true,
-    "JSEncrypt": true
+    "JSEncrypt": true,
+    "ChipsInput": true
   }
 }

@@ -1,7 +1,7 @@
 <script src="../../public/js/theme.js?v={$__version}" defer></script>
 <script src="../../public/js/jquery.min.js?v={$__version}" defer></script>
 {*pjax*}
-<script src="../../public/js/pjax.min.js?v={$__version}" defer></script>
+{*<script src="../../public/js/pjax.min.js?v={$__version}" defer></script>*}
 
 
 <script type="text/javascript" src="../../public/js/mdb.min.js?v={$__version}" defer></script>

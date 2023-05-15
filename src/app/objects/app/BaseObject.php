@@ -14,7 +14,8 @@
 
 namespace app\objects\app;
 
-use core\base\Json;
+use cleanphp\base\Json;
+use library\login\SignUtils;
 use library\verity\VerityException;
 use library\verity\VerityObject;
 use library\verity\VerityRule;
@@ -32,16 +33,12 @@ class BaseObject extends VerityObject
 
 
         parent::__construct($item);
-        if (!isset($item['sign'])) throw new VerityException('缺少签名');
-        unset($item['sign']);
-        try {
-            $sign = md5(Json::encode($item) . $key);
-        } catch (\JsonException $e) {
-            throw new VerityException('签名校验错误：' . $e->getMessage());
+        if (!SignUtils::checkSign($item, $key)) {
+            throw new VerityException('签名校验失败');
         }
-        if ($sign !== $this->sign) throw new VerityException('签名校验失败');
-        if (time() + 300 < $this->t) throw new VerityException('时间过期了');
+        if (time() + 300 < $this->t) throw new VerityException('签名时间过期');
     }
+
 
     function getRules(): array
     {

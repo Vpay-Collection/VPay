@@ -15,6 +15,7 @@ namespace library\qrcode;
 use cleanphp\App;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
+use cleanphp\base\Response;
 use cleanphp\base\Variables;
 use cleanphp\file\Log;
 use cleanphp\objects\StringBuilder;
@@ -50,15 +51,17 @@ class Code
         $qrcode = new QRCode($options);
         $qrcode->addByteSegment($data);
 
-        header('Content-type: image/png');
+
         try {
             $image = Config::getConfig("login")["image"];
             if ((new StringBuilder($image))->startsWith("/clean_static")) {
                 $image = str_replace("/clean_static", APP_DIR . DS . "app" . DS . "public", $image);
             } else {
-                $image = str_replace(Variables::get("__http_scheme__") . Request::getDomain(), Variables::getStoragePath("uploads"), $image);
+                $image = str_replace(Response::getHttpScheme() . Request::getDomain() . DS . "image", Variables::getStoragePath("uploads"), $image);
+
             }
 
+            header('Content-type: image/png');
             echo (new QRImageWithLogo($options, $qrcode->getQRMatrix()))->dump(null, $image);
 
         } catch (\ErrorException|src\Data\QRCodeDataException|src\Output\QRCodeOutputException $e) {
@@ -71,7 +74,12 @@ class Code
 
     static function decode($path): string
     {
-        $result = (new QRCode)->readFromFile('path/to/file.png'); // -> DecoderResult
+        try {
+            $result = (new QRCode)->readFromFile($path);
+        } catch (src\Decoder\QRCodeDecoderException|\Throwable $e) {
+            Log::record("Qrcode", $e->getMessage(), Log::TYPE_ERROR);
+            return "";
+        } // -> DecoderResult
         return (string)$result;
     }
 }

@@ -56,13 +56,28 @@ class Channel extends BaseController
         $image = new ImageUpload("channel");
         $filename = "";
         if ($image->upload($filename)) {
-            $result = Code::decode(Variables::getStoragePath("uploads", 'app', $filename));
+            $result = Code::decode(Variables::getStoragePath("uploads", 'temp', $filename));
             $image->delImage($filename);
+            if (empty($result)) {
+                return $this->render(400, "请上传二维码文件");
+            }
             return $this->render(200, null, $result);
         }
         return $this->render(403, $filename);
     }
 
+    function set(): string
+    {
+        $channel = Config::getConfig("channel");
+        foreach ($channel as $key => &$value) {
+            $arg = arg("image_" . $key);
+            if (!empty($arg)) {
+                $value = $arg;
+            }
+        }
+        Config::setConfig("channel", $channel);
+        return $this->render(200, "保存成功");
+    }
 
 
 }

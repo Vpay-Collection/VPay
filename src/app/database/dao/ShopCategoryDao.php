@@ -37,4 +37,18 @@ class ShopCategoryDao extends Dao
     {
         return 'shop_category';
     }
+
+    function onCreateTable()
+    {
+        $this->insert()->keyValue([
+            'name' => "未分类"
+        ])->commit();
+    }
+
+    function delById($id)
+    {
+        if ($id == 1) return;
+        $this->delete()->where(['id' => $id])->commit();
+        ShopItemDao::getInstance()->setOption('item_category', $id, 'item_category', 1);
+    }
 }

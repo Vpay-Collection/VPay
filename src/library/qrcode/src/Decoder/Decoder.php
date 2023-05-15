@@ -36,7 +36,7 @@ final class Decoder
      * Decodes a QR Code represented as a BitMatrix.
      * A 1 or "true" is taken to mean a black module.
      *
-     * @throws \Throwable|\library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws Throwable|QRCodeDecoderException
      */
     public function decode(LuminanceSourceInterface $source): DecoderResult
     {
@@ -67,7 +67,7 @@ final class Decoder
     }
 
     /**
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     private function decodeMatrix(BitMatrix $matrix): DecoderResult
     {
@@ -89,7 +89,7 @@ final class Decoder
     /**
      * Decode the contents of that stream of bytes
      *
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     private function decodeBitStream(BitBuffer $bitBuffer): DecoderResult
     {

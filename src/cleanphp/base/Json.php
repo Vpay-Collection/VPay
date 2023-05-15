@@ -36,11 +36,18 @@ class Json
 
     /**
      * @param array $array string 需要编码的字符串
+     * @param bool $unicode
      * @return string
      */
-    static function encode(array $array): string
+    static function encode(array $array, bool $unicode = false): string
     {
-        $result = json_encode($array);
+        if ($unicode) {
+            //
+            $result = json_encode($array, JSON_UNESCAPED_UNICODE);
+        } else {
+            $result = json_encode($array);
+        }
+
         if ($result === false) {
             Error::err(json_last_error_msg(), [], "JSON Exception");
         }
