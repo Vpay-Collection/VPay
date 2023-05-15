@@ -14,7 +14,6 @@
 
 namespace app\database\dao;
 
-use app\database\model\AppModel;
 use app\database\model\OrderModel;
 use app\exception\OrderNotFoundException;
 use app\task\NotifyTasker;
@@ -22,7 +21,6 @@ use cleanphp\base\Config;
 use library\database\exception\DbFieldError;
 use library\database\object\Dao;
 use library\database\operation\SelectOperation;
-use library\login\SignUtils;
 use library\task\TaskerManager;
 use library\task\TaskerTime;
 
@@ -60,12 +58,12 @@ class OrderDao extends Dao
     /**
      * 获取最近订单
      * @param int $count
-     * @return array|int
+     * @return array|null
      * @throws DbFieldError
      */
-    public function getRecently(int $count = 5)
+    public function getRecently(int $count = 5): ?array
     {
-        return $this->select()->where(['state' => OrderModel::SUCCESS])->limit($count)->orderBy("id", SelectOperation::SORT_ASC)->commit();
+        return $this->select()->where(['state' => OrderModel::SUCCESS])->limit($count)->orderBy("id", SelectOperation::SORT_ASC)->commit(false);
     }
 
     /**
@@ -74,40 +72,36 @@ class OrderDao extends Dao
      */
     public function countData(): array
     {
-        $all = AppDao::getInstance()->getAll();
         $start = strtotime(date('Y-m-d', strtotime("-0 day")));
         $end = time();
         $result = [];
-        for ($i = 0; $i < 7; $i++) {
-            /**
-             * @var $all AppModel[]
-             */
-            foreach ($all as $item) {
-                $result[$item->id][strtotime($start)] = $this->getCount(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS]);
-            }
+        $day = [];
+        for ($i = 1; $i < 8; $i++) {
+            $day[] = date('Y-m-d', $start);
+            $result[] = number_format($this->getSum(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS], 'real_price'), 2);
             $end = $start;
             $start = strtotime(date('Y-m-d', strtotime("-$i day")));
         }
 
-        return $result;
+        return [$day, $result];
     }
 
     /**
      * 获取收入总金额
-     * @return int|mixed
+     * @return string
      */
-    public function getTotal()
+    public function getTotal(): string
     {
-        return $this->getSum(['state' => OrderModel::SUCCESS], 'real_price');
+        return number_format($this->getSum(['state' => OrderModel::SUCCESS], 'real_price'), 2);
     }
 
     /**
      * 获取当日总收入
-     * @return int|mixed
+     * @return string
      */
-    public function getToday()
+    public function getToday(): string
     {
-        return $this->getSum(['state' => OrderModel::SUCCESS, 'close_time>:time', ':time' => strtotime(date('Y-m-d', time()))], 'real_price');
+        return number_format($this->getSum(['state' => OrderModel::SUCCESS, 'close_time>:time', ':time' => strtotime(date('Y-m-d', time()))], 'real_price'), 2);
     }
 
 

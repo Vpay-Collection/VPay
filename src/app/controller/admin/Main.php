@@ -24,12 +24,13 @@ class Main extends BaseController
 
     function index()
     {
+       [$day, $data] = OrderDao::getInstance()->countData();
         EngineManager::getEngine()
             ->setData("total_price", OrderDao::getInstance()->getTotal())
             ->setData("today_price", OrderDao::getInstance()->getToday())
             ->setData("payments", OrderDao::getInstance()->getRecently(10))
-            ->setData("count", OrderDao::getInstance()->countData());
-        //TODO 模板文件中的渲染逻辑需要数据支撑
+            ->setData("day", array_reverse($day))
+            ->setData("data", array_reverse($data));
     }
 
     function logout()
