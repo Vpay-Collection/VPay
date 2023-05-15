@@ -42,7 +42,13 @@ class Main extends Controller
     {
 
         if (LoginManager::init()->isLogin()) {
-            Response::location(url('admin', 'main', 'index'));
+            $default = url("admin", "main", "index");
+            $redirect = arg("redirect", $default);
+            $parse_url = parse_url($redirect);
+            if (!isset($parse_url['host']) && !isset($parse_url['scheme']) && $parse_url['host'] !== Request::getDomainNoPort()) {
+                $redirect = $default;
+            }
+            Response::location($redirect);
         }
         EngineManager::getEngine()->setLayout("layout")->setData("title", "Vpay管理后台");
         if (!empty(Config::getConfig("sso"))) {

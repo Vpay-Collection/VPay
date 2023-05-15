@@ -14,14 +14,13 @@
 
 namespace app\controller\shop;
 
-use app\controller\api_admin\Shop;
 use app\database\dao\ShopCategoryDao;
 use app\database\dao\ShopItemDao;
 use cleanphp\base\Config;
-use cleanphp\base\Error;
+use cleanphp\base\Controller;
 use cleanphp\engine\EngineManager;
 
-class Main extends \cleanphp\base\Controller
+class Main extends Controller
 {
     public function __init()
     {
@@ -56,7 +55,7 @@ class Main extends \cleanphp\base\Controller
 
     }
 
-    function item()
+    function item(): ?string
     {
         $id = arg('id');
         $item = ShopItemDao::getInstance()->getById($id);

@@ -24,7 +24,7 @@ $("#submit_captcha").off().on("click", function () {
             }, function (data) {
                 if (data.code === 200) {
                     console.log(data);
-                    location.href = data.data;
+                    location.reload();
                 } else {
                     $("#error_msg_body").text(data.msg);
                     mdb.Alert.getInstance(document.getElementById('error_msg')).show();
