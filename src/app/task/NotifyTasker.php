@@ -72,26 +72,25 @@ class NotifyTasker extends TaskerAbstract
             $time = Cache::init()->get($this->order->order_id . "_fail");
             if (empty($time)) $time = 0;
             //4m、10m、10m、1h、2h、6h、15h
-            $next = 0;
             switch ($time) {//类似于支付宝，回调通知失败后重新回调
                 case 0:
-                    $next = 4;
+                    $next = TaskerTime::nMinute(4);
                     break;
                 case 1:
                 case 2:
-                    $next = 10;
+                    $next = TaskerTime::nMinute(10);
                     break;
                 case 3:
-                    $next = 60;
+                    $next = TaskerTime::nHour(1,0);
                     break;
                 case 4:
-                    $next = 120;
+                    $next = TaskerTime::nHour(2,0);
                     break;
                 case 5:
-                    $next = 360;
+                    $next = TaskerTime::nHour(6,0);
                     break;
                 case 6:
-                    $next = 900;
+                    $next = TaskerTime::nHour(15,0);
                     break;
                 default:
                     Log::record("Notify", "多次回调失败不再尝试回调：" . $e->getMessage());
@@ -105,7 +104,7 @@ class NotifyTasker extends TaskerAbstract
             }
             Cache::init()->set($this->order->order_id . "_fail", ++$time);
             //处理失败的定时任务
-            TaskerManager::add(TaskerTime::nMinute($next), new NotifyTasker($this->order, $this->key), "异步回调任务_" . $this->order->order_id);
+            TaskerManager::add($next, new NotifyTasker($this->order, $this->key), "异步回调任务_" . $this->order->order_id);
         }
 
     }
