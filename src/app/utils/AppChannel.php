@@ -90,6 +90,6 @@ class AppChannel
 
     static function isActive(): bool
     {
-        return !empty(Cache::init(10000)->get("last_heart"));
+        return !empty(Cache::init(600)->get("last_heart"));
     }
 }
