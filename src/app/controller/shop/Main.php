@@ -18,12 +18,16 @@ use app\database\dao\ShopCategoryDao;
 use app\database\dao\ShopItemDao;
 use cleanphp\base\Config;
 use cleanphp\base\Controller;
+use cleanphp\base\Response;
 use cleanphp\engine\EngineManager;
 
 class Main extends Controller
 {
     public function __init()
     {
+        if (!Config::getConfig("shop")['state']) {
+            Response::location(url("index", "main", "index"));
+        }
         EngineManager::getEngine()->setLayout("layout")->setArray(Config::getConfig("shop"))
             ->setData("image", Config::getConfig("login")["image"]);
     }

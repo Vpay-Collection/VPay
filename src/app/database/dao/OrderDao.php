@@ -169,4 +169,9 @@ class OrderDao extends Dao
         return $this->find(null, ['order_id' => $order, 'appid' => $app]);
     }
 
+    public function delByAppid($id)
+    {
+        $this->delete()->where(['appid' => $id])->commit();
+    }
+
 }

@@ -29,6 +29,7 @@ class CreateOrderObject extends BaseSignObject
 
     public string $param = "{}";//其他参数
 
+    public string $app_name = "";
 
     public string $pay_image = "";
 
@@ -46,6 +47,7 @@ class CreateOrderObject extends BaseSignObject
         if (empty($this->pay_image)) {
             throw new VerityException("当前收款渠道未配置收款码，请等待站长配置后再试", "pay_type", $this->pay_type);
         }
+        $this->app_name = $this->appModel->app_name;
     }
 
     /**

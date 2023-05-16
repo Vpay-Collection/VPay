@@ -15,6 +15,7 @@
 namespace app\controller\api_admin;
 
 use app\database\dao\AppDao;
+use app\database\dao\OrderDao;
 use app\database\model\AppModel;
 use app\utils\ImageUpload;
 use library\database\object\Page;
@@ -33,7 +34,8 @@ class App extends BaseController
         $item = AppDao::getInstance()->getByAppId(arg("id", 0));
         if (!empty($item)) {
             AppDao::getInstance()->del($item->id);
-            (new ImageUpload('shop'))->delImage($item->app_image);
+            (new ImageUpload('app'))->delImage($item->app_image);
+            OrderDao::getInstance()->delByAppid($item->id);
         }
         return $this->render(200);
     }

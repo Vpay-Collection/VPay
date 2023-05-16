@@ -71,8 +71,8 @@ function loadTable(page, size) {
 
         $(".recallback-btn").off().on('click', function () {
             var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/order/callback", {id: json.id}, function () {
-                //TODO 手动回调功能
+            $.post("/api/admin/order/callback", {order_id: json.order_id}, function (data) {
+                loadTable(1, 10);
             });
         });
     }, "json");

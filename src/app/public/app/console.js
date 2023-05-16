@@ -26,6 +26,9 @@ window.addEventListener("resize", setMode);
 
 /*jshint unused: false */
 function dateFormat(fmt, date) {
+    if (date === "" || date === 0) {
+        return "";
+    }
     date = date === undefined ? new Date() : new Date(parseInt(date) * 1000);
     fmt = fmt || "yyyy年M月d日";
     var o = {

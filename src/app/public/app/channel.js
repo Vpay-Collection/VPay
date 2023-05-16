@@ -23,7 +23,7 @@ $(".file-upload-input").off().on('fileAdd.mdb.fileUpload', function (e) {
                 $("#error_msg_body").text(ret.msg);
                 mdb.Alert.getInstance(document.getElementById('error_msg')).show();
             } else {
-                sessionStorage.setItem("image_" + id, ret.data);
+                $("#" + id).data("image", ret.data);
                 $("#success_msg_body").text("上传成功");
                 mdb.Alert.getInstance(document.getElementById('success_msg')).show();
             }

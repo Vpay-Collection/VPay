@@ -101,7 +101,7 @@
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="file-upload-wrapper shadow-5"
                                          style="width: 200px">
-                                        <input type="file" class="file-upload-input" id="union"
+                                        <input type="file" class="file-upload-input" id="qq"
                                                data-mdb-default-file="{$qq}"
                                                data-mdb-multiple="false"
                                                data-mdb-remove-btn="删除"
