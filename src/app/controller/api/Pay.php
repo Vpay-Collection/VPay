@@ -43,7 +43,7 @@ class Pay extends BaseController
         $order->state = OrderModel::WAIT;
         //选择可用支付渠道创建订单
         try {
-            (new  AppChannel($orderObject->pay_type))->create($order);
+            $order = (new  AppChannel())->create($order);
             OrderDao::getInstance()->insertModel($order);
         } catch (ChannelException $e) {
             return $this->json(self::API_ERROR, $e->getMessage());

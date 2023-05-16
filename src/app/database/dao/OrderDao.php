@@ -135,22 +135,26 @@ class OrderDao extends Dao
      */
     public function getWaitOrderByPayType(int $pay_type, float $price = 0): ?OrderModel
     {
-        $condition = [];
-        if ($price !== 0) {
-            $condition['real_price'] = $price;
-        }
-        $timeout = Config::getConfig('app')['timeout'];
-        $condition[] = "create_time > " . (time() - $timeout * 60);
-        $condition['pay_type'] = $pay_type;
-        $condition['state'] = OrderModel::WAIT;
+        $this->closeTimeoutOrder();
+        $condition = [
+            'real_price > ' . ($price - 0.01),
+            'real_price < ' . ($price + 0.01),
+            'pay_type' => $pay_type,
+            'state' => OrderModel::WAIT
+        ];
         return $this->find(null, $condition);
     }
 
+    public function getByOrderIdWait($id): ?OrderModel
+    {
+        $this->closeTimeoutOrder();
+        return $this->find(null, ["order_id" => $id, "state" => OrderModel::WAIT]);
+    }
 
     public function getByOrderId($id): ?OrderModel
     {
         $this->closeTimeoutOrder();
-        return $this->find(null, ["order_id" => $id, "state" => OrderModel::WAIT]);
+        return $this->find(null, ["order_id" => $id]);
     }
 
     public function getByOrderIdNoFilter($id): ?OrderModel

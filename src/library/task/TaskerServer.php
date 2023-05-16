@@ -39,7 +39,7 @@ class TaskerServer
                         break;
                     }
                 } while (true);
-                Cache::init()->del("task");
+               // Cache::init()->del("task");
             }, 0);
         } else {
             App::$debug && Log::record("Tasker", "定时任务进程已锁定，不处理定时任务");

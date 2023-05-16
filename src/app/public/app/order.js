@@ -5,7 +5,7 @@ function getTable() {
 function loadTable(page, size) {
     $.post('/api/admin/order/list', {
         'page': page, 'size': size,
-        "app_id": $("#app").val(),
+        "appid": $("#app").val(),
         "app_item": $("#form_name").val(),
         "status": $("#status").val(),
     }, function (data) {
@@ -71,7 +71,7 @@ function loadTable(page, size) {
 
         $(".recallback-btn").off().on('click', function () {
             var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/order/callback", {order_id: json.order_id}, function (data) {
+            $.post("/api/admin/order/callback", {order_id: json.order_id}, function () {
                 loadTable(1, 10);
             });
         });

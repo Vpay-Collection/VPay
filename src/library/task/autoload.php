@@ -15,6 +15,6 @@
 use cleanphp\base\EventManager;
 use library\task\TaskerServer;
 
-EventManager::addListener("__before_create_controller__", function ($event, &$data) {
+EventManager::addListener("__frame_init__", function ($event, &$data) {
     TaskerServer::start();
 });

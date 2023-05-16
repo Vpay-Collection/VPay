@@ -26,9 +26,7 @@ use cleanphp\base\Route;
 use cleanphp\base\Variables;
 use cleanphp\engine\CliEngine;
 use cleanphp\engine\EngineManager;
-
 use cleanphp\exception\ExitApp;
-
 use cleanphp\file\File;
 use cleanphp\file\Log;
 use cleanphp\process\Async;
@@ -110,8 +108,9 @@ class App
                 self::$app = new $app();
                 self::$app->onFrameworkStart();
             }
-            Async::register();//异步任务注册
             EventManager::trigger("__frame_init__");//框架初始化
+            Async::register();//异步任务注册
+
             //清除缓存
             App::$debug && self::cleanCache();
             //路由

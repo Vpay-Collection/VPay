@@ -17,7 +17,6 @@ namespace app\controller\api_admin;
 use app\task\DailyTasker;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
-use cleanphp\cache\Cache;
 use library\mail\AnkioMail;
 use library\task\TaskerManager;
 use library\task\TaskerTime;
@@ -49,10 +48,9 @@ class Notice extends BaseController
         }
         Config::setConfig('mail', $this->config);
         //日报需要处理定时任务
+        TaskerManager::del("Vpay日报");
         if ($this->config['pay_daily']) {
-            Cache::init()->set("pay_daily", TaskerManager::add(TaskerTime::day(23, 50), new DailyTasker(), "Vpay日报"));
-        } else {
-            TaskerManager::del(Cache::init()->get("pay_daily"));
+            TaskerManager::add(TaskerTime::day(23, 50), new DailyTasker(), "Vpay日报", -1, true);
         }
 
         return $this->json(200, "更新成功");

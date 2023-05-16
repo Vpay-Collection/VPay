@@ -26,8 +26,8 @@ class Order extends BaseController
         $page = new Page();
 
         $condition = [];
-        if (!empty(arg("app_id"))) {
-            $condition['app_id'] = arg("app_id", 0);
+        if (!empty(arg("appid"))) {
+            $condition['appid'] = arg("appid", 0);
         }
         if (!empty(arg("status"))) {
             $condition['status'] = arg("status", -1);
@@ -41,7 +41,7 @@ class Order extends BaseController
         return $this->render(200, null, $result, $page->total_count);
     }
 
-    function callback()
+    function callback(): string
     {
         $id = arg("order_id");
         $order = OrderDao::getInstance()->getByOrderId($id);
@@ -55,7 +55,7 @@ class Order extends BaseController
         try {
             OrderDao::getInstance()->notify($id, $app->app_key);
         } catch (OrderNotFoundException $e) {
-            return $this->render(404, null, "无订单");
+            return $this->render(404, null, "无订单" . $e->getMessage());
         }
         return $this->render(200, null, "后台回调中");
     }

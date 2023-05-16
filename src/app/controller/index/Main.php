@@ -88,7 +88,7 @@ EOF;
 
         $id = arg("id");
 
-        $order = OrderDao::getInstance()->getByOrderId($id);
+        $order = OrderDao::getInstance()->getByOrderIdWait($id);
 
         if (empty($order)) {
             (new Response())->render(EngineManager::getEngine()->renderMsg(false, 400, "无订单", "该订单已支付或已关闭", -1, "/", "返回"))->send();
