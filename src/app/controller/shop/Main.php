@@ -66,7 +66,18 @@ class Main extends Controller
         if (empty($item)) {
             return EngineManager::getEngine()->setLayout(null)->renderMsg(true, 404, "404 Not Found", "找不到该资源");
         }
-        EngineManager::getEngine()->setData("args", arg())->setArray($item->toArray())->setData("inputs", explode(",", $item->inputs));
+        EngineManager::getEngine()->setData("args", arg())->setArray($item->toArray())->setData("inputs", explode(",", $item->inputs))->setData("_id",$id);
         return null;
+    }
+
+
+    function return()
+    {
+        
+    }
+
+    function notify()
+    {
+        
     }
 }

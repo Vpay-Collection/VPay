@@ -34,13 +34,13 @@
 
                         {/foreach}
                         <div class="d-flex justify-content-center align-items-center mt-3">
-                            <button class="btn btn-primary me-2" data-id="{$id}" data-type="1"><i
+                            <button type="button" class="btn btn-primary me-2 submit-btn" data-id="{$_id}" data-type="1"><i
                                         class="fab fa-alipay  me-2"></i>支付宝
                             </button>
-                            <button class="btn btn-success me-2" data-id="{$id}" data-type="2"><i
+                            <button type="button"  class="btn btn-success me-2 submit-btn" data-id="{$_id}" data-type="2"><i
                                         class="fab fa-weixin me-2"></i>微信
                             </button>
-                            <button class="btn btn-info" data-id="{$id}" data-type="3"><i class="fab fa-qq me-2"></i>QQ
+                            <button  type="button" class="btn btn-info submit-btn" data-id="{$_id}" data-type="3"><i class="fab fa-qq me-2"></i>QQ
                             </button>
                         </div>
                     </form>
@@ -61,5 +61,5 @@
 </section>
 <!--Section: Design Block-->
 {include file="layout_scripts"}
-
+<script src="../../public/app/form.js?v={$__version}" defer></script>
 <script src="../../public/app/shop_details.js?v={$__version}" defer></script>
