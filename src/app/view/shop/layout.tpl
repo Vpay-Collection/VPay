@@ -28,27 +28,30 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container container-fluid justify-content-between align-items-center">
+            <a href="{url('shop','main','index')}" class="text-reset">
             <div class="d-flex align-items-center mb-sm-0 mb-xm-2">
-                <div class="col-auto me-3">
-                    <img src="{$image}" height="35"/>
-                </div>
-                <div class="col d-none d-lg-block me-3">
-                    <h5 class="m-0">{$title}</h5>
-                </div>
-            </div>
 
-            <form class="d-flex align-items-center mb-sm-0 mb-xm-2 ">
+                    <div class="col-auto me-3">
+                        <img src="{$image}" height="35"/>
+                    </div>
+                    <div class="col d-none d-lg-block me-3">
+                        <h5 class="m-0">{$title}</h5>
+                    </div>
+
+            </div>
+            </a>
+           {* <form class="d-flex align-items-center mb-sm-0 mb-xm-2 ">
                 <input autocomplete="off" type="search" class="form-control rounded" placeholder="搜索商品"/>
                 <button type="button" class="input-group-text border-0"><i class="fas fa-search"></i></button>
-            </form>
+            </form>*}
 
             <div class="d-flex align-items-center mb-sm-0 mb-xm-2 ms-auto me-0">
-                <button type="button" class="btn btn-primary me-2 d-none d-md-block">
+                <button type="button" class="btn btn-primary me-2 {*d-none d-md-block*}" data-mdb-toggle="modal" data-mdb-target="#updateModal" id="notice">
                     公告
                 </button>
-                <button type="button" class="btn btn-secondary me-2 d-none d-md-block">
+              {*  <button type="button" class="btn btn-secondary me-2 d-none d-md-block">
                     订单查询
-                </button>
+                </button>*}
                 <a class="btn btn-dark px-3" href="https://github.com/Vpay-Collection/VPay" role="button">
                     <i class="fab fa-github"></i>
                 </a>
@@ -88,7 +91,7 @@
             <div class="modal-footer">
 
                 <button type="button" class="btn btn-primary"
-                        data-mdb-dismiss="modal" onclick="document.cookie=">我知道了
+                        data-mdb-dismiss="modal">我知道了
                 </button>
             </div>
         </div>
