@@ -27,7 +27,7 @@ class BaseSignObject extends VerityObject
     public int $t = 0;//时间戳
     public string $appid = "";//应用
 
-    private ?AppModel $appModel = null;
+    protected ?AppModel $appModel = null;
 
     /**
      * @throws VerityException
