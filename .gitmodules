@@ -1,0 +1,3 @@
+[submodule "src/library/vpay"]
+	path = src/library/vpay
+	url = https://github.com/VPay-Collection/vpay-sdk

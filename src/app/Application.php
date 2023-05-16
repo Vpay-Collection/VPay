@@ -59,6 +59,7 @@ EOF
             }
 
 
+            include_once Variables::getLibPath("vpay","src","autoload.php");
     }
 
 
