@@ -81,7 +81,7 @@ class Session
             $_SESSION[$name . "_expire"] = $expire;
 
         }
-        $_SESSION[$name] = $value;
+        $_SESSION[$name] = __serialize($value);
 
     }
 
@@ -99,11 +99,11 @@ class Session
         }
         $value = $_SESSION[$name];
         if (!isset($_SESSION[$name . "_expire"])) {
-            return parse_type($default, $value);
+            return __unserialize($value);
         }
         $expire = $_SESSION[$name . "_expire"];
         if ($expire == 0 || $expire > time()) {
-            return parse_type($default, $value);
+            return __unserialize($value);
         } else {
             //超时后销毁变量
             unset($_SESSION[$name]);
