@@ -81,7 +81,6 @@ class Main extends Controller
             EngineManager::getEngine()->renderMsg(false,200,'支付成功',"您已成功支付，稍后将收到邮件提醒。",10,url(
                 'shop','main','index'
             ),'返回商城');
-
         }
         EngineManager::getEngine()->renderMsg(true,500,'支付失败',$pay->getError());
         
