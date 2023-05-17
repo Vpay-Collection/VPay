@@ -75,6 +75,24 @@ class TaskerManager
         return 0;
     }
 
+    /**
+     * 判断是否存在指定的定时任务
+     * @param $key
+     * @return bool
+     */
+    public static function has($key): bool
+    {
+        $list = self::list();
+        /**
+         * @var $value TaskInfo
+         */
+        foreach ($list as $value) {
+            if ($key === $value->key || $key === $value->name) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 删除指定ID的定时任务
@@ -89,10 +107,7 @@ class TaskerManager
          */
         $new = [];
         foreach ($list as $value) {
-            if ($key === $value->key || $key === $value->name) {
-                unset($value);
-                //break;
-            } else {
+            if ($key !== $value->key && $key !== $value->name) {
                 $new[] = $value;
             }
         }

@@ -38,9 +38,7 @@ class Main extends Controller
     {
         $items = ShopItemDao::getInstance()->getAllItems();
         $category = ShopCategoryDao::getInstance()->getAllCategory();
-
         $shop = [];
-
         foreach ($category as $cate) {
             $shop_item = [];
             foreach ($items as $item) {
@@ -51,14 +49,8 @@ class Main extends Controller
             if (!empty($shop_item)) {
                 $shop[$cate['name']] = $shop_item;
             }
-
         }
-
-        //   dumps($shop);
-
         EngineManager::getEngine()->setData("shop", $shop);
-
-
     }
 
     function item(): ?string

@@ -19,8 +19,10 @@ use cleanphp\cache\Cache;
 use cleanphp\objects\StringBuilder;
 use library\http\HttpClient;
 use library\http\HttpException;
+use library\task\TaskerAbstract;
+use Throwable;
 
-class GithubUpdater
+class GithubUpdater extends TaskerAbstract
 {
     private string $repo = "";
 
@@ -46,30 +48,17 @@ class GithubUpdater
      * @param $version string 版本号
      * @param $new_version
      * @param $download_url
+     * @param $body
      * @return bool
      */
     public function check(string $version, &$new_version, &$download_url, &$body): bool
     {
         $new_version = $version;
         $download_url = "";
-        try {
-            $result = Cache::init(3600 * 24)->get($this->repo);
-            $limit = Cache::init(3600)->get($this->repo . "_limit");
-            //Github 接口速率限制
-            if (empty($result) && empty($limit)) {
-                $result = HttpClient::init("https://api.github.com")->get()->send("/repos/{$this->repo}/releases")->getBody();
-                if (!(new StringBuilder($result))->contains("API rate limit exceeded")) {
-                    //如果没有被限制，就缓存24小时
-                    Cache::init(3600 * 24)->set($this->repo, $result);
-                } else {
-                    //如果被限制了就设置限制定时器，在1个小时后在试着去访问
-                    Cache::init(3600)->set($this->repo . "_limit", true);
-                }
-            }
-        } catch (HttpException $e) {
+        $result = Cache::init(3600 * 24)->get($this->repo);
+        if (empty($result)) {
             return false;
         }
-        if (empty($result)) return false;
         $release = Json::decode($result, true);
 
         if (!isset($release[0]['body'])) return false;
@@ -89,5 +78,31 @@ class GithubUpdater
             return true;
         }
         return false;
+    }
+
+    public function getTimeOut(): int
+    {
+        return 300;
+    }
+
+    public function onStart()
+    {
+        try {
+            $result = HttpClient::init("https://api.github.com")->get()->send("/repos/{$this->repo}/releases")->getBody();
+            Cache::init(3600 * 24)->set($this->repo, $result);
+        } catch (HttpException $e) {
+
+        }
+
+    }
+
+    public function onStop()
+    {
+
+    }
+
+    public function onAbort(Throwable $e)
+    {
+
     }
 }

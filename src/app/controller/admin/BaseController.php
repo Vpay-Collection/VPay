@@ -23,6 +23,8 @@ use cleanphp\base\Request;
 use cleanphp\base\Response;
 use cleanphp\engine\EngineManager;
 use library\login\LoginManager;
+use library\task\TaskerManager;
+use library\task\TaskerTime;
 
 class BaseController extends Controller
 {
@@ -32,6 +34,9 @@ class BaseController extends Controller
             Response::location(LoginManager::init()->getLoginUrl());
         }
         $user = LoginManager::init()->getUser();
+        if(!TaskerManager::has("Github更新检测")){
+            TaskerManager::add(TaskerTime::day(12,00),GithubUpdater::init("Vpay-Collection/Vpay"),"Github更新检测",-1,true);
+        }
         $result = GithubUpdater::init("Vpay-Collection/Vpay")->check(Config::getConfig("frame")["version"], $new, $download, $body);
         EngineManager::getEngine()->setLayout("layout")
             ->setData("theme", Cookie::getInstance()->get("theme", "light"))
