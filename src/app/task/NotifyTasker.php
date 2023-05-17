@@ -53,6 +53,12 @@ class NotifyTasker extends TaskerAbstract
      */
     public function onStart()
     {
+       $order = OrderDao::getInstance()->getByOrderId($this->order->order_id);
+       if (empty($order) || $order->state === OrderModel::SUCCESS){
+           Log::record("Notify","该订单回调成功不再处理。");
+           Cache::init()->del($this->order->order_id . "_fail");
+           return;
+       }
         $array = $this->order->toArray();
         $array['t'] = time();
         $array = SignUtils::sign($array, $this->key);
@@ -63,9 +69,10 @@ class NotifyTasker extends TaskerAbstract
             OrderDao::getInstance()->updateModel($this->order);
             if (Config::getConfig("mail")['pay_success']) {
                 $file = AnkioMail::compileNotify("#1abc9c", "#fff", Config::getConfig("login")['image'], "Vpay", "支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) . JSON_UNESCAPED_UNICODE) . "</p>");
-
                 AnkioMail::send(Config::getConfig("mail")['received'], "支付成功", $file, "Vpay");
             }
+
+            Cache::init()->del($this->order->order_id . "_fail");
 
         } catch (HttpException $e) {
             Log::record("Notify", "回调失败：" . $e->getMessage());
@@ -96,6 +103,7 @@ class NotifyTasker extends TaskerAbstract
                     Log::record("Notify", "多次回调失败不再尝试回调：" . $e->getMessage());
 
 
+                    Cache::init()->del($this->order->order_id . "_fail");
                     $file = AnkioMail::compileNotify("#e74c3c", "#fff", Config::getConfig("login")['image'], "Vpay", "异步回调失败", "<p>订单{$this->order->order_id}异步回调失败<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) . JSON_UNESCAPED_UNICODE) . "</p>");
 
                     AnkioMail::send(Config::getConfig("mail")['received'], "异步回调失败", $file, "Vpay");
