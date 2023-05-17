@@ -63,12 +63,12 @@ class NotifyTasker extends TaskerAbstract
         $array['t'] = time();
         $array = SignUtils::sign($array, $this->key);
         try {
-            $http = HttpClient::init($this->order->notify_url)->post($array)->send('/');
+            $http = HttpClient::init($this->order->notify_url)->post($array,'form')->send('/');
             if ($http->getBody() !== "success") throw new HttpException("回调接口没有输出 success 字符");
             $this->order->state = OrderModel::SUCCESS;
             OrderDao::getInstance()->updateModel($this->order);
             if (Config::getConfig("mail")['pay_success']) {
-                $file = AnkioMail::compileNotify("#4ee038", "#fff", Config::getConfig("login")['image'], "Vpay", "支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
+                $file = AnkioMail::compileNotify("#1abc9c", "#fff", Config::getConfig("login")['image'], "Vpay", "支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
                 AnkioMail::send(Config::getConfig("mail")['received'], "支付成功", $file, "Vpay");
             }
 

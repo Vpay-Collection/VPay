@@ -75,7 +75,7 @@ EOF
     {
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
-            $data = ["code" => $data['code'], "msg" => $data['msg'], "data" => $data['data'][0]];
+            $data = ["code" => $data['code'], "msg" => $data['msg'], "data" => $data['data']];
         });
         //渲染view
         EventManager::addListener('__view_render_msg__', function (string $event, &$data) {
@@ -84,6 +84,8 @@ EOF
                 $render_data['error_code'] = $data['data']['code'];
             else
                 $render_data['error_code'] = 500;
+
+
 
             $data['tpl'] = EngineManager::getEngine()
                 ->setLayout(null)

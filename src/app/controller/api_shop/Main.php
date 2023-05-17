@@ -76,13 +76,13 @@ class Main extends Controller
             if(!empty($hook)){
                 try {
 
-                    $return = HttpClient::init($hook)->post($data)->setHeaders(['sign'=>$this->sign($data,$hook)])->send();
+                    $return = HttpClient::init($hook)->post($data,'form')->setHeaders(['sign'=>$this->sign($data,$hook)])->send();
                     $json = Json::decode($return->getBody(),true);
                     if($json['code']==200){//WebHook接口响应为200表示响应成功
                         if($item->auto){
-                            $file = AnkioMail::compileNotify("#4ee038", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>{$json['data']}</p>");
+                            $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>{$json['data']}</p>");
                         }else{
-                            $file = AnkioMail::compileNotify("#4ee038", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>您已成功购买{$item->item_name}，请等待商家处理。</p>");
+                            $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>您已成功购买{$item->item_name}，请等待商家处理。</p>");
                         }
                         AnkioMail::send($mail, "购买{$item->item_name}成功", $file, $title);
                     }else{
@@ -97,7 +97,7 @@ class Main extends Controller
 
             }else{
 
-                $file = AnkioMail::compileNotify("#4ee038", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>您已成功购买{$item->item_name}，请等待商家处理。</p>");
+                $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>您已成功购买{$item->item_name}，请等待商家处理。</p>");
                 AnkioMail::send($mail, "购买{$item->item_name}成功", $file, $title);
             }
 
