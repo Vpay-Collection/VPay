@@ -40,10 +40,10 @@
             <div class="col-12">
                 <!--Section: Block Content-->
                 <section class="my-5 text-center">
-                    <h1 class="display-1">{$code}</h1>
-
+                    <h1 class="display-1">{if $err}{$code}{else}{$title}{/if}</h1>
+                    {if $err}
                     <h4 class="mb-4">{$title}</h4>
-
+{/if}
                     <p class="mb-4">
                         {$msg}
                     </p>

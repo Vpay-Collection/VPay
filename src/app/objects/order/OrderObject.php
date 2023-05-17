@@ -29,4 +29,9 @@ class OrderObject extends BaseSignObject
         $this->order = OrderDao::getInstance()->getOrderByApp($this->order_id, $this->appid);
         if (empty($this->order)) throw new VerityException('订单不存在');
     }
+
+    public function getKey(): string
+    {
+        return $this->appModel->app_key;
+    }
 }

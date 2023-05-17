@@ -55,5 +55,10 @@ class OrderModel extends Model
         return new SqlKey('id', 0, true);
     }
 
+    public function onParseType(string $key, &$val, $demo)
+    {
+        if($key!=="param") parent::onParseType($key, $val, $demo);
+    }
+
 
 }

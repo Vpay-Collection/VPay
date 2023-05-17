@@ -113,7 +113,7 @@
                                         class="img-fluid hover-shadow"
                                         alt="Los Angeles Skyscrapers"
                                         id="captcha_img"
-                                        onclick="this.src='{url('api_index','mail','captcha')}?t='+(new Date().getTime())"
+                                        onclick="this.src='/ankio/login/captcha?t='+(new Date().getTime())"
                                 />
                             </div>
                         </div>

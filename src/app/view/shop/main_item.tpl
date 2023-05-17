@@ -7,8 +7,8 @@
                     <img src="{$icon}"
                          alt="{$item_name}" class="ecommerce-gallery-main-img active w-100 h-auto"/>
                 </div>
-                <h2 class="fw-bold mb-3">{$item_name}</h2>
-                <p class="fs-5 mb-4" href="#!"><strong class="text-danger">￥ {number_format($item_price)}</strong></p>
+                <h2 class="fw-bold mb-3 mt-3">{$item_name}</h2>
+                <p class="fs-5 mb-3" href="#!"><strong class="text-danger">￥ {number_format($item_price,2)}</strong></p>
 
                 <div class="pt-2" style="max-width: 500px;">
                     <form id="buy">
@@ -27,7 +27,7 @@
                             {else}
                                 <div class="form-outline mb-4">
                                     <input type="text" class="form-control" id="{$input}" name="{$input}"
-                                           value="{if isset($args[$input])}{$args[$input]}{/if}"/>
+                                           value="{if isset($args[$input])}{$args[$input]}{/if}" {if isset($args[$input])}readonly{/if}/>
                                     <label class="form-label" for="{$input}">{$input}</label>
                                 </div>
                             {/if}

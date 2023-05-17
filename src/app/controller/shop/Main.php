@@ -60,21 +60,23 @@ class Main extends Controller
         if (empty($item)) {
             return EngineManager::getEngine()->setLayout(null)->renderMsg(true, 404, "404 Not Found", "找不到该资源");
         }
-        EngineManager::getEngine()->setData("args", arg())->setArray($item->toArray())->setData("inputs", explode(",", $item->inputs))->setData("_id",$id);
+        EngineManager::getEngine()->setData("args", arg())->setArray($item->toArray())->setData("inputs", empty($item->inputs)?[]:explode(",", $item->inputs))->setData("_id",$id);
         return null;
     }
 
 
-    function return()
+    function return(): string
     {
         $config = new PayConfig(Config::getConfig("shop"));
         $pay = new Vpay($config);
         if($pay->payReturn()){
-            EngineManager::getEngine()->renderMsg(false,200,'支付成功',"您已成功支付，稍后将收到邮件提醒。",10,url(
-                'shop','main','index'
-            ),'返回商城');
+          return EngineManager::getEngine()->renderMsg(false,200,'支付成功',"您已成功支付，稍后将收到邮件提醒。",10,url(
+               'shop','main','index'
+           ),'返回商城');
         }
-        EngineManager::getEngine()->renderMsg(true,500,'支付失败',$pay->getError());
+        return  EngineManager::getEngine()->renderMsg(true,500,'支付失败',$pay->getError(),10,url(
+            'shop','main','index'
+        ),'返回商城');
         
     }
 

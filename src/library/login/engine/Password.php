@@ -133,6 +133,7 @@ class Password extends BaseEngine
     function login(): bool
     {
         if (!(new Captcha())->verify('login', arg("code"))) {
+            App::$debug && Log::record('Password',"验证码验证失败", Log::TYPE_ERROR);
             return false;
         }
         $public = Variables::getStoragePath("key", "public.key");
@@ -145,10 +146,10 @@ class Password extends BaseEngine
             return false;
         }
         $passwd = $rsa->rsaPrivateDecrypt(arg("password"));
+        App::$debug && Log::record('Password',"解密密码：$passwd", Log::TYPE_WARNING);
      //   dumps($passwd,arg("password"));
         $user = arg("username");
         $data = Config::getConfig('login');
-
         if (md5($data["username"] . $passwd) === $data["password"] && $user === $data["username"]) {
             $this->setLogin();
             return true;

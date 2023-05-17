@@ -14,6 +14,7 @@ function loadTable(page, size) {
             {
                 columns: [
                     {label: 'ID', field: 'id'},
+                    {label: '操作', field: 'action'},
                     {label: '状态', field: 'state'},
                     {label: '商户', field: 'app_name'},
                     {label: '商品', field: 'app_item'},
@@ -23,7 +24,7 @@ function loadTable(page, size) {
                     {label: '创建时间', field: 'create_time'},
                     {label: '支付时间', field: 'pay_time'},
                     {label: '关闭时间', field: 'close_time'},
-                    {label: '操作', field: 'action'}
+
                 ],
                 rows: data.data.map((row) => {
                     var state = "";
@@ -41,7 +42,7 @@ function loadTable(page, size) {
                             state = `<span class="badge badge-success">订单成功</span>`;
                             break;
                     }
-                    var action = `<span class="badge badge-info">无需操作</span>`;
+                    var action = ``;
                     if (row.state !== 3) {
                         action = `
  <button class="recallback-btn btn ms-2 btn-primary btn-floating btn-sm" data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fa fa-rotate"></i></button>`;

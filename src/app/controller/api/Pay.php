@@ -14,6 +14,7 @@
 
 namespace app\controller\api;
 
+use app\database\dao\AppDao;
 use app\database\dao\OrderDao;
 use app\database\model\OrderModel;
 use app\exception\ChannelException;
@@ -74,9 +75,11 @@ class Pay extends BaseController
         if (empty($result)) {
             return $this->json(self::API_ERROR, "订单不存在");
         }
+        $app = AppDao::getInstance()->getByAppId($result->appid);
+        if(empty($app))return $this->json(self::API_ERROR, "订单不存在");
         return $this->json(self::API_SUCCESS, null, [
             'state' => $result->state,
-            'return_url' => $result->state === OrderModel::PAID ? $this->getReturnUrl($result) : ""
+            'return_url' => $result->state === OrderModel::PAID ? $this->getReturnUrl($result,$app->app_key) : ""
         ]);
     }
 
@@ -103,12 +106,14 @@ class Pay extends BaseController
     {
         try {
             $orderObject = new OrderObject(arg());
+
         } catch (VerityException $e) {
             return $this->json(self::API_ERROR, $e->getMessage());
         }
+
         return $this->json(self::API_SUCCESS, null, [
             'state' => $orderObject->order->state,
-            'return_url' => $orderObject->order->state === OrderModel::PAID ? $this->getReturnUrl($orderObject->order) : ""
+            'return_url' => $orderObject->order->state === OrderModel::PAID ? $this->getReturnUrl($orderObject->order,$orderObject->getKey()) : ""
         ]);
     }
 
@@ -129,9 +134,10 @@ class Pay extends BaseController
     /**
      * 获取同步回调的URL
      * @param OrderModel $orderModel
+     * @param $key
      * @return string
      */
-    private function getReturnUrl(OrderModel $orderModel): string
+    private function getReturnUrl(OrderModel $orderModel,$key): string
     {
         $url = parse_url($orderModel->return_url);
         if (!isset($url['scheme']) || !isset($url['host'])) return $orderModel->return_url;
@@ -149,8 +155,11 @@ class Pay extends BaseController
             $array = array_merge($result, $array);
         }
         $array['t'] = time();
-        $array = SignUtils::sign($array, Config::getConfig('app')['key']);
-        return $url['scheme'] . "://" . $url['host'] . "?" . http_build_query($array);
+        $array = SignUtils::sign($array, $key);
+
+
+
+        return $url['scheme'] . "://" . $url['host']. $url['path'] . "?" . http_build_query($array);
     }
 
 

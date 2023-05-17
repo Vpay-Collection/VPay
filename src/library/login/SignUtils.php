@@ -14,6 +14,9 @@
 
 namespace library\login;
 
+use app\controller\api\App;
+use cleanphp\file\Log;
+
 class SignUtils
 {
     public static function checkSign(array $args, $key): bool
@@ -26,12 +29,14 @@ class SignUtils
 
     private static function getSign($args, $secretKey): string
     {
-        foreach ($args as $key => $val) {
+        foreach ($args as $key => &$val) {
             if (empty($val)) unset($args[$key]);
+            $val = strval($val);
         }
         ksort($args);
         $String = self::formatBizQueryParaMap($args);
         $String = $String . "&key=" . $secretKey;
+        \cleanphp\App::$debug && Log::record("SignUtils","String: $String");
         return strtoupper(hash('sha256', $String));
     }
 
@@ -52,7 +57,10 @@ class SignUtils
     public static function sign(array $array, $key): array
     {
 
+        \cleanphp\App::$debug && Log::record("SignUtils",print_r($array,true));
+        \cleanphp\App::$debug && Log::record("SignUtils","Key: $key");
         $array['sign'] = self::getSign($array, $key);
+
         return $array;
     }
 }

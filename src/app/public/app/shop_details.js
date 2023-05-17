@@ -7,7 +7,7 @@ $(".submit-btn").on("click", function () {
        if(d.code===200){
            location.href = d.data;
        }else{
-           $("#error_msg_body").text(data.msg);
+           $("#error_msg_body").text(d.msg);
            mdb.Alert.getInstance(document.getElementById('error_msg')).show();
        }
    });

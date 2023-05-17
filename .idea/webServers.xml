@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="f53e21f9-6d83-49c0-905a-3f036f5eb202" name="ftp" url="http://43.156.9.245">
+      <webServer id="391e2d72-edd4-44b4-82e4-4253dc4a9073" name="ftp" url="http://43.156.9.245">
         <fileTransfer host="43.156.9.245" port="21">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" keepAliveCommand="CWD" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+            <advancedOptions dataProtectionLevel="Private" keepAliveCommand="CWD" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" showHiddenFiles="true" isUseRsync="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>

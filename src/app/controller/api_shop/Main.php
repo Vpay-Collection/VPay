@@ -21,7 +21,7 @@ use library\mail\AnkioMail;
 
 class Main extends Controller
 {
-    function create()
+    function create(): string
     {
         $id = arg("id");
 
@@ -39,7 +39,7 @@ class Main extends Controller
         $order = new PayCreateObject();
         $order->app_item = $item->item_name;
         $order->appid = $config->id;
-        $order->param = json_encode(array_merge(arg(),["item"=>$item->toArray()]));
+        $order->param = Json::encode(arg());
         $order->price = $item->item_price;
         $order->pay_type =$pay_type;
         $order->notify_url = url("api_shop","main","notify");
@@ -48,6 +48,7 @@ class Main extends Controller
         $pay = new Vpay($config);
 
         $result =$pay->create($order);
+
 
         if($result===false){
             return $this->render(500,$pay->getError());
@@ -62,12 +63,14 @@ class Main extends Controller
         $result = $pay->payNotify(function (PayNotifyObject $notifyObject){
             $data = Json::decode($notifyObject->param,true);
             $mail = $data['mail'];
-            $item = new ShopItemModel($data['item']);
+
+            $item = ShopItemDao::getInstance()->getById($data['id']);
             $hook = $item->webhook;
             unset($data['item']);
             $title = Config::getConfig("shop")['title'];
             $app = AppDao::getInstance()->getByAppId(Config::getConfig("shop")['id']);
             if(empty($app)) {
+                Log::record("Notify","回调失败，目标应用不存在");
                 return ;
             }
             if(!empty($hook)){
@@ -93,6 +96,7 @@ class Main extends Controller
                 }
 
             }else{
+
                 $file = AnkioMail::compileNotify("#4ee038", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>您已成功购买{$item->item_name}，请等待商家处理。</p>");
                 AnkioMail::send($mail, "购买{$item->item_name}成功", $file, $title);
             }

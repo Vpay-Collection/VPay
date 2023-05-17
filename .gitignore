@@ -1,6 +1,6 @@
-.git
+.git/*
 /src/app/config.php
 /src/app/storage/*
 /dist/*
 .DS_Store
-.idea
+.idea/*

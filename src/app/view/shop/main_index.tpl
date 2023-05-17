@@ -25,7 +25,7 @@
 
                                 <h4 class="card-title mb-3">{$item2['item_name']}</h4>
 
-                                <h6 class="mb-3 text-danger">￥ <b class="h3">{number_format($item2['item_price'])}</b>
+                                <h6 class="mb-3 text-danger">￥ <b class="h3">{number_format($item2['item_price'],2)}</b>
                                 </h6>
 
 

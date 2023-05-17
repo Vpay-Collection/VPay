@@ -221,12 +221,16 @@ function __serialize($data): string
  */
 function __unserialize(string $data, array $options = null)
 {
-    SerializableClosure::enterContext();
-    $data = ($options === null || PHP_MAJOR_VERSION < 7)
-        ? unserialize($data)
-        : unserialize($data, $options);
-    SerializableClosure::unwrapClosures($data);
-    SerializableClosure::exitContext();
+    try{
+        SerializableClosure::enterContext();
+        $data = ($options === null || PHP_MAJOR_VERSION < 7)
+            ? unserialize($data)
+            : unserialize($data, $options);
+        SerializableClosure::unwrapClosures($data);
+        SerializableClosure::exitContext();
+    }catch (\cleanphp\exception\NoticeException $exception){
+        return $data;
+    }
     return $data;
 }
 
@@ -275,6 +279,7 @@ function rand_str(int $length = 8, bool $upper = true, bool $lower = true, bool 
 {
     $charsList = [
         'abcdefghijklmnopqrstuvwxyz',
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         '0123456789',
     ];
