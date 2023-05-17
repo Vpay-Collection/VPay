@@ -87,15 +87,5 @@ class Main extends Controller
         
     }
 
-    function notify()
-    {
 
-        $config = new PayConfig(Config::getConfig("shop"));
-        $pay = new Vpay($config);
-        if($pay->payNotify(function (){
-
-        })){
-
-        }
-    }
 }
