@@ -14,6 +14,8 @@
 
 namespace app\controller\shop;
 
+use Ankio\PayConfig;
+use Ankio\Vpay;
 use app\database\dao\ShopCategoryDao;
 use app\database\dao\ShopItemDao;
 use cleanphp\base\Config;
@@ -73,11 +75,27 @@ class Main extends Controller
 
     function return()
     {
+        $config = new PayConfig(Config::getConfig("shop"));
+        $pay = new Vpay($config);
+        if($pay->payReturn()){
+            EngineManager::getEngine()->renderMsg(false,200,'支付成功',"您已成功支付，稍后将收到邮件提醒。",10,url(
+                'shop','main','index'
+            ),'返回商城');
+
+        }
+        EngineManager::getEngine()->renderMsg(true,500,'支付失败',$pay->getError());
         
     }
 
     function notify()
     {
-        
+
+        $config = new PayConfig(Config::getConfig("shop"));
+        $pay = new Vpay($config);
+        if($pay->payNotify(function (){
+
+        })){
+
+        }
     }
 }
