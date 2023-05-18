@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <meta name="description" content="Vpay">
     <meta name="keywords" content="Vpay,免签,微信,支付宝"/>
-    <title>Vpay管理</title>
+    <title>Vpay管理后台</title>
     {include file="layout_headers"}
 </head>
 

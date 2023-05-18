@@ -36,7 +36,7 @@ class SignUtils
         ksort($args);
         $String = self::formatBizQueryParaMap($args);
         $String = $String . "&key=" . $secretKey;
-        \cleanphp\App::$debug && Log::record("SignUtils","String: $String");
+        \cleanphp\App::$debug && Log::record("SignUtils","$String",Log::TYPE_WARNING);
         return strtoupper(hash('sha256', $String));
     }
 

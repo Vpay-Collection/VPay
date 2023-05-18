@@ -56,6 +56,7 @@ class App extends BaseController
         } else {
             $old = AppDao::getInstance()->getByAppId($model->id);
             if ($old->app_image !== $model->app_image) $image->delImage($old->app_image);
+            $model->app_key = $old->app_key;
             AppDao::getInstance()->updateModel($model);
         }
         return $this->render(200);

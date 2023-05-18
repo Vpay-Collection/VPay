@@ -49,7 +49,6 @@ class Main extends Controller
 
         $result =$pay->create($order);
 
-
         if($result===false){
             return $this->render(500,$pay->getError());
         }
