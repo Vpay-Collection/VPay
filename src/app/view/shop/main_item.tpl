@@ -3,14 +3,14 @@
     <div class="row">
         <div class=" col-lg-5 col-xl-5 pe-lg-4  mb-5 mb-lg-0">
             <div class="p-3  card">
-                <div class="lightbox ">
+                <div class="lightbox " style="max-width: 500px;margin: 0 auto">
                     <img src="{$icon}"
                          alt="{$item_name}" class="ecommerce-gallery-main-img active w-100 h-auto"/>
                 </div>
                 <h2 class="fw-bold mb-3 mt-3">{$item_name}</h2>
                 <p class="fs-5 mb-3" href="#!"><strong class="text-danger">￥ {number_format($item_price,2)}</strong></p>
 
-                <div class="pt-2" style="max-width: 500px;">
+                <div class="pt-2" style="max-width: 500px;margin: 0 auto">
                     <form id="buy">
                         <div class="form-outline mb-4">
                             <input type="text" class="form-control" id="mail" name="mail"/>
