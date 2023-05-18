@@ -126,7 +126,6 @@ class TaskerManager
      */
     public static function add(string $cron, TaskerAbstract $taskerAbstract, string $name, int $times = 1): string
     {
-
         if ($cron === "") {
             Log::record("Tasker", "该任务：$name 立即执行");
             //属于立即执行

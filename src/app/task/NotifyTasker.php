@@ -120,6 +120,8 @@ class NotifyTasker extends TaskerAbstract
             }
             Cache::init()->set($this->order->order_id . "_fail", ++$time);
             //处理失败的定时任务
+
+                TaskerManager::del("异步回调任务_" . $this->order->order_id);
             TaskerManager::add($next, new NotifyTasker($this->order, $this->key), "异步回调任务_" . $this->order->order_id);
         }
 

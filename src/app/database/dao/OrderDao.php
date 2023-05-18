@@ -123,6 +123,7 @@ class OrderDao extends Dao
         $model->state = OrderModel::PAID;
         $model->close_time = time();
         $this->updateModel($model);
+        TaskerManager::del("异步回调任务_" .$model->order_id);
         TaskerManager::add(TaskerTime::nMinute(0), new NotifyTasker($model, $key), "异步回调任务_" . $model->order_id);
         //不要阻塞当前进程
     }
