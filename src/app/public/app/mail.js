@@ -10,7 +10,19 @@ $("form").off().on("submit", function () {
 
 $("#test").off().on("click", function () {
     $("#testData").html("<p>测试中，请稍后...</p>");
-    $.post("/api/admin/notice/test", {}, function (data) {
-        $("#testData").html("<pre>" + data.data + "</pre>");
+
+    $.pjax({
+        url: "/api/admin/notice/test",
+        method: "POST"
+        ,
+        beforeSend() {
+            loading.show();
+        },
+        complete() {
+            loading.hide();
+        },
+        success(data) {
+            $("#testData").html("<pre>" + data.data + "</pre>");
+        }
     });
 });
