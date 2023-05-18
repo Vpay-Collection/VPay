@@ -11,5 +11,5 @@ $(".submit-btn").on("click", function () {
            mdb.Alert.getInstance(document.getElementById('error_msg')).show();
        }
 
-   });
+   },"json");
 });
