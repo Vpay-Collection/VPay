@@ -75,7 +75,6 @@ class Main extends Controller
             }
             if(!empty($hook)){
                 try {
-
                     $return = HttpClient::init($hook)->post($data,'form')->setHeaders(['sign'=>$this->sign($data,$hook)])->send();
                     $json = Json::decode($return->getBody(),true);
                     if($json['code']==200){//WebHook接口响应为200表示响应成功

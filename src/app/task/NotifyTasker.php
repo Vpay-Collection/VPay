@@ -14,6 +14,8 @@
 
 namespace app\task;
 
+use app\controller\api\App;
+use app\database\dao\AppDao;
 use app\database\dao\OrderDao;
 use app\database\model\OrderModel;
 use cleanphp\base\Config;
@@ -59,6 +61,12 @@ class NotifyTasker extends TaskerAbstract
            Cache::init()->del($this->order->order_id . "_fail");
            return;
        }
+       $app = AppDao::getInstance()->getByAppId($order->appid);
+       if(empty($app)){
+           Log::record("Notify","该订单对应App不存在。");
+           Cache::init()->del($this->order->order_id . "_fail");
+           return;
+       }
         $array = $this->order->toArray();
         $array['t'] = time();
         $array = SignUtils::sign($array, $this->key);
@@ -68,8 +76,8 @@ class NotifyTasker extends TaskerAbstract
             $this->order->state = OrderModel::SUCCESS;
             OrderDao::getInstance()->updateModel($this->order);
             if (Config::getConfig("mail")['pay_success']) {
-                $file = AnkioMail::compileNotify("#1abc9c", "#fff", Config::getConfig("login")['image'], "Vpay", "支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
-                AnkioMail::send(Config::getConfig("mail")['received'], "支付成功", $file, "Vpay");
+                $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $app->app_name, "用户支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
+                AnkioMail::send(Config::getConfig("mail")['received'], "支付成功", $file, $app->app_name);
             }
 
             Cache::init()->del($this->order->order_id . "_fail");
@@ -104,9 +112,9 @@ class NotifyTasker extends TaskerAbstract
 
 
                     Cache::init()->del($this->order->order_id . "_fail");
-                    $file = AnkioMail::compileNotify("#e74c3c", "#fff", Config::getConfig("login")['image'], "Vpay", "异步回调失败", "<p>订单{$this->order->order_id}异步回调失败<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) . JSON_UNESCAPED_UNICODE) . "</p>");
+                    $file = AnkioMail::compileNotify("#e74c3c", "#fff",  $app->app_image, $app->app_name, "异步回调失败", "<p>订单{$this->order->order_id}异步回调失败<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) . JSON_UNESCAPED_UNICODE) . "</p>");
 
-                    AnkioMail::send(Config::getConfig("mail")['received'], "异步回调失败", $file, "Vpay");
+                    AnkioMail::send(Config::getConfig("mail")['received'], "异步回调失败", $file, $app->app_name);
 
                     return;
             }
