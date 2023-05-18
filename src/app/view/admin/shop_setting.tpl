@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="../../public/app/dist/ui/trumbowyg.min.css?v={$__version}" media="none"
-      onload="this.media='all'">
-<link rel="stylesheet" href="../../public/app/dist/plugins/colors/ui/trumbowyg.colors.min.css?v={$__version}"
+<link rel="stylesheet" href="../../public/plugins/css/wysiwyg.min.css?v={$__version}"
       media="none"
       onload="this.media='all'">
 <div class="container my-5 py-5">
@@ -29,7 +27,7 @@
                                 <label class="form-label" for="title">商城名称</label>
                             </div>
                             <div class=" mb-4 ">
-                                <div id="trumbowyg">
+                                <div id="wysiwyg" class="wysiwyg" style="min-width: 100%">
                                     {$notice nofilter}
                                 </div>
                             </div>
@@ -53,7 +51,5 @@
 
 
 {include file="layout_scripts"}
-<script src="../../public/app/dist/trumbowyg.min.js?v={$__version}" defer></script>
-<script src="../../public/app/dist/langs/zh_cn.min.js?v={$__version}" defer></script>
-<script src="../../public/app/dist/plugins/colors/trumbowyg.colors.min.js?v={$__version}" defer></script>
+<script src="../../public/plugins/js/wysiwyg.min.js?v={$__version}" defer></script>
 <script src="../../public/app/shop_setting.js?v={$__version}" defer></script>

@@ -1,7 +1,7 @@
 function getTable() {
     return mdb.Datatable.getOrCreateInstance(document.getElementById('datatable'));
 }
-
+var wysiwygInstance = null;
 function loadTable(page, size) {
     $.post('/api/admin/shop/items', {
         'page': page, 'size': size
@@ -52,10 +52,15 @@ function loadTable(page, size) {
             var elem = document.querySelector("#file-upload");
             FileUpload.getInstance(elem).update({"defaultFile": json.icon});
             sessionStorage.setItem("icon", json.icon);
+            if(wysiwygInstance===null){
+                $(".wysiwyg").html(json["description_nofilter"]);
+            }else{
+                $(".wysiwyg-content").html(json["description_nofilter"]);
+            }
 
-            $('#trumbowyg').trumbowyg('html', json["description_nofilter"]);
             $("#addApp").click();
         });
+
         $(".delete-btn").off().on('click', function () {
             var json = JSON.parse(decodeURIComponent($(this).data("data")));
             $.post("/api/admin/shop/delItem", {id: json.id}, function (ret) {
@@ -105,10 +110,61 @@ $("#file-upload").off().on('fileAdd.mdb.fileUpload', function (e) {
         }
     });
 });
-$("#saveOrUpdate").off().on("click", function () {
+
+
+// jshint ignore:start
+
+$('#addOrUpdate').off('shown.bs.modal').on('shown.bs.modal', function (){
+    console.log(this)
+    if(wysiwygInstance!==null)return;
+     wysiwygInstance = new WYSIWYG(document.getElementsByClassName('wysiwyg')[0], {
+        wysiwygTranslations: {
+            paragraph: '段落',
+            textStyle: '文本样式',
+            heading: '标题',
+            preformatted: '预设格式',
+            bold: '加粗',
+            italic: '斜体',
+            strikethrough: '删除线',
+            underline: '下划线',
+            textcolor: '文本颜色',
+            textBackgroundColor: '文本背景颜色',
+            alignLeft: '左对齐',
+            alignCenter: '居中对齐',
+            alignRight: '右对齐',
+            alignJustify: '两端对齐',
+            insertLink: '插入链接',
+            insertPicture: '插入图片',
+            unorderedList: '无序列表',
+            orderedList: '有序列表',
+            increaseIndent: '增加缩进',
+            decreaseIndent: '减少缩进',
+            insertHorizontalRule: '插入水平线',
+            showHTML: '显示HTML代码',
+            undo: '撤销',
+            redo: '重做',
+            addLinkHead: '添加链接',
+            addImageHead: '添加图片',
+            linkUrlLabel: '输入网址：',
+            linkDescription: '输入描述',
+            imageUrlLabel: '输入图片网址：',
+            okButton: '确定',
+            cancelButton: '取消',
+            moreOptions: '更多选项',
+        },
+        wysiwygShowCodeSection:false,
+        wysiwygUndoRedoSection:false,
+        wysiwygLinksSection:false
+    });
+});
+
+//$(".wysiwyg-toolbar-group").hide();
+
+
+$("#saveOrUpdate").off("click").on("click", function () {
     var data = form.val("form");
     data["icon"] = sessionStorage.getItem("icon");
-    data["description_nofilter"] = $('#trumbowyg').trumbowyg('html');
+    data["description_nofilter"] = wysiwygInstance.getCode();
 
     $.post("/api/admin/shop/addOrUpdateItem", data, function (ret) {
         if (ret.code !== 200) {
@@ -122,27 +178,12 @@ $("#saveOrUpdate").off().on("click", function () {
 
     },"json");
 });
-$('#addOrUpdate').off().on('hidden.bs.modal', function () {
+// jshint ignore:end
+$('#addOrUpdate').off('hidden.bs.modal').on('hidden.bs.modal', function () {
     form.reset("form");
     FileUpload.getInstance(document.querySelector("#file-upload")).update({"defaultFile": ""});
     sessionStorage.setItem("icon", "");
 });
 
-$('#trumbowyg').trumbowyg({
-    lang: 'zh_cn'
-    , btns: [
-        //   ['undo', 'redo'], // Only supported in Blink browsers
-        ['formatting'],
-        ['strong', 'em', 'del'],
-        ['foreColor', 'backColor'],
-        ['superscript', 'subscript'],
-        ['link'],
-        ['insertImage'],
-        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-        ['unorderedList', 'orderedList'],
-        ['horizontalRule'],
-        ['removeformat'],
-        ['fullscreen']
-    ]
-});
+
 
