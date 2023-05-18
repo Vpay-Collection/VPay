@@ -107,6 +107,7 @@ class Shop extends BaseController
         if (empty($model->icon)) {
             return $this->render(403, "图片不允许为空");
         }
+
         $model->inputs = trim($model->inputs, ",");
         $image = new ImageUpload("shop");
         $model->icon = $image->useImage($model->icon);

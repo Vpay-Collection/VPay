@@ -21,7 +21,6 @@ use app\exception\ChannelException;
 use app\objects\order\CreateOrderObject;
 use app\objects\order\OrderObject;
 use app\utils\AppChannel;
-use cleanphp\base\Config;
 use cleanphp\base\Session;
 use library\login\SignUtils;
 use library\verity\VerityException;

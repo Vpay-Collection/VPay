@@ -46,9 +46,11 @@
             </form>*}
 
             <div class="d-flex align-items-center mb-sm-0 mb-xm-2 ms-auto me-0">
+                {if !empty($notice)}
                 <button type="button" class="btn btn-primary me-2 {*d-none d-md-block*}" data-mdb-toggle="modal" data-mdb-target="#updateModal" id="notice">
                     公告
                 </button>
+                {/if}
               {*  <button type="button" class="btn btn-secondary me-2 d-none d-md-block">
                     订单查询
                 </button>*}
@@ -77,6 +79,7 @@
     </div>
 </main>
 <!--Main layout-->
+{if !empty($notice)}
 <div class="modal top fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true"
      data-mdb-backdrop="true" data-mdb-keyboard="true">
     <div class="modal-dialog   modal-dialog-centered">
@@ -97,6 +100,7 @@
         </div>
     </div>
 </div>
+{/if}
 <!--Footer-->
 <footer>
 

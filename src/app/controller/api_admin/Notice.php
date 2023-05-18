@@ -45,6 +45,9 @@ class Notice extends BaseController
         if (Request::isGet()) return $this->json(200, null, $this->config);
         foreach ($this->config as $key => &$value) {
             $value = post($key, $value);
+            if($key==="port"&&($value<1||$value>65535)){
+                return $this->render(403, "端口范围错误(1-65535)");
+            }
         }
         Config::setConfig('mail', $this->config);
         //日报需要处理定时任务
