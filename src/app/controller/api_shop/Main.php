@@ -93,22 +93,23 @@ class Main extends Controller
                 try {
                     $return = HttpClient::init($hook)->post($data,'form')->setHeaders(['sign'=>$this->sign($data,$hook)])->send();
                     $json = Json::decode($return->getBody(),true);
-                    if($json['code']==200){//WebHook接口响应为200表示响应成功
-                        if($item->auto){
+                    if(isset($json['code'])){
+                        if($json['code']==200){//WebHook接口响应为200表示响应成功
                             $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>{$json['data']}</p>");
+                            AnkioMail::send($mail, "购买{$item->item_name}成功", $file, $title);
+                            return;
                         }else{
-                            $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $title, "购买{$item->item_name}成功", "<p>您已成功购买{$item->item_name}，请等待商家处理。</p>");
+                            $error = $json['msg'];
                         }
-                        AnkioMail::send($mail, "购买{$item->item_name}成功", $file, $title);
                     }else{
-                        $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item_name}失败", "<p>您购买的{$item->item_name}出现异常，请等待商家处理。{$json['msg']}</p>");
-                        AnkioMail::send($mail, "购买{$item->item_name}失败", $file, $title);
+                        $error = "接口响应错误：".$return->getBody();
                     }
                 } catch (HttpException $e) {
-                    Log::record("Notify","回调响应异常：".$e->getMessage());
-                    $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item_name}失败", "<p>您购买的{$item->item_name}出现异常，请等待商家处理。{$e->getMessage()}</p>");
-                    AnkioMail::send($mail, "购买{$item->item_name}失败", $file, $title);
+                    $error = $e->getMessage();
                 }
+                Log::record("Notify","回调响应异常：".$e->getMessage());
+                $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item_name}失败", "<p>您购买的{$item->item_name}出现异常，请等待商家处理。{$error}</p>");
+                AnkioMail::send($mail, "购买{$item->item_name}失败", $file, $title);
 
             }else{
 
