@@ -56,20 +56,7 @@ class Main extends Controller
         }
     }
 
-    function robots(): string
-    {
-        return <<<EOF
-User-agent: *
 
-Disallow: /*
-EOF;
-    }
-
-    function image()
-    {
-        $file = get('file', '');
-        Route::renderStatic(Variables::getStoragePath("uploads", get("type", "temp"), $file));
-    }
 
     function fast()
     {

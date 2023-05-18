@@ -76,8 +76,8 @@ class NotifyTasker extends TaskerAbstract
             $this->order->state = OrderModel::SUCCESS;
             OrderDao::getInstance()->updateModel($this->order);
             if (Config::getConfig("mail")['pay_success']) {
-                $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $app->app_name, "用户支付成功", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
-                AnkioMail::send(Config::getConfig("mail")['received'], "支付成功", $file, $app->app_name);
+                $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $app->app_name, "用户支付成功通知", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
+                AnkioMail::send(Config::getConfig("mail")['received'], "用户支付成功通知", $file, $app->app_name);
             }
 
             Cache::init()->del($this->order->order_id . "_fail");
