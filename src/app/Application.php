@@ -14,6 +14,7 @@
 
 namespace app;
 
+use app\task\DaemonTasker;
 use cleanphp\App;
 use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
@@ -25,6 +26,8 @@ use cleanphp\engine\EngineManager;
 use cleanphp\engine\JsonEngine;
 use cleanphp\engine\ViewEngine;
 use cleanphp\objects\StringBuilder;
+use library\task\TaskerManager;
+use library\task\TaskerTime;
 
 class Application implements MainApp
 {
@@ -60,6 +63,10 @@ EOF
 
 
             include_once Variables::getLibPath("vpay","src","autoload.php");
+
+            if(!TaskerManager::has("App心跳守护进程")){
+                TaskerManager::add(TaskerTime::hour(0),new DaemonTasker(),"App心跳守护进程",-1);
+            }
     }
 
 

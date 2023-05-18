@@ -31,7 +31,7 @@ class Channel extends BaseController
         }
         $last = Cache::init()->get("last_heart");
         $online = false;
-        if (time() - $last <= 60 * 10) {
+        if (time() - $last <= 60 * 15) {
             $online = true;
         }
         EngineManager::getEngine()->setData("last_heart", date("Y-m-d H:i:s", $last));
