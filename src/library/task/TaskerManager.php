@@ -120,12 +120,11 @@ class TaskerManager
      * @param string $cron 定时任务时间包，使用{@link TaskerTime}来指定或手写cron字符串（不含秒数位，不支持问号）
      * @param TaskerAbstract $taskerAbstract 需要运行的定时任务，需要继承{@link TaskerAbstract}类并实现{@link TaskerAbstract::onStart()}方法
      * @param string $name 定时任务名称
-     * @param int $times 定时任务的执行次数，只有当{@link $loop}参数为true的时候，执行次数才会生效
-     * @param bool $loop 是不是为循环定时任务
+     * @param int $times 定时任务的执行次数，当times=-1的时候为循环任务
      * 返回定时任务ID
      * @return string
      */
-    public static function add(string $cron, TaskerAbstract $taskerAbstract, string $name, int $times = -1, bool $loop = false): string
+    public static function add(string $cron, TaskerAbstract $taskerAbstract, string $name, int $times = 1): string
     {
 
         if ($cron === "") {
@@ -148,8 +147,7 @@ class TaskerManager
         $task->name = $name;
         $task->cron = $cron;
         $task->times = $times;
-        if (!$loop) $task->times = -1;
-        $task->loop = $loop;
+        $task->loop = $times==-1;
         $task->key = uniqid("task_");
 
         $task->next = CronExpression::factory($cron)->getNextRunDate()->getTimestamp();
@@ -176,7 +174,7 @@ class TaskerManager
          * @var $value TaskInfo
          */
         foreach ($data as $k => $value) {
-            //循环并且次序=0
+            //次序=0
             if ($value->times === 0) {
                 App::$debug && Log::record("Tasker", "该ID ({$value->name})[{$value->key}] 的定时任务执行完毕");
                 unset($data[$k]);

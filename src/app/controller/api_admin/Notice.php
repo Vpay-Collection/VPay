@@ -50,7 +50,7 @@ class Notice extends BaseController
         //日报需要处理定时任务
         TaskerManager::del("Vpay日报");
         if ($this->config['pay_daily']) {
-            TaskerManager::add(TaskerTime::day(23, 50), new DailyTasker(), "Vpay日报", -1, true);
+            TaskerManager::add(TaskerTime::day(23, 50), new DailyTasker(), "Vpay日报", -1);
         }
 
         return $this->json(200, "更新成功");

@@ -46,17 +46,17 @@ class Order extends BaseController
         $id = arg("order_id");
         $order = OrderDao::getInstance()->getByOrderId($id);
         if (empty($order)) {
-            return $this->render(404, null, "无订单");
+            return $this->render(404, "无订单");
         }
         $app = AppDao::getInstance()->getByAppId($order->appid);
         if (empty($app)) {
-            return $this->render(404, null, "商户不存在");
+            return $this->render(404, "商户不存在");
         }
         try {
             OrderDao::getInstance()->notify($id, $app->app_key);
         } catch (OrderNotFoundException $e) {
-            return $this->render(404, null, "无订单" . $e->getMessage());
+            return $this->render(404, "无订单" . $e->getMessage());
         }
-        return $this->render(200, null, "后台回调中");
+        return $this->render(200,  "后台回调中");
     }
 }

@@ -16,14 +16,15 @@ class Pagination {
 
     render() {
         const {current, total, size} = this.options;
+        sessionStorage.setItem("page",current);
         const pages = [];
         const totalPages = Math.ceil(total / size);
         const start = Math.max(1, current - 3);
         const end = Math.min(totalPages, current + 3);
         if (current > 1) {
-            pages.push(this.createLink(current - 1, this.previousText, 'page-link', 'aria-label', this.previousText));
+            pages.push(this.createLink(current - 1, this.previousText, 'page-link me-1', 'aria-label', this.previousText));
         } else {
-            pages.push(this.createLink(null, this.previousText, 'page-link disabled', 'aria-label', this.previousText));
+            pages.push(this.createLink(null, this.previousText, 'page-link disabled me-1', 'aria-label', this.previousText));
         }
 
         if (start > 1) {
@@ -45,9 +46,9 @@ class Pagination {
         }
 
         if (current < totalPages) {
-            pages.push(this.createLink(current + 1, this.nextText, 'page-link', 'aria-label', this.nextText));
+            pages.push(this.createLink(current + 1, this.nextText, 'page-link ms-1', 'aria-label', this.nextText));
         } else {
-            pages.push(this.createLink(null, this.nextText, 'page-link disabled', 'aria-label', this.nextText));
+            pages.push(this.createLink(null, this.nextText, 'page-link disabled ms-1', 'aria-label', this.nextText));
         }
 
         this.element.innerHTML = `

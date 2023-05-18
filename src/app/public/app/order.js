@@ -72,8 +72,15 @@ function loadTable(page, size) {
 
         $(".recallback-btn").off().on('click', function () {
             var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/order/callback", {order_id: json.order_id}, function () {
-                loadTable(1, 10);
+            $.post("/api/admin/order/callback", {order_id: json.order_id}, function (data) {
+                loadTable(page, 10);
+                if(data.code!==200){
+                    $("#error_msg_body").text(data.msg);
+                    mdb.Alert.getInstance(document.getElementById('error_msg')).show();
+                }else{
+                    $("#success_msg_body").text(data.msg);
+                    mdb.Alert.getInstance(document.getElementById('success_msg')).show();
+                }
             });
         });
     }, "json");
