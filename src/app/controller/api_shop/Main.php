@@ -8,6 +8,7 @@ use Ankio\PayConfig;
 use Ankio\Vpay;
 use app\database\dao\AppDao;
 use app\database\dao\ShopItemDao;
+use app\database\model\OrderModel;
 use app\database\model\ShopItemModel;
 use cleanphp\App;
 use cleanphp\base\Config;
@@ -108,8 +109,11 @@ class Main extends Controller
                     $error = $e->getMessage();
                 }
                 Log::record("Notify","回调响应异常：".$e->getMessage());
-                $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item_name}失败", "<p>您购买的{$item->item_name}出现异常，请等待商家处理。{$error}</p>");
+                $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item_name}失败", "<p>您购买的{$item->item_name}出现异常，请等待商家处理。</p>");
                 AnkioMail::send($mail, "购买{$item->item_name}失败", $file, $title);
+
+                $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item_name}失败", "<p>用户购买的{$item->item_name}出现异常，请及时处理。{$error}</p><p>订单：{$notifyObject->order_id}<span></p><p>商户：{$notifyObject->app_name}</p><p>商品：{$notifyObject->app_item}</p><p>支付金额：{$notifyObject->real_price}</p><p>应付金额：{$notifyObject->price}</p><p>支付方式：" . $this->getPayType($notifyObject->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $notifyObject->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($notifyObject->param) . JSON_UNESCAPED_UNICODE) . "</p>");
+                AnkioMail::send($mail, "用户购买{$item->item_name}失败", $file, $title);
 
             }else{
 
@@ -128,6 +132,18 @@ class Main extends Controller
     {
         ksort($array);
         return hash_hmac('sha256', http_build_query($array), $key);
+    }
+
+    private function getPayType($type): string
+    {
+        switch ($type) {
+            case OrderModel::PAY_ALIPAY:
+                return "支付宝";
+            case OrderModel::PAY_QQ;
+                return "QQ";
+            default:
+                return "微信";
+        }
     }
 
 
