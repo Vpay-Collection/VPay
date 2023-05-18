@@ -66,6 +66,7 @@
     "Pagination": true,
     "FileUpload": true,
     "JSEncrypt": true,
-    "ChipsInput": true
+    "ChipsInput": true,
+    "loading": true
   }
 }

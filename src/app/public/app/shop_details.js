@@ -10,5 +10,6 @@ $(".submit-btn").on("click", function () {
            $("#error_msg_body").text(d.msg);
            mdb.Alert.getInstance(document.getElementById('error_msg')).show();
        }
+
    });
 });

@@ -58,7 +58,14 @@ function loadTable(page, size) {
         });
         $(".delete-btn").off().on('click', function () {
             var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/shop/delItem", {id: json.id}, function () {
+            $.post("/api/admin/shop/delItem", {id: json.id}, function (ret) {
+                if (ret.code !== 200) {
+                    $("#error_msg_body").text(ret.msg);
+                    mdb.Alert.getInstance(document.getElementById('error_msg')).show();
+                } else {
+                    $("#success_msg_body").text("删除成功");
+                    mdb.Alert.getInstance(document.getElementById('success_msg')).show();
+                }
                 loadTable(page, size);
             });
         });
@@ -76,16 +83,23 @@ $("#file-upload").off().on('fileAdd.mdb.fileUpload', function (e) {
     data.append('file', addedFile[0]);
     $.ajax({
         type: 'POST',
-        url: "/api/admin/shop/upload",
+        url: "/api/admin/shop/upload",        beforeSend() {
+            loading.show();
+        },
+        complete(){
+            loading.hide();
+        },
         data: data,
         cache: false,
         processData: false,
         contentType: false,
         success: function (ret) {
             if (ret.code !== 200) {
-                $("#error_msg_body").text(data.msg);
+                $("#error_msg_body").text(ret.msg);
                 mdb.Alert.getInstance(document.getElementById('error_msg')).show();
             } else {
+                $("#success_msg_body").text("上传成功");
+                mdb.Alert.getInstance(document.getElementById('success_msg')).show();
                 sessionStorage.setItem("icon", ret.data);
             }
         }
@@ -96,8 +110,16 @@ $("#saveOrUpdate").off().on("click", function () {
     data["icon"] = sessionStorage.getItem("icon");
     data["description_nofilter"] = $('#trumbowyg').trumbowyg('html');
 
-    $.post("/api/admin/shop/addOrUpdateItem", data, function () {
+    $.post("/api/admin/shop/addOrUpdateItem", data, function (ret) {
+        if (ret.code !== 200) {
+            $("#error_msg_body").text(ret.msg);
+            mdb.Alert.getInstance(document.getElementById('error_msg')).show();
+        } else {
+            $("#success_msg_body").text("添加/修改成功");
+            mdb.Alert.getInstance(document.getElementById('success_msg')).show();
+        }
         loadTable(1, 10);
+
     });
 });
 $('#addOrUpdate').off().on('hidden.bs.modal', function () {

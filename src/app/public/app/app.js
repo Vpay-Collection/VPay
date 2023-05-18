@@ -75,6 +75,12 @@ $("#file-upload").off().on('fileAdd.mdb.fileUpload', function (e) {
         cache: false,
         processData: false,
         contentType: false,
+        beforeSend() {
+            loading.show();
+        },
+        complete(){
+            loading.hide();
+        },
         success: function (ret) {
             if (ret.code !== 200) {
                 $("#error_msg_body").text(data.msg);

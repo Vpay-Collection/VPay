@@ -63,3 +63,29 @@ $(document).on('pjax:beforeReplace', function() {
     });
     $(".sidenav-backdrop").remove();
 });*/
+
+
+var loading = {
+    show(){
+        const loader1 = `
+  <div class="loading-full">
+    <div class="spinner-border loading-icon text-succes"></div>
+    <span class="loading-text">Loading...</span>
+  </div>
+`;
+        const test2 = document.querySelector('body');
+        test2.insertAdjacentHTML('beforeend', loader1);
+        const loadingFull = document.querySelector('.loading-full');
+
+        const loading = new mdb.Loading(loadingFull, {
+            scroll: false,
+            backdropID: 'full-backdrop'
+        });
+    },
+    hide(){
+        const backdrop = document.querySelector('#full-backdrop');
+        backdrop.remove();
+        document.querySelector('.loading-full').remove();
+        document.body.style.overflow = '';
+    }
+};
