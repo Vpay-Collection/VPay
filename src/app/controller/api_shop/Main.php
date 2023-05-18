@@ -18,11 +18,27 @@ use cleanphp\file\Log;
 use library\http\HttpClient;
 use library\http\HttpException;
 use library\mail\AnkioMail;
+use library\verity\VerityException;
+use library\verity\VerityRule;
 
 class Main extends Controller
 {
     function create(): string
     {
+        try {
+            if (!VerityRule::check(VerityRule::MAIL, arg('mail'))) {
+                return EngineManager::getEngine()->render(403,"请输入正确的邮箱");
+            }
+        } catch (VerityException $e) {
+            return EngineManager::getEngine()->render(403,"请输入正确的邮箱");
+        }
+        foreach (arg() as $item){
+            if (empty($item)){
+
+                    return EngineManager::getEngine()->render(403,"请将每一项都填写完成");
+
+            }
+        }
         $id = arg("id");
 
        $item  = ShopItemDao::getInstance()->getById($id);
@@ -30,6 +46,7 @@ class Main extends Controller
        if(empty($item)){
            return EngineManager::getEngine()->render(404,"不存在商品");
        }
+
 
         $pay_type = arg("pay_type");
 
