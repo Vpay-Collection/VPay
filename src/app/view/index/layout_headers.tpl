@@ -81,6 +81,9 @@
             z-index: 1056;
         }
     }
+    .card{
+        --mdb-card-bg: #ffffffd9!important;
+    }
 
 
 </style>

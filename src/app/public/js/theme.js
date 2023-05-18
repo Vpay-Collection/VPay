@@ -22,10 +22,17 @@ function onChange(e) {
     if (e.matches) {
         themeLink.href = '/clean_static/css/mdb.dark.min.css';
         changeNavbar("navbar-light", "navbar-dark");
+        document.querySelectorAll(".bg-light").forEach(function (value, key, parent) {
+            value.classList.add("bg-dark");
+            value.classList.remove("bg-light");
+        });
     } else {
         themeLink.href = '/clean_static/css/mdb.min.css';
         changeNavbar("navbar-dark", "navbar-light");
-
+        document.querySelectorAll(".bg-dark").forEach(function (value, key, parent) {
+            value.classList.add("bg-light");
+            value.classList.remove("bg-dark");
+        });
     }
     document.cookie = "theme=" + (e.matches ? "dark" : "light") + "; path=/; max-age=" + 365 * 24 * 60 * 60;
 }

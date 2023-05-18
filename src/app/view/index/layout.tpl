@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{$__lang}">
+<html lang="{$__lang}" style="min-height: 100vh;">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -11,7 +11,7 @@
 </head>
 
 
-<body class="overflow-hidden">
+<body class="overflow-hidden bg-{$theme} bg-gradient">
 
 
 <div id="loading-main-page" style="height: 100vh; width: 100vw" class="" data-immersive-translate-effect="1">
