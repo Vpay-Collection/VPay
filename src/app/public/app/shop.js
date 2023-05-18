@@ -120,7 +120,7 @@ $("#saveOrUpdate").off().on("click", function () {
         }
         loadTable(1, 10);
 
-    });
+    },"json");
 });
 $('#addOrUpdate').off().on('hidden.bs.modal', function () {
     form.reset("form");

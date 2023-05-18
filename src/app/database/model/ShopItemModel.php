@@ -27,8 +27,6 @@ class ShopItemModel extends Model
     public float $item_price = 0.01;
     public int $item_category = 1;
     public string $inputs = "";
-
-    public bool $auto = false;
     public string $webhook = "";//Hook地址
 
     public string $description_nofilter = ""; //商品描述

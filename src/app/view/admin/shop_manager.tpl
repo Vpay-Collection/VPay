@@ -119,12 +119,6 @@
                         <input type="text" class="form-control" id="webhook" name="webhook"/>
                         <label class="form-label" for="webhook">WebHook</label>
                     </div>
-                    <div class="form-check mb-4 text-start">
-                        <input class="form-check-input" type="checkbox" value="1"
-                               name="auto" id="auto"/>
-                        <label class="form-check-label"
-                               for="auto">自动向用户邮箱发送WebHook的响应内容</label>
-                    </div>
                     <div class=" mb-4 ">
                         <div id="trumbowyg">
 
