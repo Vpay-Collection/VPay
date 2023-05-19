@@ -93,6 +93,10 @@
     td {
         vertical-align: middle;
     }
+    .sidenav-link.active{
+        background-color: var(--mdb-sidenav-link-active-focus-background-color);
+        color: var(--mdb-sidenav-link-active-color)!important;
+    }
 </style>
 
 <!-- Google Fonts Roboto -->
