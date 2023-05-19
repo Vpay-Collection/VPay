@@ -15,6 +15,9 @@
 namespace app\database\dao;
 
 use app\database\model\AppModel;
+use cleanphp\base\Config;
+use cleanphp\base\Request;
+use Couchbase\RegexpSearchQuery;
 use library\database\object\Dao;
 
 class AppDao extends Dao
@@ -47,6 +50,26 @@ class AppDao extends Dao
     {
         if ($id === 0) return;
         $this->delete()->where(['id' => $id])->commit();
+    }
+
+    public function onCreateTable()
+    {
+        $host = Request::getAddress();
+        $key = rand_str(32);
+        $shop = Config::getConfig('shop');
+        $shop['id'] = 0;
+        $shop['host'] = $host;
+        $shop['key'] = $key;
+        Config::setConfig('shop',$shop);
+        $login = Config::getConfig('login');
+        $login['image'] = $host."/clean_static/img/cover.png";
+        Config::setConfig('login',$login);
+       $this->insert()->keyValue([
+           'id'=>0,
+           'app_name'=>'内置商城',
+           'app_key'=>$key,
+           'app_image'=>$host."/clean_static/img/cover.png",
+       ])->commit();
     }
 
 }
