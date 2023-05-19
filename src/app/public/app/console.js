@@ -18,6 +18,8 @@ const setMode = () => {
         sidenavInstance.changeMode("side");
         sidenavInstance.show();
     }
+
+    $('a.active').removeClass('ripple-surface');
 };
 
 setMode();

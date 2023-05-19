@@ -61,17 +61,17 @@
                                 {break}
                             {/if}
                         {/foreach}
-                        <li class="sidenav-item {$has?'active':''}">
-                            <a href="javascript:void(0)" class="sidenav-link" {if isset($value['pjax'])}pjax=true{/if} >
+                        <li class="sidenav-item ">
+                            <a href="javascript:void(0)" class="sidenav-link {$has?' ripple-surface-primary active':''}" {if isset($value['pjax'])}pjax=true{/if} >
                                 <i class="{$value['icon']}  fa-fw me-3"></i>
                                 <span>{$value['name']}</span>
                             </a>
 
                             <ul class="sidenav-collapse {$has?'show':''}">
                                 {foreach $value['children'] as  $item}
-                                    <li class="sidenav-item {$item['href']===$host?'active':''}">
+                                    <li class="sidenav-item ">
 
-                                        <a class="sidenav-link" href="{$item['href']}"
+                                        <a class="sidenav-link {$item['href']===$host?'ripple-surface-primary active':''}" href="{$item['href']}"
                                            {if isset($value['pjax'])}pjax=true{/if} ><i
                                                     class="{$item['icon']}  fa-fw me-3"></i> {$item['name']}</a>
                                     </li>
@@ -79,8 +79,8 @@
                             </ul>
                         </li>
                     {else}
-                        <li class="sidenav-item {$value['href']===$host?'active':''}">
-                            <a href="{$value['href']}" class="sidenav-link" {if isset($value['pjax'])}pjax=true{/if} >
+                        <li class="sidenav-item">
+                            <a href="{$value['href']}" class="sidenav-link {$value['href']===$host?'ripple-surface-primary active':''}" {if isset($value['pjax'])}pjax=true{/if} >
                                 <i class="{$value['icon']}  fa-fw me-3"></i>
                                 <span>{$value['name']}</span>
                             </a>
