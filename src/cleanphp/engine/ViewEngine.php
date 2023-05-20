@@ -212,6 +212,7 @@ TPL
 
             $__version = Variables::getVersion();
             $__dumps = (new Dump())->dumpType($GLOBALS);
+            $__dumps2 = (new Dump())->dumpType($this->__data);
             $debug = <<<EOF
 <div class="cleanphp-view-engine" style="z-index: 999999999;
     position: fixed;">
@@ -317,6 +318,7 @@ document.querySelector('.cleanphp-view-engine #localtime').textContent = Math.ro
             <div class="tab-button" onclick="switchTab(1)">日志</div>
             <div class="tab-button" onclick="switchTab(2)">请求</div>
             <div class="tab-button" onclick="switchTab(3)">全局变量</div>
+            <div class="tab-button" onclick="switchTab(4)">模板变量</div>
         </div>
         <!-- tab内容 -->
         <div id="tab-contents" style="height: calc(100vh - 150px);overflow-y: scroll;padding: 10px">
@@ -351,6 +353,12 @@ EOF;
             <div class="tab-content">
                 <div style="text-align: left"><pre class="xdebug-var-dump" dir="ltr">
                 {$__dumps}
+                </pre>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div style="text-align: left"><pre class="xdebug-var-dump" dir="ltr">
+                {$__dumps2}
                 </pre>
                 </div>
             </div>
@@ -533,7 +541,7 @@ EOF;
             '({((?!}).)*?)(\$[\w\"\'\[\]]+?)\.(\w+)(.*?})' => '$1$3[\'$4\']$5',
             '({.*?)(\$(\w+)@(index|iteration|first|last|total))+(.*?})' => '$1$_foreach_$3_$4$5',
             '{(\$[\$\w\.\"\'\[\]]+?)\snofilter\s*}' => '<?php echo $1; ?>',
-            '{([\w\$\.\[\]\=\'"\s]+)\?([\w\$\.\[\]\=\'":\s_-]+)}' => '<?php echo $1?$2; ?>',
+            '{([\w\$\.\[\]\=\'"\s]+)\?(.*?:.*?)}' => '<?php echo $1?$2; ?>',
 
             '{(\$[\$\w\"\'\[\]]+?)\s*=(.*?)\s*}' => '<?php $1=$2; ?>',
             '{(\$[\$\w\.\"\'\[\]]+?)\s*}' => '<?php echo htmlspecialchars($1, ENT_QUOTES, "UTF-8"); ?>',

@@ -16,12 +16,14 @@ namespace app;
 
 use app\task\DaemonTasker;
 use cleanphp\App;
+use cleanphp\base\Config;
 use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
 use cleanphp\base\MainApp;
 use cleanphp\base\Response;
 use cleanphp\base\Session;
 use cleanphp\base\Variables;
+use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
 use cleanphp\engine\JsonEngine;
 use cleanphp\engine\ViewEngine;
@@ -32,11 +34,13 @@ use library\task\TaskerTime;
 class Application implements MainApp
 {
 
+
     /**
      * @inheritDoc
      */
     function onRequestArrive()
     {
+        include_once Variables::getLibPath("vpay","src","autoload.php");
         //作为资源服务器，会话有效期至少持续60天
         Session::getInstance()->start(3600 * 24 * 60);
             $string = new StringBuilder(Variables::get("__request_module__"));
@@ -44,7 +48,7 @@ class Application implements MainApp
                 EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
             } else {
                 EngineManager::setDefaultEngine(new ViewEngine());
-                EngineManager::getEngine()->setData("__version", "0.0.1");
+                EngineManager::getEngine()->setData("__version", Config::getConfig('frame')['version']);
                 //刷新一下客户端主题，方便渲染
                 if (Cookie::getInstance()->get("theme") == null) {
                     (new Response())->render(<<<EOF
@@ -59,14 +63,20 @@ EOF
                     )->send();
                 }
                 EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
+                //跳转安装
+
+                if(empty(Cache::init()->get("install")) &&  Variables::get("__request_controller__")!=="install"){
+                    Response::location(url("index",'install','index'));
+                }
+
             }
 
 
-            include_once Variables::getLibPath("vpay","src","autoload.php");
+        if(!TaskerManager::has("App心跳守护进程")){
+            TaskerManager::add(TaskerTime::hour(0),new DaemonTasker(),"App心跳守护进程",-1);
+        }
 
-            if(!TaskerManager::has("App心跳守护进程")){
-                TaskerManager::add(TaskerTime::hour(0),new DaemonTasker(),"App心跳守护进程",-1);
-            }
+
     }
 
 

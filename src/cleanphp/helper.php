@@ -221,7 +221,7 @@ function __serialize($data): string
  */
 function __unserialize(string $data, array $options = null)
 {
-    if($data==null)return null;
+    if(empty($data))return null;
     try{
         SerializableClosure::enterContext();
         $data = ($options === null || PHP_MAJOR_VERSION < 7)

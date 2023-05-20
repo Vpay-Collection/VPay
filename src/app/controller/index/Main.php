@@ -50,6 +50,7 @@ class Main extends Controller
             }
             Response::location($redirect??$default);
         }
+
         EngineManager::getEngine()->setLayout("layout")->setData("title", "Vpay管理后台");
         if (!empty(Config::getConfig("sso"))) {
             Response::location(LoginManager::init()->getLoginUrl());
@@ -87,6 +88,7 @@ class Main extends Controller
         Session::getInstance()->set("order_id", $id);
         EngineManager::getEngine()->setLayout("layout")
             ->setData("app", $app->toArray())
+            ->setData("image",$app->app_image)
             ->setData("title", $app->app_name . "收银台")
             ->setData("mail", Config::getConfig("mail")["received"])
             ->setData("timeout", Config::getConfig("app")["timeout"])

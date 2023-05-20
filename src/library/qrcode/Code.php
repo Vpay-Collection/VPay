@@ -54,10 +54,10 @@ class Code
 
         try {
             $image = Config::getConfig("login")["image"];
-            if ((new StringBuilder($image))->startsWith("/clean_static")) {
-                $image = str_replace("/clean_static", APP_DIR . DS . "app" . DS . "public", $image);
+            if ((new StringBuilder($image))->startsWith(Request::getAddress()."/clean_static")) {
+                $image = str_replace(Request::getAddress()."/clean_static", APP_DIR . DS . "app" . DS . "public", $image);
             } else {
-                $image = str_replace(Response::getHttpScheme() . Request::getDomain() . DS . "image", Variables::getStoragePath("uploads"), $image);
+                $image = str_replace(Request::getAddress() . DS . "image", Variables::getStoragePath("uploads"), $image);
 
             }
 

@@ -3,23 +3,47 @@
         width: 150px;
     }
 </style>
+<header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container container-fluid justify-content-between align-items-center">
+            <a href="/" class="text-reset">
+                <div class="d-flex align-items-center mb-sm-0 mb-xm-2">
 
+                    <div class="col-auto me-3">
+                        <img src="{$app['app_image']}" height="35"/>
+                    </div>
+                    <div class="col d-none d-lg-block me-3">
+                        <h5 class="m-0">{$app["app_name"]}收银台</h5>
+                    </div>
+
+                </div>
+            </a>
+            {* <form class="d-flex align-items-center mb-sm-0 mb-xm-2 ">
+                 <input autocomplete="off" type="search" class="form-control rounded" placeholder="搜索商品"/>
+                 <button type="button" class="input-group-text border-0"><i class="fas fa-search"></i></button>
+             </form>*}
+
+            <div class="d-flex align-items-center mb-sm-0 mb-xm-2 ms-auto me-0">
+                <a class="btn btn-dark px-3" href="https://github.com/Vpay-Collection/VPay" role="button">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Navbar -->
+
+    <!-- Jumbotron -->
+    <div style="margin-top: 58px"></div>
+    <!-- Jumbotron -->
+</header>
 <!-- Container for demo purpose -->
 <div class="container my-5">
 
     <!--Section: Design Block-->
     <section class="mb-10">
         <div class="row">
-            <div class="col-12 mb-5 ms-3">
-                <div class="d-flex align-items-center mb-sm-0 mb-xm-2">
-                    <div class="col-auto me-3">
-                        <img src="{$app['app_image']}" height="35"/>
-                    </div>
-                    <div class="col  me-3">
-                        <h5 class="m-0">{$app["app_name"]}收银台</h5>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-7 pe-lg-4 mb-5 mb-lg-0">
                 <div class="card p-4">
                     <h4 class="mb-4">

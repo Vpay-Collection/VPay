@@ -150,7 +150,7 @@ class Password extends BaseEngine
      //   dumps($passwd,arg("password"));
         $user = arg("username");
         $data = Config::getConfig('login');
-        if (md5($data["username"] . $passwd) === $data["password"] && $user === $data["username"]) {
+        if (password_verify($data["username"] . $passwd, $data["password"]) && $user === $data["username"]) {
             $this->setLogin();
             return true;
         }
@@ -164,10 +164,10 @@ class Password extends BaseEngine
         $new = arg("new");
         if (empty($old) || empty($new)) return true;
         $data = Config::getConfig('login');
-        if (md5($data["username"] . $old) === $data["password"]) {
+        if (password_verify($data["username"] . $old, $data["password"])) {
             Cache::init()->del("token");
             Session::getInstance()->destroy();
-            $data["password"] = md5($username . $new);
+            $data["password"] = password_hash($username . $new,PASSWORD_DEFAULT);
             $data["username"] = $username;
             Config::setConfig("login", $data);
             return true;

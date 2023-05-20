@@ -61,9 +61,7 @@ class AppDao extends Dao
         $shop['host'] = $host;
         $shop['key'] = $key;
         Config::setConfig('shop',$shop);
-        $login = Config::getConfig('login');
-        $login['image'] = $host."/clean_static/img/cover.png";
-        Config::setConfig('login',$login);
+
        $this->insert()->keyValue([
            'id'=>0,
            'app_name'=>'内置商城',

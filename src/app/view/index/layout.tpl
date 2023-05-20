@@ -24,6 +24,7 @@
 </div>
 
 
+
 <!-- Container for demo purpose -->
 {include file=$__template_file}
 

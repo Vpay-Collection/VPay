@@ -33,9 +33,10 @@ class BaseController extends Controller
         if (!LoginManager::init()->isLogin()) {
             Response::location(LoginManager::init()->getLoginUrl());
         }
+
         $user = LoginManager::init()->getUser();
         if(!TaskerManager::has("Github更新检测")){
-            TaskerManager::add(TaskerTime::day(12,00),GithubUpdater::init("Vpay-Collection/Vpay"),"Github更新检测",-1,true);
+            TaskerManager::add(TaskerTime::day(12,00),GithubUpdater::init("Vpay-Collection/Vpay"),"Github更新检测",-1);
         }
         $result = GithubUpdater::init("Vpay-Collection/Vpay")->check(Config::getConfig("frame")["version"], $new, $download, $body);
         EngineManager::getEngine()->setLayout("layout")
