@@ -118,4 +118,14 @@ class SSO extends BaseEngine
         ], AnkioApi::getInstance()->secretKey);
         return AnkioApi::getInstance()->url . '?' . http_build_query($url);
     }
+
+    function setLogin()
+    {
+
+    }
+
+    function getUser(): array
+    {
+        return [];
+    }
 }
