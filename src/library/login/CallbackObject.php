@@ -17,6 +17,7 @@ namespace library\login;
 use library\user\login\Sign;
 use library\verity\VerityException;
 use library\verity\VerityObject;
+use library\verity\VerityRule;
 
 class CallbackObject extends VerityObject
 {
@@ -33,7 +34,7 @@ class CallbackObject extends VerityObject
     {
         parent::__construct($item);
         $item = $this->toArray();
-        if (!Sign::checkSign($item, $key)) {
+        if (!SignUtils::checkSign($item, $key)) {
             throw new VerityException('签名验证失败');
         }
         if (time() - $this->t > 300) {
@@ -48,8 +49,8 @@ class CallbackObject extends VerityObject
     function getRules(): array
     {
         return [
-            't' => '^\d{10}$',
-            'sign' => '^\w{64}$',
+            't' => new VerityRule('^\d{10}$',"时间戳错误",false),
+            'sign' => new VerityRule('^\w{64}$',"签名错误",false),
         ];
     }
 }

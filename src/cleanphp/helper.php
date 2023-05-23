@@ -281,7 +281,6 @@ function rand_str(int $length = 8, bool $upper = true, bool $lower = true, bool 
     $charsList = [
         'abcdefghijklmnopqrstuvwxyz',
         'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         '0123456789',
     ];
     $chars = "";

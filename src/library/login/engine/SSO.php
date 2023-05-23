@@ -10,6 +10,8 @@ use cleanphp\base\Json;
 use cleanphp\base\Request;
 use cleanphp\base\Response;
 use cleanphp\base\Session;
+use cleanphp\base\Variables;
+use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
 use cleanphp\file\Log;
 use library\login\AnkioApi;
@@ -36,7 +38,7 @@ class SSO extends BaseEngine
             }
             case 'logout':
             {
-                $this->logout();
+                $this->logout($_GET['token']);
                 $result = EngineManager::getEngine()->render(200, '成功退出');
                 break;
             }
@@ -64,29 +66,43 @@ class SSO extends BaseEngine
         $last = Session::getInstance()->get('check', 0);
         $token = Session::getInstance()->get('token');
         $device = Session::getInstance()->get('device');
-        if (empty($token) || $device !== $this->getDevice()) {
+
+        if (empty($token) || $device !== $this->getDevice() || empty(Cache::init(0,Variables::getCachePath('tokens'))->get($token))) {
             $this->logout();
             return false;
         }
-        if (time() - $last < 120) {
+        if (time() - $last < 600) { //10分钟检查一次避免过高的请求
             return true;
         }
         Session::getInstance()->set('check', time());
         $data = $this->request('api/login/islogin', ['token' => $token]);
-        return $data['code'] === 200;
+        if($data['code'] === 200){
+            return true;
+        }
+        $this->logout();
+        return false;
     }
-
-    //检查是否登录，1分钟检查一次，频率过高会导致cc攻击
 
     private function request($url, $data = [])
     {
         return AnkioApi::getInstance()->request($url, $data);
     }
 
-    function logout(): void
+    function logout($token = null): void
     {
-        $this->request('api/login/logout', ['token' => Session::getInstance()->get("token")]);
-        Session::getInstance()->destroy();
+        if($token!==null){
+            Cache::init(0,Variables::getCachePath('tokens'))->del($token);
+        }else{
+            $token = Session::getInstance()->get("token");
+            if(!empty($token)){
+                $this->request('api/login/logout', ['token' => $token]);
+                Cache::init(0,Variables::getCachePath('tokens'))->del($token);
+                Session::getInstance()->destroy();
+            }
+
+
+        }
+
     }
 
     private function callback(CallbackObject $object)
@@ -96,7 +112,10 @@ class SSO extends BaseEngine
         if (isset($result['code']) && $result['code'] === 200) {
             Session::getInstance()->set('token', $result['data']['token']);
             Session::getInstance()->set('device', $this->getDevice());
-            EventManager::trigger("__login_success__", $result['data']['user']);
+            $result['data']['username'] = $result['data']['nickname'];
+            Session::getInstance()->set("user",$result['data']);
+            Cache::init(0,Variables::getCachePath('tokens'))->set($result['data']['token'],$result['data']['token']);
+            EventManager::trigger("__login_success__", $result['data']);
             return true;
         } else {
             return $result['msg'];
@@ -109,14 +128,10 @@ class SSO extends BaseEngine
      */
     function getLoginUrl(): string
     {
-        $url = SignUtils::sign([
-            'ts' => time(),
-            'id' => AnkioApi::getInstance()->appId,
-            'host' => Response::getHttpScheme() . Request::getDomain(),
-            'redirect' => Request::getNowAddress(),
-            't' => 'fingerprint'
-        ], AnkioApi::getInstance()->secretKey);
-        return AnkioApi::getInstance()->url . '?' . http_build_query($url);
+        return AnkioApi::getInstance()->url . '?' . http_build_query([
+                'id' => AnkioApi::getInstance()->appId,
+                'redirect' => Request::getNowAddress()
+            ]);
     }
 
     function setLogin()
@@ -126,6 +141,6 @@ class SSO extends BaseEngine
 
     function getUser(): array
     {
-        return [];
+        return  Session::getInstance()->get("user");
     }
 }

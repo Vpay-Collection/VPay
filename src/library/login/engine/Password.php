@@ -152,6 +152,7 @@ class Password extends BaseEngine
         $data = Config::getConfig('login');
         if (password_verify($data["username"] . $passwd, $data["password"]) && $user === $data["username"]) {
             $this->setLogin();
+            EventManager::trigger("__login_success__", $data);
             return true;
         }
         return false;
