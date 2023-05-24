@@ -71,7 +71,7 @@ class ImageUpload
             File::copy($temp, $physics);
             File::del($temp);
         }
-        return url("index", "main", "image", ["type" => $this->dir_name, "file" => $image]);
+        return url("api_index", "main", "image", ["type" => $this->dir_name, "file" => $image]);
     }
 
     /**
