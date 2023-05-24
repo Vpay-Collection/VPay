@@ -134,10 +134,6 @@ class SSO extends BaseEngine
             ]);
     }
 
-    function setLogin()
-    {
-
-    }
 
     function getUser(): array
     {

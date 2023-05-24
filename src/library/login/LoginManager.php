@@ -67,8 +67,4 @@ class LoginManager
         return $this->engine->getUser();
     }
 
-    function setLogin()
-    {
-        return $this->engine->setLogin();
-    }
 }

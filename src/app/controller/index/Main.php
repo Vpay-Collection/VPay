@@ -59,18 +59,6 @@ class Main extends Controller
 
 
 
-    function fast()
-    {
-        $key = arg("key");
-        $hash = md5(Response::getHttpScheme() . Request::getDomain() . Config::getConfig("app")['key']);
-
-        if ($key === $hash) {
-            LoginManager::init()->setLogin();
-            Response::location(url('admin', 'main', 'index'));
-        }
-        Response::location("/");
-    }
-
     function pay()
     {
 
