@@ -139,8 +139,6 @@ class Main extends Controller
         switch ($type) {
             case OrderModel::PAY_ALIPAY:
                 return "支付宝";
-            case OrderModel::PAY_QQ;
-                return "QQ";
             default:
                 return "微信";
         }
