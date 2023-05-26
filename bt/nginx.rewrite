@@ -1,0 +1,7 @@
+if ( $uri ~* "^(.*)\.php$") {
+rewrite ^(.*) /index.php break;
+}
+
+location / {
+  try_files $uri $uri/ /index.php?$query_string;
+}

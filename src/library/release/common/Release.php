@@ -60,7 +60,12 @@ class Release
         $app_dir = $new . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR;
 
         File::copy(BASE_DIR, $new);
-
+        if(file_exists(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'bt')){
+            File::copy(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'bt', $new);
+        }
+        if(file_exists(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'docker')){
+            File::copy(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'docker', $new);
+        }
 
         File::del($app_dir . DIRECTORY_SEPARATOR . "storage");
         File::del($new . DIRECTORY_SEPARATOR . "library" . DIRECTORY_SEPARATOR . "release");

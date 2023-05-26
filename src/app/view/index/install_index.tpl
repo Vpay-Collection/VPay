@@ -199,7 +199,7 @@
                         <h6 class="mb-4">数据库配置</h6>
 
                         <div class="form-outline mb-4">
-                            <input type="text" name="host" id="host" value="localhost" class="form-control" />
+                            <input type="text" name="host" id="host" value="localhost"   class="form-control" />
                             <label class="form-label" for="host">数据库地址</label>
                         </div>
                         <div class="form-outline mb-4">

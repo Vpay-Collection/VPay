@@ -1,0 +1,15 @@
+{
+  "php_ext":"",
+  "chmod":[
+    {"mode":744,"path":"/app"},
+    {"mode":700,"path":"/wp-includes"}
+  ],
+  "success_url":"/",
+  "php_versions":"74,80,81,82",
+  "db_config":"app/config_example.php",
+  "admin_username":"",
+  "admin_password":"",
+  "run_path":"/public",
+  "remove_file":["/.user.ini"],
+  "enable_functions":[]
+}

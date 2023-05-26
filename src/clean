@@ -45,7 +45,6 @@ switch ($argv[1]) {
         $name = "main";
         $single = in_array('-s', $argv);
         $compress = in_array('-c', $argv);
-
         foreach ($argv as $value) {
             switch (substr($value, 0, 2)) {
 
