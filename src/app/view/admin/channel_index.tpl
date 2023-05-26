@@ -65,7 +65,7 @@
                             上传完成请点击保存完成配置
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="file-upload-wrapper shadow-5"
                                          style="width: 200px">
@@ -81,7 +81,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="d-flex justify-content-center mb-4">
                                     <div class="file-upload-wrapper shadow-5"
                                          style="width: 200px">
