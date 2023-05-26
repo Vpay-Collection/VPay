@@ -3,9 +3,7 @@ release-single-compress: clean
 release: clean
 	./clean release
 release-compress: clean
-	./clean release -c
-release-model-compress: clean
-	./clean release -c -m -n=php
+	./clean release -c -v=4.0.1 -n=vpay
 clean:
 	rm -rf ../dist && mkdir ../dist
 start:

@@ -67,7 +67,7 @@
             'host' => '',
             'key' => '',
             'time' => 5,
-            'id' => 3,
+            'id' => 1,
         ),
     'channel' =>
         array (
