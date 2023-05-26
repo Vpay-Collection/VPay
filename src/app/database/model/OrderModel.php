@@ -27,7 +27,6 @@ class OrderModel extends Model
 
     const PAY_WECHAT = 1; //微信收款
     const PAY_ALIPAY = 2;//支付宝收款
-    const PAY_QQ = 3;//QQ
 
 
     public int $id = 0;//唯一id

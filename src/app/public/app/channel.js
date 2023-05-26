@@ -40,7 +40,6 @@ $("#updateInfo").off().on("click", function () {
     $.post("/api/admin/channel/set", {
         "image_alipay": sessionStorage.getItem("image_alipay"),
         "image_wechat": sessionStorage.getItem("image_wechat"),
-        "image_qq": sessionStorage.getItem("image_qq"),
     }, function (data) {
         $("#success_msg_body").text(data.msg);
         mdb.Alert.getInstance(document.getElementById('success_msg')).show();

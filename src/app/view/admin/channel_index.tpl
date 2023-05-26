@@ -97,22 +97,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="d-flex justify-content-center mb-4">
-                                    <div class="file-upload-wrapper shadow-5"
-                                         style="width: 200px">
-                                        <input type="file" class="file-upload-input" id="qq"
-                                               data-mdb-default-file="{$qq}"
-                                               data-mdb-multiple="false"
-                                               data-mdb-remove-btn="删除"
-                                               data-mdb-accepted-extensions="image/*"
-                                               data-mdb-preview-msg="上传QQ收款码"
-                                               data-mdb-default-msg="上传QQ收款码"
-                                               data-mdb-format-error="不支持该文件 (支持的格式为 ~~~)"
-                                               data-mdb-file-upload="file-upload"/>
-                                    </div>
-                                </div>
-                            </div>
 
 
                             <div class="text-center  mb-2">
