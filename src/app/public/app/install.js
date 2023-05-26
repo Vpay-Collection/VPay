@@ -11,8 +11,8 @@ $("form").on('submit',function () {
          $("errorInfo").html(d.msg);
           mdb.Modal.getOrCreateInstance(document.getElementById('error')).show();
       }else{
-         $("#username_modal").html(data._username);
-         $("#password_modal").html(data._password);
+         $("#username_modal").html(data['_username']);
+         $("#password_modal").html(data['_password']);
          mdb.Modal.getOrCreateInstance(document.getElementById('success')).show();
 
       }

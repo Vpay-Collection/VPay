@@ -12,7 +12,7 @@ $(".file-upload-input").off().on('fileAdd.mdb.fileUpload', function (e) {
     data.append('file', addedFile[0]);
     $.ajax({
         type: 'POST',
-        url: "/api/admin/main/upload",
+        url: "/api/admin/user/upload",
         data: data,        beforeSend() {
             loading.show();
         },

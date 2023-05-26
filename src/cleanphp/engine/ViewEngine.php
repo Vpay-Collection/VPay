@@ -882,13 +882,10 @@ pre {
             new $base();
         }
         //调试模式才显示详细错误
-        if (App::$debug) {
-            $result = $this->onControllerError($__controller, $__action);
-            if ($result !== null) {
-                (new Response())->render($result)->send();
-            }
+        $result = $this->onControllerError($__controller, $__action);
+        if ($result !== null) {
+            (new Response())->render($result)->send();
         }
-
         (new Response())->code(404)
             ->contentType($this->getContentType())
             ->render($this->renderMsg(true, 404, "404 not found", $msg))
