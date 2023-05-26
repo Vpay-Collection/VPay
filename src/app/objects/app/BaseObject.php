@@ -39,7 +39,7 @@ class BaseObject extends VerityObject
         } catch (\JsonException $e) {
             throw new VerityException('签名校验错误：' . $e->getMessage());
         }
-        if ($sign !== $this->sign) throw new VerityException('签名校验失败');
+        if ($sign !== $this->sign) throw new VerityException("签名校验失败：".Json::encode($item));
 
         if (time() + 300 < $this->t) throw new VerityException('时间过期了');
     }

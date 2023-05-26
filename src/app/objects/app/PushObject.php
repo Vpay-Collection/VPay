@@ -24,8 +24,8 @@ class PushObject extends BaseObject
     public function getRules(): array
     {
         return array_merge(parent::getRules(), [
-            'type' => new VerityRule('^3|4$', "类型错误", false),
-            'price' => new VerityRule('^[0-9]+(,[0-9]{3})*(\.[0-9]{2})?$', '金额错误', false)
+            'type' => new VerityRule('^1|2$', "类型错误", false),
+            'price' => new VerityRule(VerityRule::FLOAT_AND_INT, '金额错误', false)
         ]);
     }
 }
