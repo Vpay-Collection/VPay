@@ -115,7 +115,6 @@ $("#file-upload").off().on('fileAdd.mdb.fileUpload', function (e) {
 // jshint ignore:start
 
 $('#addOrUpdate').off('shown.bs.modal').on('shown.bs.modal', function (){
-    console.log(this)
     if(wysiwygInstance!==null)return;
      wysiwygInstance = new WYSIWYG(document.getElementsByClassName('wysiwyg')[0], {
         wysiwygTranslations: {
