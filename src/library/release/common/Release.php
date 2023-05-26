@@ -69,7 +69,7 @@ class Release
         $app = $new . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "index.php";
         file_put_contents($app, str_replace("App::run(true);", "App::run(false);", file_get_contents($app)));
         $path = $app_dir . DIRECTORY_SEPARATOR . "config_example.php";
-        unlink($app_dir . DIRECTORY_SEPARATOR."config.php");
+        @unlink($app_dir . DIRECTORY_SEPARATOR."config.php");
         $config = include_once $path;
         $config['frame']['version'] = $version;
         $config['frame']['view_debug'] = false;
