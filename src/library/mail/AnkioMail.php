@@ -15,6 +15,9 @@
 namespace library\mail;
 
 
+use cleanphp\base\Config;
+use library\login\AnkioApi;
+
 class AnkioMail
 {
     /**
@@ -26,7 +29,10 @@ class AnkioMail
      */
     static function send(string $mailto, string $subject, string $content, string $fromname, $debug = false)
     {
-        //TODO 此处添加统一邮件发送逻辑
+        $config = Config::getConfig('sso');
+        if (!empty($config)) {
+           return AnkioApi::sendMail($mailto, $subject, $content, $fromname);
+        }
         return (new Email())->send($mailto, $subject, $content, $fromname, $debug ? 1 : 0);
     }
 
