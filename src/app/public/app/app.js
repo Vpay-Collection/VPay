@@ -18,15 +18,19 @@ function loadTable(page, size) {
                 ],
                 rows: data.data.map((row) => {
                     //  console.log(row);
+                    var action = '';
+                    if(row['id']!==1){
+                        action = `
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fas fa-pen"></i></button>
+      <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fa fa-trash"></i></button>`
+                    }
                     return Object.assign({}, row, {
                         app_image: `<img
   src="${row.app_image}"
   class="img-fluid rounded-circle"
   alt=""  height="fit-content" style="max-height: 50px"
 />`,
-                        action: `
-      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fas fa-pen"></i></button>
-      <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fa fa-trash"></i></button>`,
+                        action: action,
                     });
 
                 })
