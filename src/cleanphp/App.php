@@ -53,35 +53,39 @@ class App
         if (version_compare(PHP_VERSION, '7.4.0', '<')) {
             exit("请使用PHP 7.4以上版本运行该应用");
         }
+        define("DS", DIRECTORY_SEPARATOR);//定义斜杠符号
+        define("APP_CORE", APP_DIR . DS . 'cleanphp' . DS);//定义程序的核心目录
+
         self::$cli = PHP_SAPI === 'cli';
         if (self::$cli) {
             $_SERVER["SERVER_NAME"] = "0.0.0.0";
             $_SERVER["REQUEST_METHOD"] = "GET";
         }//命令行重置
-        define("DS", DIRECTORY_SEPARATOR);//定义斜杠符号
-        define("APP_CORE", APP_DIR . DS . 'cleanphp' . DS);//定义程序的核心目录
+
         include_once APP_CORE . "helper.php";//载入内置助手函数
         include_once APP_CORE . "base" . DS . "Variables.php";// 加载变量
         include_once APP_CORE . "base" . DS . "Loader.php";// 加载自动加载器
 
 
         Variables::init();//初始化变量
+
         //初始化时间
         App::$debug && Variables::set('__frame_start__', microtime(true));
         try {
-
-            Loader::register();// 注册自动加载
-            App::$debug && Log::record("Frame", "框架启动...");
 
             $config = APP_DIR . DS . "app" . DS . "config.php";
             $config_example = APP_DIR . DS . "app" . DS . "config_example.php";
             if (!file_exists($config)) {
                 if (file_exists($config_example)) {
+                    include_once APP_DIR . DS.'cleanphp'.DS.'file'.DS.'File.php';
                     File::copy($config_example, $config);
                 } else {
                     exit("缺少配置文件config.php");
                 }
             }
+            Loader::register();// 注册自动加载
+            App::$debug && Log::record("Frame", "框架启动...");
+
             Config::register();// 加载配置文件
             if (self::$cli) {
 
