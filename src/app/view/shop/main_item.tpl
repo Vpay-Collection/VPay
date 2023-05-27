@@ -40,8 +40,6 @@
                             <button type="button"  class="btn btn-success me-2 submit-btn" data-id="{$_id}" data-type="2"><i
                                         class="fab fa-weixin me-2"></i>微信
                             </button>
-                            <button  type="button" class="btn btn-info submit-btn" data-id="{$_id}" data-type="3"><i class="fab fa-qq me-2"></i>QQ
-                            </button>
                         </div>
                     </form>
                 </div>
