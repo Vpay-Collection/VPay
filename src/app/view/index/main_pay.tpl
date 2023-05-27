@@ -53,9 +53,6 @@
                         {elseif $pay_type === 2}
                             <i class="fab fa-weixin me-2 text-success"></i>
                             微信扫码支付
-                        {else}
-                            <i class="fab fa-qq me-2 text-info"></i>
-                            QQ扫码支付
                         {/if}
                     </h4>
                     <div class="text-center">
