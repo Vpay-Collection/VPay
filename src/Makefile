@@ -3,7 +3,7 @@ release-single-compress: clean
 release: clean
 	./clean release
 release-compress: clean
-	./clean release -c -v=4.0.2 -n=vpay
+	./clean release -c -v=4.0.3 -n=vpay
 clean:
 	rm -rf ../dist && mkdir ../dist
 start:

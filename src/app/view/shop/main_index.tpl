@@ -9,7 +9,7 @@
                     <a href="{url('shop','main','item',['id'=>$item2['id']])}" class="text-reset">
                         <div class="card">
                             <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
-                                <img src="{$item2['icon']}" class="w-100"/>
+                                <img src="{$item2['icon']}" class="w-100 " style="height: 150px"/>
 
                                 <div class="mask">
                                     <div class="d-flex justify-content-start align-items-end h-100">
