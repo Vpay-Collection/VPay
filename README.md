@@ -14,21 +14,68 @@
 
 ## 简介
 
-Vpay ——为个人开发者解决收款难题。
+Vpay ——一款个人收款解决方案，使个人开发者能够安全高效地处理在线交易。
 
 
 ## 安装指南
 
-### 宝塔面板一键部署
+### 服务端安装
+> 以下两种方案二选一
+#### 一、宝塔面板一键部署
 
+1. 导入项目到宝塔面板
+![img.png](img.png)
+2. 点击一键部署，填入域名后点提交即可
+![img_1.png](img_1.png)
+
+#### 二、手动部署
+
+1. 导入项目到网站文件夹下
+2. 配置运行目录为`/public`
+3. 配置伪静态
+```
+if ( $uri ~* "^(.*)\.php$") {
+rewrite ^(.*) /index.php break;
+}
+
+location / {
+  try_files $uri $uri/ /index.php?$query_string;
+}
+
+```
+4. 如果使用宝塔面板部署，请务必删除宝塔默认配置的配置文件
+```
+location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+        expires      30d;
+        error_log /dev/null;
+        access_log /dev/null;
+    }
+
+    location ~ .*\.(js|css)?$
+    {
+        expires      12h;
+        error_log /dev/null;
+        access_log /dev/null;
+    }
+```
+### 服务端配置
+
+1. 配置App监控端，从[vpay-android](https://github.com/Vpay-Collection/vpay-android)下载安卓客户端，扫码配置：
+![img_2.png](img_2.png)
+2. 配置收款码，左侧为支付宝右侧为微信：
+![img_3.png](img_3.png)
+3. 配置邮件通知
+![img_4.png](img_4.png)
+
+### 接入Vpay支付
+
+参考[vpay-sdk](https://github.com/Vpay-Collection/vpay-sdk)进行接入
 
 ## 文档
 
-[阅读文档](https://vpay.ankio.net/page/2#/_page/app)
+[阅读文档](https://vpay.ankio.net/)
 
-## Contribution
-
-本项目安卓端统一采用`kotlin`编写，包含`java`的PR会直接关闭。
 
 ## 开源协议
 
