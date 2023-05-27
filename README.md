@@ -7,7 +7,7 @@
 
 <p align="center">
  <img src="https://img.shields.io/static/v1?label=licenes&message=GPL%20V3&color=important&style=for-the-badge"/>
- <img src="https://img.shields.io/static/v1?label=version&message=4.0.2&color=9cf&style=for-the-badge"/>
+ <img src="https://img.shields.io/static/v1?label=version&message=4.0.3&color=9cf&style=for-the-badge"/>
  <img src="https://img.shields.io/static/v1?label=language&message=php&color=777BB4&style=for-the-badge"/>
 
 </p>
@@ -43,9 +43,9 @@ location / {
 }
 
 ```
-4. 如果使用宝塔面板部署，请务必删除宝塔默认配置的配置文件
+4. 如果使用宝塔面板部署，请**务必删除**宝塔默认配置的以下配置文件
 ```
-location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
     {
         expires      30d;
         error_log /dev/null;
