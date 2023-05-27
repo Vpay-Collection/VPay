@@ -42,7 +42,7 @@
 <div class="container my-5">
 
     <!--Section: Design Block-->
-    <section class="mb-10">
+    <section class="mb-10 pt-5">
         <div class="row">
             <div class="col-lg-7 pe-lg-4 mb-5 mb-lg-0">
                 <div class="card p-4">
