@@ -30,6 +30,13 @@ class TaskerManager
         if (empty($list)) {
             return [];
         } else {
+
+            foreach ($list as $key=>$value){
+                if(!is_object($value)|| get_class($value)!==TaskInfo::class){
+                    unset($list[$key]);
+                }
+            }
+
             return $list;
         }
     }

@@ -14,6 +14,7 @@
 namespace cleanphp\process;
 
 use cleanphp\App;
+use cleanphp\base\Dump;
 use cleanphp\base\Error;
 use cleanphp\base\EventManager;
 use cleanphp\base\Request;
@@ -137,11 +138,17 @@ class Async
             App::exit("您无权访问该资源。");
             return;
         }
-
+        try {
         $key = $asyncObject->key;
         $function = $asyncObject->function;
         $timeout = $asyncObject->timeout;
+        } catch (NoticeException $exception) {
+            Log::record("Async", "序列化对象错误！");
 
+            Log::record("Async", "错误对象：".(new Dump())->dumpTypeAsString($asyncObject));
+
+            App::exit("序列化对象错误");
+             }
         set_time_limit($timeout);
         Variables::set("__async_task_id__", $key);
         Variables::set("__frame_log_tag__", "async_{$key}_");
