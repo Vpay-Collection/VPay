@@ -91,12 +91,12 @@ class SSO extends BaseEngine
     function logout($token = null): void
     {
         if($token!==null){
-            Cache::init(0,Variables::getCachePath('tokens'))->del($token);
+            Cache::init(0,Variables::getCachePath('tokens'.DS))->del($token);
         }else{
             $token = Session::getInstance()->get("token");
             if(!empty($token)){
                 $this->request('api/login/logout', ['token' => $token]);
-                Cache::init(0,Variables::getCachePath('tokens'))->del($token);
+                Cache::init(0,Variables::getCachePath('tokens'.DS))->del($token);
                 Session::getInstance()->destroy();
             }
 
@@ -114,7 +114,7 @@ class SSO extends BaseEngine
             Session::getInstance()->set('device', $this->getDevice());
             $result['data']['username'] = $result['data']['nickname'];
             Session::getInstance()->set("user",$result['data']);
-            Cache::init(0,Variables::getCachePath('tokens'))->set($result['data']['token'],$result['data']['token']);
+            Cache::init(0,Variables::getCachePath('tokens'.DS))->set($result['data']['token'],$result['data']['token']);
             EventManager::trigger("__login_success__", $result['data']);
             return true;
         } else {

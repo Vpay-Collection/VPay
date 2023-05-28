@@ -24,7 +24,7 @@ class TaskerManager
      * 获取定时任务列表
      * @return array|mixed
      */
-    public static function list()
+    public static function getList()
     {
         $list = Cache::init(0, Variables::getCachePath("tasker", DS))->get("tasker_list");
         if (empty($list)) {
@@ -41,7 +41,7 @@ class TaskerManager
      */
     private static function get($key): ?TaskInfo
     {
-        $list = self::list();
+        $list = self::getList();
         /**
          * @var $value TaskInfo
          */
@@ -82,7 +82,7 @@ class TaskerManager
      */
     public static function has($key): bool
     {
-        $list = self::list();
+        $list = self::getList();
         /**
          * @var $value TaskInfo
          */
@@ -101,7 +101,7 @@ class TaskerManager
      */
     public static function del($key)
     {
-        $list = self::list();
+        $list = self::getList();
         /**
          * @var $value TaskInfo
          */
@@ -151,7 +151,7 @@ class TaskerManager
 
         $task->next = CronExpression::factory($cron)->getNextRunDate()->getTimestamp();
         $task->closure = $taskerAbstract;
-        $list = self::list();
+        $list = self::getList();
         $list[] = $task;
         Cache::init(0, Variables::getCachePath("tasker", DS))->set("tasker_list", $list);
         if (App::$debug) {
@@ -168,7 +168,7 @@ class TaskerManager
     public static function run()
     {
 
-        $data = self::list();
+        $data = self::getList();
         /**
          * @var $value TaskInfo
          */

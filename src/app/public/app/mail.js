@@ -11,7 +11,7 @@ $("form").off().on("submit", function () {
 $("#test").off().on("click", function () {
     $("#testData").html("<p>测试中，请稍后...</p>");
 
-    $.pjax({
+    $.post({
         url: "/api/admin/notice/test",
         method: "POST"
         ,
