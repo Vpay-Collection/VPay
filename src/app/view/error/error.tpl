@@ -17,14 +17,14 @@
     />
     <!-- MDB ESSENTIAL -->
     {if $theme == "dark"}
-        <link id="theme-link" rel="stylesheet" href="../../public/css/mdb.dark.min.css?v={$__version}"/>
+        <link id="theme-link" rel="stylesheet" href="../../public/css/mdb.dark.min.css"/>
     {else}
-        <link id="theme-link" rel="stylesheet" href="../../public/css/mdb.min.css?v={$__version}"/>
+        <link id="theme-link" rel="stylesheet" href="../../public/css/mdb.min.css"/>
     {/if}
     <!-- MDB PLUGINS -->
     {* <link rel="stylesheet" href="../../public/plugins/css/all.min.css" />*}
     <!-- Custom styles -->
-    <script src="../../public/js/theme.js?v={$__version}"></script>
+    <script src="../../public/js/theme.js"></script>
 </head>
 
 <body>

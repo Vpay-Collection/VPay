@@ -157,7 +157,7 @@ class TaskerManager
         $task->key = uniqid("task_");
 
         $task->next = CronExpression::factory($cron)->getNextRunDate()->getTimestamp();
-        $task->closure = $taskerAbstract;
+        $task->closure = __serialize($taskerAbstract);
         $list = self::getList();
         $list[] = $task;
         Cache::init(0, Variables::getCachePath("tasker", DS))->set("tasker_list", $list);
@@ -176,6 +176,7 @@ class TaskerManager
     {
 
         $data = self::getList();
+        App::$debug && Log::record("Tasker", "当前定时任务列表：".print_r($data,true));
         /**
          * @var $value TaskInfo
          */
@@ -192,7 +193,7 @@ class TaskerManager
                 /**
                  * @var  TaskerAbstract $task
                  */
-                $task = $value->closure;
+                $task = __unserialize($value->closure);
                 $timeout = $task->getTimeOut();
 
                 go(function () use ($task) {

@@ -13,8 +13,10 @@
 
 namespace app\task;
 
+use app\controller\api\App;
 use cleanphp\base\Config;
 use cleanphp\cache\Cache;
+use cleanphp\file\Log;
 use library\mail\AnkioMail;
 use library\task\TaskerAbstract;
 use Throwable;
@@ -35,6 +37,7 @@ class DaemonTasker extends TaskerAbstract
      */
     public function onStart()
     {
+
         $last = Cache::init()->get("last_heart");
         $online = false;
         if (time() - $last <= 60 * 15) {
@@ -44,6 +47,7 @@ class DaemonTasker extends TaskerAbstract
             $file = AnkioMail::compileNotify("#e74c3c", "#fff",  Config::getConfig("login")['image'],"Vpay", "App客户端心跳掉线", "<p>App客户端心跳掉线，请检查手机端监控</p><p>最后心跳时间：" . date("Y-m-d H:i:s", $last) . "</p>");
             AnkioMail::send(Config::getConfig("mail")['received'], "App客户端心跳掉线", $file, "Vpay");
         }
+        \cleanphp\App::$debug && Log::record("Daemon","App心跳检测完成");
 
     }
 

@@ -73,7 +73,7 @@ EOF
 
 
         if(!TaskerManager::has("App心跳守护进程")){
-            TaskerManager::add(TaskerTime::hour(0),new DaemonTasker(),"App心跳守护进程",-1);
+            TaskerManager::add(TaskerTime::nMinute(1),new DaemonTasker(),"App心跳守护进程",-1);
         }
 
 
