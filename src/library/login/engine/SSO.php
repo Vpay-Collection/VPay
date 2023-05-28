@@ -67,7 +67,7 @@ class SSO extends BaseEngine
         $token = Session::getInstance()->get('token');
         $device = Session::getInstance()->get('device');
 
-        if (empty($token) || $device !== $this->getDevice() || empty(Cache::init(0,Variables::getCachePath('tokens'))->get($token))) {
+        if (empty($token) || $device !== $this->getDevice() || empty(Cache::init(0,Variables::getCachePath('tokens'.DS))->get($token))) {
             $this->logout();
             return false;
         }
