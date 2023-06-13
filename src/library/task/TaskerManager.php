@@ -144,7 +144,6 @@ class TaskerManager
                 } finally {
                     $taskerAbstract->onStop();
                 }
-
             }, $taskerAbstract->getTimeOut());
             return '';
         }

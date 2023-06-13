@@ -65,7 +65,7 @@ class Async
         $asyncObject = new AsyncObject();
         $asyncObject->timeout = $timeout;
         $asyncObject->state = AsyncObject::WAIT;
-        $asyncObject->function = $function;
+        $asyncObject->function = __serialize($function);
         $asyncObject->key = $key;
 
         $url = url("async", "task", "start");
@@ -140,7 +140,7 @@ class Async
         }
         try {
         $key = $asyncObject->key;
-        $function = $asyncObject->function;
+        $function = __unserialize($asyncObject->function);
         $timeout = $asyncObject->timeout;
         } catch (NoticeException $exception) {
             Log::record("Async", "序列化对象错误！");

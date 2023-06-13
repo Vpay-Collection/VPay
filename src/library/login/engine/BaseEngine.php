@@ -38,9 +38,9 @@ abstract class BaseEngine
      */
     function getDevice(): string
     {
-        $ip = Request::getHeaderValue('Client-Ip') ?? Request::getClientIP();
+        //$ip = Request::getHeaderValue('Client-Ip') ?? Request::getClientIP();
         $ua = Request::getHeaderValue('User-Agent') ?? 'NO UA';
-        return md5($ip . $ua);
+        return md5('127.0.0.1' . $ua);
     }
 
 

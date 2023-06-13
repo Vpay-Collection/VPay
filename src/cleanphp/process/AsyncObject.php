@@ -22,6 +22,6 @@ class AsyncObject
     public string $key = "";
     public int $timeout = 0;//超时时间
     public string $token = "";//校验token
-    public $function = null;
+    public string $function = '';
     public int $state = 0;
 }

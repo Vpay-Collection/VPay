@@ -17,6 +17,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="ftp (project level)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/src" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="library">
         <serverdata>
           <mappings>
