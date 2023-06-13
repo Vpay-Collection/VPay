@@ -7,10 +7,15 @@
 
 <p align="center">
  <img src="https://img.shields.io/static/v1?label=licenes&message=GPL%20V3&color=important&style=for-the-badge"/>
- <img src="https://img.shields.io/static/v1?label=version&message=4.0.3&color=9cf&style=for-the-badge"/>
+ <img src="https://img.shields.io/static/v1?label=version&message=4.0.4&color=9cf&style=for-the-badge"/>
  <img src="https://img.shields.io/static/v1?label=language&message=php&color=777BB4&style=for-the-badge"/>
 
 </p>
+
+**⚠️⚠️⚠️警告** 
+1. `master`分支版本为4.0系列全面重构的版本，可能含有BUG，请谨慎使用；
+2. `dev`分支版本为3.0系列稳定版本；
+3. 旧版稳定版请使用2.0系列版本，配合官方App使用。
 
 ## 简介
 
