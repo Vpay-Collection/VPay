@@ -15,7 +15,6 @@
 namespace app;
 
 use app\task\DaemonTasker;
-use cleanphp\App;
 use cleanphp\base\Config;
 use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
@@ -40,18 +39,18 @@ class Application implements MainApp
      */
     function onRequestArrive()
     {
-        include_once Variables::getLibPath("vpay","src","autoload.php");
+        include_once Variables::getLibPath("vpay", "src", "autoload.php");
         //作为资源服务器，会话有效期至少持续60天
         Session::getInstance()->start(3600 * 24 * 60);
-            $string = new StringBuilder(Variables::get("__request_module__"));
-            if ($string->startsWith("api")) {
-                EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
-            } else {
-                EngineManager::setDefaultEngine(new ViewEngine());
-                EngineManager::getEngine()->setData("__version", Config::getConfig('frame')['version']);
-                //刷新一下客户端主题，方便渲染
-                if (Cookie::getInstance()->get("theme") == null) {
-                    (new Response())->render(<<<EOF
+        $string = new StringBuilder(Variables::get("__request_module__"));
+        if ($string->startsWith("api")) {
+            EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
+        } else {
+            EngineManager::setDefaultEngine(new ViewEngine());
+            EngineManager::getEngine()->setData("__version", Config::getConfig('frame')['version']);
+            //刷新一下客户端主题，方便渲染
+            if (Cookie::getInstance()->get("theme") == null) {
+                (new Response())->render(<<<EOF
  <script>
     function isDarkMode() {
       return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -60,20 +59,20 @@ class Application implements MainApp
     location.reload()
   </script>
 EOF
-                    )->send();
-                }
-                EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
-                //跳转安装
+                )->send();
+            }
+            EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
+            //跳转安装
 
-                if(empty(Cache::init()->get("install")) &&  Variables::get("__request_controller__")!=="install"){
-                    Response::location(url("index",'install','index'));
-                }
-
+            if (empty(Cache::init()->get("install")) && Variables::get("__request_controller__") !== "install") {
+                Response::location(url("index", 'install', 'index'));
             }
 
+        }
 
-        if(!TaskerManager::has("App心跳守护进程")){
-            TaskerManager::add(TaskerTime::nHour(1,0),new DaemonTasker(),"App心跳守护进程",-1);
+
+        if (!TaskerManager::has("App心跳守护进程")) {
+            TaskerManager::add(TaskerTime::nHour(1, 0), new DaemonTasker(), "App心跳守护进程", -1);
         }
 
 
@@ -101,7 +100,6 @@ EOF
                 $render_data['error_code'] = $data['data']['code'];
             else
                 $render_data['error_code'] = 500;
-
 
 
             $data['tpl'] = EngineManager::getEngine()
