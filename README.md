@@ -25,7 +25,7 @@ Vpay ——一款个人收款解决方案，使个人开发者能够安全高效
 ## 安装指南
 
 ### 服务端安装
-> 以下两种方案二选一
+> 以下三种方案三选一
 #### 一、宝塔面板一键部署
 
 1. 导入项目到宝塔面板
@@ -64,6 +64,24 @@ location / {
         access_log /dev/null;
     }
 ```
+
+### Docker部署
+
+1. 执行docker-compose
+
+```shell
+git clone https://github.com/Vpay-Collection/Vpay
+docker-compose
+```
+2. 按照页面提示安装，其中以下内容无需填写
+- 数据库地址
+- 数据库用户名
+- 数据库密码
+- 数据库端口
+- 本站域名
+
+
+
 ### 服务端配置
 
 1. 配置App监控端，从[vpay-android](https://github.com/Vpay-Collection/vpay-android)下载安卓客户端，扫码配置：

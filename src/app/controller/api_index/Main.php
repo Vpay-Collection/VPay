@@ -39,17 +39,21 @@ EOF;
         $file = get('file', '');
         Route::renderStatic(Variables::getStoragePath("uploads", get("type", "temp"), $file));
     }
-
+    private function isDocker(): bool
+    {
+        return file_exists(APP_DIR.DS."docker_runtime");
+    }
     function install()
     {
 
-        $servername = arg('host');
-        $port = arg('port',3306); // MySQL 默认端口是 3306
-        $username = arg('username');
-        $password = arg('password');
-        $database = arg('database');
+        $isDocker = $this->isDocker();
+        $servername = $isDocker?"0.0.0.0":arg('host');
+        $port = $isDocker?3306:arg('port',3306); // MySQL 默认端口是 3306
+        $username = $isDocker?"":arg('username');
+        $password = $isDocker?"":arg('password');
+        $database = $isDocker?"test":arg('database');
         try {
-            $conn = new PDO("mysql:host=$servername;port=$port;dbname=$database", $username, $password);
+            $conn = new PDO("mysql:host=127.0.0.1;port=$port;dbname=$database", $username, $password);
         } catch (PDOException $e) {
            return EngineManager::getEngine()->render(403,$e->getMessage());
         }

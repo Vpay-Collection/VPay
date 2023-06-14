@@ -203,16 +203,16 @@
                             <label class="form-label" for="host">数据库地址</label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="text" name="username" id="username" class="form-control" />
+                            <input type="text" name="username" id="username" class="form-control" placeholder="docker安装留空" />
                             <label class="form-label" for="username">数据库用户名</label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="text" name="password" id="password" class="form-control" />
+                            <input type="text" name="password" id="password" class="form-control" placeholder="docker安装留空" />
                             <label class="form-label" for="password">数据库密码</label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="text" name="database" id="database" class="form-control" />
-                            <label class="form-label" for="database">数据库名</label>
+                            <input type="text" name="database" id="database" class="form-control" placeholder="docker安装留空"/>
+                            <label class="form-label" for="database" >数据库名</label>
                         </div>
                         <div class="form-outline mb-4">
                             <input type="number" name="port" id="port" value="3306" class="form-control" />
@@ -220,7 +220,7 @@
                         </div>
                         <h6 class="mb-4">网站配置</h6>
                         <div class="form-outline mb-4">
-                            <input type="text" name="domain" id="domain" class="form-control" value="{$domain}" />
+                            <input type="text" name="domain" id="domain" class="form-control" value="{$domain}" placeholder="docker安装留空" />
                             <label class="form-label" for="domain">本站域名</label>
 
                         </div>

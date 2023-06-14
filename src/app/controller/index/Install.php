@@ -115,10 +115,12 @@ class Install extends Controller
         ->setData("dirs",$dirs)
         ->setData("functions",$functions)
         ->setData("extends",$extends)
-        ->setData("domain",Request::getDomain());
+        ->setData("domain",Request::getDomainNoPort());
 
 
     }
+
+
 
     private function checkFunctionAvailability($functions): array
     {
