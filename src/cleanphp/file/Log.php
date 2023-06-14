@@ -44,6 +44,31 @@ class Log
     public static function record($tag, $msg, int $type = self::TYPE_INFO)
     {
         self::getInstance($tag)->addTemp(self::getInstance($tag)->setType($type)->write($msg));
+        if($type===Log::TYPE_ERROR){
+
+            self::getInstance($tag)->addTemp(self::getInstance($tag)->setType($type)->write(self::printStackTrace()));
+        }
+    }
+
+static function printStackTrace(): string
+{
+        $str = "";
+        $trace = debug_backtrace();
+        foreach ($trace as $index => $call) {
+            if ($index === 0) {
+                // 忽略 printStackTrace() 函数自身的调用
+                continue;
+            }
+
+            $file = $call['file'] ?? 'unknown';
+            $line = $call['line'] ?? 'unknown';
+            $function = $call['function'] ?? 'unknown';
+            $class = $call['class'] ?? '';
+            $type = $call['type'] ?? '';
+
+            $str.= "#{$index}: {$file} ({$line}): {$class}{$type}{$function}()" . PHP_EOL;
+        }
+        return $str;
     }
 
     /**

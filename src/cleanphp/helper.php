@@ -206,6 +206,7 @@ function url(string $m = 'index', string $c = 'main', string $a = 'index', array
  */
 function __serialize($data): string
 {
+    SerializableClosure::setSecretKey('cleanphp');
     SerializableClosure::enterContext();
     SerializableClosure::wrapClosures($data);
     $data = serialize($data);
@@ -224,6 +225,7 @@ function __unserialize(string $data, array $options = null)
 {
     if(empty($data))return null;
     try{
+        SerializableClosure::setSecretKey('cleanphp');
         SerializableClosure::enterContext();
         $data = ($options === null || PHP_MAJOR_VERSION < 7)
             ? unserialize($data)
@@ -231,7 +233,8 @@ function __unserialize(string $data, array $options = null)
         SerializableClosure::unwrapClosures($data);
         SerializableClosure::exitContext();
     }catch (\cleanphp\exception\NoticeException $exception){
-        Log::record("__unserialize", "反序列化错误：".$exception->getMessage());
+        Log::record("__unserialize","需要反序列化的字符串：".$data);
+        Log::record("__unserialize", "反序列化错误：".$exception->getMessage(),Log::TYPE_ERROR);
         return null;
     }
     return $data;
