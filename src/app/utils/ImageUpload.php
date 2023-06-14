@@ -97,6 +97,9 @@ class ImageUpload
     {
         $upload = new Upload();
         $upload->path = $this->temp;
+        $upload->allow_type = [
+            'jpg','jpeg','png','gif','webp'
+        ];
         $upload->max_size = 1024 * 10;
         try {
             $upload->upload(function (UploadFile &$file) {

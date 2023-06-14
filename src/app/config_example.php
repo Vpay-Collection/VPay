@@ -6,7 +6,7 @@
                     0 => '0.0.0.0',
                 ),
             'rewrite' => true,
-            'version' => '4.0.0',
+            'version' => '4.0.5',
             'log' => 30,
             'session' => 'pay_session',
             'view_debug' => false,
