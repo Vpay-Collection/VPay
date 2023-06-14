@@ -11,4 +11,3 @@
 <script src="../../public/app/page.js?v={$__version}" defer></script>
 
 <script src="../../public/app/console.js?v={$__version}" defer></script>
-<script src="../../public/app/index.js?v={$__version}" defer></script>

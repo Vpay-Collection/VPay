@@ -40,28 +40,14 @@ function onChange(e) {
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onChange);
 onChange(window.matchMedia('(prefers-color-scheme: dark)'));
-/*
-const addEventListener = Element.prototype.addEventListener;
-let __listeners = {};
+document.addEventListener('DOMContentLoaded', function() {
+    hideLoading();
+});
 
-Element.prototype.addEventListener = function (type, listener) {
-    __listeners = __listeners || {};
-    if (__listeners[type]) {
-        __listeners[type].push({
-            target: this,
-            listener,
-            source: new Error().stack.split("\n")[2].trim(),
-        });
-    } else {
-        __listeners[type] = [
-            {
-                target: this,
-                listener,
-                source: new Error().stack.split("\n")[2].trim(),
-            },
-        ];
-    }
+function showLoading() {
+    document.getElementById('loadingOverlay').style.display =  'flex';
+}
 
-    addEventListener.call(this, type, listener);
-};
-*/
+function hideLoading() {
+    document.getElementById('loadingOverlay').style.display =  'none';
+}
