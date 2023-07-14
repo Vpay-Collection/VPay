@@ -14,7 +14,6 @@ namespace cleanphp\base;
 
 
 use cleanphp\App;
-use cleanphp\exception\ExitApp;
 use cleanphp\objects\StringBuilder;
 
 /**
@@ -40,7 +39,7 @@ class Response
      * @param string $url 跳转路径
      * @param int $timeout 延时跳转
      */
-    public static function location(string $url, int $timeout = 0)
+    public static function location(string $url, int $timeout = 0): void
     {
         if (!(new StringBuilder($url))->startsWith("http")) {
             $url = Response::getHttpScheme() . Request::getDomain() . $url;
@@ -58,9 +57,9 @@ class Response
 
     /**
      * 获取浏览器的http协议
-     * @return mixed|string|null
+     * @return string
      */
-    static function getHttpScheme()
+    static function getHttpScheme(): string
     {
         if (($http = Variables::get("__http_scheme__")) !== null) {
             return $http;
@@ -116,8 +115,40 @@ class Response
         return $this;
     }
 
+    /**
+     * 设置缓存分钟数
+     * @param $min
+     * @return $this
+     */
+    public function cache($min): Response
+    {
+        $seconds_to_cache = $min * 60 ;
+        $ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+        $this->header["Expires"] = $ts;
+        $this->header["Pragma"] = "cache";
+        $this->header["Cache-Control"] = "max-age=$seconds_to_cache";
+        return $this;
+    }
 
-    public function send()
+    /**
+     * 设置header头
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function header($key,$value): Response
+    {
+        $this->header[$key] = $value;
+        return $this;
+    }
+
+    public function setHeaders($header = []){
+        $this->header = $header;
+        return $this;
+    }
+
+
+    public function send(): void
     {
         //允许跨域
         $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
@@ -175,7 +206,7 @@ class Response
      * 结束Http响应
      * @return void
      */
-    static function finish()
+    static function finish(): void
     {
         if (function_exists('fastcgi_finish_request')) {
             // 提高页面响应

@@ -41,7 +41,7 @@ abstract class Driver
      * @param SqlKey $sqlKey
      * @return mixed
      */
-    abstract function renderKey(SqlKey $sqlKey);
+    abstract function renderKey(SqlKey $sqlKey): mixed;
 
     /**
      * 获取数据库链接
@@ -54,7 +54,7 @@ abstract class Driver
      * @param $table string 表格
      * @return mixed
      */
-    abstract function renderEmpty(string $table);
+    abstract function renderEmpty(string $table): mixed;
 
     /**
      * 处理插入模式

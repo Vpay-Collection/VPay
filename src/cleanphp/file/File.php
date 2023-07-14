@@ -130,12 +130,12 @@ class File
         }
     }
 
-    static function traverseDirectory($dir, $callback)
+    static function traverseDirectory($dir, $callback): void
     {
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
-                    if ($file != '.' && $file != '..' && substr($file, 0, 1) !== ".") {
+                    if ($file != '.' && $file != '..' && !str_starts_with($file, ".")) {
                         $path = $dir . DIRECTORY_SEPARATOR . $file;
                         if (is_dir($path)) {
                             self::traverseDirectory($path, $callback);
@@ -150,11 +150,11 @@ class File
     }
 
 
-    private static function addFile2Zip($path, ZipArchive $zip, $replace)
+    private static function addFile2Zip($path, ZipArchive $zip, $replace): void
     {
         $handler = opendir($path); //打开当前文件夹由$path指定。
         while (($filename = readdir($handler)) !== false) {
-            if (strpos($filename, ".") !== 0) {//文件夹文件名字为'.'和‘..'，不要对他们进行操作
+            if (!str_starts_with($filename, ".")) {//文件夹文件名字为'.'和‘..'，不要对他们进行操作
                 if (is_dir($path . "/" . $filename)) {// 如果读取的某个对象是文件夹，则递归
                     self::addFile2Zip($path . "/" . $filename, $zip, $replace);
                 } else { //将文件加入zip对象

@@ -41,34 +41,9 @@ class Log
      * @param $msg
      * @param int $type
      */
-    public static function record($tag, $msg, int $type = self::TYPE_INFO)
+    public static function record($tag, $msg, int $type = self::TYPE_INFO): void
     {
         self::getInstance($tag)->addTemp(self::getInstance($tag)->setType($type)->write($msg));
-        if($type===Log::TYPE_ERROR){
-
-            self::getInstance($tag)->addTemp(self::getInstance($tag)->setType($type)->write(self::printStackTrace()));
-        }
-    }
-
-static function printStackTrace(): string
-{
-        $str = "";
-        $trace = debug_backtrace();
-        foreach ($trace as $index => $call) {
-            if ($index === 0) {
-                // 忽略 printStackTrace() 函数自身的调用
-                continue;
-            }
-
-            $file = $call['file'] ?? 'unknown';
-            $line = $call['line'] ?? 'unknown';
-            $function = $call['function'] ?? 'unknown';
-            $class = $call['class'] ?? '';
-            $type = $call['type'] ?? '';
-
-            $str.= "#{$index}: {$file} ({$line}): {$class}{$type}{$function}()" . PHP_EOL;
-        }
-        return $str;
     }
 
     /**
@@ -78,7 +53,7 @@ static function printStackTrace(): string
      * @param int $type
      * @param string $pre
      */
-    public static function recordAsLine($tag, $msg, int $type = self::TYPE_INFO, string $pre = "")
+    public static function recordAsLine($tag, $msg, int $type = self::TYPE_INFO, string $pre = ""): void
     {
         foreach (explode("\n", $msg) as $item) {
             self::getInstance($tag)->addTemp(self::getInstance($tag)->setType($type)->write($pre . trim($item)));
@@ -86,7 +61,7 @@ static function printStackTrace(): string
 
     }
 
-    private function addTemp($msg)
+    private function addTemp($msg): void
     {
         $handler = fopen($this->temp, 'a');
         fwrite($handler, $msg, strlen($msg));

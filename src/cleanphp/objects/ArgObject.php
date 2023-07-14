@@ -29,9 +29,11 @@ class ArgObject
                 $data = $item[$key];
             }
 
-            $this->onParseType($key, $data, $val);
-            $data = parse_type($val, $data);
-            $this->$key = $data;
+            if($this->onParseType($key, $data, $val)){
+                $data = parse_type($val, $data);
+                $this->$key = $data;
+            }
+
         }
     }
 
@@ -41,8 +43,9 @@ class ArgObject
      * @param mixed &$val 对象属性值，传入的是地址，直接修改即可
      * @param mixed $demo 默认属性值
      */
-    public function onParseType(string $key, &$val, $demo)
+    public function onParseType(string $key, mixed &$val, mixed $demo): bool
     {
+        return true;
     }
 
     /**
@@ -71,4 +74,18 @@ class ArgObject
     {
         return md5(implode(",", get_object_vars($this)));
     }
+    public function getDisableKeys(): array
+    {
+        return [];
+    }
+    public function merge(ArgObject $object): void
+    {
+        $disable = $this->getDisableKeys();
+        foreach (get_object_vars($this) as $key => $val) {
+            if (isset($object->$key)&&!in_array($key,$disable)) {
+                $this->$key = $object->$key;
+            }
+        }
+    }
+
 }

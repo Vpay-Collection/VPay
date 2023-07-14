@@ -22,9 +22,9 @@ trait VerityTrait
     /**
      * @throws VerityException
      */
-    public function onParseType(string $key, &$val, $demo)
+    public function onParseTypeCheck(string $key, &$val, $demo)
     {
-        if (!is_string($val)) return;
+        if (!is_string($val)) return ;
         $rules = $this->getRules();
 
         /**
@@ -47,16 +47,21 @@ trait VerityTrait
         } else {
             $rule = $rules[$key];
         }
-
-        App::$debug && Log::record('Verity', sprintf(" 规则: %s 验证数据：%s", $rule->rule, $val), Log::TYPE_WARNING);
+        App::$debug && Log::record('Verity', sprintf(" 规则: %s 验证数据：%s", $rule->rule??"", $val), Log::TYPE_WARNING);
 
         //检查空值
-        if (empty($rule->rule) && !$rule->allow_empty && empty($val)) {
-            throw new VerityException($rule->msg, $key, $val);
+        if (empty($rule->rule)) {
+            if(!$rule->allow_empty && empty($val)){
+                throw new VerityException($rule->msg, $key, $val);
+            }
+
+        }else{
+            if ((!empty($val)  && $val !== $demo && !VerityRule::check($rule->rule, $val))||empty($val)) {
+                throw new VerityException($rule->msg, $key, $val);
+            }
         }
-        //空值不验证,未曾通过校验直接抛异常
-        if (!empty(strval($val)) && $val !== $demo && !VerityRule::check($rule->rule, $val)) {
-            throw new VerityException($rule->msg, $key, $val);
-        }
+
+
+
     }
 }

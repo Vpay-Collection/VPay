@@ -69,14 +69,11 @@ class JsonEngine extends BaseEngine
     function renderError(string $msg, array $traces, string $dumps, string $tag): string
     {
 
-        $trace_text = [];
-        foreach ($traces as $i => $call) {
-            $trace_text[$i] = sprintf("#%s %s(%s): %s%s%s", $i, $call['file'], $call['line'], $call["class"], $call["type"], $call['function']);
-        }
+
         $ret = [
             "error" => true,
             "msg" => $msg,
-            "traces" => $trace_text,
+            "traces" => $traces,
             "dumps" => $dumps
         ];
         EventManager::trigger("__json_render_error__", $ret, true);
@@ -92,7 +89,9 @@ class JsonEngine extends BaseEngine
         return Json::encode($array);
     }
 
-    public function onNotFound($msg = "")
+
+
+    public function onNotFound($msg = ""): void
     {
         (new Response())->code(404)
             ->contentType($this->getContentType())

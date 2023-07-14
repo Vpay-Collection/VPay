@@ -23,12 +23,12 @@ class Json
      * @param false $isArray 是否解码为数组
      * @return array|bool|float|int|mixed|stdClass|string|null
      */
-    static function decode(string $string, bool $isArray = false)
+    static function decode(string $string, bool $isArray = false): mixed
     {
         return json_decode(self::removeUtf8Bom($string), $isArray);
     }
 
-    static function removeUtf8Bom($text)
+    static function removeUtf8Bom($text): array|string|null
     {
         $bom = pack('H*', 'EFBBBF');
         return preg_replace("/^$bom/", '', $text);
@@ -41,13 +41,7 @@ class Json
      */
     static function encode(array $array, bool $unicode = false): string
     {
-        if ($unicode) {
-            //
-            $result = json_encode($array, JSON_UNESCAPED_UNICODE);
-        } else {
-            $result = json_encode($array);
-        }
-
+        $result = json_encode($array, $unicode?JSON_UNESCAPED_UNICODE:JSON_PARTIAL_OUTPUT_ON_ERROR);
         if ($result === false) {
             Error::err(json_last_error_msg(), [], "JSON Exception");
         }

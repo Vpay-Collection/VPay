@@ -59,7 +59,7 @@ class Route
 
 
             foreach ($params as $key => $val) {
-                if (strpos($route_find, "<$key>") !== false) {
+                if (str_contains($route_find, "<$key>")) {
                     $route_find = str_replace("<$key>", $val, $route_find);
                     unset($params[$key]);
                 }
@@ -71,7 +71,7 @@ class Route
             $params['s'] = $route_find;
             $route_find = "";
         }
-        if ($route_find === $route || strpos($route_find, '<') !== false) {
+        if ($route_find === $route || str_contains($route_find, '<')) {
             $ret_url = $default;
         } else {
 
@@ -159,7 +159,7 @@ class Route
     /**
      * 事件
      */
-    private static function beforeRoute($data)
+    private static function beforeRoute($data): void
     {
 
         if ((new StringBuilder($data))->startsWith('clean_static')) {
@@ -174,7 +174,7 @@ class Route
      * @param $path
      * @return void
      */
-    public static function renderStatic($path)
+    public static function renderStatic($path): void
     {
         if (is_file($path)) {
             $type = file_type($path);
@@ -188,9 +188,9 @@ class Route
     /**
      * 替换静态文件
      * @param string $content
-     * @return string|string[]
+     * @return string
      */
-    public static function replaceStatic(string $content)
+    public static function replaceStatic(string $content): string
     {
         $is_rewrite = Config::getConfig("frame")["rewrite"];
 
@@ -230,7 +230,7 @@ class Route
             $debugEnabled && Log::record("Route", sprintf("路由匹配：%s => %s", $rule, $mapper));
             $rule = '@^' . str_ireplace(
                     ['\\\\', '/', '<', '>', '.'],
-                    ['', '\/', '(?P<', '>[\x{4e00}-\x{9fa5}a-zA-Z0-9_\.-\/]+)', '\.'],
+                    ['', '\/', '(?P<', '>[\x{4e00}-\x{9fa5}a-zA-Z0-9_\.\-\/]+)', '\.'],
                     strtolower($rule)
                 ) . '$@ui';
             if (preg_match($rule, $query, $matches)) {

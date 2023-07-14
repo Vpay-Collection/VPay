@@ -14,10 +14,10 @@
 
 namespace library\database\operation;
 
+use cleanphp\objects\StringBuilder;
 use Exception;
 use library\database\Db;
 use library\database\exception\DbFieldError;
-use library\database\object\Dao;
 use library\database\object\Field;
 use library\database\object\Page;
 
@@ -28,18 +28,30 @@ class SelectOperation extends BaseOperation
     /**
      * @var Page|null
      */
-    private Page $page;//开启分页的分页数据
+    private ?Page $page;//开启分页的分页数据
 
+    private bool $cache = true;
+
+    /**
+     * 是否禁止使用缓存
+     * @return $this
+     */
+    public function noCache($is_nocache = true): SelectOperation
+    {
+        $this->cache = $is_nocache;
+        return $this;
+    }
 
     /**
      * 初始化
      * @param mixed ...$field 需要的字段
      */
-    public function __construct(Db &$db, Dao &$dao, $m, ...$field)
+    public function __construct(Db &$db, $m, ...$field)
     {
-        parent::__construct($db, $dao, $m);
+        parent::__construct($db, $m);
         $this->opt = [];
         $this->opt['type'] = 'select';
+        $this->opt['distinct'] = '';
         $this->opt['field'] = (isset($field[0]) && $field[0] instanceof Field) ? $field[0]->toString() : (new Field(...$field))->toString();
         $this->bind_param = [];
     }
@@ -94,7 +106,7 @@ class SelectOperation extends BaseOperation
     {
         unset($this->opt['page']);
         $limit = strval($start);
-        if ($end != -1) $limit = "," . $end;
+        if ($end != -1) $limit .= "," . $end;
         $this->opt['limit'] = $limit;
         return $this;
     }
@@ -123,6 +135,10 @@ class SelectOperation extends BaseOperation
      */
     public function commit($object = true)
     {
+
+        if($object && StringBuilder::init($this->opt["table_name"])->contains(",")){
+            $object = false;
+        }
 
         if (isset($this->opt['start']) && isset($this->opt['count']) && isset($this->opt['range'])) {
             $sql = 'SELECT COUNT(*) as M_COUNTER ';
@@ -156,7 +172,7 @@ class SelectOperation extends BaseOperation
             $this->page = new Page($page);
         }
 
-        $result = parent::__commit(true);
+        $result = parent::__commit(true,$this->cache);
         if ($object && $this->model !== null) {
             return $this->translate2Model($this->model, $result);
         } else {
@@ -214,7 +230,7 @@ class SelectOperation extends BaseOperation
      * @param array $conditions 统计条件
      * @return int|mixed
      */
-    public function count(array $conditions)
+    public function count(array $conditions): mixed
     {
         if (!empty($conditions)) $this->where($conditions);
         $sql = /** @lang text */
@@ -240,7 +256,7 @@ class SelectOperation extends BaseOperation
      * @param string $param 求和字段
      * @return int|mixed
      */
-    public function sum(array $conditions, string $param)
+    public function sum(array $conditions, string $param): mixed
     {
         if (!Field::isName($param)) {
             throw new DbFieldError("字段名称只允许为字母、点、下划线", $param);
@@ -259,11 +275,22 @@ class SelectOperation extends BaseOperation
     }
 
     /**
+     * 去重
+     * @return $this
+     */
+    public function distinct()
+    {
+        $this->opt['distinct'] = "DISTINCT";
+        return $this;
+    }
+
+    /**
      * 编译
      */
-    protected function translateSql()
+    protected function translateSql(): void
     {
-        $sql = $this->getOpt('SELECT', 'field');
+        $sql = $this->getOpt('SELECT', 'distinct');
+        $sql .= $this->getOpt('', 'field');
         $sql .= $this->getOpt('FROM', 'table_name');
         $sql .= $this->getOpt('WHERE', 'where');
         $sql .= $this->getOpt('ORDER BY', 'order');

@@ -22,7 +22,7 @@ class Session
      * 获取实例
      * @return Session
      */
-    public static function getInstance(): ?Session
+    public static function getInstance(): Session
     {
         if (is_null(self::$instance)) {
             self::$instance = new Session();
@@ -36,7 +36,7 @@ class Session
      * @param int $cacheTime Session缓存时间，默认会话有效
      * @return void
      */
-    public function start(int $cacheTime = 0, string $sessionName = 'PHPSESSID')
+    public function start(int $cacheTime = 0, string $sessionName = 'PHPSESSID'): void
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             $sessionName = Config::getConfig("frame")["session"] ?? $sessionName;
@@ -62,8 +62,9 @@ class Session
      * 销毁session
      * @return void
      */
-    public function destroy()
+    public function destroy(): void
     {
+        if (session_status() !== PHP_SESSION_ACTIVE)return;
         session_destroy();
     }
 
@@ -73,7 +74,7 @@ class Session
      * @param mixed $value
      * @param int $expire 过期时间,单位秒
      */
-    public function set(string $name, $value, int $expire = 0)
+    public function set(string $name, mixed $value, int $expire = 0): void
     {
 
         if ($expire != 0) {
@@ -89,10 +90,10 @@ class Session
     /**
      * 获取session
      * @param string $name 要获取的session名
-     * @param mixed $default 默认值
+     * @param mixed|null $default 默认值
      * @return mixed
      */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         if (!isset($_SESSION[$name])) {
             return $default;
@@ -117,7 +118,7 @@ class Session
      * 删除session
      * @param string $name 要删除的session名称
      */
-    public function delete(string $name)
+    public function delete(string $name): void
     {
         if (isset($_SESSION[$name])) {
             unset($_SESSION[$name]);

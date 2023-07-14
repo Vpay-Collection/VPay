@@ -43,14 +43,14 @@ interface CacheInterface
      * @param string $key
      * @param mixed $data
      */
-    public function set(string $key, $data);
+    public function set(string $key, mixed $data);
 
     /**
      * 获取缓存值
      * @param mixed $key
      * @return mixed
      */
-    public function get(string $key);
+    public function get(string $key): mixed;
 
     /**
      * 清空缓存
@@ -61,7 +61,7 @@ interface CacheInterface
      * 设置数据
      * @param int $exp_time
      * @param string $path
-     * @return mixed
+     * @return CacheInterface
      */
-    function setData(int $exp_time, string $path);
+    function setData(int $exp_time, string $path): CacheInterface;
 }

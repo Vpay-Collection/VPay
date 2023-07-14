@@ -15,7 +15,6 @@
 namespace cleanphp\base;
 
 use cleanphp\objects\StringBuilder;
-use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;
 
@@ -30,7 +29,7 @@ class Dump
      * @param       $param
      * @param int $i
      */
-    private function dumpObject($param, int $i = 0)
+    private function dumpObject($param, int $i = 0): void
     {
         $className = get_class($param);
         if ($className == 'stdClass' && $result = json_encode($param)) {
@@ -49,7 +48,7 @@ class Dump
      * @param       $param
      * @param int $i
      */
-    private function dumpArray($param, int $i = 0)
+    private function dumpArray($param, int $i = 0): void
     {
 
         $len = count($param);
@@ -129,7 +128,7 @@ class Dump
      * 输出文本
      * @param $param
      */
-    private function dumpString($param)
+    private function dumpString($param): void
     {
 
         $str = sprintf("<small style='color: #333;font-weight: bold'>string</small> <i style='color:#cc0000'>'%s'</i> <i>(length=%d)</i>", htmlspecialchars((new StringBuilder($param))->convert()->toString()), strlen($param));
@@ -141,31 +140,24 @@ class Dump
      * @param $obj
      * @param $num
      */
-    public function dumpProp($obj, $num)
+    public function dumpProp($obj, $num): void
     {
-        static $pads = [];
-        try {
-            $reflect = new ReflectionClass($obj);
-        } catch (ReflectionException $e) {
-            $this->output .= $e->getMessage();
-            return;
-        }
 
-        $prop = $reflect->getProperties();
+        static $pads = [];
+        $prop = get_object_vars($obj);
+
         $len = count($prop);
         $this->output .= "<i style='color: #333;'> (size=$len)</i>";
-        $pads[] = "    ";
-        for ($i = 0; $i < $len; $i++) {
-            $index = $i;
-            $prop[$index]->setAccessible(true);
-            $prop_name = $prop[$index]->getName();
-            $this->output .= "\n" . implode('', $pads) . sprintf("<i style='color: #333;'> %s </i><i style='color:#888a85'>=&gt;&nbsp;", $prop_name);
-            $this->dumpType($prop[$index]->getValue($obj), $num);
+        $pads[] = "     ";
+        foreach ($prop as $key => $value){
+            $this->output .= "\n" . implode('', $pads) . sprintf("<i style='color: #333;'> %s </i><i style='color:#888a85'>=&gt;&nbsp;", $key);
+            $this->dumpType($value, $num);
         }
+
         array_pop($pads);
     }
 
-    function dumpCallback($func)
+    function dumpCallback($func): void
     {
         try {
             $func = new ReflectionFunction($func);
@@ -182,7 +174,7 @@ class Dump
         $this->output .= $str;
     }
 
-    function dumpTypeAsString($param)
+    function dumpTypeAsString($param): bool|string
     {
         $result = "";
         ob_start();

@@ -25,9 +25,10 @@ class EngineManager
      */
     public static function getEngine()
     {
-
         //如果之前没有设置输出引擎，则启用文档引擎
-        !self::$engine && self::setDefaultEngine(new ViewEngine());
+        if(empty(self::$engine)){
+            self::setDefaultEngine(new ViewEngine());
+        }
         return self::$engine;
     }
 
@@ -35,7 +36,7 @@ class EngineManager
      * 设置默认引擎
      * @param $engine BaseEngine
      */
-    static function setDefaultEngine(BaseEngine $engine)
+    static function setDefaultEngine(BaseEngine $engine): void
     {
         self::$engine = $engine;
     }

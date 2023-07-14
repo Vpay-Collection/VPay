@@ -23,15 +23,16 @@ class Loader
     /**
      * 注册自动加载
      */
-    public static function register()
+    public static function register(): void
     {
         spl_autoload_register(__NAMESPACE__ . "\Loader::autoload", true, true);
+
         //注册第三方库的自动加载
         if (is_dir(Variables::getLibPath())) {
-
             $data = scandir(Variables::getLibPath());
+
             foreach ($data as $value) {
-                if (substr($value, 0, 1) !== ".") {
+                if (!str_starts_with($value, ".")) {
                     $file = Variables::setPath(Variables::getLibPath(), $value, 'autoload.php');
                     if (file_exists($file)) {
                         include_once $file;
@@ -41,6 +42,7 @@ class Loader
             }
 
         }
+
         $file = Variables::setPath(APP_DIR, 'vendor', 'autoload.php');
 
         if (file_exists($file)) include_once $file;
@@ -59,7 +61,7 @@ class Loader
         if (file_exists($file)) {
             include_once $file;
             //细节不重要
-            if (App::$debug && strpos($file, "cleanphp/") === false)
+            if (App::$debug && !str_contains($file, "cleanphp/"))
                 Log::record("Loader", $raw);
         }
     }

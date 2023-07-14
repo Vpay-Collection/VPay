@@ -38,12 +38,12 @@ class CliEngine extends BaseEngine
     /**
      * @inheritDoc
      */
-    function renderError(string $msg, array $traces, string $dumps, string $tag)
+    function renderError(string $msg, array $traces, string $dumps, string $tag): bool|string
     {
         return print_r([$msg, $traces, $dumps], true);
     }
 
-    function onNotFound($msg = "")
+    function onNotFound($msg = ""): void
     {
         (new Response())->render($msg)->send();
     }

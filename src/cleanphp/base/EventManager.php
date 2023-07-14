@@ -31,7 +31,7 @@ class EventManager
      * @param callable $func 匿名函数，接受两个参数：$func($event_name, $data)
      * @param int $level 事件等级
      */
-    public static function addListener(string $event_name, callable $func, int $level = 1000)
+    public static function addListener(string $event_name, callable $func, int $level = 1000): void
     {
         while (isset(self::$events[$event_name][$level])) {
             $level++;
@@ -46,7 +46,7 @@ class EventManager
      * 删除事件
      * @param $event_name
      */
-    public static function removeListener($event_name)
+    public static function removeListener($event_name): void
     {
         unset(self::$events[$event_name]);
         App::$debug && Log::record("Event", "移除事件：$event_name ");
@@ -55,10 +55,10 @@ class EventManager
     /**
      * 触发事件
      * @param string $event_name 事件名
-     * @param mixed    &$data 事件携带的数据
+     * @param mixed|null    &$data 事件携带的数据
      * @param bool $once 只获取一个有效返回值
      */
-    public static function trigger(string $event_name, &$data = null, bool $once = false)
+    public static function trigger(string $event_name, mixed &$data = null, bool $once = false)
     {
         if (!isset(self::$events[$event_name])) return null;
         $list = self::$events[$event_name];

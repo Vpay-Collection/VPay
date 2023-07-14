@@ -60,12 +60,7 @@ class Release
         $app_dir = $new . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR;
 
         File::copy(BASE_DIR, $new);
-        if(file_exists(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'bt')){
-            File::copy(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'bt', $new);
-        }
-        if(file_exists(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'docker')){
-            File::copy(BASE_DIR.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'docker', $new);
-        }
+
 
         File::del($app_dir . DIRECTORY_SEPARATOR . "storage");
         File::del($new . DIRECTORY_SEPARATOR . "library" . DIRECTORY_SEPARATOR . "release");
@@ -73,11 +68,9 @@ class Release
         self::checkFrame($app_dir);
         $app = $new . DIRECTORY_SEPARATOR . "public" . DIRECTORY_SEPARATOR . "index.php";
         file_put_contents($app, str_replace("App::run(true);", "App::run(false);", file_get_contents($app)));
-        $path = $app_dir . DIRECTORY_SEPARATOR . "config_example.php";
-        @unlink($app_dir . DIRECTORY_SEPARATOR."config.php");
+        $path = $app_dir . DIRECTORY_SEPARATOR . "config.php";
         $config = include_once $path;
         $config['frame']['version'] = $version;
-        $config['frame']['view_debug'] = false;
         file_put_contents($path, '<?php return ' . var_export($config, true) . '; ');
 
         if ($compress) {//压缩代码

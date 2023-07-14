@@ -20,6 +20,7 @@ class SqlKey
     const TYPE_FLOAT = 1;
     const TYPE_TEXT = 2;
     const TYPE_BOOLEAN = 3;
+    const TYPE_ARRAY = 4;
 
     public string $name;//键名
     public int $type;//类型
@@ -29,11 +30,11 @@ class SqlKey
 
     /**
      * @param string $name 键名
-     * @param mixed $default_value 默认参数
+     * @param mixed|null $default_value 默认参数
      * @param int $length 字符长度，仅默认参数类型为{@link string}生效
      * @param bool $auto 是否自增，仅默认参数类型为{@link int}生效
      */
-    public function __construct(string $name, $default_value = null, bool $auto = false, int $length = 0)
+    public function __construct(string $name, mixed $default_value = null, bool $auto = false, int $length = 0)
     {
         $this->name = $name;
         $this->auto = false;
@@ -49,7 +50,9 @@ class SqlKey
             $this->type = self::TYPE_BOOLEAN;
         } elseif (is_float($default_value)) $this->type = self::TYPE_FLOAT;
         elseif (is_double($default_value)) $this->type = self::TYPE_FLOAT;
-        else $this->type = self::TYPE_TEXT;
+        elseif(is_array($default_value)||is_object($default_value)){
+            $this->type = self::TYPE_ARRAY;
+        }else $this->type = self::TYPE_TEXT;
 
 
     }

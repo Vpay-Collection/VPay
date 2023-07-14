@@ -16,7 +16,7 @@ class Cookie
 {
     private static ?Cookie $instance = null;
     private int $expire = 0;//过期时间 单位为s 默认是会话 关闭浏览器就不在存在
-    private string $path = '';//路径 默认在本目录及子目录下有效 /表示根目录下有效
+    private string $path = '/';//路径 默认在本目录及子目录下有效 /表示根目录下有效
     private string $domain = '';//域
     private bool $secure = false;//是否只在https协议下设置默认不是
     private bool $httponly = true;//如果为TRUE，则只能通过HTTP协议访问cookie。 这意味着脚本语言（例如JavaScript）无法访问cookie
@@ -30,7 +30,7 @@ class Cookie
      * @param bool $httponly
      * @return Cookie
      */
-    public static function getInstance(int $expire = 0, string $path = "", string $domain = "", bool $secure = false, bool $httponly = true): ?Cookie
+    public static function getInstance(int $expire = 0, string $path = "", string $domain = "", bool $secure = false, bool $httponly = true): Cookie
     {
         if (is_null(self::$instance)) {
             self::$instance = new Cookie();
@@ -62,7 +62,7 @@ class Cookie
      * @param string $name
      * @param         $value
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
 
         if (is_array($value) || is_object($value))
@@ -74,10 +74,10 @@ class Cookie
     /**
      * 获取cookie
      * @param string $name
-     * @param mixed $default
+     * @param mixed|null $default
      * @return array|mixed
      */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         if (!isset($_COOKIE[$name])) {
             return $default;
@@ -90,7 +90,7 @@ class Cookie
      * 删除cookie
      * @param string $name
      */
-    public function delete(string $name)
+    public function delete(string $name): void
     {
         if (!isset($_COOKIE[$name])) {
             return;
@@ -106,7 +106,7 @@ class Cookie
      * cookie续期
      * @param int $time 续期时间，单位分钟
      */
-    public function addTime(int $time = 5)
+    public function addTime(int $time = 5): void
     {
         foreach ($_COOKIE as $name => $value) {
             setcookie($name, $value, time() + $time * 60, $this->path, $this->domain, $this->secure, $this->httponly);

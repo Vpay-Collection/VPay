@@ -20,7 +20,7 @@ class Request
      * @param $headName
      * @return mixed|null
      */
-    public static function getHeaderValue($headName)
+    public static function getHeaderValue($headName): mixed
     {
         $headers = self::getHeaders();
         if (isset($headers[$headName])) {
@@ -33,13 +33,13 @@ class Request
      * 获取头部信息
      * @return array|false
      */
-    public static function getHeaders()
+    public static function getHeaders(): bool|array
     {
 
         if (function_exists('getallheaders')) return getallheaders();
         $headers = [];
         foreach ($_SERVER as $key => $value) {
-            if ('HTTP_' == substr($key, 0, 5)) {
+            if (str_starts_with($key, 'HTTP_')) {
                 $headers[ucfirst(strtolower(str_replace('_', '-', substr($key, 5))))] = $value;
             }
             if (isset($_SERVER['PHP_AUTH_DIGEST'])) {

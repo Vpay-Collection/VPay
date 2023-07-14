@@ -29,7 +29,7 @@ use Throwable;
 class Error
 {
 
-    public static function register()
+    public static function register(): void
     {
         $old_error_handler = set_error_handler([__CLASS__, 'appError'], E_ALL);
         set_exception_handler([__CLASS__, 'appException']);
@@ -40,9 +40,8 @@ class Error
      *
      * App异常退出
      * @param $e Throwable
-     * @throws ExitApp
      */
-    public static function appException(Throwable $e)
+    public static function appException(Throwable $e): void
     {
 
         if ($e instanceof ExitApp) {
@@ -50,7 +49,7 @@ class Error
             return;//Exit异常不进行处理
         }
 
-        self::err($e->getMessage(), array_merge([["file" => $e->getFile(), "line" => $e->getLine(), "function" => "", "class" => '', "type" => ""]], $e->getTrace()), get_class($e));
+       self::err("Exception: ".get_class($e)."\r\n\r\n".$e->getMessage(), array_merge([["file" => $e->getFile(), "line" => $e->getLine(), "function" => "", "class" => '', "type" => ""]], $e->getTrace()), get_class($e));
     }
 
     /**
@@ -59,8 +58,9 @@ class Error
      * @param array $errInfo 堆栈
      * @param string $log_tag 记录日志的tag
      */
-    public static function err(string $msg, array $errInfo = [], string $log_tag = "ErrorInfo")
+    public static function err(string $msg, array $errInfo = [], string $log_tag = "ErrorInfo"): void
     {
+
         if (Variables::get('__frame_error__', false)) return;
         //捕获异常后清除数据
         error_clear_last();
@@ -68,30 +68,40 @@ class Error
         Variables::set('__frame_error__', true);
         Log::record($log_tag, $msg, Log::TYPE_ERROR);
         $traces = sizeof($errInfo) === 0 ? debug_backtrace() : $errInfo;
-
-        foreach ($traces as $i => $call) {
+        $trace_text = [];
+        foreach ($traces as $i => &$call) {
             $trace_text[$i] = sprintf("#%s %s(%s): %s%s%s", $i, $call['file'] ?? "", $call['line'] ?? "", $call["class"] ?? "", $call["type"] ?? "", $call['function'] ?? "");
             Log::record($log_tag, $trace_text[$i], Log::TYPE_ERROR);
         }
 
+
         if ($dump = ob_get_contents()) {
             ob_end_clean();
         }
-        $result = self::renderError();
-        $engine = EngineManager::getEngine();
-        if ($result !== null) {
-            (new Response())->render($result, 200, $engine->getContentType())->send();
-        } else if (App::$debug) {
-            (new Response())->render($engine->renderError($msg, $traces, $dump, $log_tag), 200, $engine->getContentType())->send();
-        } else {
-            (new Response())->render($engine->renderMsg(true, 404, "404 Not Found", "您访问的资源不存在。", 5, "/", "立即跳转"), 404, $engine->getContentType())->send();
+
+        if(App::$cli){
+            var_dump($msg,$trace_text);
+        }else{
+            $result = self::renderError();
+
+
+            $engine = EngineManager::getEngine();
+
+            if ($result !== null) {
+                (new Response())->render($result, 200, $engine->getContentType())->send();
+            } else if (App::$debug) {
+                (new Response())->render($engine->renderError($msg, $traces, $dump, $log_tag), 200, $engine->getContentType())->send();
+            } else {
+                (new Response())->render($engine->renderMsg(true, 404, "404 Not Found", "您访问的资源不存在。", 5), 404, $engine->getContentType())->send();
+            }
         }
+
 
     }
 
     /**
      * 调用用户自定义的错误渲染器
-     * @return string
+     * @return string|null
      */
     static function renderError(): ?string
     {

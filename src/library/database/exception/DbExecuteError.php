@@ -20,7 +20,8 @@ use Exception;
 
 class DbExecuteError extends Exception
 {
-    public function __construct($message = "")
+    protected string $highlight = "";
+    public function __construct($message = "",$sql = "")
     {
         App::$debug && Log::record("Database", $message);
         parent::__construct($message);

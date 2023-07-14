@@ -31,7 +31,7 @@ class VerityRule
     const IPV4 = "^\d+\.\d+\.\d+\.\d+$";
     const FLOAT_AND_INT = "^(0\.\d+|[1-9]\d*(\.\d+)?)$";
 
-    public string $rule = "";
+    public ?string $rule = "";
     public string $msg = "校验失败";
     public bool $allow_empty = true;
 
@@ -40,7 +40,7 @@ class VerityRule
      * @param string $msg 错误信息
      * @param bool $allow_empty 是否为空不校验
      */
-    public function __construct(string $rule, string $msg = "校验失败", bool $allow_empty = true)
+    public function __construct(?string $rule, string $msg = "校验失败", bool $allow_empty = true)
     {
         $this->allow_empty = $allow_empty;
         $this->rule = $rule;

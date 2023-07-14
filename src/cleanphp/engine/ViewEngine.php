@@ -7,17 +7,17 @@ namespace cleanphp\engine;
 
 
 use cleanphp\App;
-use cleanphp\base\Config;
-use cleanphp\base\Dump;
+use cleanphp\base\DumpJson;
 use cleanphp\base\Error;
 use cleanphp\base\EventManager;
+use cleanphp\base\Json;
 use cleanphp\base\Request;
 use cleanphp\base\Response;
 use cleanphp\base\Route;
 use cleanphp\base\Variables;
+use cleanphp\cache\Cache;
 use cleanphp\file\File;
 use cleanphp\file\Log;
-use cleanphp\objects\StringBuilder;
 
 /**
  * Class View
@@ -193,225 +193,166 @@ TPL
         return null;
     }
 
+
+
     function render(...$data): string
     {
         App::$debug && Variables::set("__view_time_start__", microtime(true));
+
+
+
         $template_name = $data[0];
         [$file, $template_name] = $this->preCompileLayout($template_name);
         //$file = $this->checkTplFile($template_name);
 
         $complied_file = $this->compile($template_name, $file);
         ob_start();
-        if (App::$debug && Config::getConfig('frame')['view_debug']) {
+        $debug = '';
+        if (App::$debug) {
             $__total_time = round((microtime(true) - Variables::get("__frame_start__", 0)) * 1000, 2);
             Log::record("ViewEngine", sprintf("编译运行时间：%s 毫秒", $__total_time), Log::TYPE_WARNING);
 
             $headers = array_merge([$_SERVER["REQUEST_METHOD"] . " " . $_SERVER["REQUEST_URI"]], Request::getHeaders());
-            $__headers = (new Dump())->dumpType($headers);
-            $__log = Log::getInstance("ViewEngine")->getTempLog();
+
+            $__headers = addslashes(Json::encode((new DumpJson())->dumpType($headers)));
+            $__log = addslashes(Json::encode(Log::getInstance("ViewEngine")->getTempLog()));
 
             $__version = Variables::getVersion();
-            $__dumps = (new Dump())->dumpType($GLOBALS);
-            $__dumps2 = (new Dump())->dumpType($this->__data);
+            $__dumps = addslashes(Json::encode((new DumpJson())->dumpType($GLOBALS)));
+
+            $__dumps2 = addslashes(Json::encode((new DumpJson())->dumpType($this->__data)));
+
+            $__path =  $_SERVER['REQUEST_URI'];
+
             $debug = <<<EOF
-<div class="cleanphp-view-engine" style="z-index: 999999999;
-    position: fixed;">
-    <script>var page_start_time = new Date().getTime()</script><script>window.onload = function (){
-document.querySelector('.cleanphp-view-engine #localtime').textContent = Math.round(new Date().getTime()  - page_start_time);}</script>
-    <style>
-        /* 悬浮按钮的样式 */
-        .cleanphp-view-engine #float-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: fit-content;
-            height: 40px;
-            background-color: #2196f3;
-            color: white;
-            text-align: center;
-            line-height: 40px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        /* 面板的样式 */
-        .cleanphp-view-engine #panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            z-index: 9999;
-        }
-
-        /* 面板的标题栏样式 */
-        .cleanphp-view-engine #panel-header {
-            height: 60px;
-            background-color: #2196f3;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        /* 面板的内容区域样式 */
-        .cleanphp-view-engine #panel-content {
-            height: calc(100% - 60px);
-            overflow: auto;
-            padding: 20px;
-        }
-
-        /* tab按钮的样式 */
-        .cleanphp-view-engine .tab-button {
-            display: inline-block;
-            margin-right: 10px;
-            padding: 10px;
-            background-color: #eee;
-            color: #333;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        /* 当前tab按钮的样式 */
-        .cleanphp-view-engine .tab-button.active {
-            background-color: #2196f3;
-            color: white;
-        }
-
-        /* tab内容的样式 */
-        .cleanphp-view-engine .tab-content {
-            display: none;
-        }
-
-        /* 当前tab内容的样式 */
-        .cleanphp-view-engine .tab-content.active {
-            display: block;
-        }
-
-        .cleanphp-view-engine pre {
-            display: block;padding: 10px;margin: 0 0 10px;font-size: 13px;line-height: 1.42857143;color: #333;word-break: break-all;word-wrap: break-word;background-color:#f5f5f5;border: 1px solid #ccc;border-radius: 4px;
-        }
-        .cleanphp-view-engine .tab-content ul{
-            list-style-type: none;
-        }
-    </style>
-
-
-    <!-- 悬浮按钮 -->
-    <div id="float-button" onclick="togglePanel()">
-        <span style="margin-left: 10px;margin-right: 10px">运行时间：{$__total_time} ms  </span>
-    </div>
-
-    <!-- 面板 -->
-    <div id="panel" style="display: none">
-        <!-- 标题栏 -->
-        <div id="panel-header">
-            <span>CleanPHP ViewEngine分析</span>
-            <span onclick="togglePanel()">关闭</span>
-        </div>
-        <!-- tab按钮 -->
-        <div id="tab-buttons" style="padding: 10px">
-            <div class="tab-button active" onclick="switchTab(0)">基本信息</div>
-            <div class="tab-button" onclick="switchTab(1)">日志</div>
-            <div class="tab-button" onclick="switchTab(2)">请求</div>
-            <div class="tab-button" onclick="switchTab(3)">全局变量</div>
-            <div class="tab-button" onclick="switchTab(4)">模板变量</div>
-        </div>
-        <!-- tab内容 -->
-        <div id="tab-contents" style="height: calc(100vh - 150px);overflow-y: scroll;padding: 10px">
-            <div class="tab-content active">
-                <div>执行时长：{$__total_time} ms</div>
-                <div>本地资源加载时长：<span id="localtime">计算中</span> ms</div>
-                <div>CleanPHP版本：{$__version}</div>
-            </div>
-            <div class="tab-content">
-                <ul>
-EOF;
-            foreach ($__log as $log) {
-                $str = new StringBuilder($log);
-                if ($str->contains("WARN")) {
-                    $debug .= "<li style='color: chocolate'>$log</li>";
-                } elseif ($str->contains("ERROR")) {
-                    $debug .= "<li style='color: #d21e24'>$log</li>";
-                } else {
-                    $debug .= "<li style='color: #1e5dd2'>$log</li>";
-                }
+<script>
+(function() {
+  var log = {
+      info(msg, title) {
+            this.pretty(title, msg, 'primary');
+        },
+        error(msg, title) {
+            this.pretty(title, msg, 'danger');
+        },
+        success(msg, title) {
+            this.pretty(title, msg, 'success');
+        },
+        warning(msg, title) {
+            this.pretty(title, msg, 'warning');
+        },
+        typeColor(type = 'default') {
+            let color = '';
+            switch (type) {
+                case 'primary':
+                    color = '#2d8cf0';
+                    break;
+                case 'success':
+                    color = '#19be6b';
+                    break;
+                case 'info':
+                    color = '#909399';
+                    break;
+                case 'warning':
+                    color = '#ff9900';
+                    break;
+                case 'danger':
+                    color = '#f03f14';
+                    break;
+                default:
+                    color = '#35495E';
+                    break;
             }
-            $debug .= <<<EOF
-                    
-                </ul>
-            </div>
-            <div class="tab-content">
-                <div style="text-align: left"><pre class="xdebug-var-dump" dir="ltr">
-                {$__headers}
-                </pre>
-                </div>
-            </div>
-            <div class="tab-content">
-                <div style="text-align: left"><pre class="xdebug-var-dump" dir="ltr">
-                {$__dumps}
-                </pre>
-                </div>
-            </div>
-            <div class="tab-content">
-                <div style="text-align: left"><pre class="xdebug-var-dump" dir="ltr">
-                {$__dumps2}
-                </pre>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // 切换面板的显示状态
-        function togglePanel() {
-            const panel = document.getElementById("panel");
-            if (panel.style.display === "none") {
-                panel.style.display = "block";
+            return color;
+        },
+        print(text, type, back) {
+            back = back || false;
+            if (typeof text === 'object') { // 如果是对象则调用打印对象方式
+                console.dir(text);
+                return;
+            }
+            if (back) { // 如果是打印带背景图的
+                console.log(
+                    "%c "+text,
+                    "background:"+this.typeColor(type)+"; padding: 2px; border-radius: 0px;color: #fff;"
+                );
             } else {
-                panel.style.display = "none";
+                console.log(
+                    "%c "+text,
+                    "color: "+this.typeColor(type)+";"
+                );
             }
-        }
+        },
+        pretty(title, text, type) {
+            title = title || "CleanPHP";
+            if (typeof text === 'object') { // 如果是对象则调用打印对象方式
+                this.print(title, type, true);
+                console.log(text);
+                return;
+            }
+            console.log(
+                "%c "+title+" %c "+text+" %c",
+                "background:"+this.typeColor(type)+";border:0px solid "+this.typeColor(type)+"; padding: 1px; border-radius: 4px 0 0 4px; color: #fff;",
+                "border:0px solid "+this.typeColor(type)+"; padding: 1px; border-radius: 0 4px 4px 0; color: "+this.typeColor(type)+";",
+                "background:transparent"
+            );
+        },
+  };
+   log.success("----------------{$__path}-------------------","页面加载");
+  var page_start_time = new Date().getTime();
+  log.info("$__total_time ms","运行时间");
+  log.info("$__version","Cleanphp版本");
+  window.onload = function (){
+    log.info((Math.round(new Date().getTime()  - page_start_time))+" ms","资源加载时间");
+    log.success("-----------------{$__path}------------------","页面加载");
+  }
+  log.warning("-------------页面日志--------------");
+  function outputArray(array) {
+    array = JSON.parse(array);
+    for(var i = 0; i < array.length; i++) {
+      var log_ = array[i];
+      if(typeof log_ === "string"){
+          log_ = log_.trim();
+           if(log_.indexOf("WARN")>0){
+        log.warning(log_);
+    }else if(log_.indexOf("ERROR")>0){
+        log.error(log_);
+    }else{
+        log.info(log_);
+    }
+      }
+   
+  }
+  }
+  
+  outputArray('$__log');
+  log.warning("-------------请求头--------------");
+  log.info(JSON.parse('$__headers'));
+  log.warning("-------------全局变量--------------");
+ 
+  log.info(JSON.parse('$__dumps'));
+  log.warning("-------------页面变量--------------");
 
-        // 切换tab
-        function switchTab(index) {
-            // 切换tab按钮的样式
-            var buttons = document.querySelectorAll(".cleanphp-view-engine .tab-button");
-            for (var i = 0; i < buttons.length; i++) {
-                if (i === index) {
-                    buttons[i].classList.add("active");
-                } else {
-                    buttons[i].classList.remove("active");
-                }
-            }
-            // 切换tab内容的显示状态
-            var contents = document.querySelectorAll(".cleanphp-view-engine .tab-content");
-            for ( i = 0; i < contents.length; i++) {
-                if (i === index) {
-                    contents[i].classList.add("active");
-                } else {
-                    contents[i].classList.remove("active");
-                }
-            }
-        }
-    </script>
+  log.info(JSON.parse('$__dumps2'));
+  
+})();
+</script>
 
-</div>
 EOF;
 
         }
         extract($this->__data, EXTR_OVERWRITE);
 
-
+        echo $debug;
         include $complied_file;
 
-        if (App::$debug && Config::getConfig('frame')['view_debug']) echo $debug;
+       // if (App::$debug && Config::getConfig('frame')['view_debug']) echo $debug;
 
         App::$debug && Log::record("ViewEngine", sprintf("编译运行时间：%s 毫秒", round((microtime(true) - Variables::get("__view_time_start__", 0)) * 1000, 2)), Log::TYPE_WARNING);
-        return ob_get_clean();
+        $result = ob_get_clean();
+
+        EventManager::trigger("__on_view_render__",$result);
+
+        return $result;
     }
 
     /**
@@ -421,7 +362,6 @@ EOF;
      */
     private function preCompileLayout(string $template_name): array
     {
-        $this->setData("__lang", Variables::get("__lang", "zh-cn"));
         if (!empty($this->__layout)) {
             if ($template_name === $this->__layout)
                 Error::err("父模板不能与当前模板一致，会导致死循环。", [], "ViewEngine");
@@ -481,7 +421,7 @@ EOF;
      * 清除过期的文件
      * @param string $hash
      */
-    private function _clear_complied_file(string $hash)
+    private function _clear_complied_file(string $hash): void
     {
         $dir = scandir($this->__compile_dir);
         if ($dir) {
@@ -877,7 +817,11 @@ pre {
         $base = 'app\\' . Variables::getSite("\\") . 'controller\\' . $__module . '\\' . "BaseController";
         $controller = 'app\\' . Variables::getSite("\\") . 'controller\\' . $__module . '\\' . ucfirst($__controller);
         if (class_exists($controller)) {
-            new $controller();
+            if(method_exists($controller,$__action)){
+                (new $controller())->$__action();
+            }else{
+                new $controller();
+            }
         } elseif (class_exists($base)) {
             new $base();
         }

@@ -35,7 +35,7 @@ class Config
     }
 
 
-    static private function loadConfig()
+    static private function loadConfig(): void
     {
         if (!empty(self::$file_data)) return;
         self::$path = Variables::getAppPath("config.php");
@@ -46,7 +46,7 @@ class Config
      * 注册配置信息
      * @throws ExitApp
      */
-    static public function register()
+    static public function register(): void
     {
 
         self::loadConfig();
@@ -65,7 +65,7 @@ class Config
      * @param string $key 参数名称
      * @param  $val
      */
-    public static function setConfig(string $key, $val)
+    public static function setConfig(string $key, $val): void
     {
         self::loadConfig();
         self::$file_data[$key] = $val;
@@ -76,7 +76,7 @@ class Config
      * 获取配置
      * @return mixed|null
      */
-    static public function getConfig($sub = "")
+    static public function getConfig($sub = ""): mixed
     {
         self::loadConfig();
         return self::$file_data[$sub] ?? null;
@@ -87,7 +87,7 @@ class Config
      * 设置整个配置文件数组
      * @param array $data
      */
-    public static function setAll(array $data)
+    public static function setAll(array $data): void
     {
         self::$file_data = $data;
         file_put_contents(self::$path, '<?php return ' . var_export(self::$file_data, true) . '; ');

@@ -55,33 +55,22 @@ class Sqlite extends Driver
      */
     function renderCreateTable(Model $model, string $table): string
     {
-        $primary_keys = $model->getPrimaryKey() instanceof SqlKey ? [$model->getPrimaryKey()] : $model->getPrimaryKey();
+        $primary_keys = $model->getPrimaryKey() ;
         $sql = 'CREATE TABLE IF NOT EXISTS `' . $table . '`(';
-        $primary = [];
-        /**
-         * @var $value SqlKey
-         */
-        foreach ($primary_keys as $value) {
-            if ($value instanceof SqlKey) {
-                $name = $value->name;
-                $primary[] = $name;
-                $sql .= $this->renderKey($value);
-                //AUTOINCREMENT
-                if ($value->type === SqlKey::TYPE_INT && $value->auto) {
-                    $sql .= " PRIMARY KEY AUTOINCREMENT,";
-                } else {
-                    $sql .= ",";
-                }
-
-            } else {
-                $primary[] = $value;
-            }
+        $name = $primary_keys->name;
+        $primary = $name;
+        $sql .= $this->renderKey($primary_keys);
+        //AUTOINCREMENT
+        if ($primary_keys->type === SqlKey::TYPE_INT && $primary_keys->auto) {
+            $sql .= " PRIMARY KEY AUTOINCREMENT,";
+        } else {
+            $sql .= ",";
         }
         foreach (get_object_vars($model) as $key => $value) {
-            if (in_array($key, $primary)) continue;
+            if ($key ===$primary) continue;
             $sql .= $this->renderKey(new SqlKey($key, $value)) . ",";
         }
-        if (substr($sql, strlen($sql) - 1, 1) === ',') {
+        if (str_ends_with($sql, ',')) {
             $sql = substr($sql, 0, strlen($sql) - 1);
         }
         $sql .= ');';
@@ -101,7 +90,7 @@ class Sqlite extends Driver
 
         elseif ($sqlKey->type === SqlKey::TYPE_BOOLEAN) return "`$sqlKey->name` INTEGER";
 
-        elseif ($sqlKey->type === SqlKey::TYPE_TEXT) return "`$sqlKey->name` TEXT DEFAULT '$sqlKey->value'";
+        elseif ($sqlKey->type === SqlKey::TYPE_TEXT  || $sqlKey->type === SqlKey::TYPE_ARRAY) return "`$sqlKey->name` TEXT DEFAULT '$sqlKey->value'";
 
         elseif ($sqlKey->type === SqlKey::TYPE_FLOAT) return "`$sqlKey->name` REAL DEFAULT '$sqlKey->value'";
 

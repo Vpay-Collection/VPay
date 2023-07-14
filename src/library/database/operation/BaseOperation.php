@@ -18,8 +18,6 @@ namespace library\database\operation;
 use cleanphp\base\Error;
 use library\database\Db;
 use library\database\exception\DbFieldError;
-use library\database\object\Dao;
-use PDOStatement;
 
 abstract class BaseOperation
 {
@@ -30,27 +28,41 @@ abstract class BaseOperation
     protected Db $db;
 
     protected ?string $model;
-    private Dao $dao;
+
+    protected array $tables = [];
 
     /**
      * @param $db DB 数据库对象
      * @param $model ?string 数据模型
      */
-    public function __construct(Db &$db, Dao &$dao, string $model = null)
+    public function __construct(Db &$db,  string $model = null)
     {
         $this->db = $db;
         $this->model = $model;
-        $this->dao = $dao;
     }
 
     /**
      * 设置表名
-     * @param string $tableName
+     * @param string ...$tableName
      * @return BaseOperation $this
      */
-    public function table(string $tableName): BaseOperation
+    public function table(string ...$tableName): BaseOperation
     {
-        $this->opt['table_name'] = '`' . $tableName . '`';
+        if(is_array($tableName)){
+            $names = $tableName;
+        }else{
+            $names = explode(",",$tableName);
+        }
+
+        $this->tables = $names;
+        $table = "";
+        foreach ($names as $name){
+            if(!empty($name)){
+                $table.= '`' . $name . '`,';
+            }
+
+        }
+        $this->opt['table_name'] = trim($table,",");
         return $this;
     }
 
@@ -59,29 +71,19 @@ abstract class BaseOperation
      * 提交
      * @return array|int
      */
-    protected function __commit($readonly = false)
+    protected function __commit($readonly = false,$cache = false): int|array
     {
         if ($this->tra_sql == null) $this->translateSql();
-        $table = $this->opt['table_name'] ?? null;
-        if ($table !== null) {
-            $result = $this->db->getDriver()->getDbConnect()->query(/** @lang text */ "SELECT count(*) FROM {$this->opt['table_name']} LIMIT 1");
-            $table_exist = $result instanceof PDOStatement && ($result->rowCount() === 1);
-            if (!$table_exist) {
-                if ($this->model !== null) {
-                    $this->db->initTable($this->dao, $this->model, trim($table, '`'));
-                }
-            }
-        }
         $sql = $this->tra_sql;
         $this->tra_sql = null;
-        return $this->db->execute($sql, $this->bind_param, $readonly);
+        return $this->db->execute($sql, $this->bind_param, $readonly,$cache, $this->tables);
     }
 
     /**
      * 编译sql语句
      * @return void
      */
-    abstract protected function translateSql();
+    abstract protected function translateSql(): void;
 
     /**
      * 获取存储的数据选项
@@ -103,7 +105,7 @@ abstract class BaseOperation
      */
     protected function where(array $conditions): BaseOperation
     {
-        if (is_array($conditions) && !empty($conditions)) {
+        if (!empty($conditions)) {
             $sql = null;
             $join = [];
             reset($conditions);
@@ -165,7 +167,7 @@ abstract class BaseOperation
                 }
                 $keyRaw = $key;
                 $key = str_replace('.', '_', $key);
-                if (substr($key, 0, 1) != ":") {
+                if (!str_starts_with($key, ":")) {
                     unset($conditions[$keyRaw]);
                     $conditions[":_WHERE_" . $key] = $condition;
                     $join[] = "`" . str_replace('.', '`.`', $keyRaw) . "` = :_WHERE_" . $key;

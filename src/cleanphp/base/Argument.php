@@ -19,10 +19,10 @@ class Argument
     /**
      * 从get参数中获取
      * @param ?string $key
-     * @param mixed $default
+     * @param mixed|null $default
      * @return bool|float|int|mixed|string|null
      */
-    static function get(string $key = null, $default = null)
+    static function get(string $key = null, mixed $default = null): mixed
     {
         if ($key === null) return $_GET;
         if (isset($_GET[$key])) {
@@ -34,10 +34,10 @@ class Argument
     /**
      * 从post参数中获取
      * @param ?string $key
-     * @param mixed $default
+     * @param mixed|null $default
      * @return bool|float|int|mixed|string|null
      */
-    static function post(string $key = null, $default = null)
+    static function post(string $key = null, mixed $default = null): mixed
     {
         if ($key === null) return $_POST;
         if (isset($_POST[$key])) {
@@ -49,10 +49,10 @@ class Argument
     /**
      * 所有参数
      * @param ?string $key
-     * @param mixed $default
+     * @param mixed|null $default
      * @return bool|float|int|mixed|string|null
      */
-    static function arg(string $key = null, $default = null)
+    static function arg(string $key = null, mixed $default = null)
     {
         $all = array_merge($_POST, $_GET);
         if ($key === null) return $all;

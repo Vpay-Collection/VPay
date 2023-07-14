@@ -19,9 +19,9 @@ class UpdateOperation extends BaseOperation
     /**
      * 初始化
      */
-    public function __construct(&$db, &$dao, $m)
+    public function __construct(&$db, $m)
     {
-        parent::__construct($db, $dao, $m);
+        parent::__construct($db, $m);
         $this->opt = [];
         $this->opt['type'] = 'update';
         $this->bind_param = [];
@@ -69,7 +69,7 @@ class UpdateOperation extends BaseOperation
     /**
      * 编译
      */
-    protected function translateSql()
+    protected function translateSql(): void
     {
         $sql = $this->getOpt('UPDATE', 'table_name');
         $sql .= $this->getOpt('SET', 'set');

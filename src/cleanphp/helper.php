@@ -15,6 +15,7 @@ use cleanphp\App;
 use cleanphp\base\Argument;
 use cleanphp\base\Dump;
 use cleanphp\base\Route;
+use cleanphp\closure\Exceptions\PhpVersionNotSupportedException;
 use cleanphp\closure\SerializableClosure;
 use cleanphp\file\Log;
 use cleanphp\process\Async;
@@ -74,6 +75,8 @@ function file_type(string $filename): string
         // open office
         'odt' => 'application/vnd.oasis.opendocument.text',
         'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+        "woff2"=>'font/woff2',
+        "ttf"=>'font/ttf',
     );
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     $ext = strtolower($extension);
@@ -197,57 +200,67 @@ function url(string $m = 'index', string $c = 'main', string $a = 'index', array
 {
     return Route::url(...func_get_args());
 }
-
+//闭包序列化
+function traversalClosure($array,$callback){
+    if (is_array($array) || (is_object($array) && !$array instanceof Closure)) {
+        foreach ($array as &$item) {
+            if (is_array($item)|| (is_object($item) && !$item instanceof Closure)) {
+                $item = traversalClosure($item,$callback);
+            } elseif ($item instanceof Closure) {
+                $callback($item);
+            }elseif (is_string($item) && str_starts_with($item, "__SerializableClosure__")) {
+                $item = substr($item,23);
+                $callback($item);
+            }
+        }
+    }
+    return $array;
+}
 /**
  * Serialize
  *
  * @param mixed $data
  * @return string
  */
-function __serialize($data): string
+function __serialize(mixed $data): string
 {
-    SerializableClosure::setSecretKey('cleanphp');
-    SerializableClosure::enterContext();
-    SerializableClosure::wrapClosures($data);
-    $data = serialize($data);
-    SerializableClosure::exitContext();
-    return $data;
+
+    return  serialize(traversalClosure($data,function (&$item){
+        try {
+            $item = "__SerializableClosure__" . serialize(new SerializableClosure($item));
+        } catch (PhpVersionNotSupportedException $e) {
+            Log::record("序列化失败",$e->getMessage());
+            $item = "";
+        }
+    }));
 }
 
 /**
  * Unserialize
  *
- * @param string $data
- * @param array|null $options
+ * @param string|null $data
  * @return mixed
  */
-function __unserialize(string $data, array $options = null)
+function __unserialize(?string $data): mixed
 {
     if(empty($data))return null;
-    try{
-        SerializableClosure::setSecretKey('cleanphp');
-        SerializableClosure::enterContext();
-        $data = ($options === null || PHP_MAJOR_VERSION < 7)
-            ? unserialize($data)
-            : unserialize($data, $options);
-        SerializableClosure::unwrapClosures($data);
-        SerializableClosure::exitContext();
-    }catch (\cleanphp\exception\NoticeException $exception){
-        Log::record("__unserialize","需要反序列化的字符串：".$data);
-        Log::record("__unserialize", "反序列化错误：".$exception->getMessage(),Log::TYPE_ERROR);
-        return null;
-    }
-    return $data;
+    $result = unserialize($data);
+    traversalClosure($result,function (&$item){
+        $item =  unserialize($item)->getClosure();
+    });
+    return $result;
 }
 
 /**
  * 启动一个异步任务
  * @param Closure $function 任务函数
  * @param int $timeout 异步任务的最长运行时间,单位为秒
- * @return AsyncObject
+ * @return AsyncObject|null
  */
-function go(Closure $function, int $timeout = 300): AsyncObject
+function go(Closure $function, int $timeout = 300): ?AsyncObject
 {
+    if(App::$cli)return null;
+
     return Async::start($function, $timeout);
 }
 
@@ -308,3 +321,16 @@ function rand_str(int $length = 8, bool $upper = true, bool $lower = true, bool 
 
     return $password;
 }
+
+/**
+ * 过滤可能存在危险的字符
+ * @param $input
+ * @return array|string|null
+ */
+function filter_characters($input): array|string|null
+{
+    return preg_replace('/[^\x{4e00}-\x{9fa5}a-zA-Z0-9_.\-]/u', '', $input);
+}
+
+
+

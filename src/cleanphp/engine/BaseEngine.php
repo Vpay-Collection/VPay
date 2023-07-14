@@ -15,9 +15,11 @@
 namespace cleanphp\engine;
 
 use cleanphp\base\Response;
+use cleanphp\base\Variables;
 
 abstract class BaseEngine
 {
+
 
     /**
      * 渲染的输出类型
@@ -39,6 +41,37 @@ abstract class BaseEngine
      * @param string $dumps 错误发生之前的输出信息
      */
     abstract function renderError(string $msg, array $traces, string $dumps, string $tag);
+
+    private array $headers = [];
+
+    /**
+     * 设置请求头
+     * @param $k
+     * @param $v
+     * @return $this
+     */
+    public function setHeader($k,$v){
+        $this->headers[$k] = $v;
+        Variables::set("__headers__",$this->headers);
+        return $this;
+    }
+
+    /**
+     * 设置缓存
+     * @param $min
+     * @return $this
+     */
+    public function cache($min)
+    {
+        $seconds_to_cache = $min * 60 ;
+        $ts = gmdate("D, d M Y H:i:s", time() + $seconds_to_cache) . " GMT";
+        $this->headers["Expires"] = $ts;
+        $this->headers["Pragma"] = "cache";
+        $this->headers["Cache-Control"] = "max-age=$seconds_to_cache";
+        Variables::set("__headers__",$this->headers);
+        return $this;
+    }
+
 
     /**
      */

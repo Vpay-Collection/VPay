@@ -30,6 +30,7 @@ use cleanphp\exception\ExitApp;
 use cleanphp\file\File;
 use cleanphp\file\Log;
 use cleanphp\process\Async;
+use Throwable;
 
 
 class App
@@ -50,9 +51,6 @@ class App
         App::$debug = $debug;
         error_reporting(E_ALL & ~(E_STRICT | E_NOTICE));
         ini_set("display_errors", "Off");//禁用错误提醒
-        if (version_compare(PHP_VERSION, '7.4.0', '<')) {
-            exit("请使用PHP 7.4以上版本运行该应用");
-        }
         define("DS", DIRECTORY_SEPARATOR);//定义斜杠符号
         define("APP_CORE", APP_DIR . DS . 'cleanphp' . DS);//定义程序的核心目录
 
@@ -164,7 +162,7 @@ class App
 
             $result = $controller_obj->$__action();
             if ($result !== null)
-                (new Response())->render($result, $controller_obj->getCode(), EngineManager::getEngine()->getContentType())->send();
+                (new Response())->render($result, $controller_obj->getCode(), EngineManager::getEngine()->getContentType())->setHeaders(Variables::get("__headers__",[]))->send();
             else {
                 $data = [$__module, $__controller, $__action, $controller_class];
                 EventManager::trigger("__not_render__", $data);
@@ -173,8 +171,8 @@ class App
 
         } catch (ExitApp $exit_app) {//执行退出
             App::$debug && Log::record("Frame", sprintf("框架执行退出: %s", $exit_app->getMessage()));
-        } catch (\Exception|\Error $exception) {
-            Error::err($exception->getMessage(), $exception->getTrace());
+        } catch (Throwable $exception) {
+            Error::err("Exception: ".get_class($exception)."\r\n\r\n".$exception->getMessage(), $exception->getTrace());
         } finally {
             self::$app && self::$app->onRequestEnd();
             if (App::$debug) {

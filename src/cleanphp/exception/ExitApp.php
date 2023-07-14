@@ -14,12 +14,13 @@
 
 namespace cleanphp\exception;
 
-use Exception;
+use Error;
 
-class ExitApp extends Exception
+class ExitApp extends Error
 {
     public function __construct($message = "")
     {
-        parent::__construct($message);
+      parent::__construct($message);
     }
+
 }
