@@ -5,7 +5,7 @@
     {"mode":700,"path":"/wp-includes"}
   ],
   "success_url":"/",
-  "php_versions":"74,80,81,82",
+  "php_versions":"82",
   "db_config":"app/config_example.php",
   "admin_username":"",
   "admin_password":"",
