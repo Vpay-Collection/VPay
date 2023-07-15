@@ -2,6 +2,8 @@
 
 namespace library\task\Cron;
 
+use OutOfRangeException;
+
 /**
  * Abstract CRON expression field
  */
@@ -125,15 +127,15 @@ abstract class AbstractField implements FieldInterface
         $rangeEnd = isset($rangeChunks[1]) ? $rangeChunks[1] : $rangeStart;
 
         if ($rangeStart < $this->rangeStart || $rangeStart > $this->rangeEnd || $rangeStart > $rangeEnd) {
-            throw new \OutOfRangeException('Invalid range start requested');
+            throw new OutOfRangeException('Invalid range start requested');
         }
 
         if ($rangeEnd < $this->rangeStart || $rangeEnd > $this->rangeEnd || $rangeEnd < $rangeStart) {
-            throw new \OutOfRangeException('Invalid range end requested');
+            throw new OutOfRangeException('Invalid range end requested');
         }
 
         if ($step > ($rangeEnd - $rangeStart) + 1) {
-            throw new \OutOfRangeException('Step cannot be greater than total range');
+            throw new OutOfRangeException('Step cannot be greater than total range');
         }
 
         $thisRange = range($rangeStart, $rangeEnd, $step);

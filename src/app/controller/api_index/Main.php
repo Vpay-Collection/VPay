@@ -73,18 +73,23 @@ EOF;
         $_username = arg('_username');
         $_password = arg('_password');
 
+
+        if(empty($_password)||empty($_username)){
+            return EngineManager::getEngine()->render(502,"用户名或密码不允许为空");
+        }
+
         $encrypt = password_hash($_username . $_password,PASSWORD_DEFAULT);
 
         Config::setConfig('login',[
             'username' => $_username,
             'password' => $encrypt,
-            'image' => Request::getAddress()."/clean_static/img/head.jpg",
+            'image' => Request::getAddress()."/clean_static/img/head.png",
         ]);
 
         $frame = Config::getConfig("frame");
         $frame['host'][0] = arg('domain');
         Config::setConfig("frame",$frame);
-        Cache::init()->set("install",true);
+        Cache::init()->set("install.lock",true);
         return $this->render(200);
     }
 }

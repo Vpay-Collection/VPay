@@ -1,55 +1,105 @@
 {
+
   "bitwise": false,
+
   "camelcase": false,
+
   "curly": true,
+
   "eqeqeq": true,
+
   "es3": false,
   "es5": false,
   "esnext": false,
-  "esversion": 6,
+
+  "esversion": 8,
+
   "forin": true,
+
   "freeze": true,
+
   "funcscope": true,
+
   "futurehostile": true,
+
   "immed": true,
+
   "indent": 4,
+
   "latedef": true,
+
   "maxdepth": 4,
+
   "maxerr": 10000,
+
   "maxlen": 200,
+
   "maxparams": 4,
+
   "maxstatements": 1000,
+
   "newcap": true,
+
   "noarg": true,
+
   "nocomma": true,
+
   "noempty": false,
+
   "nonbsp": true,
-  "nonew": false,
+
+  "nonew": true,
+
   "notypeof": false,
+
   "quotmark": false,
+
   "shadow": false,
+
   "singleGroups": true,
+
   "strict": false,
+
   "undef": true,
+
   "unused": true,
+
   "varstmt": false,
+
   "asi": false,
+
   "boss": true,
+
   "debug": true,
+
   "elision": true,
+
   "eqnull": true,
+
   "evil": true,
+
   "expr": true,
+
   "lastsemic": false,
+
   "laxbreak": true,
+
   "laxcomma": true,
+
   "loopfunc": true,
+
   "multistr": true,
+
   "plusplus": false,
+
   "proto": true,
+
   "sub": true,
+
   "browser": true,
+
   "jquery": false,
+
   "devel": true,
   "globals": {
     "define": true,
@@ -58,15 +108,17 @@
     "console": true,
     "THREE": true,
     "TWEEN": true,
-    "Stats": true,
+    "Stats":true,
     "$": true,
     "mdb": true,
     "PublicKeyCredential": true,
     "form": true,
     "Pagination": true,
     "FileUpload": true,
-    "JSEncrypt": true,
-    "ChipsInput": true,
-    "loading": true
+    "jQuery": true,
+    "mdbAdmin": true,
+    "hasLoadPlugin": true,
+    "mdbAdminPlugins": true,
+    "resetTheme": true
   }
 }

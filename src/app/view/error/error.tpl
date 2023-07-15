@@ -8,7 +8,7 @@
     <title>{$title}</title>
 
     <!-- MDB icon -->
-    <link rel="icon" href="../../public/img/mdb-favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../../public/img/default-monochrome.svg" type="image/x-icon"/>
     <!-- Font Awesome -->
     <!-- Google Fonts Roboto -->
     <link
@@ -17,14 +17,14 @@
     />
     <!-- MDB ESSENTIAL -->
     {if $theme == "dark"}
-        <link id="theme-link" rel="stylesheet" href="../../public/css/mdb.dark.min.css"/>
+        <link id="theme-link" rel="stylesheet" href="../../public/mdb/css/mdb.dark.min.css?v={$__version}"/>
     {else}
-        <link id="theme-link" rel="stylesheet" href="../../public/css/mdb.min.css"/>
+        <link id="theme-link" rel="stylesheet" href="../../public/mdb/css/mdb.min.css?v={$__version}"/>
     {/if}
     <!-- MDB PLUGINS -->
     {* <link rel="stylesheet" href="../../public/plugins/css/all.min.css" />*}
     <!-- Custom styles -->
-    <script src="../../public/js/theme.js"></script>
+    <script src="../../public/js/theme.js?v={$__version}"></script>
 </head>
 
 <body>
@@ -42,8 +42,8 @@
                 <section class="my-5 text-center">
                     <h1 class="display-1">{if $err==':('}{$code}{else}{$title}{/if}</h1>
                     {if $err==':('}
-                    <h4 class="mb-4">{$title}</h4>
-{/if}
+                        <h4 class="mb-4">{$title}</h4>
+                    {/if}
                     <p class="mb-4">
                         {$msg}
                     </p>

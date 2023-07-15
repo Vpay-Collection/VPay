@@ -12,9 +12,11 @@
 
 //此处建议注册事件，而不是直接执行class，因为此处的包含时机比Config注册的时机还要早。
 
+use cleanphp\App;
 use cleanphp\base\EventManager;
 use library\task\TaskerServer;
 
 EventManager::addListener("__frame_init__", function ($event, &$data) {
+    if(!App::$cli)
     TaskerServer::start();
 });

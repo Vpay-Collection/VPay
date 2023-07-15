@@ -1,0 +1,136 @@
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(34, 34, 34);
+    z-index: 19891017;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 20px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+#loadingOverlay p{
+    margin-block-start: 9em;
+    margin-block-end: 1em;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    10% {
+        width: 6.250em;
+        height: 6.250em;
+    }
+    66% {
+        width: 2.4em;
+        height: 2.4em;
+    }
+    100% {
+        transform: rotate(360deg);
+        width: 6.250em;
+        height: 6.250em;
+    }
+}
+
+@keyframes dotsY {
+    66% {
+        opacity: .1;
+        width: 2.4em;
+    }
+    77% {
+        opacity: 1;
+        width: 0;
+    }
+}
+
+@keyframes dotsX {
+    66% {
+        opacity: .1;
+        height: 2.4em;
+    }
+    77% {
+        opacity: 1;
+        height: 0;
+    }
+}
+
+@keyframes flash {
+    33% {
+        opacity: 0;
+        border-radius: 0;
+    }
+    55% {
+        opacity: .6;
+        border-radius: 100%;
+    }
+    66% {
+        opacity: 0;
+    }
+}
+
+#loadingOverlay figure { position: absolute; margin: auto; inset: 0; width: 6.25em; height: 6.25em; animation: 2.4s linear 0s infinite normal none running rotate; }
+#loadingOverlay .white { inset: 0; background: white; animation: 2.4s linear 0s infinite normal none running flash; opacity: 0; }
+#loadingOverlay .dot { position: absolute; margin: auto; width: 2.4em; height: 2.4em; border-radius: 100%; transition: all 1s ease 0s; }
+#loadingOverlay .dot:nth-child(2) { top: 0; bottom: 0; left: 0; background: rgb(255, 68, 68); animation: 2.4s linear 0s infinite normal none running dotsY; }
+#loadingOverlay .dot:nth-child(3) { left: 0; right: 0; top: 0; background: rgb(255, 187, 51); animation: 2.4s linear 0s infinite normal none running dotsX; }
+#loadingOverlay .dot:nth-child(4) { top: 0; bottom: 0; right: 0; background: rgb(153, 204, 0); animation: 2.4s linear 0s infinite normal none running dotsY; }
+#loadingOverlay .dot:nth-child(5) { left: 0; right: 0; bottom: 0; background: rgb(51, 181, 229); animation: 2.4s linear 0s infinite normal none running dotsX; }
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media (min-width: 1400px) {
+    main,
+    header,
+    #main-navbar {
+        padding-left: 240px;
+    }
+}
+#main-navbar {
+    background-color: #f6f9fc;
+}
+@media (prefers-color-scheme: dark) {
+    #main-navbar {
+        background-color: #424242;
+        color: #f6f9fc;
+    }
+    .list-group-item {
+        color:  #f6f9fc;
+    }
+}
+
+td {
+    vertical-align: middle;
+}
+.sidenav-link.active{
+    background-color: var(--mdb-sidenav-link-active-focus-background-color);
+    color: var(--mdb-sidenav-link-active-color)!important;
+}
+
+
+.clipboard{
+    cursor: pointer;
+}
+.ps__rail-y{
+    display: none!important;
+}
+
+.ankio-loading{
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+

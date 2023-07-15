@@ -23,6 +23,7 @@ use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
 use cleanphp\exception\ExitApp;
 use cleanphp\exception\NoticeException;
+use cleanphp\exception\WarningException;
 use cleanphp\file\Log;
 use Closure;
 
@@ -74,45 +75,53 @@ class Async
         if (isset($url_array["query"]))
             parse_str($url_array["query"], $query);
         $port = intval($_SERVER["SERVER_PORT"]);
-        $scheme = Response::getHttpScheme() === "https://" ? "ssl://" : "";
-        $contextOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false
-            ]
-        ];
-        $context = stream_context_create($contextOptions);
-
-        $fp = stream_socket_client($scheme . $url_array['host'] . ":" . $port, $errno, $err_str, 5, STREAM_CLIENT_CONNECT, $context);
-        if ($fp === false) {
-            Error::err('异步任务处理失败，可能超出服务器处理上限: ' . $err_str, [], "Async");
-            return null;
-        }
-
+        $scheme = Response::getHttpScheme() === "https://" ? "https://" : "http://";
         if ($query !== [])
             $get_path = $url_array['path'] . "?" . http_build_query($query);
         else
             $get_path = $url_array['path'];
-
-        $header = "GET " . $get_path;
-        $header .= " HTTP/1.1" . PHP_EOL;
-        $header .= "Host: " . $url_array['host'] . PHP_EOL;
         $token = md5($key);
         $asyncObject->token = $token;
         Cache::init($timeout, Variables::getCachePath("async", DS))->set($token, $asyncObject);
-        $header .= "Token: " . $token . PHP_EOL;
-        $header .= "User-Agent: Async/1.0.0.1 " . PHP_EOL;
-        $header .= "Connection: Close" . PHP_EOL;
-        $header .= PHP_EOL;
-        fwrite($fp, $header);
-        //此处延时关闭，防止代码未走到noWait就中断
-        usleep(5 * 1000);
-        fclose($fp);
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $scheme . $url_array['host'] . ":" . $port. $get_path);
+            curl_setopt($ch, CURLOPT_PORT, $port);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RESOLVE, [$url_array['host'] . ':' . "127.0.0.1"]);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_NOBODY, true); // 设置仅发送请求头
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Host: ' . $url_array['host'],
+                'Token: ' . $token,
+                'User-Agent: Async/1.0.0.1',
+                'Connection: Close'
+            ]);
+            curl_exec($ch);
+            $response = "";
+            $err_str = curl_error($ch);
+            curl_close($ch);
+        } catch (WarningException $exception) {
+            $err_str = $exception->getMessage();
+            $response = false;
+        }
+
+        if ($response === false) {
+            Error::err('异步任务处理失败，可能超出服务器处理上限: ' . $err_str, [], "Async");
+            return null;
+        }
+
+
+
         if (App::$debug) {
             Log::record("Async", "异步任务已下发：$key");
-            Log::record("Async", "异步请求包：\n$header");
         }
+
         return $asyncObject;
+
     }
 
     /**

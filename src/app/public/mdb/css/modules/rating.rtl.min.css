@@ -1,0 +1,2 @@
+.rating{--mdb-rating-icon-padding:0.25rem;display:flex;margin:0;padding:0}.rating li{list-style:none}.rating i{padding:var(--mdb-rating-icon-padding)}.rating i.fa-sm{line-height:1}.rating:not([data-mdb-readonly=true]) li{cursor:pointer}
+/*# sourceMappingURL=rating.rtl.min.css.map */

@@ -1,53 +1,45 @@
-function changeNavbar(from, to) {
-    var fromElem = document.querySelector("." + from);
-    if (fromElem != null) {
-        fromElem.classList.add(to);
-        fromElem.classList.remove(from);
-    }
-    var fromColor = from === "navbar-dark" ? "dark" : "white";
-    var toColor = to === "navbar-dark" ? "dark" : "white";
-    var fromColorElem = document.querySelectorAll(".bg-" + fromColor);
-    if (fromColorElem != null) {
-        for (const fromColorElemElement of fromColorElem) {
-            fromColorElemElement.classList.add("bg-" + toColor);
-            fromColorElemElement.classList.remove("bg-" + fromColor);
-        }
+function resetTheme() {
+    if ((window.matchMedia('(prefers-color-scheme: dark)')).matches){
+        document.querySelectorAll('[class*="-light"]').forEach(function (k) {
 
+            k.classList.forEach(function(cls) {
+                if (cls.includes('-light')) {
+                    var newCls = cls.replace('-light', '-dark');
+                    k.classList.replace(cls, newCls);
+                }
+            });
+        });
+    }else{
+        document.querySelectorAll('[class*="-dark"]').forEach(function (k) {
+            k.classList.forEach(function(cls) {
+                if (cls.includes('-dark')) {
+                    var newCls = cls.replace('-dark', '-light');
+                    k.classList.replace(cls, newCls);
+                }
+            });
+        });
     }
-
 }
-
 function onChange(e) {
     const themeLink = document.getElementById('theme-link');
+    resetTheme();
     if (e.matches) {
-        themeLink.href = '/clean_static/css/mdb.dark.min.css';
-        changeNavbar("navbar-light", "navbar-dark");
-        document.querySelectorAll(".bg-light").forEach(function (value, key, parent) {
-            value.classList.add("bg-dark");
-            value.classList.remove("bg-light");
-        });
+        themeLink.href = themeLink.href.replace("mdb.min.css","mdb.dark.min.css");
     } else {
-        themeLink.href = '/clean_static/css/mdb.min.css';
-        changeNavbar("navbar-dark", "navbar-light");
-        document.querySelectorAll(".bg-dark").forEach(function (value, key, parent) {
-            value.classList.add("bg-light");
-            value.classList.remove("bg-dark");
-        });
+        themeLink.href = themeLink.href.replace("mdb.dark.min.css","mdb.min.css");
     }
     document.cookie = "theme=" + (e.matches ? "dark" : "light") + "; path=/; max-age=" + 365 * 24 * 60 * 60;
 }
 
-
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onChange);
+
 onChange(window.matchMedia('(prefers-color-scheme: dark)'));
+resetTheme();
 document.addEventListener('DOMContentLoaded', function() {
-    hideLoading();
+    document.getElementById('loadingOverlay').style.opacity = "0";
+    setTimeout(function () {
+        document.getElementById('loadingOverlay').style.display = "none";
+    },500);
 });
 
-function showLoading() {
-    document.getElementById('loadingOverlay').style.display =  'flex';
-}
 
-function hideLoading() {
-    document.getElementById('loadingOverlay').style.display =  'none';
-}

@@ -22,5 +22,5 @@ class TaskInfo
     public int $next = 0;//下次的执行时间
     public bool $loop = false;//是否循环
     public int $times = 0;//循环次数
-    public ?string $closure = null;//序列化的执行事件
+    public  $closure ;//序列化的执行事件
 }

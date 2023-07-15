@@ -37,17 +37,16 @@ class Application implements MainApp
     /**
      * @inheritDoc
      */
-    function onRequestArrive()
+    function onRequestArrive(): void
     {
         include_once Variables::getLibPath("vpay", "src", "autoload.php");
-        //作为资源服务器，会话有效期至少持续60天
-        Session::getInstance()->start(3600 * 24 * 60);
+        Session::getInstance()->start(3600 * 24 * 2);
         $string = new StringBuilder(Variables::get("__request_module__"));
         if ($string->startsWith("api")) {
             EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
         } else {
             EngineManager::setDefaultEngine(new ViewEngine());
-            EngineManager::getEngine()->setData("__version", Config::getConfig('frame')['version']);
+            EngineManager::getEngine()->setData("__version", Config::getConfig('frame')['version'])->setData("__lang", Variables::get("__lang", "zh-cn"));
             //刷新一下客户端主题，方便渲染
             if (Cookie::getInstance()->get("theme") == null) {
                 (new Response())->render(<<<EOF
@@ -64,7 +63,7 @@ EOF
             EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
             //跳转安装
 
-            if (empty(Cache::init()->get("install")) && Variables::get("__request_controller__") !== "install") {
+            if (empty(Cache::init()->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
                 Response::location(url("index", 'install', 'index'));
             }
 
@@ -79,15 +78,9 @@ EOF
     }
 
 
-    /**
-     * @inheritDoc
-     */
-    function onRequestEnd()
-    {
 
-    }
 
-    function onFrameworkStart()
+    function onFrameworkStart(): void
     {
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
@@ -112,6 +105,18 @@ EOF
 
 
         });
+        EventManager::addListener("__on_view_render__",function (string $event, &$data){
+            $theme =  Cookie::getInstance()->get("theme",'light');
+            if($theme==="dark"){
+                $data = str_replace("-light","-dark",$data);
+            }else{
+                $data = str_replace("-dark","-light",$data);
+            }
+        });
+    }
+
+    function onRequestEnd(): void
+    {
 
     }
 }
