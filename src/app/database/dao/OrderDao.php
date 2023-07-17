@@ -27,24 +27,13 @@ use library\task\TaskerTime;
 
 class OrderDao extends Dao
 {
-    public function __construct()
-    {
-        parent::__construct(OrderModel::class);
-    }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getTable(): string
-    {
-        return 'order';
-    }
 
     /**
      * 关闭超时订单
      * @return void
      */
-    public function closeTimeoutOrder()
+    public function closeTimeoutOrder(): void
     {
         $close_time = Config::getConfig("app")['timeout'];
         $close_time = time() - 60 * $close_time;//计算订单关闭时间
@@ -78,7 +67,7 @@ class OrderDao extends Dao
         $day = [];
         for ($i = 1; $i < 8; $i++) {
             $day[] = date('Y-m-d', $start);
-            $result[] = number_format($this->getSum(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS], 'real_price'), 2);
+            $result[] = $this->getSum(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS], 'real_price');
             $end = $start;
             $start = strtotime(date('Y-m-d', strtotime("-$i day")));
         }
@@ -92,7 +81,7 @@ class OrderDao extends Dao
      */
     public function getTotal(): string
     {
-        return number_format($this->getSum(['state' => OrderModel::SUCCESS], 'real_price'), 2);
+        return $this->getSum(['state' => OrderModel::SUCCESS], 'real_price');
     }
 
     /**
@@ -101,7 +90,7 @@ class OrderDao extends Dao
      */
     public function getToday(): string
     {
-        return number_format($this->getSum(['state' => OrderModel::SUCCESS, 'close_time>:time', ':time' => strtotime(date('Y-m-d', time()))], 'real_price'), 2);
+        return $this->getSum(['state' => OrderModel::SUCCESS, 'close_time>:time', ':time' => strtotime(date('Y-m-d', time()))], 'real_price');
     }
 
 
@@ -112,7 +101,7 @@ class OrderDao extends Dao
      * @return void
      * @throws OrderNotFoundException
      */
-    public function notify($order_id, $key)
+    public function notify($order_id, $key): void
     {
         /**@var $model OrderModel */
         $model = $this->find(null, ['order_id' => $order_id]);
@@ -132,14 +121,13 @@ class OrderDao extends Dao
      * 根据PAY_TYPE支付方式获取订单数
      * @param $pay_type int 服务端支付方式支持{@link OrderModel::PAY_ALIPAY}(App监控的支付宝)/{@link OrderModel::PAY_WECHAT}(App监控的微信)/{@link OrderModel::PAY_QQ}(App监控的QQ)
      * @param float $price
-     * @return array|int
+     * @return OrderModel|null
      */
     public function getWaitOrderByPayType(int $pay_type, float $price = 0): ?OrderModel
     {
         $this->closeTimeoutOrder();
         $condition = [
-            'real_price > ' . ($price - 0.01),
-            'real_price < ' . ($price + 0.01),
+            'real_price' => $price,
             'pay_type' => $pay_type,
             'state' => OrderModel::WAIT
         ];
@@ -164,7 +152,7 @@ class OrderDao extends Dao
         return $this->find(null, ["order_id" => $id]);
     }
 
-    public function closeOrder($order, $app)
+    public function closeOrder($order, $app): void
     {
         $this->update()->where(['order_id' => $order, 'appid' => $app])->commit();
     }
@@ -174,7 +162,7 @@ class OrderDao extends Dao
         return $this->find(null, ['order_id' => $order, 'appid' => $app]);
     }
 
-    public function delByAppid($id)
+    public function delByAppid($id): void
     {
         $this->delete()->where(['appid' => $id])->commit();
     }

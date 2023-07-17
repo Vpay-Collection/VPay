@@ -14,8 +14,7 @@
 
 namespace library\database\object;
 
-use cleanphp\objects\ArgObject;
-use cleanphp\objects\StringBuilder;
+use cleanphp\base\ArgObject;
 
 abstract class Model extends ArgObject
 {

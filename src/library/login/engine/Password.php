@@ -92,14 +92,10 @@ class Password extends BaseEngine
     {
 
         $token = Session::getInstance()->get('token');
-        $device = Session::getInstance()->get('device');
 
         $token2 = Cache::init()->get('token');
-        $device2 = Cache::init()->get('device');
 
-        // dumps($token,$token2,$device,$device2, $this->getDevice());
-
-        if ($token !== $token2 || $device !== $device2 || $device !== $this->getDevice()) {
+        if ($token !== $token2) {
             $this->logout();
             return false;
         }
@@ -113,14 +109,7 @@ class Password extends BaseEngine
         $hash = md5($data["username"] . $data["password"]);
         $timeout = time() + 3600 * 24;
         $token = sha1($hash . md5($timeout));
-
-        $device = $this->getDevice();
-
         Session::getInstance()->set('token', $token);
-        Session::getInstance()->set('device', $device);
-        Cache::init()->set('token', $token);
-        Cache::init()->set('device', $device);
-
         EventManager::trigger("__login_success__");
     }
 

@@ -10,7 +10,16 @@
 
 namespace library\qrcode\src\Output;
 
-use function array_values, count, date, implode, is_array, is_numeric, max, min, round, sprintf;
+use function array_values;
+use function count;
+use function date;
+use function implode;
+use function is_array;
+use function is_numeric;
+use function max;
+use function min;
+use function round;
+use function sprintf;
 
 /**
  * Encapsulated Postscript (EPS) output

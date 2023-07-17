@@ -68,7 +68,7 @@ final class Byte extends QRDataModeAbstract
     /**
      * @inheritDoc
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public static function decodeSegment(BitBuffer $bitBuffer, int $versionNumber): string
     {

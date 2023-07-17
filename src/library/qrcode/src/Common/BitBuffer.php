@@ -117,7 +117,7 @@ final class BitBuffer
      * @param int $numBits number of bits to read
      *
      * @return int representing the bits read. The bits will appear as the least-significant bits of the int
-     * @throws \library\qrcode\src\QRCodeException if numBits isn't in [1,32] or more than is available
+     * @throws QRCodeException if numBits isn't in [1,32] or more than is available
      * @author Sean Owen, ZXing
      *
      */

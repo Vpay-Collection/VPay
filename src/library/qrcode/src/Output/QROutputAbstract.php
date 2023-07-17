@@ -10,10 +10,16 @@
 
 namespace library\qrcode\src\Output;
 
-use library\qrcode\src\Data\QRMatrix;
-use library\qrcode\src\Settings\SettingsContainerInterface;
 use Closure;
-use function base64_encode, dirname, file_put_contents, is_writable, ksort, sprintf;
+use library\qrcode\src\Data\QRMatrix;
+use library\qrcode\src\QROptions;
+use library\qrcode\src\Settings\SettingsContainerInterface;
+use function base64_encode;
+use function dirname;
+use function file_put_contents;
+use function is_writable;
+use function ksort;
+use function sprintf;
 
 /**
  * common output abstract
@@ -24,7 +30,7 @@ abstract class QROutputAbstract implements QROutputInterface
     /**
      * the current size of the QR matrix
      *
-     * @see \library\qrcode\src\Data\QRMatrix::getSize()
+     * @see QRMatrix::getSize
      */
     protected int $moduleCount;
 
@@ -51,7 +57,7 @@ abstract class QROutputAbstract implements QROutputInterface
     protected QRMatrix $matrix;
 
     /**
-     * @var \library\qrcode\src\Settings\SettingsContainerInterface|\library\qrcode\src\QROptions
+     * @var SettingsContainerInterface|QROptions
      */
     protected SettingsContainerInterface $options;
 
@@ -142,7 +148,7 @@ abstract class QROutputAbstract implements QROutputInterface
     /**
      * Saves the qr $data to a $file. If $file is null, nothing happens.
      *
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      * @see \library\qrcode\src\QROptions::$cachefile
      *
      * @see file_put_contents()

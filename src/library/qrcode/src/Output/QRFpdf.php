@@ -11,11 +11,17 @@
 
 namespace library\qrcode\src\Output;
 
+use FPDF;
 use library\qrcode\src\Data\QRMatrix;
 use library\qrcode\src\Settings\SettingsContainerInterface;
-use FPDF;
-
-use function array_values, class_exists, count, intval, is_array, is_numeric, max, min;
+use function array_values;
+use function class_exists;
+use function count;
+use function intval;
+use function is_array;
+use function is_numeric;
+use function max;
+use function min;
 
 /**
  * QRFpdf output module (requires fpdf)
@@ -29,7 +35,7 @@ class QRFpdf extends QROutputAbstract
     /**
      * QRFpdf constructor.
      *
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      */
     public function __construct(SettingsContainerInterface $options, QRMatrix $matrix)
     {
@@ -104,7 +110,7 @@ class QRFpdf extends QROutputAbstract
     /**
      * @inheritDoc
      *
-     * @return string|\FPDF
+     * @return string|FPDF
      */
     public function dump(string $file = null)
     {

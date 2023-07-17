@@ -12,7 +12,9 @@
 namespace library\qrcode\src\Decoder;
 
 use library\qrcode\src\Data\QRMatrix;
-use function array_fill, count, max;
+use function array_fill;
+use function count;
+use function max;
 
 /**
  * This class implements a local thresholding algorithm, which while slower than the
@@ -59,7 +61,7 @@ final class Binarizer
     }
 
     /**
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     private function estimateBlackPoint(array $buckets): int
     {
@@ -136,7 +138,7 @@ final class Binarizer
      * may not apply sharpening. Therefore, a row from this matrix may not be identical to one
      * fetched using getBlackRow(), so don't mix and match between them.
      *
-     * @return \library\qrcode\src\Decoder\BitMatrix The 2D array of bits for the image (true means black).
+     * @return BitMatrix The 2D array of bits for the image (true means black).
      */
     public function getBlackMatrix(): BitMatrix
     {

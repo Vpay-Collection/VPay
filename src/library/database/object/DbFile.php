@@ -5,7 +5,7 @@
 
 namespace library\database\object;
 
-use cleanphp\objects\ArgObject;
+use cleanphp\base\ArgObject;
 
 /**
  * Package: library\database\object

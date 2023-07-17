@@ -12,17 +12,25 @@
 
 namespace library\qrcode\src;
 
-use library\qrcode\src\Data\{AlphaNum, Byte, ECI, Hanzi, Kanji, Number, QRData, QRDataModeInterface, QRMatrix};
+use library\qrcode\src\Common\{EccLevel, ECICharset, MaskPattern, Mode, Version};
+use library\qrcode\src\Data\{AlphaNum,
+    Byte,
+    ECI,
+    Hanzi,
+    Kanji,
+    Number,
+    QRCodeDataException,
+    QRData,
+    QRDataModeInterface,
+    QRMatrix};
 use library\qrcode\src\Decoder\{Decoder,
     DecoderResult,
     GDLuminanceSource,
     IMagickLuminanceSource,
     LuminanceSourceInterface,
-    QRCodeDecoderException
-};
+    QRCodeDecoderException};
 use library\qrcode\src\Output\{QRCodeOutputException, QROutputInterface};
 use library\qrcode\src\Settings\SettingsContainerInterface;
-use library\qrcode\src\Common\{EccLevel, ECICharset, MaskPattern, Mode, Version};
 use Throwable;
 use function class_exists;
 use function class_implements;
@@ -44,126 +52,126 @@ class QRCode
 
     /**
      * @deprecated 5.0.0 use Version::AUTO instead
-     * @see \library\qrcode\src\Common\Version::AUTO
+     * @see Version::AUTO
      * @var int
      */
     public const VERSION_AUTO = Version::AUTO;
 
     /**
      * @deprecated 5.0.0 use MaskPattern::AUTO instead
-     * @see \library\qrcode\src\Common\MaskPattern::AUTO
+     * @see MaskPattern::AUTO
      * @var int
      */
     public const MASK_PATTERN_AUTO = MaskPattern::AUTO;
 
     /**
      * @deprecated 5.0.0 use EccLevel::L instead
-     * @see \library\qrcode\src\Common\EccLevel::L
+     * @see EccLevel::L
      * @var int
      */
     public const ECC_L = EccLevel::L;
 
     /**
      * @deprecated 5.0.0 use EccLevel::M instead
-     * @see \library\qrcode\src\Common\EccLevel::M
+     * @see EccLevel::M
      * @var int
      */
     public const ECC_M = EccLevel::M;
 
     /**
      * @deprecated 5.0.0 use EccLevel::Q instead
-     * @see \library\qrcode\src\Common\EccLevel::Q
+     * @see EccLevel::Q
      * @var int
      */
     public const ECC_Q = EccLevel::Q;
 
     /**
      * @deprecated 5.0.0 use EccLevel::H instead
-     * @see \library\qrcode\src\Common\EccLevel::H
+     * @see EccLevel::H
      * @var int
      */
     public const ECC_H = EccLevel::H;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::MARKUP_HTML instead
-     * @see \library\qrcode\src\Output\QROutputInterface::MARKUP_HTML
+     * @see QROutputInterface::MARKUP_HTML
      * @var string
      */
     public const OUTPUT_MARKUP_HTML = QROutputInterface::MARKUP_HTML;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::MARKUP_SVG instead
-     * @see \library\qrcode\src\Output\QROutputInterface::MARKUP_SVG
+     * @see QROutputInterface::MARKUP_SVG
      * @var string
      */
     public const OUTPUT_MARKUP_SVG = QROutputInterface::MARKUP_SVG;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::GDIMAGE_PNG instead
-     * @see \library\qrcode\src\Output\QROutputInterface::GDIMAGE_PNG
+     * @see QROutputInterface::GDIMAGE_PNG
      * @var string
      */
     public const OUTPUT_IMAGE_PNG = QROutputInterface::GDIMAGE_PNG;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::GDIMAGE_JPG instead
-     * @see \library\qrcode\src\Output\QROutputInterface::GDIMAGE_JPG
+     * @see QROutputInterface::GDIMAGE_JPG
      * @var string
      */
     public const OUTPUT_IMAGE_JPG = QROutputInterface::GDIMAGE_JPG;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::GDIMAGE_GIF instead
-     * @see \library\qrcode\src\Output\QROutputInterface::GDIMAGE_GIF
+     * @see QROutputInterface::GDIMAGE_GIF
      * @var string
      */
     public const OUTPUT_IMAGE_GIF = QROutputInterface::GDIMAGE_GIF;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::STRING_JSON instead
-     * @see \library\qrcode\src\Output\QROutputInterface::STRING_JSON
+     * @see QROutputInterface::STRING_JSON
      * @var string
      */
     public const OUTPUT_STRING_JSON = QROutputInterface::STRING_JSON;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::STRING_TEXT instead
-     * @see \library\qrcode\src\Output\QROutputInterface::STRING_TEXT
+     * @see QROutputInterface::STRING_TEXT
      * @var string
      */
     public const OUTPUT_STRING_TEXT = QROutputInterface::STRING_TEXT;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::IMAGICK instead
-     * @see \library\qrcode\src\Output\QROutputInterface::IMAGICK
+     * @see QROutputInterface::IMAGICK
      * @var string
      */
     public const OUTPUT_IMAGICK = QROutputInterface::IMAGICK;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::FPDF instead
-     * @see \library\qrcode\src\Output\QROutputInterface::FPDF
+     * @see QROutputInterface::FPDF
      * @var string
      */
     public const OUTPUT_FPDF = QROutputInterface::FPDF;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::EPS instead
-     * @see \library\qrcode\src\Output\QROutputInterface::EPS
+     * @see QROutputInterface::EPS
      * @var string
      */
     public const OUTPUT_EPS = QROutputInterface::EPS;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::CUSTOM instead
-     * @see \library\qrcode\src\Output\QROutputInterface::CUSTOM
+     * @see QROutputInterface::CUSTOM
      * @var string
      */
     public const OUTPUT_CUSTOM = QROutputInterface::CUSTOM;
 
     /**
      * @deprecated 5.0.0 use QROutputInterface::MODES instead
-     * @see \library\qrcode\src\Output\QROutputInterface::MODES
+     * @see QROutputInterface::MODES
      * @var string[]
      */
     public const OUTPUT_MODES = QROutputInterface::MODES;
@@ -171,14 +179,14 @@ class QRCode
     /**
      * The settings container
      *
-     * @var \library\qrcode\src\QROptions|\library\qrcode\src\Settings\SettingsContainerInterface
+     * @var QROptions|SettingsContainerInterface
      */
     protected SettingsContainerInterface $options;
 
     /**
      * A collection of one or more data segments of QRDataModeInterface instances to write
      *
-     * @var \library\qrcode\src\Data\QRDataModeInterface[]
+     * @var QRDataModeInterface[]
      */
     protected array $dataSegments = [];
 
@@ -220,7 +228,7 @@ class QRCode
     {
 
         if ($data !== null) {
-            /** @var \library\qrcode\src\Data\QRDataModeInterface $dataInterface */
+            /** @var QRDataModeInterface $dataInterface */
             foreach (Mode::INTERFACES as $dataInterface) {
 
                 if ($dataInterface::validateString($data)) {
@@ -247,7 +255,7 @@ class QRCode
     /**
      * Returns a QRMatrix object for the given $data and current QROptions
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function getQRMatrix(): QRMatrix
     {
@@ -295,7 +303,7 @@ class QRCode
 
     /**
      * @deprecated 5.0.0 use QRCode::getQRMatrix() instead
-     * @see \library\qrcode\src\QRCode::getQRMatrix()
+     * @see QRCode::getQRMatrix
      * @codeCoverageIgnore
      */
     public function getMatrix(): QRMatrix
@@ -306,7 +314,7 @@ class QRCode
     /**
      * initializes a fresh built-in or custom QROutputInterface
      *
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      */
     protected function initOutputInterface(QRMatrix $matrix): QROutputInterface
     {
@@ -331,7 +339,7 @@ class QRCode
      * checks if a string qualifies as numeric (convenience method)
      *
      * @deprecated 5.0.0 use Number::validateString() instead
-     * @see \library\qrcode\src\Data\Number::validateString()
+     * @see Number::validateString
      * @codeCoverageIgnore
      */
     public function isNumber(string $string): bool
@@ -343,7 +351,7 @@ class QRCode
      * checks if a string qualifies as alphanumeric (convenience method)
      *
      * @deprecated 5.0.0 use AlphaNum::validateString() instead
-     * @see \library\qrcode\src\Data\AlphaNum::validateString()
+     * @see AlphaNum::validateString
      * @codeCoverageIgnore
      */
     public function isAlphaNum(string $string): bool
@@ -355,7 +363,7 @@ class QRCode
      * checks if a string qualifies as Kanji (convenience method)
      *
      * @deprecated 5.0.0 use Kanji::validateString() instead
-     * @see \library\qrcode\src\Data\Kanji::validateString()
+     * @see Kanji::validateString
      * @codeCoverageIgnore
      */
     public function isKanji(string $string): bool
@@ -367,7 +375,7 @@ class QRCode
      * a dummy (convenience method)
      *
      * @deprecated 5.0.0 use Byte::validateString() instead
-     * @see \library\qrcode\src\Data\Byte::validateString()
+     * @see Byte::validateString
      * @codeCoverageIgnore
      */
     public function isByte(string $string): bool
@@ -469,7 +477,7 @@ class QRCode
      *
      * I hate this somehow, but I'll leave it for now
      *
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function addEciSegment(int $encoding, string $data): self
     {

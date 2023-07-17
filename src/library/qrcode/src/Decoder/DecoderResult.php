@@ -11,8 +11,8 @@
 
 namespace library\qrcode\src\Decoder;
 
-use library\qrcode\src\Data\QRMatrix;
 use library\qrcode\src\Common\{BitBuffer, EccLevel, MaskPattern, Version};
+use library\qrcode\src\Data\QRMatrix;
 use function property_exists;
 
 /**
@@ -20,11 +20,11 @@ use function property_exists;
  * applies to 2D barcode formats. For now, it contains the raw bytes obtained
  * as well as a String interpretation of those bytes, if applicable.
  *
- * @property \library\qrcode\src\Common\BitBuffer $rawBytes
+ * @property BitBuffer $rawBytes
  * @property string $data
- * @property \library\qrcode\src\Common\Version $version
- * @property \library\qrcode\src\Common\EccLevel $eccLevel
- * @property \library\qrcode\src\Common\MaskPattern $maskPattern
+ * @property Version $version
+ * @property EccLevel $eccLevel
+ * @property MaskPattern $maskPattern
  * @property int $structuredAppendParity
  * @property int $structuredAppendSequence
  */

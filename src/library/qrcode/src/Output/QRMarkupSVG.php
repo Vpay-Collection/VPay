@@ -11,7 +11,12 @@
 namespace library\qrcode\src\Output;
 
 use library\qrcode\src\Data\QRMatrix;
-use function array_chunk, implode, is_string, preg_match, sprintf, trim;
+use function array_chunk;
+use function implode;
+use function is_string;
+use function preg_match;
+use function sprintf;
+use function trim;
 
 /**
  * SVG output

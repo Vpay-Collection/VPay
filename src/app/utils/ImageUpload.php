@@ -16,7 +16,6 @@ namespace app\utils;
 
 use cleanphp\base\Variables;
 use cleanphp\file\File;
-use cleanphp\objects\StringBuilder;
 use library\upload\Upload;
 use library\upload\UploadException;
 use library\upload\UploadFile;
@@ -46,7 +45,7 @@ class ImageUpload
     {
         $time = 3600;
         foreach (scandir($this->temp) as $d) {
-            if ((new StringBuilder($d))->startsWith('.')) continue;
+            if (str_starts_with($d,'.')) continue;
             if (time() > (filemtime($this->temp . DS . $d) + $time)) {
                 unlink($this->temp . DS . $d);
             }
@@ -61,7 +60,7 @@ class ImageUpload
     public function useImage($image)
     {
 
-        if ((new StringBuilder($image))->startsWith("http")) {
+        if (str_starts_with($image,"http")) {
             return $image;//表示已经处理
         }
         if ($image === "") return $image;
@@ -81,7 +80,7 @@ class ImageUpload
      */
     public function delImage($image)
     {
-        if ((new StringBuilder($image))->startsWith("http")) {
+        if (str_starts_with($image,"http")) {
             $image = substr($image, strrpos($image, "/") + 1);
         }
         $physics = $this->dir . DS . $image;
@@ -119,7 +118,7 @@ class ImageUpload
 
     public function exist(string $image): bool
     {
-        if ((new StringBuilder($image))->startsWith("http")) {
+        if (str_starts_with($image,"http")) {
             $image = substr($image, strrpos($image, "/") + 1);
             return file_exists($this->dir . DS . $image);
         }

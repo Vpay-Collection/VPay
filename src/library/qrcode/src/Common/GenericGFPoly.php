@@ -36,7 +36,7 @@ final class GenericGFPoly
      *                                 from most significant (highest-power term) coefficient to the least significant
      * @param int|null $degree
      *
-     * @throws \library\qrcode\src\QRCodeException if argument is null or empty, or if leading coefficient is 0 and this
+     * @throws QRCodeException if argument is null or empty, or if leading coefficient is 0 and this
      *                                            is not a constant polynomial (that is, it is not the monomial "0")
      */
     public function __construct(array $coefficients, int $degree = null)
@@ -147,8 +147,8 @@ final class GenericGFPoly
     }
 
     /**
-     * @return \library\qrcode\src\Common\GenericGFPoly[] [quotient, remainder]
-     * @throws \library\qrcode\src\QRCodeException
+     * @return GenericGFPoly[] [quotient, remainder]
+     * @throws QRCodeException
      */
     public function divide(GenericGFPoly $other): array
     {
@@ -198,7 +198,7 @@ final class GenericGFPoly
     }
 
     /**
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function multiplyByMonomial(int $degree, int $coefficient): self
     {

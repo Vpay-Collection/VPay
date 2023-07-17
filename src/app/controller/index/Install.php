@@ -16,6 +16,7 @@ namespace app\controller\index;
 use cleanphp\base\Controller;
 use cleanphp\base\Request;
 use cleanphp\base\Response;
+use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
 
@@ -23,7 +24,8 @@ class Install extends Controller
 {
     function index(): void
     {
-        if (!empty(Cache::init()->get("install.lock"))) {
+
+        if (!empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock"))) {
             Response::location(url('index', 'main', 'index'));
         }
         $functions = array(

@@ -95,7 +95,7 @@ final class ECICharset
     private int $charsetID;
 
     /**
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function __construct(int $charsetID)
     {

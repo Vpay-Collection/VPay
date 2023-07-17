@@ -13,8 +13,8 @@
 
 namespace library\qrcode\src\Decoder;
 
-use library\qrcode\src\Settings\SettingsContainerInterface;
 use Imagick;
+use library\qrcode\src\Settings\SettingsContainerInterface;
 use function count;
 
 /**

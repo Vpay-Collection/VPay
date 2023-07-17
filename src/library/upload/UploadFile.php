@@ -14,7 +14,7 @@
 
 namespace library\upload;
 
-use cleanphp\objects\ArgObject;
+use cleanphp\base\ArgObject;
 
 class UploadFile extends ArgObject
 {

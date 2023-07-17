@@ -17,7 +17,6 @@ namespace app\controller\api_admin;
 use cleanphp\base\Controller;
 use cleanphp\base\Variables;
 use cleanphp\engine\EngineManager;
-use cleanphp\objects\StringBuilder;
 use library\login\LoginManager;
 
 class BaseController extends Controller
@@ -49,7 +48,7 @@ class BaseController extends Controller
                 if ($file_handle) {
                     while (!feof($file_handle)) { //判断是否到最后一行
                         $line = fgets($file_handle, 4096); //读取一行文本
-                        if ((new StringBuilder($line))->contains("[ AppChannel ]")) {
+                        if (str_contains($line,"[ AppChannel ]")) {
                             $array[] = trim($line);
                         }
                         if (sizeof($array) > 500) break;//最多读500行日志

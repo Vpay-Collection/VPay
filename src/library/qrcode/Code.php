@@ -18,13 +18,13 @@ use cleanphp\base\Request;
 use cleanphp\base\Response;
 use cleanphp\base\Variables;
 use cleanphp\file\Log;
-use cleanphp\objects\StringBuilder;
+use ErrorException;
 use library\qrcode\src\Common\EccLevel;
 use library\qrcode\src\Common\Version;
 use library\qrcode\src\Data\QRMatrix;
-use library\qrcode\src\Output\QRGdImage;
 use library\qrcode\src\QRCode;
 use library\qrcode\src\QROptions;
+use Throwable;
 
 class Code
 {
@@ -54,17 +54,18 @@ class Code
 
         try {
             $image = Config::getConfig("login")["image"];
-            if ((new StringBuilder($image))->startsWith(Request::getAddress()."/clean_static")) {
-                $image = str_replace(Request::getAddress()."/clean_static", APP_DIR . DS . "app" . DS . "public", $image);
+            $image = str_replace(Response::getHttpScheme() . Request::getDomain(),"",$image);
+            if (str_contains($image,"/clean_static")) {
+                $image = str_replace("/clean_static", APP_DIR . DS . "app" . DS . "public", $image);
             } else {
-                $image = str_replace(Request::getAddress() . DS . "image", Variables::getStoragePath("uploads"), $image);
+                $image = str_replace("image", Variables::getStoragePath("uploads"), $image);
 
             }
-
             header('Content-type: image/png');
+
             echo (new QRImageWithLogo($options, $qrcode->getQRMatrix()))->dump(null, $image);
 
-        } catch (\ErrorException|src\Data\QRCodeDataException|src\Output\QRCodeOutputException $e) {
+        } catch (ErrorException|src\Data\QRCodeDataException|src\Output\QRCodeOutputException $e) {
             Log::record("Qrcode", $e->getMessage(), Log::TYPE_ERROR);
             App::exit("Image Error");
         }
@@ -76,7 +77,7 @@ class Code
     {
         try {
             $result = (new QRCode)->readFromFile($path);
-        } catch (src\Decoder\QRCodeDecoderException|\Throwable $e) {
+        } catch (src\Decoder\QRCodeDecoderException|Throwable $e) {
             Log::record("Qrcode", $e->getMessage(), Log::TYPE_ERROR);
             return "";
         } // -> DecoderResult

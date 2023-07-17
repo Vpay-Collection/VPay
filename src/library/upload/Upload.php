@@ -29,7 +29,7 @@ class Upload
      * 调用该方法上传文件，如果出现问题则抛出异常。
      * @throws UploadException
      */
-    function upload($on_set_file = null)
+    function upload($on_set_file = null): void
     {
 
         /* 检查文件路径合法 */
@@ -70,7 +70,7 @@ class Upload
      * @throws UploadException
      */
 
-    private function checkFilePath()
+    private function checkFilePath(): void
     {
         if (empty($this->path)) {
             throw new UploadException("指定的上传路径为空");
@@ -156,7 +156,7 @@ class Upload
      * @param UploadFile $file
      * @throws UploadException
      */
-    private function checkFileSize(UploadFile &$file)
+    private function checkFileSize(UploadFile &$file): void
     {
         if (!$this->max_size > $file->size) {
             throw new UploadException("文件超过最大值：{$this->max_size}", 10001, $file);
@@ -180,7 +180,7 @@ class Upload
      * 设置上传后的文件名称
      */
 
-    private function setNewFileName(UploadFile &$file)
+    private function setNewFileName(UploadFile &$file): void
     {
         $file->new_name = uniqid("upload_");
     }

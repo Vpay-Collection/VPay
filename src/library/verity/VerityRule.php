@@ -36,7 +36,7 @@ class VerityRule
     public bool $allow_empty = true;
 
     /**
-     * @param string $rule 规则
+     * @param string|null $rule 规则
      * @param string $msg 错误信息
      * @param bool $allow_empty 是否为空不校验
      */

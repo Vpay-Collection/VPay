@@ -12,7 +12,8 @@
 namespace library\qrcode\src\Detector;
 
 use library\qrcode\src\Decoder\BitMatrix;
-use function abs, count;
+use function abs;
+use function count;
 
 /**
  * This class attempts to find alignment patterns in a QR Code. Alignment patterns look like finder
@@ -33,13 +34,13 @@ final class AlignmentPatternFinder
 
     private BitMatrix $matrix;
     private float $moduleSize;
-    /** @var \library\qrcode\src\Detector\AlignmentPattern[] */
+    /** @var AlignmentPattern[] */
     private array $possibleCenters;
 
     /**
      * Creates a finder that will look in a portion of the whole image.
      *
-     * @param \library\qrcode\src\Decoder\BitMatrix $matrix image to search
+     * @param BitMatrix $matrix image to search
      * @param float $moduleSize estimated module size so far
      */
     public function __construct(BitMatrix $matrix, float $moduleSize)
@@ -58,7 +59,7 @@ final class AlignmentPatternFinder
      * @param int $width width of region to search
      * @param int $height height of region to search
      *
-     * @return \library\qrcode\src\Detector\AlignmentPattern|null
+     * @return AlignmentPattern|null
      */
     public function find(int $startX, int $startY, int $width, int $height): ?AlignmentPattern
     {
@@ -172,7 +173,7 @@ final class AlignmentPatternFinder
      * @param int $i row where alignment pattern may be found
      * @param int $j end of possible alignment pattern in row
      *
-     * @return \library\qrcode\src\Detector\AlignmentPattern|null if we have found the same pattern twice, or null if not
+     * @return AlignmentPattern|null if we have found the same pattern twice, or null if not
      */
     private function handlePossibleCenter(array $stateCount, int $i, int $j): ?AlignmentPattern
     {

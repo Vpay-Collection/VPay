@@ -10,7 +10,10 @@
 
 namespace library\qrcode\src\Output;
 
-use function is_string, preg_match, strip_tags, trim;
+use function is_string;
+use function preg_match;
+use function strip_tags;
+use function trim;
 
 /**
  * Abstract for markup types: HTML, SVG, ... XML anyone?

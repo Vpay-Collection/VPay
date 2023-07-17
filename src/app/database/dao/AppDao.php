@@ -23,17 +23,7 @@ use library\database\object\Dao;
 class AppDao extends Dao
 {
 
-    public function __construct()
-    {
-        parent::__construct(AppModel::class);
-    }
-    /**
-     * @inheritDoc
-     */
-    protected function getTable(): string
-    {
-        return "application";
-    }
+
 
     public function getByAppId($appid): ?AppModel
     {
@@ -52,7 +42,7 @@ class AppDao extends Dao
         $this->delete()->where(['id' => $id])->commit();
     }
 
-    public function onCreateTable()
+    public function onCreateTable(): void
     {
         $host = Request::getAddress();
         $key = rand_str(32);
@@ -65,7 +55,7 @@ class AppDao extends Dao
            'id'=>1,
            'app_name'=>'内置商城',
            'app_key'=>$key,
-           'app_image'=>$host."/clean_static/img/cover.png",
+           'app_image'=>$host."/clean_static/img/shop.png",
        ])->commit();
     }
 

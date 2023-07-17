@@ -20,18 +20,6 @@ use library\database\object\Dao;
 class ShopItemDao extends Dao
 {
 
-    public function __construct()
-    {
-        parent::__construct(ShopItemModel::class);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getTable(): string
-    {
-        return 'shop_item';
-    }
 
     public function getById($id): ?ShopItemModel
     {

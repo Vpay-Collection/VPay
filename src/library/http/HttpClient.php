@@ -228,12 +228,7 @@ class HttpClient
             if (App::$debug && isset($streamVerboseHandle)) {
                 rewind($streamVerboseHandle);
                 $verboseLog = stream_get_contents($streamVerboseHandle);
-                Log::record('HttpClient Result', "┌---------------------HTTP CURL DEBUG---------------------");
-                Log::record('HttpClient Result', "│");
-                Log::recordAsLine('HttpClient Result', $verboseLog, Log::TYPE_INFO, "│ ");
-                Log::record('HttpClient Result', "│");
-                Log::record('HttpClient Result', "│" . $request_exec);
-                Log::record('HttpClient Result', "└------------------------------------------------------");
+                Log::record('HttpClient Result', $verboseLog);
             }
 
 
@@ -255,7 +250,7 @@ class HttpClient
     private function url(): string
     {
 
-        if(substr($this->path,0,4)=="http"){
+        if(str_starts_with($this->path, "http")){
             $url = $this->path;
         }else{
             $url = rtrim($this->base_url, '/') . "/" . ltrim($this->path, '/');

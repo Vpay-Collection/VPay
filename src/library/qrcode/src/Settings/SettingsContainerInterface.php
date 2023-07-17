@@ -13,6 +13,8 @@
 
 namespace library\qrcode\src\Settings;
 
+use Exception;
+use JsonException;
 use JsonSerializable;
 
 /**
@@ -67,8 +69,8 @@ interface SettingsContainerInterface extends JsonSerializable
     /**
      * Sets properties from a given JSON string
      *
-     * @throws \Exception
-     * @throws \JsonException
+     * @throws Exception
+     * @throws JsonException
      */
     public function fromJSON(string $json): SettingsContainerInterface;
 

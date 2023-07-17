@@ -90,7 +90,7 @@ final class ECI extends QRDataModeAbstract
     /**
      * Reads and parses the value of an ECI designator
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public static function parseValue(BitBuffer $bitBuffer): ECICharset
     {
@@ -123,7 +123,7 @@ final class ECI extends QRDataModeAbstract
     /**
      * Reads and decodes the ECI designator including the following byte sequence
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public static function decodeSegment(BitBuffer $bitBuffer, int $versionNumber): string
     {

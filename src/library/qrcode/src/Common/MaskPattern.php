@@ -11,10 +11,13 @@
 
 namespace library\qrcode\src\Common;
 
+use Closure;
 use library\qrcode\src\Data\QRMatrix;
 use library\qrcode\src\QRCodeException;
-use Closure;
-use function abs, array_search, count, min;
+use function abs;
+use function array_search;
+use function count;
+use function min;
 
 /**
  * ISO/IEC 18004:2000 Section 8.8.1
@@ -64,7 +67,7 @@ final class MaskPattern
     /**
      * MaskPattern constructor.
      *
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function __construct(int $maskPattern)
     {

@@ -14,7 +14,9 @@
 namespace library\qrcode\src\Detector;
 
 use library\qrcode\src\Decoder\BitMatrix;
-use function abs, count, usort;
+use function abs;
+use function count;
+use function usort;
 use const PHP_FLOAT_MAX;
 
 /**
@@ -32,7 +34,7 @@ final class FinderPatternFinder
     private const MAX_MODULES = 177; // 1 pixel/module times 3 modules/center
     private const CENTER_QUORUM = 2; // support up to version 10 for mobile clients
     private BitMatrix $matrix;
-    /** @var \library\qrcode\src\Detector\FinderPattern[] */
+    /** @var FinderPattern[] */
     private array $possibleCenters;
     private bool $hasSkipped = false;
 
@@ -48,7 +50,7 @@ final class FinderPatternFinder
     }
 
     /**
-     * @return \library\qrcode\src\Detector\FinderPattern[]
+     * @return FinderPattern[]
      */
     public function find(): array
     {
@@ -626,10 +628,10 @@ final class FinderPatternFinder
     }
 
     /**
-     * @return \library\qrcode\src\Detector\FinderPattern[] the 3 best FinderPatterns from our list of candidates. The "best" are
+     * @return FinderPattern[] the 3 best FinderPatterns from our list of candidates. The "best" are
      *         those that have been detected at least #CENTER_QUORUM times, and whose module
      *         size differs from the average among those patterns the least
-     * @throws \library\qrcode\src\Detector\QRCodeDetectorException if 3 such finder patterns do not exist
+     * @throws QRCodeDetectorException if 3 such finder patterns do not exist
      */
     private function selectBestPatterns(): array
     {
@@ -727,9 +729,9 @@ final class FinderPatternFinder
      * Orders an array of three ResultPoints in an order [A,B,C] such that AB is less than AC
      * and BC is less than AC, and the angle between BC and BA is less than 180 degrees.
      *
-     * @param \library\qrcode\src\Detector\FinderPattern[] $patterns array of three FinderPattern to order
+     * @param FinderPattern[] $patterns array of three FinderPattern to order
      *
-     * @return \library\qrcode\src\Detector\FinderPattern[]
+     * @return FinderPattern[]
      */
     private function orderBestPatterns(array $patterns): array
     {

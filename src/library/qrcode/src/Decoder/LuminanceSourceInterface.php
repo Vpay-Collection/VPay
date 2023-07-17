@@ -45,7 +45,7 @@ interface LuminanceSourceInterface
      * @param int $y The row to fetch, which must be in [0,getHeight())
      *
      * @return array An array containing the luminance data.
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     public function getRow(int $y): array;
 

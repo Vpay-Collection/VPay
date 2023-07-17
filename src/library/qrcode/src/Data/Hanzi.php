@@ -140,7 +140,7 @@ final class Hanzi extends QRDataModeAbstract
     /**
      * @inheritDoc
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException on an illegal character occurence
+     * @throws QRCodeDataException on an illegal character occurence
      */
     public function write(BitBuffer $bitBuffer, int $versionNumber): QRDataModeInterface
     {
@@ -176,7 +176,7 @@ final class Hanzi extends QRDataModeAbstract
     /**
      * See specification GBT 18284-2000
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public static function decodeSegment(BitBuffer $bitBuffer, int $versionNumber): string
     {

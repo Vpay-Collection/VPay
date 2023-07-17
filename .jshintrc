@@ -119,6 +119,7 @@
     "mdbAdmin": true,
     "hasLoadPlugin": true,
     "mdbAdminPlugins": true,
-    "resetTheme": true
+    "resetTheme": true,
+    "JSEncrypt": true
   }
 }

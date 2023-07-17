@@ -11,8 +11,8 @@
 
 namespace library\qrcode\src\Decoder;
 
-use library\qrcode\src\Data\{QRCodeDataException, QRMatrix};
 use library\qrcode\src\Common\{EccLevel, MaskPattern, Version};
+use library\qrcode\src\Data\{QRCodeDataException, QRMatrix};
 use function array_fill;
 use function array_map;
 use function array_reverse;
@@ -116,7 +116,7 @@ final class BitMatrix extends QRMatrix
      * correct order in order to reconstruct the codewords bytes contained within the
      * QR Code. Throws if the exact number of bytes expected is not read.
      *
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     public function readCodewords(): array
     {
@@ -187,7 +187,7 @@ final class BitMatrix extends QRMatrix
      * Reads format information from one of its two locations within the QR Code.
      * Throws if both format information locations cannot be parsed as the valid encoding of format information.
      *
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     private function readFormatInformation(): self
     {
@@ -306,7 +306,7 @@ final class BitMatrix extends QRMatrix
      * Reads version information from one of its two locations within the QR Code.
      * Throws if both version information locations cannot be parsed as the valid encoding of version information.
      *
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      * @noinspection DuplicatedCode
      */
     private function readVersion(): self
@@ -430,7 +430,7 @@ final class BitMatrix extends QRMatrix
 
     /**
      * @codeCoverageIgnore
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function setQuietZone(int $quietZoneSize = null): self
     {
@@ -439,7 +439,7 @@ final class BitMatrix extends QRMatrix
 
     /**
      * @codeCoverageIgnore
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function setLogoSpace(int $width, int $height = null, int $startX = null, int $startY = null): self
     {

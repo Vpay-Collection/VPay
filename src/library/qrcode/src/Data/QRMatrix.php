@@ -71,7 +71,7 @@ class QRMatrix
     /**
      * Map of flag => coord
      *
-     * @see \library\qrcode\src\Data\QRMatrix::checkNeighbours()
+     * @see QRMatrix::checkNeighbours
      *
      * @var array
      */
@@ -175,7 +175,7 @@ class QRMatrix
 
     /**
      * @deprecated 5.0.0 use QRMatrix::getMatrix() instead
-     * @see \library\qrcode\src\Data\QRMatrix::getMatrix()
+     * @see QRMatrix::getMatrix
      * @codeCoverageIgnore
      */
     public function matrix(bool $boolean = null): array
@@ -193,7 +193,7 @@ class QRMatrix
 
     /**
      * @deprecated 5.0.0 use QRMatrix::getVersion() instead
-     * @see \library\qrcode\src\Data\QRMatrix::getVersion()
+     * @see QRMatrix::getVersion
      * @codeCoverageIgnore
      */
     public function version(): ?Version
@@ -211,7 +211,7 @@ class QRMatrix
 
     /**
      * @deprecated 5.0.0 use QRMatrix::getEccLevel() instead
-     * @see \library\qrcode\src\Data\QRMatrix::getEccLevel()
+     * @see QRMatrix::getEccLevel
      * @codeCoverageIgnore
      */
     public function eccLevel(): ?EccLevel
@@ -229,7 +229,7 @@ class QRMatrix
 
     /**
      * @deprecated 5.0.0 use QRMatrix::getMaskPattern() instead
-     * @see \library\qrcode\src\Data\QRMatrix::getMaskPattern()
+     * @see QRMatrix::getMaskPattern
      * @codeCoverageIgnore
      */
     public function maskPattern(): ?MaskPattern
@@ -249,7 +249,7 @@ class QRMatrix
 
     /**
      * @deprecated 5.0.0 use QRMatrix::getSize() instead
-     * @see \library\qrcode\src\Data\QRMatrix::getSize()
+     * @see QRMatrix::getSize
      * @codeCoverageIgnore
      */
     public function size(): int

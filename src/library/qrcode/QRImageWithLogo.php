@@ -32,7 +32,6 @@ class QRImageWithLogo extends QRGdImage
     {
         // set returnResource to true to skip further processing for now
         $this->options->returnResource = true;
-
         // of course, you could accept other formats too (such as resource or Imagick)
         // I'm not checking for the file type either for simplicity reasons (assuming PNG)
         if (!is_file($logo) || !is_readable($logo)) {

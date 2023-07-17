@@ -21,7 +21,6 @@ use cleanphp\cache\Cache;
 use cleanphp\exception\ExtendError;
 use cleanphp\file\File;
 use cleanphp\file\Log;
-use cleanphp\objects\StringBuilder;
 use library\database\driver\Driver;
 use library\database\exception\DbExecuteError;
 use library\database\object\Dao;
@@ -113,7 +112,7 @@ class Db
      */
     public function execute(string $sql, array $params = [], bool $readonly = false, bool $cache = false, array $tables = []): int|array
     {
-        $shouldCache = $readonly && $cache && !StringBuilder::init($sql)->contains("like");
+        $shouldCache = $readonly && $cache && !str_contains($sql,"like");
 
         $cacheDir = Variables::getCachePath("sql",DS);
 
@@ -175,7 +174,9 @@ class Db
                 $sql_default = str_replace($k, "\"$v\"", $sql_default);
             }
             Log::record("SQL", $sql_default);
-            Log::record("SQL", sprintf("执行时间：%s 毫秒", $end * 1000));
+            $t = round($end * 1000,4);
+            App::$db+=$t;
+            Log::record("SQL", sprintf("执行时间：%s 毫秒", $t));
         }
         if ($ret_data !== null) {
             if($shouldCache && !empty($ret_data)){

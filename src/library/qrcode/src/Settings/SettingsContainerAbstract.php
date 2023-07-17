@@ -14,9 +14,13 @@
 
 namespace library\qrcode\src\Settings;
 
-use ReflectionClass, ReflectionProperty;
-
-use function get_object_vars, json_decode, json_encode, method_exists, property_exists;
+use ReflectionClass;
+use ReflectionProperty;
+use function get_object_vars;
+use function json_decode;
+use function json_encode;
+use function method_exists;
+use function property_exists;
 use const JSON_THROW_ON_ERROR;
 
 abstract class SettingsContainerAbstract implements SettingsContainerInterface
@@ -171,7 +175,7 @@ abstract class SettingsContainerAbstract implements SettingsContainerInterface
     /**
      * @inheritdoc
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toArray();
     }

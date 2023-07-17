@@ -6,8 +6,6 @@
 namespace library\login\engine;
 
 
-use cleanphp\base\Request;
-
 abstract class BaseEngine
 {
 
@@ -32,16 +30,7 @@ abstract class BaseEngine
 
     abstract function getLoginUrl();
 
-    /**
-     * 获取设备特征
-     * @return string
-     */
-    function getDevice(): string
-    {
-        //$ip = Request::getHeaderValue('Client-Ip') ?? Request::getClientIP();
-        $ua = Request::getHeaderValue('User-Agent') ?? 'NO UA';
-        return md5('127.0.0.1' . $ua);
-    }
+
 
 
     abstract function getUser(): array;

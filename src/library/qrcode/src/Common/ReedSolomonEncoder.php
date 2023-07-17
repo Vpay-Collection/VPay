@@ -10,7 +10,11 @@
 
 namespace library\qrcode\src\Common;
 
-use function array_fill, array_merge, count, max;
+use library\qrcode\src\QRCodeException;
+use function array_fill;
+use function array_merge;
+use function count;
+use function max;
 
 /**
  * Reed-Solomon encoding - ISO/IEC 18004:2000 Section 8.5 ff
@@ -38,7 +42,7 @@ final class ReedSolomonEncoder
     /**
      * ECC interleaving
      *
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function interleaveEcBytes(BitBuffer $bitBuffer): array
     {

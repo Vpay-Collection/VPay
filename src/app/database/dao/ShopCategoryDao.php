@@ -20,29 +20,18 @@ use library\database\object\Dao;
 class ShopCategoryDao extends Dao
 {
 
-    public function __construct()
-    {
-        parent::__construct(ShopCategoryModel::class);
-    }
+
 
     function getAllCategory()
     {
         return $this->select()->commit(false);
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getTable(): string
-    {
-        return 'shop_category';
-    }
+
 
     function onCreateTable()
     {
-        $this->insert()->keyValue([
-            'name' => "未分类"
-        ])->commit();
+        $this->insert()->keyValue(['name' => "未分类"])->commit();
     }
 
     function delById($id)

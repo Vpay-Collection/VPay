@@ -12,10 +12,18 @@
 
 namespace library\qrcode\src\Output;
 
+use finfo;
+use Imagick;
+use ImagickDraw;
+use ImagickPixel;
+use ImagickPixelException;
 use library\qrcode\src\Data\QRMatrix;
 use library\qrcode\src\Settings\SettingsContainerInterface;
-use finfo, Imagick, ImagickDraw, ImagickPixel;
-use function extension_loaded, in_array, is_string, preg_match, strlen;
+use function extension_loaded;
+use function in_array;
+use function is_string;
+use function preg_match;
+use function strlen;
 use const FILEINFO_MIME_TYPE;
 
 /**
@@ -45,7 +53,7 @@ class QRImagick extends QROutputAbstract
     /**
      * @inheritDoc
      *
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      */
     public function __construct(SettingsContainerInterface $options, QRMatrix $matrix)
     {
@@ -100,7 +108,7 @@ class QRImagick extends QROutputAbstract
 
     /**
      * @inheritDoc
-     * @throws \ImagickPixelException
+     * @throws ImagickPixelException
      */
     protected function prepareModuleValue($value): ImagickPixel
     {
@@ -118,7 +126,7 @@ class QRImagick extends QROutputAbstract
     /**
      * @inheritDoc
      *
-     * @return string|\Imagick
+     * @return string|Imagick
      */
     public function dump(string $file = null)
     {

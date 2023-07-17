@@ -11,9 +11,9 @@
 
 namespace library\qrcode\src\Detector;
 
+use library\qrcode\src\Common\Version;
 use library\qrcode\src\Decoder\{Binarizer, LuminanceSourceInterface};
 use library\qrcode\src\Decoder\BitMatrix;
-use library\qrcode\src\Common\Version;
 use function abs;
 use function is_nan;
 use function max;
@@ -84,7 +84,7 @@ final class Detector
      * Computes an average estimated module size based on estimated derived from the positions
      * of the three finder patterns.
      *
-     * @throws \library\qrcode\src\Detector\QRCodeDetectorException
+     * @throws QRCodeDetectorException
      */
     private function calculateModuleSize(FinderPattern $topLeft, FinderPattern $topRight, FinderPattern $bottomLeft): float
     {
@@ -243,7 +243,7 @@ final class Detector
      * Computes the dimension (number of modules on a size) of the QR Code based on the position
      * of the finder patterns and estimated module size.
      *
-     * @throws \library\qrcode\src\Detector\QRCodeDetectorException
+     * @throws QRCodeDetectorException
      */
     private function computeDimension(FinderPattern $nw, FinderPattern $ne, FinderPattern $sw, float $size): int
     {
@@ -279,7 +279,7 @@ final class Detector
      * @param int $estAlignmentY y coordinate of above
      * @param float $allowanceFactor number of pixels in all directions to search from the center
      *
-     * @return \library\qrcode\src\Detector\AlignmentPattern|null if found, or null otherwise
+     * @return AlignmentPattern|null if found, or null otherwise
      */
     private function findAlignmentInRegion(
         float $overallEstModuleSize,

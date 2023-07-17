@@ -11,6 +11,7 @@
 
 namespace library\qrcode\src\Common;
 
+use library\qrcode\src\Decoder\QRCodeDecoderException;
 use library\qrcode\src\QRCodeException;
 use function array_fill;
 use function array_reverse;
@@ -75,7 +76,7 @@ final class ReedSolomonDecoder
      * That is, the first byte of data block 1 to n is written, then the second bytes, and so on. This
      * method will separate the data into original blocks.
      *
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     private function deinterleaveRawBytes(array $rawCodewords): array
     {
@@ -177,7 +178,7 @@ final class ReedSolomonDecoder
      * @param int $numEccCodewords number of error-correction codewords available
      *
      * @return int[]
-     * @throws \library\qrcode\src\QRCodeException if decoding fails for any reason
+     * @throws QRCodeException if decoding fails for any reason
      */
     private function decodeWords(array $received, int $numEccCodewords): array
     {
@@ -222,8 +223,8 @@ final class ReedSolomonDecoder
     }
 
     /**
-     * @return \library\qrcode\src\Common\GenericGFPoly[] [sigma, omega]
-     * @throws \library\qrcode\src\QRCodeException
+     * @return GenericGFPoly[] [sigma, omega]
+     * @throws QRCodeException
      */
     private function runEuclideanAlgorithm(GenericGFPoly $a, GenericGFPoly $b, int $z): array
     {
@@ -268,7 +269,7 @@ final class ReedSolomonDecoder
     }
 
     /**
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     private function findErrorLocations(GenericGFPoly $errorLocator): array
     {

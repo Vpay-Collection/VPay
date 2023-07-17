@@ -10,8 +10,10 @@
 
 namespace library\qrcode\src\Data;
 
-use library\qrcode\src\Settings\SettingsContainerInterface;
 use library\qrcode\src\Common\{BitBuffer, EccLevel, Mode, Version};
+use library\qrcode\src\QRCodeException;
+use library\qrcode\src\QROptions;
+use library\qrcode\src\Settings\SettingsContainerInterface;
 use function count;
 use function sprintf;
 
@@ -24,7 +26,7 @@ final class QRData
     /**
      * the options instance
      *
-     * @var \library\qrcode\src\Settings\SettingsContainerInterface|\library\qrcode\src\QROptions
+     * @var SettingsContainerInterface|QROptions
      */
     private SettingsContainerInterface $options;
 
@@ -44,7 +46,7 @@ final class QRData
     private Version $version;
 
     /**
-     * @var \library\qrcode\src\Data\QRDataModeInterface[]
+     * @var QRDataModeInterface[]
      */
     private array $dataSegments = [];
 
@@ -73,7 +75,7 @@ final class QRData
      *
      * Subsequent calls will overwrite the current state - use the QRCode::add*Segement() method instead
      *
-     * @param \library\qrcode\src\Data\QRDataModeInterface[] $dataSegments
+     * @param QRDataModeInterface[] $dataSegments
      */
     public function setData(array $dataSegments): self
     {
@@ -103,7 +105,7 @@ final class QRData
      * The version needs to match the length bits range for the data mode the data has been encoded with,
      * additionally the bit array needs to contain enough pad bits.
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function setBitBuffer(BitBuffer $bitBuffer): self
     {
@@ -136,7 +138,7 @@ final class QRData
     /**
      * estimates the total length of the several mode segments in order to guess the minimum version
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function estimateTotalBitLength(): int
     {
@@ -190,7 +192,7 @@ final class QRData
     /**
      * returns the minimum version number for the given string
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function getMinimumVersion(): Version
     {
@@ -215,7 +217,7 @@ final class QRData
     /**
      * creates a BitBuffer and writes the string data to it
      *
-     * @throws \library\qrcode\src\QRCodeException on data overflow
+     * @throws QRCodeException on data overflow
      */
     private function writeBitBuffer(): void
     {

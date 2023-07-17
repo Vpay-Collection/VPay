@@ -15,7 +15,6 @@ namespace library\verity;
 
 use cleanphp\App;
 use cleanphp\file\Log;
-use cleanphp\objects\StringBuilder;
 
 trait VerityTrait
 {
@@ -33,7 +32,7 @@ trait VerityTrait
         if (!isset($rules[$key])) {
             $rule = null;
             foreach ($rules as $k => $v) {
-                if ((new StringBuilder())->contains("|")) {
+                if (str_contains($k,"|")) {
                     foreach (explode("|", $k) as $vv) {
                         if ($vv === $key) {
                             $rule = $v;

@@ -15,7 +15,6 @@
 namespace app\database\model;
 
 use library\database\object\Model;
-use library\database\object\SqlKey;
 
 class AppModel extends Model
 {
@@ -25,8 +24,9 @@ class AppModel extends Model
     public string $app_key = "";//支付站点的密钥
     public string $app_image = "";//支付站点的logo
 
-    function getPrimaryKey(): SqlKey
+    public function getDisableKeys(): array
     {
-        return new SqlKey('id', 0, true);
+        return ["app_key"];
+
     }
 }

@@ -14,7 +14,12 @@ namespace library\qrcode\src\Decoder;
 
 use library\qrcode\src\QROptions;
 use library\qrcode\src\Settings\SettingsContainerInterface;
-use function array_slice, array_splice, file_exists, is_file, is_readable, realpath;
+use function array_slice;
+use function array_splice;
+use function file_exists;
+use function is_file;
+use function is_readable;
+use function realpath;
 
 /**
  * The purpose of this class hierarchy is to abstract different bitmap implementations across
@@ -25,7 +30,7 @@ use function array_slice, array_splice, file_exists, is_file, is_readable, realp
 abstract class LuminanceSourceAbstract implements LuminanceSourceInterface
 {
 
-    /** @var \library\qrcode\src\QROptions|\library\qrcode\src\Settings\SettingsContainerInterface */
+    /** @var QROptions|SettingsContainerInterface */
     protected SettingsContainerInterface $options;
     protected array $luminances;
     protected int $width;
@@ -89,7 +94,7 @@ abstract class LuminanceSourceAbstract implements LuminanceSourceInterface
     }
 
     /**
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     protected static function checkFile(string $path): string
     {

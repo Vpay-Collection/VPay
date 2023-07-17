@@ -11,9 +11,9 @@
 
 namespace library\qrcode\src\Decoder;
 
+use library\qrcode\src\Common\{BitBuffer, EccLevel, MaskPattern, Mode, ReedSolomonDecoder, Version};
 use library\qrcode\src\Data\{AlphaNum, Byte, ECI, Hanzi, Kanji, Number};
 use library\qrcode\src\Detector\Detector;
-use library\qrcode\src\Common\{BitBuffer, EccLevel, MaskPattern, Mode, ReedSolomonDecoder, Version};
 use Throwable;
 use function chr;
 use function str_replace;

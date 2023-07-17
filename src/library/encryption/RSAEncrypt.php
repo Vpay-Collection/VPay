@@ -81,7 +81,7 @@ class RSAEncrypt
      * @return bool|string
      * @throws EncryptionException
      */
-    private function getContents($file_path)
+    private function getContents($file_path): bool|string
     {
         if (!file_exists($file_path))
             throw new EncryptionException("指定路径的密钥文件不存在：$file_path");

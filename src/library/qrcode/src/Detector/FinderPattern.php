@@ -44,7 +44,7 @@ final class FinderPattern extends ResultPoint
     }
 
     /**
-     * @param \library\qrcode\src\Detector\FinderPattern $b second pattern
+     * @param FinderPattern $b second pattern
      *
      * @return float distance between two points
      */

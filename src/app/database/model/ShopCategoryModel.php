@@ -19,14 +19,5 @@ use library\database\object\SqlKey;
 
 class ShopCategoryModel extends Model
 {
-    public int $id = 0;
     public string $name = "";
-
-    /**
-     * @inheritDoc
-     */
-    function getPrimaryKey()
-    {
-        return new SqlKey('id', 0, true);
-    }
 }

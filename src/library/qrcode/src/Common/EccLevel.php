@@ -146,7 +146,7 @@ final class EccLevel
      * @todo: accept string values (PHP8+)
      * @see https://github.com/chillerlan/php-qrcode/discussions/160
      *
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function __construct(int $eccLevel)
     {
@@ -184,9 +184,9 @@ final class EccLevel
      *
      * references to the keys of the following tables:
      *
-     * @see \library\qrcode\src\Common\EccLevel::MAX_BITS
-     * @see \library\qrcode\src\Common\EccLevel::FORMAT_PATTERN
-     * @see \library\qrcode\src\Common\Version::RSBLOCKS
+     * @see EccLevel::MAX_BITS
+     * @see EccLevel::FORMAT_PATTERN
+     * @see Version::RSBLOCKS
      */
     public function getOrdinal(): int
     {

@@ -13,7 +13,9 @@
 
 namespace library\qrcode\src\Output;
 
-use function implode, is_string, json_encode;
+use function implode;
+use function is_string;
+use function json_encode;
 
 /**
  * Converts the matrix data into string types

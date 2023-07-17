@@ -1,6 +1,6 @@
 (function () {
   form.submit("form",function (data) {
-     mdbAdmin.request('//api/index/main/install',data).done(function () {
+     mdbAdmin.request('/api/index/main/install',data).done(function () {
         $("#setting .btn-close").click();
         mdbAdmin.modal.show({
            title:'安装成功',

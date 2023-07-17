@@ -132,5 +132,4 @@
 
     {include file="layout_scripts"}
 
-    <script defer src="../../public/app/encrypt.min.js?v={$__version}"></script>
     <script defer src="../../public/app/login.js?v={$__version}"></script>

@@ -21,7 +21,6 @@ use cleanphp\exception\ExitApp;
 use cleanphp\file\Log;
 use library\database\Db;
 use library\database\exception\DbExecuteError;
-use library\database\exception\DbFieldError;
 use library\database\operation\DeleteOperation;
 use library\database\operation\InsertOperation;
 use library\database\operation\SelectOperation;
@@ -52,14 +51,13 @@ abstract class Dao
                 $this->model = $class;
                 $table =  $this->getTable();
                 try {
-                    $result = $this->db->getDriver()->getDbConnect()->query(/** @lang text */ "SELECT count(*) FROM {$table} LIMIT 1");
+                    $result = $this->db->getDriver()->getDbConnect()->query(/** @lang text */ "SELECT count(*) FROM `{$table}` LIMIT 1");
                     $table_exist = $result instanceof PDOStatement && ($result->rowCount() === 1);
                 }catch (Throwable $exception){
                     if($exception instanceof ExitApp){
                         throw $exception;
                     }
                     $table_exist = false;
-                    Log::record("Sql错误",$exception->getMessage());
                 }
                 if (!$table_exist) {
                     try {

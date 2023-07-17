@@ -14,7 +14,9 @@ namespace library\qrcode\src\Detector;
 use library\qrcode\src\Data\QRMatrix;
 use library\qrcode\src\Decoder\BitMatrix;
 use Throwable;
-use function array_fill, count, sprintf;
+use function array_fill;
+use function count;
+use function sprintf;
 
 /**
  * Implementations of this class can, given locations of finder patterns for a QR code in an
@@ -43,10 +45,10 @@ final class GridSampler
      * For efficiency, the method will check points from either end of the line until one is found
      * to be within the image. Because the set of points are assumed to be linear, this is valid.
      *
-     * @param \library\qrcode\src\Decoder\BitMatrix $matrix image into which the points should map
+     * @param BitMatrix $matrix image into which the points should map
      * @param float[] $points actual points in x1,y1,...,xn,yn form
      *
-     * @throws \library\qrcode\src\Detector\QRCodeDetectorException if an endpoint is lies outside the image boundaries
+     * @throws QRCodeDetectorException if an endpoint is lies outside the image boundaries
      */
     private function checkAndNudgePoints(BitMatrix $matrix, array $points): void
     {
@@ -120,9 +122,9 @@ final class GridSampler
      * transformation is determined by the coordinates of 4 points, in the original and transformed
      * image space.
      *
-     * @return \library\qrcode\src\Decoder\BitMatrix representing a grid of points sampled from the image within a region
+     * @return BitMatrix representing a grid of points sampled from the image within a region
      *   defined by the "from" parameters
-     * @throws \library\qrcode\src\Detector\QRCodeDetectorException if image can't be sampled, for example, if the transformation defined
+     * @throws QRCodeDetectorException if image can't be sampled, for example, if the transformation defined
      *   by the given points is invalid or results in sampling outside the image boundaries
      */
     public function sampleGrid(BitMatrix $matrix, int $dimension, PerspectiveTransform $transform): BitMatrix

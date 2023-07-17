@@ -6,82 +6,75 @@
 namespace library\captcha;
 
 
-use cleanphp\App;
+namespace library\captcha;
+
+use cleanphp\App as CleanApp;
 use cleanphp\base\Session;
-use cleanphp\base\Variables;
-use cleanphp\file\Log;
 
 class Captcha
 {
+    private string $result;
 
-    private $result;
-
-    function getCode()
+    public function getResult(): string
     {
         return $this->result;
     }
 
-    function verify($scene, $code): bool
+    public function verify(string $scene, string $code): bool
     {
         $this->result = Session::getInstance()->get($scene);
         Session::getInstance()->delete($scene);
-        Log::record("captcha", $scene);
-        Log::record("captcha", $code);
-        Log::record("captcha", $this->result);
-        return $this->result != null && intval($code) === intval($this->result);
+
+        return intval($code) === intval($this->result);
     }
 
-
-    function create($scene)
+    public function create(string $scene): void
     {
         $image = imagecreate(200, 100);
         imagecolorallocate($image, 0, 0, 0);
+
         for ($i = 0; $i <= 9; $i++) {
-            // 绘制随机的干扰线条
             imageline($image, rand(0, 200), rand(0, 100), rand(0, 200), rand(0, 100), $this->color($image));
         }
 
         for ($i = 0; $i <= 100; $i++) {
-            // 绘制随机的干扰点
             imagesetpixel($image, rand(0, 200), rand(0, 100), $this->color($image));
         }
 
-        $str = $this->code($scene);//获取验证码
+        $str = $this->generateCode($scene);
+
         for ($i = 0; $i < 4; $i++) {
-            // 逐个绘制验证码中的字符
-            imagettftext($image, rand(20, 38), rand(0, 30), $i * 50 + 25, rand(30, 70), $this->color($image), Variables::getLibPath('captcha', 'fonts', 'Bitsumishi.ttf'), $str[$i]);
+            imagettftext($image, rand(20, 38), rand(0, 30), $i * 50 + 25, rand(30, 70), $this->color($image), CleanApp::getLibPath('captcha', 'fonts', 'Bitsumishi.ttf'), $str[$i]);
         }
+
         @header('Content-type:image/jpeg');
         imagejpeg($image);
         imagedestroy($image);
-        App::exit('输出验证码图片');
+
+        CleanApp::exit('输出验证码图片');
     }
 
     private function color($image)
     {
-        // 生成随机颜色
         return imagecolorallocate($image, rand(127, 255), rand(127, 255), rand(127, 255));
     }
 
-    private function code($scene): string
+    private function generateCode(string $scene): string
     {
-        // 验证码中所需要的字符
         $chars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        $chars2 = ["+", "-"];
-        $_1 = $chars[rand(0, sizeof($chars) / 2)];
-        $_2 = $chars[rand(sizeof($chars) / 2, sizeof($chars) - 1)];
+        $operators = ["+", "-"];
+        $num1 = $chars[rand(0, sizeof($chars) / 2)];
+        $num2 = $chars[rand(sizeof($chars) / 2, sizeof($chars) - 1)];
+        $operator = $operators[rand(0, 1)];
 
-        $opt = $chars2[rand(0, 1)];
-
-        $str = $_1 . $opt . $_2 . "=";
-
-        if ($opt == "+") {
-            $this->result = $_1 + $_2;
+        $str = $num1 . $operator . $num2 . "=";
+        if ($operator == "+") {
+            $this->result = $num1 + $num2;
         } else {
-            $this->result = $_1 - $_2;
+            $this->result = $num1 - $num2;
         }
+
         Session::getInstance()->set($scene, $this->result, 300);
         return $str;
     }
-
 }

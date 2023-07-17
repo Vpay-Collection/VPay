@@ -26,7 +26,7 @@ abstract class QRDataModeAbstract implements QRDataModeInterface
     /**
      * QRDataModeAbstract constructor.
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public function __construct(string $data)
     {

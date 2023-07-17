@@ -1,99 +1,82 @@
 <!DOCTYPE html>
-<html lang="{$__lang}" style="min-height: 100vh;">
+<html lang="{$__lang}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <meta name="description" content="Vpay">
-    <meta name="keywords" content="Vpay,免签,微信,支付宝"/>
+    <meta name="description" content="VPay是一款让个人收款变得轻松的应用。利用安卓设备上报数据，快速接受付款，安全可靠。快捷、简单的个人收款解决方案，让您更便利地收款。">
+    <meta name="keywords" content="Vpay,支付,免签,微信,支付宝,个人收款,免签约,V免签"/>
     <title>Vpay管理后台</title>
-    {include file="layout_headers"}
+    <!-- Google Fonts Roboto -->
+    <link rel="icon" href="../../public/img/default-monochrome.svg" type="image/x-icon"/>
+    <!-- Font Awesome -->
+    <link rel="preload" as="style" onload="this.rel='stylesheet'"
+          href="../../public/css/fontawesome.min.css?v={$__version}"/>
+    <link
+            rel="preload" as="style" onload="this.rel='stylesheet'"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    />
+
+
+    <!-- MDB ESSENTIAL -->
+    {if $theme == "dark"}
+        <link id="theme-link"  rel="preload"  as="style" onload="this.rel='stylesheet'" href="../../public/mdb/css/mdb.dark.min.css?v={$__version}"/>
+    {else}
+        <link id="theme-link" rel="preload"  as="style" onload="this.rel='stylesheet'" href="../../public/mdb/css/mdb.min.css?v={$__version}"/>
+    {/if}
+    <link rel="stylesheet" href="../../public/css/mdbAdmin.css"/>
+
+
 </head>
 
 
-<body class="bg-{$theme} bg-gradient">
-
+<body class="bg-{$theme} bg-gradient" >
 
 <div id="loadingOverlay">
-    <div class="loader"></div>
-    <p>Loading...</p>
+    <figure>
+        <div class="dot white"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </figure>
+    <p></p>
 </div>
 
-
+<!-- Start your project here-->
 <!--Main Navigation-->
 <header>
     <!-- Sidenav -->
     <nav
             id="sidenav-1"
-            class="sidenav "
+            class="sidenav"
             data-mdb-hidden="false"
             data-mdb-accordion="true"
     >
-
         <a
                 class="ripple d-flex justify-content-center py-4"
-                href="javascript:void(0)"
+                href="#!"
                 data-mdb-ripple-color="primary"
         >
             <img
                     id="MDB-logo"
                     src="../../public/img/cover.png"
                     alt="MDB Logo"
-                    style="width: 100%"
                     draggable="false"
+                    style="width: 100%"
             />
         </a>
 
         <ul class="sidenav-menu px-2">
-            {foreach $nav as  $value}
-                {if isset($value['type']) && $value['type']==0 }
-                    <li class="sidenav-item sidenav-subheading">{$value['name']}</li>
-                {else}
-                    {if isset($value['children'])}
-                        {$has = false}
-                        {foreach $value['children'] as  $item}
-                            {if $item['href']===$host}
-                                {$has = true}
-                                {break}
-                            {/if}
-                        {/foreach}
-                        <li class="sidenav-item ">
-                            <a href="javascript:void(0)" class="sidenav-link {$has?' ripple-surface-primary active':''}" {if isset($value['pjax'])}pjax=true{/if} >
-                                <i class="{$value['icon']}  fa-fw me-3"></i>
-                                <span>{$value['name']}</span>
-                            </a>
-
-                            <ul class="sidenav-collapse {$has?'show':''}">
-                                {foreach $value['children'] as  $item}
-                                    <li class="sidenav-item ">
-
-                                        <a class="sidenav-link {$item['href']===$host?'ripple-surface-primary active':''}" href="{$item['href']}"
-                                           {if isset($value['pjax'])}pjax=true{/if} ><i
-                                                    class="{$item['icon']}  fa-fw me-3"></i> {$item['name']}</a>
-                                    </li>
-                                {/foreach}
-                            </ul>
-                        </li>
-                    {else}
-                        <li class="sidenav-item">
-                            <a href="{$value['href']}" class="sidenav-link {$value['href']===$host?'ripple-surface-primary active':''}" {if isset($value['pjax'])}pjax=true{/if} >
-                                <i class="{$value['icon']}  fa-fw me-3"></i>
-                                <span>{$value['name']}</span>
-                            </a>
-                        </li>
-                    {/if}
-                {/if}
-            {/foreach}
 
         </ul>
     </nav>
     <!-- Sidenav -->
 
     <!-- Navbar -->
-
     <nav
             id="main-navbar"
-            class="navbar navbar-expand-lg navbar-{$theme} bg-{$color} fixed-top"
+            class="navbar navbar-expand-lg navbar-light fixed-top"
     >
         <!-- Container wrapper -->
         <div class="container-fluid">
@@ -104,12 +87,15 @@
                     class="btn shadow-0 p-0 me-3 d-block d-xxl-none"
                     aria-controls="#sidenav-1"
                     aria-haspopup="true"
+                    style="height: 18px"
             >
                 <i class="fas fa-bars fa-lg"></i>
             </button>
 
+
             <!-- Right links -->
-            <ul class="navbar-nav ms-auto d-flex flex-row">
+            <ul class="navbar-nav ms-auto d-flex flex-row align-items-center">
+
                 {if $update}
                     <li class="nav-item dropdown">
                         <a
@@ -130,16 +116,29 @@
 
                 <!-- Avatar -->
                 <li class="nav-item dropdown">
-
-                    <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
-                       id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-                        <img src="{$image}" class="rounded-circle me-2" height="22" alt="Avatar"
-                             loading="lazy"/>
-                        {$username}
+                    <a
+                            class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center"
+                            href="#"
+                            id="navbarDropdownMenuLink"
+                            role="button"
+                            data-mdb-toggle="dropdown"
+                            aria-expanded="false"
+                    >
+                        <img
+                                src=""
+                                class="rounded-circle me-2"
+                                height="22"
+                                alt="Avatar"
+                                loading="lazy"
+                                id="image"
+                        />
+                        <span id="username"></span>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-
-                        <li><a class="dropdown-item" href="{url('admin','main','logout')}">退出登录</a></li>
+                    <ul
+                            class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdownMenuLink"
+                    >
+                        <li><a class="dropdown-item" href="{url('user','main','logout')}">退出登录</a></li>
                     </ul>
                 </li>
             </ul>
@@ -148,18 +147,17 @@
     </nav>
     <!-- Navbar -->
 
-    <!-- Section: Design Block -->
-    <!-- Heading -->
-
-    <!-- Section: Design Block -->
 </header>
-<!--Main Navigation-->
 
 <!--Main layout-->
-<main>
-    <div class="container" id="container">
+<main class="bg-light mb-5" style="margin-top: 58px">
+    <!-- Container for demo purpose -->
+    <div class="container p-2 p-xl-5" id="app">
+
         {include file=$__template_file}
+
     </div>
+    <!-- Container for demo purpose -->
 </main>
 <!--Main layout-->
 <div class="modal top fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true"
@@ -183,48 +181,13 @@
         </div>
     </div>
 </div>
+
 <!--Footer-->
 <footer>
 
 </footer>
 <!--Footer-->
-
-<div
-        class="alert fade"
-        id="success_msg"
-        role="alert"
-        data-mdb-color="success"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-check-circle me-3"></i>
-    <span id="success_msg_body"></span>
-</div>
-
-<div
-        class="alert fade"
-        id="error_msg"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="200px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="2000"
->
-    <i class="fas fa-times-circle me-3"></i>
-    <span id="error_msg_body"></span>
-</div>
-
-
+<!-- End your project here-->
 </body>
-
 
 </html>

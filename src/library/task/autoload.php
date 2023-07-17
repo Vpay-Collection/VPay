@@ -14,9 +14,14 @@
 
 use cleanphp\App;
 use cleanphp\base\EventManager;
+use cleanphp\base\Session;
 use library\task\TaskerServer;
 
-EventManager::addListener("__frame_init__", function ($event, &$data) {
-    if(!App::$cli)
-    TaskerServer::start();
+if(!App::$cli && Session::getInstance()->get("__tasker_server__",false) ) {
+    EventManager::addListener("__frame_init__", function ($event, &$data) {
+
+        Session::getInstance()->set("__tasker_server__",true,3600);
+        TaskerServer::start();
 });
+}
+

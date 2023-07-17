@@ -12,12 +12,34 @@
 
 namespace library\qrcode\src\Output;
 
+use ErrorException;
+use GdImage;
 use library\qrcode\src\Data\QRMatrix;
 use library\qrcode\src\Settings\SettingsContainerInterface;
-use ErrorException, Throwable;
-use function array_values, count, extension_loaded, imagecolorallocate, imagecolortransparent, imagecreatetruecolor,
-    imagedestroy, imagefilledellipse, imagefilledrectangle, imagegif, imagejpeg, imagepng, imagescale, intval,
-    is_array, is_numeric, max, min, ob_end_clean, ob_get_contents, ob_start, restore_error_handler, set_error_handler;
+use Throwable;
+use function array_values;
+use function count;
+use function extension_loaded;
+use function imagecolorallocate;
+use function imagecolortransparent;
+use function imagecreatetruecolor;
+use function imagedestroy;
+use function imagefilledellipse;
+use function imagefilledrectangle;
+use function imagegif;
+use function imagejpeg;
+use function imagepng;
+use function imagescale;
+use function intval;
+use function is_array;
+use function is_numeric;
+use function max;
+use function min;
+use function ob_end_clean;
+use function ob_get_contents;
+use function ob_start;
+use function restore_error_handler;
+use function set_error_handler;
 
 /**
  * Converts the matrix into GD images, raw or base64 output (requires ext-gd)
@@ -31,14 +53,14 @@ class QRGdImage extends QROutputAbstract
      * The GD image resource
      *
      * @see imagecreatetruecolor()
-     * @var resource|\GdImage
+     * @var resource|GdImage
      */
     protected $image;
 
     /**
      * The allocated background color
      *
-     * @see \imagecolorallocate()
+     * @see imagecolorallocate
      */
     protected int $background;
 
@@ -52,7 +74,7 @@ class QRGdImage extends QROutputAbstract
     /**
      * @inheritDoc
      *
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      * @noinspection PhpMissingParentConstructorInspection
      */
     public function __construct(SettingsContainerInterface $options, QRMatrix $matrix)
@@ -111,7 +133,7 @@ class QRGdImage extends QROutputAbstract
      * @param array $value
      *
      * @inheritDoc
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      */
     protected function prepareModuleValue($value): int
     {
@@ -147,10 +169,10 @@ class QRGdImage extends QROutputAbstract
     /**
      * @inheritDoc
      *
-     * @return string|resource|\GdImage
+     * @return string|resource|GdImage
      *
      * @phan-suppress PhanUndeclaredTypeReturnType, PhanTypeMismatchReturn
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public function dump(string $file = null)
     {
@@ -279,7 +301,7 @@ class QRGdImage extends QROutputAbstract
     /**
      * Creates the final image by calling the desired GD output function
      *
-     * @throws \library\qrcode\src\Output\QRCodeOutputException
+     * @throws QRCodeOutputException
      */
     protected function dumpImage(): string
     {

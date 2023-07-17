@@ -16,6 +16,7 @@ namespace app\controller\api_index;
 use cleanphp\base\Config;
 use cleanphp\base\Controller;
 use cleanphp\base\Request;
+use cleanphp\base\Response;
 use cleanphp\base\Route;
 use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
@@ -45,7 +46,10 @@ EOF;
     }
     function install()
     {
-
+        $cache = Cache::init(0,Variables::getCachePath('cleanphp',DS));
+        if (!empty($cache->get("install.lock"))) {
+            return $this->render(403);
+        }
         $isDocker = $this->isDocker();
         $servername = $isDocker?"0.0.0.0":arg('host');
         $port = $isDocker?3306:arg('port',3306); // MySQL 默认端口是 3306
@@ -89,7 +93,7 @@ EOF;
         $frame = Config::getConfig("frame");
         $frame['host'][0] = arg('domain');
         Config::setConfig("frame",$frame);
-        Cache::init()->set("install.lock",true);
+        $cache->set("install.lock",true);
         return $this->render(200);
     }
 }

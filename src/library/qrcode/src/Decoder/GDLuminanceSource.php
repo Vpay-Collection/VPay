@@ -13,10 +13,21 @@
 
 namespace library\qrcode\src\Decoder;
 
+use GdImage;
 use library\qrcode\src\Settings\SettingsContainerInterface;
-use function file_get_contents, get_resource_type, imagecolorat, imagecolorsforindex,
-    imagecreatefromstring, imagefilter, imagesx, imagesy, is_resource;
-use const IMG_FILTER_BRIGHTNESS, IMG_FILTER_CONTRAST, IMG_FILTER_GRAYSCALE, PHP_MAJOR_VERSION;
+use function file_get_contents;
+use function get_resource_type;
+use function imagecolorat;
+use function imagecolorsforindex;
+use function imagecreatefromstring;
+use function imagefilter;
+use function imagesx;
+use function imagesy;
+use function is_resource;
+use const IMG_FILTER_BRIGHTNESS;
+use const IMG_FILTER_CONTRAST;
+use const IMG_FILTER_GRAYSCALE;
+use const PHP_MAJOR_VERSION;
 
 /**
  * This class is used to help decode images from files which arrive as GD Resource
@@ -26,24 +37,24 @@ class GDLuminanceSource extends LuminanceSourceAbstract
 {
 
     /**
-     * @var resource|\GdImage
+     * @var resource|GdImage
      */
     protected $gdImage;
 
     /**
      * GDLuminanceSource constructor.
      *
-     * @param resource|\GdImage $gdImage
-     * @param \library\qrcode\src\Settings\SettingsContainerInterface|null $options
+     * @param resource|GdImage $gdImage
+     * @param SettingsContainerInterface|null $options
      *
-     * @throws \library\qrcode\src\Decoder\QRCodeDecoderException
+     * @throws QRCodeDecoderException
      */
     public function __construct($gdImage, SettingsContainerInterface $options = null)
     {
 
         /** @noinspection PhpFullyQualifiedNameUsageInspection */
         if (
-            (PHP_MAJOR_VERSION >= 8 && !$gdImage instanceof \GdImage)
+            (PHP_MAJOR_VERSION >= 8 && !$gdImage instanceof GdImage)
             || (PHP_MAJOR_VERSION < 8 && (!is_resource($gdImage) || get_resource_type($gdImage) !== 'gd'))
         ) {
             throw new QRCodeDecoderException('Invalid GD image source.'); // @codeCoverageIgnore

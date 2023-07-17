@@ -10,13 +10,10 @@ use cleanphp\base\Json;
 use cleanphp\base\Request;
 use cleanphp\base\Response;
 use cleanphp\base\Session;
-use cleanphp\base\Variables;
-use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
 use cleanphp\file\Log;
 use library\login\AnkioApi;
 use library\login\CallbackObject;
-use library\login\SignUtils;
 use library\verity\VerityException;
 
 
@@ -38,7 +35,7 @@ class SSO extends BaseEngine
             }
             case 'logout':
             {
-                $this->logout($_GET['token']);
+                $this->logout();
                 $result = EngineManager::getEngine()->render(200, '成功退出');
                 break;
             }
@@ -64,9 +61,8 @@ class SSO extends BaseEngine
     {
         $last = Session::getInstance()->get('check', 0);
         $token = Session::getInstance()->get('token');
-        $device = Session::getInstance()->get('device');
 
-        if (empty($token) || $device !== $this->getDevice() || empty(Cache::init(0,Variables::getCachePath('tokens'))->get($token))) {
+        if (empty($token)) {
             $this->logout();
             return false;
         }
@@ -87,19 +83,12 @@ class SSO extends BaseEngine
         return AnkioApi::getInstance()->request($url, $data);
     }
 
-    function logout($token = null): void
+    function logout(): void
     {
-        if($token!==null){
-            Cache::init(0,Variables::getCachePath('tokens'))->del($token);
-        }else{
-            $token = Session::getInstance()->get("token");
-            if(!empty($token)){
-                $this->request('api/login/logout', ['token' => $token]);
-                Cache::init(0,Variables::getCachePath('tokens'))->del($token);
-                Session::getInstance()->destroy();
-            }
-
-
+        $token = Session::getInstance()->get("token");
+        if(!empty($token)){
+            $this->request('api/login/logout', ['token' => $token]);
+            Session::getInstance()->destroy();
         }
 
     }
@@ -110,10 +99,8 @@ class SSO extends BaseEngine
         Log::record('SSO', Json::encode($result));
         if (isset($result['code']) && $result['code'] === 200) {
             Session::getInstance()->set('token', $result['data']['token']);
-            Session::getInstance()->set('device', $this->getDevice());
             $result['data']['username'] = $result['data']['nickname'];
             Session::getInstance()->set("user",$result['data']);
-            Cache::init(0,Variables::getCachePath('tokens'))->set($result['data']['token'],$result['data']['token']);
             EventManager::trigger("__login_success__", $result['data']);
             return true;
         } else {

@@ -21,7 +21,6 @@ class ShopItemModel extends Model
 {
 
 
-    public int $id = 0;
     public string $item_name = "";//商品名
     public string $icon = "";
     public float $item_price = 0.01;
@@ -29,13 +28,10 @@ class ShopItemModel extends Model
     public string $inputs = "";
     public string $webhook = "";//Hook地址
 
-    public string $description_nofilter = ""; //商品描述
+    public string $description = ""; //商品描述
 
-    /**
-     * @inheritDoc
-     */
-    function getPrimaryKey()
+    public function getNofilter(): array
     {
-        return new SqlKey('id', 0, true);
+        return ['description'];
     }
 }

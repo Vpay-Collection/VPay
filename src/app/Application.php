@@ -15,6 +15,7 @@
 namespace app;
 
 use app\task\DaemonTasker;
+use app\utils\GithubUpdater;
 use cleanphp\base\Config;
 use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
@@ -26,7 +27,6 @@ use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
 use cleanphp\engine\JsonEngine;
 use cleanphp\engine\ViewEngine;
-use cleanphp\objects\StringBuilder;
 use library\task\TaskerManager;
 use library\task\TaskerTime;
 
@@ -41,8 +41,7 @@ class Application implements MainApp
     {
         include_once Variables::getLibPath("vpay", "src", "autoload.php");
         Session::getInstance()->start(3600 * 24 * 2);
-        $string = new StringBuilder(Variables::get("__request_module__"));
-        if ($string->startsWith("api")) {
+        if (str_starts_with(Variables::get("__request_module__"),"api")) {
             EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
         } else {
             EngineManager::setDefaultEngine(new ViewEngine());
@@ -63,7 +62,7 @@ EOF
             EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
             //跳转安装
 
-            if (empty(Cache::init()->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
+            if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
                 Response::location(url("index", 'install', 'index'));
             }
 
@@ -73,7 +72,9 @@ EOF
         if (!TaskerManager::has("App心跳守护进程")) {
             TaskerManager::add(TaskerTime::nHour(1, 0), new DaemonTasker(), "App心跳守护进程", -1);
         }
-
+        if(!TaskerManager::has("Github更新检测")){
+            TaskerManager::add(TaskerTime::day(12,00),GithubUpdater::init("Vpay-Collection/Vpay"),"Github更新检测",-1);
+        }
 
     }
 
@@ -89,14 +90,11 @@ EOF
         //渲染view
         EventManager::addListener('__view_render_msg__', function (string $event, &$data) {
             $render_data = $data['data'];
-            if ($data['data']['code'] === 404 || $data['data']['code'] === 403 || $data['data']['code'] === 500)
-                $render_data['error_code'] = $data['data']['code'];
-            else
-                $render_data['error_code'] = 500;
-
 
             $data['tpl'] = EngineManager::getEngine()
                 ->setLayout(null)
+                ->setData("__version", Config::getConfig('frame')['version'])
+                ->setData("__lang", Variables::get("__lang", "zh-cn"))
                 ->setData("theme", Cookie::getInstance()->get("theme", 'light'))
                 ->setTplDir(Variables::getViewPath('error'))
                 ->setEncode(false)

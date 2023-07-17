@@ -12,7 +12,6 @@
 namespace library\qrcode\src\Common;
 
 use library\qrcode\src\QRCodeException;
-
 use function array_fill;
 
 /**
@@ -86,7 +85,7 @@ final class GF256
 
     /**
      * @return GenericGFPoly the monomial representing coefficient * x^degree
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public static function buildMonomial(int $degree, int $coefficient): GenericGFPoly
     {
@@ -118,7 +117,7 @@ final class GF256
 
     /**
      * @return int base 2 log of $a in GF(size)
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public static function log(int $a): int
     {
@@ -132,7 +131,7 @@ final class GF256
 
     /**
      * @return int multiplicative inverse of a
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public static function inverse(int $a): int
     {

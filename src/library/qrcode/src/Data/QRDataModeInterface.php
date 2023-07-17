@@ -40,7 +40,7 @@ interface QRDataModeInterface
     /**
      * encoding conversion helper
      *
-     * @throws \library\qrcode\src\Data\QRCodeDataException
+     * @throws QRCodeDataException
      */
     public static function convertEncoding(string $string): string;
 
@@ -52,7 +52,7 @@ interface QRDataModeInterface
     /**
      * writes the actual data string to the BitBuffer, uses the given version to determine the length bits
      *
-     * @see \library\qrcode\src\Data\QRData::writeBitBuffer()
+     * @see QRData::writeBitBuffer
      */
     public function write(BitBuffer $bitBuffer, int $versionNumber): QRDataModeInterface;
 

@@ -223,7 +223,7 @@ final class Version
     /**
      * Version constructor.
      *
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public function __construct(int $version)
     {

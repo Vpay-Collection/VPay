@@ -72,7 +72,7 @@ final class Mode
     /**
      * returns the length bits for the version breakpoints 1-9, 10-26 and 27-40
      *
-     * @throws \library\qrcode\src\QRCodeException
+     * @throws QRCodeException
      */
     public static function getLengthBitsForVersion(int $mode, int $version): int
     {

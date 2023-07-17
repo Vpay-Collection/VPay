@@ -14,7 +14,6 @@
 
 namespace library\database\operation;
 
-use cleanphp\objects\StringBuilder;
 use Exception;
 use library\database\Db;
 use library\database\exception\DbFieldError;
@@ -136,7 +135,7 @@ class SelectOperation extends BaseOperation
     public function commit($object = true)
     {
 
-        if($object && StringBuilder::init($this->opt["table_name"])->contains(",")){
+        if($object && str_contains($this->opt["table_name"],",")){
             $object = false;
         }
 

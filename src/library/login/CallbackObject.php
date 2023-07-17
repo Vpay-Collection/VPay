@@ -14,7 +14,6 @@
 
 namespace library\login;
 
-use library\user\login\Sign;
 use library\verity\VerityException;
 use library\verity\VerityObject;
 use library\verity\VerityRule;

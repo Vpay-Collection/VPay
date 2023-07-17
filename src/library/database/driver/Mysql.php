@@ -81,9 +81,9 @@ class Mysql extends Driver
         if ($sqlKey->type === SqlKey::TYPE_TEXT && $sqlKey->value !== null)
             $sqlKey->value = str_replace("'", "\'", $sqlKey->value);
         if (in_array($sqlKey->name,$unique)){
-            if($sqlKey->type === SqlKey::TYPE_INT)return "`$sqlKey->name` INT DEFAULT '$sqlKey->value' UNIQUE";
+            if($sqlKey->type === SqlKey::TYPE_INT)return "`$sqlKey->name` INT DEFAULT $sqlKey->value UNIQUE";
             if($sqlKey->type === SqlKey::TYPE_TEXT)return "`$sqlKey->name` VARCHAR(512) DEFAULT '$sqlKey->value' UNIQUE";
-            if($sqlKey->type === SqlKey::TYPE_FLOAT)return "`$sqlKey->name` FLOAT  DEFAULT '$sqlKey->value' UNIQUE";
+            if($sqlKey->type === SqlKey::TYPE_FLOAT)return "`$sqlKey->name` DECIMAL(10, 2)  DEFAULT $sqlKey->value UNIQUE";
             if($sqlKey->type === SqlKey::TYPE_BOOLEAN)return "`$sqlKey->name` TINYINT(1)  DEFAULT ".intval($sqlKey->value)." UNIQUE";
         }
         if ($sqlKey->type === SqlKey::TYPE_INT && $sqlKey->auto) return "`$sqlKey->name` INT AUTO_INCREMENT";
@@ -101,7 +101,7 @@ class Mysql extends Driver
 
         elseif ($sqlKey->type === SqlKey::TYPE_TEXT && $sqlKey->length === 0 && $sqlKey->value === null) return "`$sqlKey->name` TEXT";
 
-        elseif ($sqlKey->type === SqlKey::TYPE_FLOAT) return "`$sqlKey->name` FLOAT DEFAULT '$sqlKey->value'";
+        elseif ($sqlKey->type === SqlKey::TYPE_FLOAT) return "`$sqlKey->name` DECIMAL(10, 2) DEFAULT '$sqlKey->value'";
 
         else{
             return "`$sqlKey->name` TEXT DEFAULT '$sqlKey->value'";

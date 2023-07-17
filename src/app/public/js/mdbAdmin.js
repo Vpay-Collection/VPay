@@ -725,11 +725,10 @@ const mdbAdmin = {
         dom = dom || {"#app": "正在请求中..."};
         const deferred = $.Deferred();
         var loadings = [];
-        if (url.startsWith("/")) {
-            url = url.slice(1);
-        }
+        var u = app.base + url;
+        u = u.replace("//","/");
         $.ajax({
-            url: app.base + url,
+            url: u,
             headers: {
                 Authorization: localStorage.getItem('Authorization') || ''
             },

@@ -12,8 +12,8 @@
 
 namespace library\qrcode\src;
 
-use library\qrcode\src\Output\QROutputInterface;
 use library\qrcode\src\Common\{EccLevel, MaskPattern, Version};
+use library\qrcode\src\Output\QROutputInterface;
 use function extension_loaded;
 use function in_array;
 use function max;
@@ -118,7 +118,7 @@ trait QROptionsTrait
      * - QRImagick: Imagick
      * - QRFpdf:    FPDF
      *
-     * @see \library\qrcode\src\Output\QROutputInterface::dump()
+     * @see QROutputInterface::dump
      *
      * @var bool
      */
@@ -250,15 +250,15 @@ trait QROptionsTrait
     /**
      * toggle transparency
      *
-     * - QRGdImage and QRImagick: the given {@see \library\qrcode\src\QROptions::$transparencyColor $transparencyColor} is set as transparent
+     * - QRGdImage and QRImagick: the given {@see QROptions $transparencyColor} is set as transparent
      *
      * @see https://github.com/chillerlan/php-qrcode/discussions/121
      */
     protected bool $imageTransparent = true;
 
     /**
-     * Sets a transparency color for when {@see \library\qrcode\src\QROptions::$imageTransparent QROptions::$imageTransparent} is set to true.
-     * Defaults to {@see \library\qrcode\src\QROptions::$bgColor QROptions::$bgColor}.
+     * Sets a transparency color for when {@see QROptions QROptions::$imageTransparent} is set to true.
+     * Defaults to {@see QROptions QROptions::$bgColor}.
      *
      * - QRGdImage: [R, G, B], this color is set as transparent in {@see imagecolortransparent()}
      * - QRImagick: "color_str", this color is set in {@see Imagick::transparentPaintImage()}
