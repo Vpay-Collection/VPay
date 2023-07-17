@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: Lovelo Line Bold
+font link: https://www.fontfabric.com/lovelo-font/
+font author: Renzler Design
+font author site: http://www.braenda.com/
+
+
+icon designer: chabib ali machbubi
+icon designer link: /shwetawahana
+        
+{"bg":"#E6F2FE","icon-gradient-0":"#51A4FB","icon-gradient-1":"#51A4FB","font":"#193655","slogan":"#2d4a69"}
+      
