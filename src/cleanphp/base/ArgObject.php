@@ -21,7 +21,7 @@ class ArgObject
                     $data = $item[$key];
                 }
 
-                if ($this->onParseType($key, $data, $val)) {
+                if($this->onParseType($key, $data, $val)){
                     $data = parse_type($val, $data);
                     $this->$key = $data;
                 }
@@ -63,7 +63,27 @@ class ArgObject
         $disable = $this->getDisableKeys();
         foreach (get_object_vars($this) as $key => $val) {
             if (property_exists($object, $key) && !in_array($key, $disable)) {
+                $this->onMerge($key,$this->$key,$object->$key);
                 $this->$key = $object->$key;
+            }
+        }
+    }
+
+    public function onMerge($key,$raw, &$val):void
+    {
+
+    }
+    public function mergeArray(array $object): void
+    {
+        $disable = $this->getDisableKeys();
+        foreach (get_object_vars($this) as $key => $val) {
+            if (array_key_exists($key,$object) && !in_array($key, $disable)) {
+                $data = $object[$key];
+                if ($this->onParseType($key, $data, $val)) {
+                    $this->onMerge($key,$this->$key,$data);
+                    $data = parse_type($val, $data);
+                    $this->$key = $data;
+                }
             }
         }
     }

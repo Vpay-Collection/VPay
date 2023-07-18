@@ -16,15 +16,17 @@ namespace app\controller\api_admin;
 
 
 
+use app\objects\config\ChannelConfig;
 use app\utils\ImageUpload;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
 use cleanphp\base\Variables;
 use library\qrcode\Code;
+use library\verity\VerityException;
 
 class Channel extends BaseController
 {
-    private $config;
+    private ChannelConfig $config;
 
     public function __init(): ?string
     {
@@ -33,7 +35,7 @@ class Channel extends BaseController
         if ($result !== null) {
             return $result;
         }
-        $this->config = Config::getConfig("app");
+        $this->config = new ChannelConfig(Config::getConfig("app"),false);
         return null;
     }
 
@@ -43,20 +45,13 @@ class Channel extends BaseController
      */
     function config(): string
     {
-        if (Request::isGet()) return $this->json(200, null, $this->config);
-        $this->config['key'] = post('key', '');
-        if(strlen($this->config['key'])!==32){
-            return $this->render(403, "appKey必须为32位字符串");
+        if (Request::isGet()) return $this->json(200, null, $this->config->toArray());
+        try{
+            $this->config->mergeArray(post());
+        }catch (VerityException $e){
+            return $this->json(403,$e->getMessage());
         }
-        $this->config['timeout'] = post('timeout', 5);
-        if($this->config['timeout']<1||$this->config['timeout']>60){
-            return $this->render(403, "超时时间范围只允许1-59");
-        }
-        $this->config['conflict'] = post('conflict', 1);
-        if($this->config['conflict']!=1||$this->config['conflict']!=2){
-            $this->config['conflict'] = 1;
-        }
-        Config::setConfig('app', $this->config);
+        Config::setConfig('app', $this->config->toArray());
         return $this->json(200, "更新成功");
     }
 
@@ -73,21 +68,6 @@ class Channel extends BaseController
             return $this->render(200, null, $result);
         }
         return $this->render(403, $filename);
-    }
-
-    function set(): string
-    {
-        $channel = Config::getConfig("channel");
-        foreach ($channel as $key => &$value) {
-            $arg = arg("image_" . $key);
-            if (!empty($arg)) {
-                (new ImageUpload("channel"))->delImage($value);
-                $value = $arg;
-
-            }
-        }
-        Config::setConfig("channel", $channel);
-        return $this->render(200, "保存成功");
     }
 
 

@@ -93,7 +93,7 @@ class Cache implements CacheInterface
             return $this;
         }
 
-        $this->cache_expire = empty($exp_time)?3600:$exp_time;
+        $this->cache_expire = $exp_time;
         $this->cache_path = empty($path)?Variables::getCachePath():$path;
 
         File::mkDir($this->cache_path);

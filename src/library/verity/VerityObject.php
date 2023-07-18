@@ -18,6 +18,12 @@ use cleanphp\base\ArgObject;
 
 abstract class VerityObject extends ArgObject
 {
+    private bool $check;
+    public function __construct(?array $item = [],$check = true)
+    {
+        $this->check = $check;
+        parent::__construct($item);
+    }
 
     /**
      * 获取匹配规则

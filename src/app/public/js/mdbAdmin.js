@@ -407,10 +407,13 @@ const mdbAdmin = {
                         });
 
                     }
+
                     if (attributeValue === "true") {
                         attributeValue = true;
                     } else if (attributeValue === "false") {
                         attributeValue = false;
+                    }else if (attributeValue === "") {
+                        attributeValue = "";
                     } else if (!isNaN(attributeValue)) {
                         attributeValue = parseFloat(attributeValue);
                     } else if (attributeValue.startsWith("[")) {
@@ -1174,6 +1177,7 @@ const mdbAdmin = {
             const addedFile = e.files;
             const data = new FormData();
             data.append('file', addedFile[0]);
+            var that = this;
             $.ajax({
                 type: 'POST',
                 headers: {
@@ -1210,7 +1214,7 @@ const mdbAdmin = {
                         mdbAdmin.toast.error( ret.msg,"文件上传失败");
                     } else {
                         mdbAdmin.toast.success("文件上传成功！");
-                        sessionStorage.setItem("file_"+$(config.elem).attr("name"),ret.data);
+                        sessionStorage.setItem("file_"+$(that).attr("name"),ret.data);
                         if (typeof config.onsuccess === "function") {
                             config.onsuccess(ret.data);
                         }
@@ -1276,6 +1280,10 @@ const mdbAdmin = {
                             }
                         } else {
                             $(this).val(jsonData[key]).focus().blur();
+                            if($(this).is("select")){
+                                mdb.Select.getOrCreateInstance($(this).get(0)).setValue(jsonData[key]);
+                            }
+
                         }
 
                     }
@@ -1350,12 +1358,16 @@ const mdbAdmin = {
             $(formElem).find(":checkbox,:radio").prop("checked", false);
             $(formElem).filter(":input[type!='button'][type!='file'][type!='image'][type!='radio'][type!='checkbox'][type!='reset'][type!='submit']").val("");
             $(formElem).filter(":checkbox,:radio").prop("checked", false);
-            if(hasLoadPlugin(mdbAdminPlugins["file-upload"])){
+         /*   if(hasLoadPlugin(mdbAdminPlugins["file-upload"])){
                 document.querySelectorAll("[type='file']").forEach(function (k) {
-                    FileUpload.getInstance(k).update({"defaultFile":""});
+                    var instance = FileUpload.getInstance(k);
+                    if(instance===null){
+                        instance = new FileUpload(k);
+                    }
+                    instance.update({"defaultFile":""});
                 });
 
-            }
+            }*/
             return $(formElem);
         },
         submit(formElem, fn) {
@@ -1364,6 +1376,23 @@ const mdbAdmin = {
                     fn(mdbAdmin.form.get(formElem));
                 }
                 return false;
+            });
+        },
+        init(formElem,url,init_msg,submit_msg){
+            this.bindInit(formElem,url,init_msg||"请稍后...");
+            this.bindSubmit(formElem,url,submit_msg||"修改中...");
+        },
+        bindInit(formElem,url,msg){
+            mdbAdmin.request(url,{},"GET",{"#app":msg}).done(function (data) {
+                form.val(formElem,data.data);
+            });
+        },
+        bindSubmit(formElem,url,msg){
+            form.submit(formElem,function (data) {
+                mdbAdmin.request(url,data,"POST",{"#app":msg}).done(function (data) {
+                    form.val(formElem,data.data);
+                    mdbAdmin.toast.success(data.msg);
+                });
             });
         }
     },

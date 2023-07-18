@@ -21,9 +21,9 @@ trait VerityTrait
     /**
      * @throws VerityException
      */
-    public function onParseTypeCheck(string $key, &$val, $demo)
+    public function onParseTypeCheck(string $key, &$val, $demo): void
     {
-        if (!is_string($val)) return ;
+        if (!is_string($val)||!$this->check) return ;
         $rules = $this->getRules();
 
         /**
