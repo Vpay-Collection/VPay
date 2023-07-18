@@ -27,9 +27,15 @@ class Channel extends BaseController
     {
 
         $last = Cache::init()->get("last_heart");
-        $online = time() - $last <= 60 * 15;
-        EngineManager::getEngine()->setData("last_heart", date("Y-m-d H:i:s", $last));
-        EngineManager::getEngine()->setData("online", $online);
+        if($last===null){
+            EngineManager::getEngine()->setData("status",0);
+        }elseif (time() - $last <= 60 * 15){
+            EngineManager::getEngine()->setData("status",1);
+            EngineManager::getEngine()->setData("last_heart", date("Y-m-d H:i:s", $last));
+        }else{
+            EngineManager::getEngine()->setData("status",2);
+        }
+
         $app = Config::getConfig("app");
         $key = $app['key'];
         if (empty($key)) {
@@ -38,7 +44,6 @@ class Channel extends BaseController
             Config::setConfig('app', $app);
         }
         EngineManager::getEngine()->
-        setArray($app)->
         setData("qrcode", url("api", "image", "qrcode", [
             'url' => json_encode([
                 'url' => Response::getHttpScheme() . Request::getDomain(),

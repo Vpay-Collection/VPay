@@ -18,19 +18,26 @@
 
                             </div>
                             <div class="col-md-8 text-start">
-                                <div class="alert" role="alert" data-mdb-color="primary">
-                                    <i class="fas fa-info-circle me-3"></i>安卓监控客户端 <a class="btn text-white ms-2" style="background-color: #333333;" target="_blank"  href="https://github.com/Vpay-Collection/vpay-android" role="button">
-                                        <i class="fab fa-github me-2" style="color: white"></i> Github下载
-                                    </a>
-                                </div>
-
-                                {if $online}
-                                    <div class="alert" role="alert" data-mdb-color="success">
-                                        <i class="fas fa-check-circle me-3"></i>心跳正常
+                                {if $status==0}
+                                    <div class="alert" role="alert" data-mdb-color="primary">
+                                        <i class="fas fa-info-circle me-3"></i>安卓监控客户端 <a
+                                                class="btn text-white ms-2" style="background-color: #333333;"
+                                                target="_blank" href="https://github.com/Vpay-Collection/vpay-android"
+                                                role="button">
+                                            <i class="fab fa-github me-2" style="color: white"></i> Github下载
+                                        </a>
+                                    </div>
+                                    <div class="alert" role="alert" data-mdb-color="warning">
+                                        <i class="fas fa-exclamation-triangle me-3"></i>请使用<b>安卓监控客户端</b>扫码绑定。
+                                    </div>
+                                {elseif $status==1}
+                                    <div class="alert" role="alert" data-mdb-color="danger">
+                                        <i class="fas fa-times-circle me-3"></i>
+                                        请检查手机端监控状态，最后心跳时间为：{$last_heart}
                                     </div>
                                 {else}
-                                    <div class="alert" role="alert" data-mdb-color="danger">
-                                        <i class="fas fa-times-circle me-3"></i> 请检查手机端监控状态，最后心跳时间为：{$last_heart}
+                                    <div class="alert" role="alert" data-mdb-color="success">
+                                        <i class="fas fa-check-circle me-3"></i>心跳正常
                                     </div>
                                 {/if}
                             </div>
