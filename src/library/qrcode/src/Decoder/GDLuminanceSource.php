@@ -1,14 +1,6 @@
 <?php
-/**
- * Class GDLuminanceSource
- *
- * @created      17.01.2021
- * @author       Ashot Khanamiryan
- * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2021 Smiley
- * @license      MIT
- *
- * @noinspection PhpComposerExtensionStubsInspection
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src\Decoder;

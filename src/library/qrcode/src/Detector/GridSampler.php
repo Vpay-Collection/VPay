@@ -1,12 +1,6 @@
 <?php
-/**
- * Class GridSampler
- *
- * @created      17.01.2021
- * @author       ZXing Authors
- * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2021 Smiley
- * @license      Apache-2.0
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src\Detector;

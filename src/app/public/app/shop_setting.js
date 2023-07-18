@@ -1,4 +1,8 @@
 
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 // jshint ignore:start
 
 var wysiwygInstance = new WYSIWYG(document.getElementsByClassName('wysiwyg')[0], {

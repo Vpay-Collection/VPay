@@ -1,14 +1,6 @@
 <?php
-/**
- * Class QRString
- *
- * @created      05.12.2015
- * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2015 Smiley
- * @license      MIT
- *
- * @noinspection PhpUnusedParameterInspection
- * @noinspection PhpComposerExtensionStubsInspection
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src\Output;

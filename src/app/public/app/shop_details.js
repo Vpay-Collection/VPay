@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 $(".submit-btn").on("click", function () {
     var data =  form.val("#buy");
     data = $.extend({},data,{

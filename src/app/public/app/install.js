@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 (function () {
   form.submit("form",function (data) {
      mdbAdmin.request('/api/index/main/install',data).done(function () {

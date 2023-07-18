@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 /*jshint unused: false */
 class Pagination {
     constructor(element, options = {}) {

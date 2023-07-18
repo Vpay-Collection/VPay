@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 $("#updateInfo").off().on("click", function () {
     var data = form.val("form");
     $.post("/ankio/login/change", data, function (d) {

@@ -1,13 +1,6 @@
 <?php
-/**
- * Class QRImagick
- *
- * @created      04.07.2018
- * @author       smiley <smiley@chillerlan.net>
- * @copyright    2018 smiley
- * @license      MIT
- *
- * @noinspection PhpComposerExtensionStubsInspection
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src\Output;

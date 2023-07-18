@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 const app = {
     dir: "", // 缓存的路径文件
     libs: [],
@@ -1390,7 +1394,6 @@ const mdbAdmin = {
         bindSubmit(formElem,url,msg){
             form.submit(formElem,function (data) {
                 mdbAdmin.request(url,data,"POST",{"#app":msg}).done(function (data) {
-                    form.val(formElem,data.data);
                     mdbAdmin.toast.success(data.msg);
                 });
             });

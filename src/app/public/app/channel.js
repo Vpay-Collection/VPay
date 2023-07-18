@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 mdbAdmin.use([mdbAdminPlugins["file-upload"]],true).then(function () {
 
     mdbAdmin.form.init("#form_app","/api/admin/channel/config");

@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+#
+
 file="/run/vm_init"
 if [ -f "$file" ]; then
   echo "init success"

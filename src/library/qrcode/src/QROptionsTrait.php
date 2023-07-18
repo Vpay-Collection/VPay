@@ -1,13 +1,6 @@
 <?php
-/**
- * Trait QROptionsTrait
- *
- * @created      10.03.2018
- * @author       smiley <smiley@chillerlan.net>
- * @copyright    2018 smiley
- * @license      MIT
- *
- * @noinspection PhpUnused
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src;

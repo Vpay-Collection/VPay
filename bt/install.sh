@@ -1,3 +1,7 @@
+#
+# Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+#
+
 #获取主域名(网站名称)
 domain=$1
 #获取配置文件位置

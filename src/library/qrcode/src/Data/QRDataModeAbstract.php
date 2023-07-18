@@ -1,11 +1,6 @@
 <?php
-/**
- * Class QRDataModeAbstract
- *
- * @created      19.11.2020
- * @author       smiley <smiley@chillerlan.net>
- * @copyright    2020 smiley
- * @license      MIT
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src\Data;

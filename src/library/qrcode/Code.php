@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 /**
  * 生成带LOGO图片的二维码 演示
  * @FileName: demo.php

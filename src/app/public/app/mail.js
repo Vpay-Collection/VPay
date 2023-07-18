@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 $("form").off().on("submit", function () {
     var data = form.val("form");
     console.log(data);

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 function getTable() {
     return mdb.Datatable.getOrCreateInstance(document.getElementById('datatable'));
 }

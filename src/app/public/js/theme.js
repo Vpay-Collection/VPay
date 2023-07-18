@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 function resetTheme() {
     if ((window.matchMedia('(prefers-color-scheme: dark)')).matches){
         document.querySelectorAll('[class*="-light"]').forEach(function (k) {

@@ -1,4 +1,8 @@
 
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 mdbAdmin.useJs(['encrypt.min'],true).then(function () {
     $("form").on("submit", function () {
         $("#captcha_img").click();

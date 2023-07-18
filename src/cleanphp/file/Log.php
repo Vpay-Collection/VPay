@@ -1,5 +1,9 @@
 <?php
 /*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
+/*
  * Package: cleanphp\base
  * Class Log
  * Created By ankio.

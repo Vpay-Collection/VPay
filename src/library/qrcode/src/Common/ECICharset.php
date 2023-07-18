@@ -1,12 +1,6 @@
 <?php
-/**
- * Class ECICharset
- *
- * @created      21.01.2021
- * @author       ZXing Authors
- * @author       smiley <smiley@chillerlan.net>
- * @copyright    2021 smiley
- * @license      Apache-2.0
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
 namespace library\qrcode\src\Common;

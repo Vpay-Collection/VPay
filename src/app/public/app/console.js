@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ */
+
 const sidenav = document.getElementById("sidenav-1");
 const sidenavInstance = mdb.Sidenav.getInstance(sidenav);
 
