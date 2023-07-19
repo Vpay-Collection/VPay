@@ -1,3 +1,6 @@
 [submodule "src/library/vpay"]
 	path = src/library/vpay
 	url = https://github.com/VPay-Collection/vpay-sdk
+[submodule "src/cleanphp"]
+	path = src/cleanphp
+	url = https://github.com/Clean-PHP/CleanPHP
