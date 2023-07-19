@@ -3,4 +3,34 @@
 	url = https://github.com/VPay-Collection/vpay-sdk
 [submodule "src/cleanphp"]
 	path = src/cleanphp
-	url = https://github.com/Clean-PHP/CleanPHP
+	url = https://github.com/Clean-PHP/CleanPHP/
+[submodule "src/library/captcha"]
+	path = src/library/captcha
+	url = https://github.com/Clean-PHP/captcha/
+[submodule "src/library/database"]
+	path = src/library/database
+	url = https://github.com/Clean-PHP/database/
+[submodule "src/library/encryption"]
+	path = src/library/encryption
+	url = https://github.com/Clean-PHP/encryption/
+[submodule "src/library/http"]
+	path = src/library/http
+	url = https://github.com/Clean-PHP/http/
+[submodule "src/library/login"]
+	path = src/library/login
+	url = https://github.com/Clean-PHP/login/
+[submodule "src/library/mail"]
+	path = src/library/mail
+	url = https://github.com/Clean-PHP/mail/
+[submodule "src/library/qrcode"]
+	path = src/library/qrcode
+	url = https://github.com/Clean-PHP/qrcode/
+[submodule "src/library/task"]
+	path = src/library/task
+	url = https://github.com/Clean-PHP/task/
+[submodule "src/library/upload"]
+	path = src/library/upload
+	url = https://github.com/Clean-PHP/upload/
+[submodule "src/library/verity"]
+	path = src/library/verity
+	url = https://github.com/Clean-PHP/verity/
