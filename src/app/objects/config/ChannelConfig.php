@@ -29,30 +29,7 @@ class ChannelConfig extends VerityObject
     public string $image_alipay  = "";
     public string $image_wechat  = "";
 
-    /**
-     * @throws VerityException
-     */
-    public function onParseType(string $key, mixed &$val, mixed $demo): bool
-    {
-        if(str_starts_with($key,"image_") && !str_starts_with($val,Request::getAddress())){
-            $val  = url("api", "image", "qrcode", [
-                'url' => $val,
-                'type'=>'.png'
-            ]);
-        }
-        $this->onParseTypeCheck($key, $val, $demo);
-        return parent::onParseType($key, $val, $demo);
-    }
 
-    public function onMerge($key, $raw, &$val): void
-    {
-        if(str_starts_with($key,"image_")){
-            if ($raw!==$val) {
-                (new ImageUpload("channel"))->delImage($raw);
-            }
-
-        }
-    }
 
     /**
      * @inheritDoc
@@ -65,5 +42,15 @@ class ChannelConfig extends VerityObject
             "conflict"=>new VerityRule("^1|2$","重复订单处理方案错误",false),
             "image_alipay|image_wechat"=>new VerityRule("","图片不允许为空",false)
         ];
+    }
+
+    public function onToArray(string $key, mixed &$value, &$ret): void
+    {
+        if(str_starts_with($key,"image_") && !str_starts_with($value,Request::getAddress())){
+            $value  = url("api", "image", "qrcode", [
+                'url' => $value,
+                'type'=>'.png'
+            ]);
+        }
     }
 }

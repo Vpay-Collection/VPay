@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         <button type="button" id="addApp" class="btn btn-primary" data-mdb-toggle="modal"
-                                data-mdb-target="#addOrUpdate">添加应用
+                                data-mdb-target="#addOrUpdate"><i class="fas fa-plus me-3"></i>添加应用
                         </button>
                     </div>
                 </div>
@@ -45,13 +45,13 @@
 <div class="modal fade" id="addOrUpdate" tabindex="-1" aria-labelledby="addOrUpdateTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
+            <form class="form form-vertical " id="form">
             <div class="modal-header">
-                <h5 class="modal-title" id="addOrUpdateTitle" data-add="新增应用"
-                    data-change="修改应用">新增应用</h5>
+                <h5 class="modal-title" id="addOrUpdateTitle" >修改或新增应用</h5>
                 <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical " id="form">
+
                     <div class="form-outline mb-4 d-none">
                         <input type="text" class="form-control" id="form_id" name="id" placeholder="" value=""/>
                         <label class="form-label" for="form_id"></label>
@@ -77,14 +77,14 @@
                         />
                     </div>
 
-                </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="saveOrUpdate"
-                        data-mdb-dismiss="modal">保存
+                <button type="submit" class="btn btn-primary" >保存
                 </button>
             </div>
+            </form>
         </div>
     </div>
 

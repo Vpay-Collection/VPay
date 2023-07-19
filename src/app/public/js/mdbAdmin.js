@@ -1095,14 +1095,15 @@ const mdbAdmin = {
                         selectable:config['selectable'],
                         columns: config['columns'],
                         rows: $.map(raw, function (row, index) {
+                            var item  = response.data[index];
                             $.each(config['columns'], function (k, v) {
 
                                 let field = v['field'];
                                 let func = v.hasOwnProperty('render') ? v.render : null;
                                 if (typeof func === "function") {
-                                    let result = func(row, index,response);
+                                    let result = func(item, index,response);
                                     if (result === undefined || result === null) {
-                                        row[field] = row.hasOwnProperty(field) ? row[field] : '';
+                                        row[field] = item.hasOwnProperty(field) ? item[field] : '';
                                     } else {
                                         row[field] = result;
                                     }
@@ -1362,7 +1363,7 @@ const mdbAdmin = {
             $(formElem).find(":checkbox,:radio").prop("checked", false);
             $(formElem).filter(":input[type!='button'][type!='file'][type!='image'][type!='radio'][type!='checkbox'][type!='reset'][type!='submit']").val("");
             $(formElem).filter(":checkbox,:radio").prop("checked", false);
-         /*   if(hasLoadPlugin(mdbAdminPlugins["file-upload"])){
+            if(hasLoadPlugin(mdbAdminPlugins["file-upload"])){
                 document.querySelectorAll("[type='file']").forEach(function (k) {
                     var instance = FileUpload.getInstance(k);
                     if(instance===null){
@@ -1371,7 +1372,7 @@ const mdbAdmin = {
                     instance.update({"defaultFile":""});
                 });
 
-            }*/
+            }
             return $(formElem);
         },
         submit(formElem, fn) {
@@ -1382,19 +1383,25 @@ const mdbAdmin = {
                 return false;
             });
         },
-        init(formElem,url,init_msg,submit_msg){
-            this.bindInit(formElem,url,init_msg||"请稍后...");
-            this.bindSubmit(formElem,url,submit_msg||"修改中...");
+        init(formElem,url,init_success,submit_success){
+            this.bindInit(formElem,url,init_success);
+            this.bindSubmit(formElem,url,submit_success);
         },
-        bindInit(formElem,url,msg){
-            mdbAdmin.request(url,{},"GET",{"#app":msg}).done(function (data) {
+        bindInit(formElem,url,init_success){
+            mdbAdmin.request(url,{},"GET",{"#app":"获取数据中..."}).done(function (data) {
                 form.val(formElem,data.data);
+                if( typeof init_success === "function"){
+                    init_success(data.data);
+                }
             });
         },
-        bindSubmit(formElem,url,msg){
-            form.submit(formElem,function (data) {
-                mdbAdmin.request(url,data,"POST",{"#app":msg}).done(function (data) {
+        bindSubmit(formElem,url,submit_success){
+            form.submit(formElem,function (d) {
+                mdbAdmin.request(url,d,"POST",{"#app":"正在修改中"}).done(function (data) {
                     mdbAdmin.toast.success(data.msg);
+                    if(typeof  submit_success === "function"){
+                        submit_success(d);
+                    }
                 });
             });
         }

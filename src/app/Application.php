@@ -78,9 +78,6 @@ EOF
 
     }
 
-
-
-
     function onFrameworkStart(): void
     {
         //渲染json

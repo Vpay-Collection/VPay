@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12 mb-2">
                 <div class="card ">
-                    <div class="card-header py-3"><strong>手机状态</strong></div>
+                    <div class="card-header py-3"><strong><i class="fas fa-mobile-screen-button me-3"></i>手机状态</strong></div>
                     <div class="card-body text-center pt-4">
                         <div class="row">
                             <div class="col-md-4 mb-4 mb-md-0">
@@ -47,7 +47,7 @@
             </div>
             <div class="col-12 mb-2">
                 <div class="card ">
-                    <div class="card-header py-3"><strong>监控与收款码配置</strong></div>
+                    <div class="card-header py-3"><strong><i class="fas fa-gear me-3"></i>监控与收款码配置</strong></div>
                     <div class="card-body text-center pt-4">
                         <div class="row">
                             <form class="mt-4" id="form_app">

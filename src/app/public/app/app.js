@@ -2,115 +2,109 @@
  * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
-function getTable() {
-    return mdb.Datatable.getOrCreateInstance(document.getElementById('datatable'));
-}
 
-function loadTable(page, size) {
-    $.post('/api/admin/app/list', {
-        'page': page, 'size': size
-    }, function (data) {
-// jshint ignore:start
-        getTable().update(
-            {
-                columns: [
-                    {label: 'Logo', field: 'app_image'},
-                    {label: '网站', field: 'app_name'},
-                    {label: 'ID', field: 'id'},
-                    {label: 'SecretKey', field: 'app_key'},
-                    {label: '操作', field: 'action'}
-                ],
-                rows: data.data.map((row) => {
-                    //  console.log(row);
-                    var action = '';
-                    if(row['id']!==1){
-                        action = `
-      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fas fa-pen"></i></button>
-      <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fa fa-trash"></i></button>`
-                    }
-                    return Object.assign({}, row, {
-                        app_image: `<img
+mdbAdmin.use(['file-upload'],true).then(function () {
+    var config = {
+        elem:"#datatable",
+        url:'/api/admin/app/list',
+        page:1,
+        size:15,
+        onsuccess:function (data,config) {
+            //$('.clipboard').clipboard();
+            mdbAdmin.initComponents("#datatable");
+            $('.clipboard').off().on('copy.mdb.clipboard', function (e) {
+                mdbAdmin.toast.success(e.copyText+"已复制","剪切板");
+            });
+
+
+            $(".edit-btn").off().on('click',function () {
+                var index = $(this).data("index");
+                var json = data[index];
+                form.val("#form",json);
+
+                $("#addApp").click();
+            });
+            $(".delete-btn").off().on('click',function () {
+                var index = $(this).data("index");
+                var json = data[index];
+
+                mdbAdmin.modal.show({
+                    title:'删除确认',
+                    body:'确认删除<b>'+json.title+'</b>吗？',
+                    color:mdbAdmin.modal.color.primary,
+                    buttons: [
+                        ['关闭'],
+                        ['确定',
+                            function () {
+                                mdbAdmin.request("/api/admin/app/del", {id:json.id},"POST").done(function () {
+                                    mdbAdmin.database(config);
+                                });
+
+                            }]
+                    ],
+                });
+
+            });
+        },
+        columns:[
+            { label: 'Logo', field: 'app_image',width:100 ,render(row) {
+                    return `<img
   src="${row.app_image}"
   class="img-fluid rounded-circle"
-  alt=""  height="fit-content" style="max-height: 50px"
-/>`,
-                        action: action,
-                    });
-
-                })
-
+  alt=""  height="fit-content" style="height: 50px;width: 50px"
+/>`;
+                }},
+            { label: '网站', field: 'app_name'
             },
-            {loading: false}
-        );
-        // jshint ignore:end
-        new Pagination(document.querySelector('#pagination'), {
-            current: page,
-            total: data.count,
-            size: size,
-            onPageChanged: (page) => {
-                loadTable(page, size);
+            { label: 'AppId', field: 'id' ,render(row,index) {
+                    return  `<span data-mdb-clipboard-target=".clipboard-appid-${index}"  class="clipboard clipboard-appid-${index}"  data-mdb-clipboard-text="${row.id}">${row.id}</span>`;
+                } },
+            { label: 'SecretKey', field: 'app_key' ,render(row,index) {
+                    return  `<span data-mdb-clipboard-target=".clipboard-secret_key-${index}" class="clipboard clipboard-secret_key-${index}" data-mdb-clipboard-text="${row.app_key}">${row.app_key}</span>`;
+                }},
+            {
+                label:"操作",
+                field: 'action',
+                fixed: 'right',
+                render(row,index){
+                    if(row.id===1){
+                        return `
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-pen"></i></button>
+   `;
+                    }
+                    return `
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-pen"></i></button>
+      <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-index="${index}"><i class="fa fa-trash"></i></button>`;
+                }
             }
-        }).render();
+        ],
+    };
+    mdbAdmin.database(config);
+    mdbAdmin.upload({
+        elem: "#file-upload",
+        url: '/api/admin/app/upload',
+        dom: '',
+        msg: '',
+        onsuccess: function () {
 
-        $(".edit-btn").off().on('click', function () {
-            var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            form.val("#form", json);
-            //   $(".file-upload-previews").html("<img src='"+json.icon+"'/>");
-            var elem = document.querySelector("#file-upload");
-            FileUpload.getInstance(elem).update({"defaultFile": json.app_image});
-            sessionStorage.setItem("app_image", json.app_image);
-            $("#addApp").click();
-        });
-        $(".delete-btn").off().on('click', function () {
-            var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/app/del", {id: json.id}, function () {
-                loadTable(page, size);
-            });
-        });
-    }, "json");
-}
-
-getTable().update({}, {loading: true});
-loadTable(1, 10);
-$("#file-upload").off().on('fileAdd.mdb.fileUpload', function (e) {
-    const addedFile = e.files;
-    const data = new FormData();
-    data.append('file', addedFile[0]);
-    $.ajax({
-        type: 'POST',
-        url: "/api/admin/app/upload",
-        data: data,
-        cache: false,
-        processData: false,
-        contentType: false,
-        beforeSend() {
-            loading.show();
-        },
-        complete(){
-            loading.hide();
-        },
-        success: function (ret) {
-            if (ret.code !== 200) {
-                $("#error_msg_body").text(data.msg);
-                mdb.Alert.getInstance(document.getElementById('error_msg')).show();
-            } else {
-                sessionStorage.setItem("app_image", ret.data);
-            }
         }
     });
-});
-$("#saveOrUpdate").off().on("click", function () {
-    var data = form.val("form");
-    data["app_image"] = sessionStorage.getItem("app_image");
-    $.post("/api/admin/app/addOrUpdate", data, function () {
-        loadTable(1, 10);
+    form.submit("#form",function (data) {
+        mdbAdmin.request("api/admin/app/addOrUpdate", data, "POST", {"#app": "数据提交中..."}).done(function () {
+            mdbAdmin.database(config);
+            $("[data-mdb-dismiss]").click();
+        });
+
+    });
+
+    $('#addOrUpdate').off().on('hidden.bs.modal', function () {
+        form.reset("#form");
     });
 });
-$('#addOrUpdate').off().on('hidden.bs.modal', function () {
-    form.reset("form");
-    FileUpload.getInstance(document.querySelector("#file-upload")).update({"defaultFile": ""});
-    sessionStorage.setItem("app_image", "");
-});
+
+
+
+
 
 
 

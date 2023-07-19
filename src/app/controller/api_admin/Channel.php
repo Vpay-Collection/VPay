@@ -47,7 +47,7 @@ class Channel extends BaseController
     {
         if (Request::isGet()) return $this->json(200, null, $this->config->toArray());
         try{
-            $this->config->mergeArray(post());
+            $this->config->merge(post());
         }catch (VerityException $e){
             return $this->json(403,$e->getMessage());
         }

@@ -14,16 +14,18 @@
 
 namespace app\controller\api_admin;
 
+use app\objects\config\NoticeConfig;
 use app\task\DailyTasker;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
 use library\mail\AnkioMail;
 use library\task\TaskerManager;
 use library\task\TaskerTime;
+use library\verity\VerityException;
 
 class Notice extends BaseController
 {
-    private $config;
+    private NoticeConfig $config;
 
     public function __init(): ?string
     {
@@ -32,7 +34,7 @@ class Notice extends BaseController
         if ($result !== null) {
             return $result;
         }
-        $this->config = Config::getConfig("mail");
+        $this->config = new NoticeConfig(Config::getConfig("notice"),false);
         return null;
     }
 
@@ -42,17 +44,16 @@ class Notice extends BaseController
      */
     function config(): string
     {
-        if (Request::isGet()) return $this->json(200, null, $this->config);
-        foreach ($this->config as $key => &$value) {
-            $value = post($key, $value);
-            if($key==="port"&&($value<1||$value>65535)){
-                return $this->render(403, "端口范围错误(1-65535)");
-            }
+        if (Request::isGet()) return $this->json(200, null, $this->config->toArray());
+        try{
+            $this->config->merge(post());
+        }catch (VerityException $e){
+            return $this->json(403,$e->getMessage());
         }
-        Config::setConfig('mail', $this->config);
+        Config::setConfig('notice', $this->config->toArray());
         //日报需要处理定时任务
         TaskerManager::del("Vpay日报");
-        if ($this->config['pay_daily']) {
+        if ($this->config->daily_notice) {
             TaskerManager::add(TaskerTime::day(23, 50), new DailyTasker(), "Vpay日报", -1);
         }
 

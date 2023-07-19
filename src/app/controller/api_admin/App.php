@@ -25,7 +25,7 @@ class App extends BaseController
     function list(): string
     {
         $page = new Page();
-        $result = AppDao::getInstance()->getAll([], [], arg("page", 1), arg("size", 10), $page);
+        $result = AppDao::getInstance()->getAll([], [],false, arg("page", 1), arg("size", 10), $page);
         return $this->render(200, null, $result, $page->total_count);
     }
 
