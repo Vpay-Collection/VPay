@@ -1,36 +1,42 @@
 /*
  * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
+(function () {
+    var config = {
+        elem:"#datatable",
+        url:'/api/admin/order/list',
+        page:1,
+        size:15,
+        param:{
+            "appid": $("#app").val(),
+            "app_item": $("#form_name").val(),
+            "status": $("#status").val(),
+        },
+        onsuccess:function (data,config) {
+            $(".edit-btn").off().on('click',function () {
+                var index = $(this).data("index");
+                var json = data[index];
 
-function getTable() {
-    return mdb.Datatable.getOrCreateInstance(document.getElementById('datatable'));
-}
+                mdbAdmin.modal.show({
+                    title:'回调确认',
+                    body:'确定对该订单进行回调吗？',
+                    color:mdbAdmin.modal.color.primary,
+                    buttons: [
+                        ['关闭'],
+                        ['确定',
+                            function () {
+                                mdbAdmin.request("/api/admin/order/callback", {order_id: json.order_id},"POST").done(function () {
+                                    mdbAdmin.database(config);
+                                });
 
-function loadTable(page, size) {
-    $.post('/api/admin/order/list', {
-        'page': page, 'size': size,
-        "appid": $("#app").val(),
-        "app_item": $("#form_name").val(),
-        "status": $("#status").val(),
-    }, function (data) {
+                            }]
+                    ],
+                });
 
-        getTable().update(
-            {
-                columns: [
-                    {label: 'ID', field: 'id'},
-                    {label: '操作', field: 'action'},
-                    {label: '状态', field: 'state'},
-                    {label: '商户', field: 'app_name'},
-                    {label: '商品', field: 'app_item'},
-                    {label: '实收', field: 'real_price'},
-                    {label: '应收', field: 'price'},
-                    {label: '订单ID', field: 'order_id'},
-                    {label: '创建时间', field: 'create_time'},
-                    {label: '支付时间', field: 'pay_time'},
-                    {label: '关闭时间', field: 'close_time'},
-
-                ],
-                rows: data.data.map((row) => {
+            });
+        },
+        columns:[
+            { label: '状态', field: 'state' ,render(row) {
                     var state = "";
                     switch (row.state) {
                         case -1:
@@ -46,57 +52,54 @@ function loadTable(page, size) {
                             state = `<span class="badge badge-success">订单成功</span>`;
                             break;
                     }
-                    var action = ``;
-                    if (row.state !== 3) {
-                        action = `
- <button class="recallback-btn btn ms-2 btn-primary btn-floating btn-sm" data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fa fa-rotate"></i></button>`;
-                    }
-                    // jshint ignore:start
-                    return Object.assign({}, row, {
-                        state: state,
-                        create_time: dateFormat("yyyy-MM-dd hh:mm:ss", row.create_time),
-                        pay_time: dateFormat("yyyy-MM-dd hh:mm:ss", row.pay_time),
-                        close_time: dateFormat("yyyy-MM-dd hh:mm:ss", row.close_time),
-                        action: action,
-                    });
-                    // jshint ignore:end
-                })
-
-            },
-            {loading: false}
-        );
-        new Pagination(document.querySelector('#pagination'), {
-            current: page,
-            total: data.count,
-            size: size,
-            onPageChanged: (page) => {
-                loadTable(page, size);
-            }
-        }).render();
-
-        $(".recallback-btn").off().on('click', function () {
-            var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/order/callback", {order_id: json.order_id}, function (data) {
-
-                if(data.code!==200){
-                    $("#error_msg_body").text(data.msg);
-                    mdb.Alert.getInstance(document.getElementById('error_msg')).show();
-                }else{
-                    loadTable(page, 10);
-                    $("#success_msg_body").text(data.msg);
-                    mdb.Alert.getInstance(document.getElementById('success_msg')).show();
+                    return state;
+                }},
+            {label: '商户', field: 'app_name'},
+            {label: '商品', field: 'app_item'},
+            {label: '金额', field: 'real_price',render(row){
+                if(row.real_price!==row.price){
+                    return `<i class="fas fa-dollar-sign"></i><span class="text-primary">${row.real_price}</span><s><span class="text-primary">${row.danger}</span></s>`;
                 }
-            });
-        });
-    }, "json");
+                    return `<i class="fas fa-dollar-sign"></i><span class="text-primary">${row.real_price}</span>`;
+                }},
+            {label: '订单ID', field: 'order_id'},
+            {label: '创建时间', field: 'create_time',render(row){
+                    return mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", row.create_time);
+                }},
+            {label: '支付时间', field: 'pay_time',render(row){
+                    return mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", row.pay_time);
+                }},
+            {label: '关闭时间', field: 'close_time',render(row){
+                    return mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", row.close_time);
+                }},
+            {
+                label:"操作",
+                field: 'action',
+                fixed: 'right',
+                render(row,index){
+                    if(row.state!==3){
+                        return `
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-rotate"></i></button>
+     `;
+                    }
 
-}
+                }
+            }
+        ],
+    };
+    mdbAdmin.database(config);
+    $("#search").off().on("click", function () {
+        mdbAdmin.database($.extend({},config,{
+            param:{
+                "appid": $("#app").val(),
+                "app_item": $("#form_name").val(),
+                "status": $("#status").val(),
+            },
+        }));
+    });
 
-getTable().update({}, {loading: true});
-loadTable(1, 10);
-$("#search").on("click", function () {
-    loadTable(1, 10);
-});
+
+})();
 
 
 

@@ -5,6 +5,14 @@
     <mapping directory="$PROJECT_DIR$/src/cleanphp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/library/captcha" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/library/database" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/encryption" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/http" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/login" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/mail" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/qrcode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/task" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/upload" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/library/verity" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/library/vpay" vcs="Git" />
   </component>
 </project>

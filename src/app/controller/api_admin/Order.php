@@ -30,14 +30,14 @@ class Order extends BaseController
             $condition['appid'] = arg("appid", 0);
         }
         if (!empty(arg("status"))) {
-            $condition['status'] = arg("status", -1);
+            $condition['state'] = arg("status", -1);
         }
         if (!empty(arg("app_item"))) {
             $condition[] = "app_item like %:app_item%";
             $condition['app_item'] = arg("app_item");
         }
 
-        $result = OrderDao::getInstance()->getAll([], $condition, arg("page", 1), arg("size", 10), $page);
+        $result = OrderDao::getInstance()->getAll([], $condition,false, arg("page", 1), arg("size", 10), $page);
         return $this->render(200, null, $result, $page->total_count);
     }
 
