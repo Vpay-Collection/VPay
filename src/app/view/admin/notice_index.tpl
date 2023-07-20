@@ -93,10 +93,7 @@
 
 
 </div>
-</section>
-    <!--Section: Profile-->
 
-</div>
 
 
 <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="exampleModalLabel"

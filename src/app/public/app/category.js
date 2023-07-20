@@ -2,71 +2,74 @@
  * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
 
-function getTable() {
-    return mdb.Datatable.getOrCreateInstance(document.getElementById('datatable'));
-}
+(function () {
+    var config = {
+        elem:"#datatable",
+        url:'/api/admin/shop/category',
+        page:1,
+        size:15,
+        onsuccess:function (data,config) {
+            $(".edit-btn").off().on('click',function () {
+                var index = $(this).data("index");
+                var json = data[index];
+                form.val("#form",json);
 
-function loadTable(page, size) {
-    $.post('/api/admin/shop/category', {
-        'page': page, 'size': size
-    }, function (data) {
-// jshint ignore:start
-        getTable().update(
-            {
-                columns: [
-                    {label: 'ID', field: 'id'},
-                    {label: '分类', field: 'name'},
-                    {label: '操作', field: 'action'}
-                ],
-                rows: data.data.map((row) => {
-                    //  console.log(row);
-                    var action = `
-      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fas fa-pen"></i></button>
-      <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-data="${encodeURIComponent(JSON.stringify(row))}"><i class="fa fa-trash"></i></button>`;
-                    return Object.assign({}, row, {
-                        action: row.id !== 1 ? action : '',
-                    });
-
-                })
-
-            },
-            {loading: false}
-        );
-        // jshint ignore:end
-        new Pagination(document.querySelector('#pagination'), {
-            current: page,
-            total: data.count,
-            size: size,
-            onPageChanged: (page) => {
-                loadTable(page, size);
-            }
-        }).render();
-
-        $(".edit-btn").off().on('click', function () {
-            var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            form.val("#form", json);
-            $("#addApp").click();
-        });
-        $(".delete-btn").off().on('click', function () {
-            var json = JSON.parse(decodeURIComponent($(this).data("data")));
-            $.post("/api/admin/shop/delCategory", {id: json.id}, function () {
-                loadTable(page, size);
+                $("#addApp").click();
             });
-        });
-    }, "json");
-}
+            $(".delete-btn").off().on('click',function () {
+                var index = $(this).data("index");
+                var json = data[index];
 
-getTable().update({}, {loading: true});
-loadTable(1, 10);
-$("#saveOrUpdate").off().on("click", function () {
-    var data = form.val("form");
-    $.post("/api/admin/shop/addOrUpdateCategory", data, function () {
-        loadTable(1, 10);
+                mdbAdmin.modal.show({
+                    title:'删除确认',
+                    body:'确认删除<b>'+json.name+'</b>吗？',
+                    color:mdbAdmin.modal.color.primary,
+                    buttons: [
+                        ['关闭'],
+                        ['确定',
+                            function () {
+                                mdbAdmin.request("/api/admin/shop/delCategory", {id:json.id},"POST").done(function () {
+                                    mdbAdmin.database(config);
+                                });
+
+                            }]
+                    ],
+                });
+
+            });
+        },
+        columns:[
+            {label: 'ID', field: 'id'},
+            {label: '分类', field: 'name'},
+            {
+                label:"操作",
+                field: 'action',
+                fixed: 'right',
+                render(row,index){
+                    if(row.id===1){
+                        return `
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-pen"></i></button>
+   `;
+                    }
+                    return `
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-pen"></i></button>
+      <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-index="${index}"><i class="fa fa-trash"></i></button>`;
+                }
+            }
+        ],
+    };
+    mdbAdmin.database(config);
+    form.submit("form",function (data) {
+        mdbAdmin.request("/api/admin/shop/addOrUpdateCategory", data).done(function (data) {
+           mdbAdmin.toast.success(data.msg);
+            mdbAdmin.database(config);
+            $("[data-mdb-dismiss]").click();
+        });
     });
-});
-$('#addOrUpdate').off('hidden.bs.modal').on('hidden.bs.modal', function () {
-    form.reset("form");
-});
+    $('#addOrUpdate').off().on('hidden.bs.modal', function () {
+        form.reset("#form");
+    });
+})();
 
 
 

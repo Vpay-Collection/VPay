@@ -14,7 +14,6 @@
 
 namespace app\database\model;
 
-use app\database\dao\OrderDao;
 use library\database\object\Model;
 use library\database\object\SqlKey;
 

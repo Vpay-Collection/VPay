@@ -65,18 +65,21 @@ class Main extends BaseController
                        [
                            'name' => '系统配置',
                            'href' => url('admin', 'shop', 'setting'),
+                           'inner' => true,
                            'icon' => 'fas fa-gear'
 
                        ],
                        [
                            'name' => '商品分类',
                            'href' => url('admin', 'shop', 'category'),
+                           'inner' => true,
                            'icon' => 'fas fa-fax'
 
                        ],
                        [
                            'name' => '商品管理',
                            'href' => url('admin', 'shop', 'manager'),
+                           'inner' => true,
                            'icon' => 'fas fa-cart-shopping'
 
                        ]

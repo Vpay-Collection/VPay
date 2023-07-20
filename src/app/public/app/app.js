@@ -60,7 +60,8 @@ mdbAdmin.use(['file-upload'],true).then(function () {
                     return  `<span data-mdb-clipboard-target=".clipboard-appid-${index}"  class="clipboard clipboard-appid-${index}"  data-mdb-clipboard-text="${row.id}">${row.id}</span>`;
                 } },
             { label: 'SecretKey', field: 'app_key' ,render(row,index) {
-                    return  `<span data-mdb-clipboard-target=".clipboard-secret_key-${index}" class="clipboard clipboard-secret_key-${index}" data-mdb-clipboard-text="${row.app_key}">${row.app_key}</span>`;
+                    return  `<span data-mdb-clipboard-target=".clipboard-secret_key-${index}"
+ class="clipboard clipboard-secret_key-${index}" data-mdb-clipboard-text="${row.app_key}">${row.app_key}</span>`;
                 }},
             {
                 label:"操作",

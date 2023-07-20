@@ -438,9 +438,7 @@ const mdbAdmin = {
             var el = document.querySelectorAll(elem);
             if (el !== null) {
                 el.forEach(function (v) {
-                    //    app.debug && log.info(v, "处理元素");
                     func(v);
-                    //    app.debug && log.success(v, "元素处理成功");
                 });
             }
 
@@ -448,6 +446,7 @@ const mdbAdmin = {
 
 
         each('[data-mdb-toggle="animation"]', function (v) {
+
             new mdb.Animate(v, getOptions(v)).init();
         });
         each('[data-mdb-spy="scroll"]', function (v) {
@@ -666,7 +665,40 @@ const mdbAdmin = {
 
         if(hasLoadPlugin("wysiwyg")){
             each('.wysiwyg',function (v) {
-                new WYSIWYG(v,getOptions(v));
+                new WYSIWYG(v,$.extend({},getOptions(v),{ wysiwygTranslations: {
+                        paragraph: '段落',
+                        textStyle: '文本样式',
+                        heading: '标题',
+                        preformatted: '预设格式',
+                        bold: '加粗',
+                        italic: '斜体',
+                        strikethrough: '删除线',
+                        underline: '下划线',
+                        textcolor: '文本颜色',
+                        textBackgroundColor: '文本背景颜色',
+                        alignLeft: '左对齐',
+                        alignCenter: '居中对齐',
+                        alignRight: '右对齐',
+                        alignJustify: '两端对齐',
+                        insertLink: '插入链接',
+                        insertPicture: '插入图片',
+                        unorderedList: '无序列表',
+                        orderedList: '有序列表',
+                        increaseIndent: '增加缩进',
+                        decreaseIndent: '减少缩进',
+                        insertHorizontalRule: '插入水平线',
+                        showHTML: '显示HTML代码',
+                        undo: '撤销',
+                        redo: '重做',
+                        addLinkHead: '添加链接',
+                        addImageHead: '添加图片',
+                        linkUrlLabel: '输入网址：',
+                        linkDescription: '输入描述',
+                        imageUrlLabel: '输入图片网址：',
+                        okButton: '确定',
+                        cancelButton: '取消',
+                        moreOptions: '更多选项',
+                    }}));
             });
         }
 
@@ -1241,9 +1273,7 @@ const mdbAdmin = {
             if (jsonData && $.type(jsonData) === 'object' && !$.isEmptyObject(jsonData)) {
 
 
-
 // 使用示例
-
 
                 // 遍历容器内所有表单元素
                 formElements.each(function () {
@@ -1251,6 +1281,7 @@ const mdbAdmin = {
                     var name = $(this).attr("name");
                     // jsonData key 值（移除 name 的前缀和后缀）
                     var key = name;
+
 
                     if (jsonData.hasOwnProperty(key)) {
                         if ($(this).is(":file")) {
@@ -1291,6 +1322,12 @@ const mdbAdmin = {
 
                         }
 
+                    }else if(key.startsWith("wysiwyg-textarea")){
+                        var query =   $("[name="+key+"]");
+                        var item = query.next().data("name");
+                        if(jsonData.hasOwnProperty(item)){
+                            query.next().find(".wysiwyg-content").html(jsonData[item]);
+                        }
                     }
                 });
             }
@@ -1344,9 +1381,15 @@ const mdbAdmin = {
                     }
                 }
                 // 其他情况
-                else {
-                    jsonData[key] = val;
+                else if($(this).is("textarea")){
+                    if(key.startsWith("wysiwyg-textarea")){
+                        jsonData[$(this).next().data("name")] = val;
+                    }else{
+                        jsonData[key] = val;
+                    }
 
+                }else{
+                    jsonData[key] = val;
                 }
             });
             return jsonData;
