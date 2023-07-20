@@ -31,7 +31,7 @@ class Main extends Controller
         return <<<EOF
 User-agent: *
 
-Disallow: /*
+Disallow: /
 EOF;
     }
 
@@ -44,7 +44,7 @@ EOF;
     {
         return file_exists(APP_DIR.DS."docker_runtime");
     }
-    function install()
+    function install(): string
     {
         $cache = Cache::init(0,Variables::getCachePath('cleanphp',DS));
         if (!empty($cache->get("install.lock"))) {

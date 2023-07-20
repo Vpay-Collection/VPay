@@ -19,7 +19,7 @@ use library\qrcode\Code;
 
 class Image extends BaseController
 {
-    function qrcode()
+    function qrcode(): void
     {
         Code::encode(urldecode(arg('url', "")));
     }
