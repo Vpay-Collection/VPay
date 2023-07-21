@@ -43,8 +43,6 @@ class AppChannel
             $order->pay_image = Config::getConfig("channel")['wechat'];
         } elseif ($order->pay_type == OrderModel::PAY_ALIPAY) {
             $order->pay_image = Config::getConfig("channel")['alipay'];
-        } elseif ($order->pay_type == OrderModel::PAY_QQ) {
-            $order->pay_image = Config::getConfig("channel")['qq'];
         } else {
             throw new ChannelException("不支持的支付方式");
         }

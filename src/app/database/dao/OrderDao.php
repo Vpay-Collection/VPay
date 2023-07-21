@@ -36,7 +36,7 @@ class OrderDao extends Dao
     public function closeTimeoutOrder(): void
     {
         $close_time = Config::getConfig("app")['timeout'];
-        $close_time = time() - 60 * $close_time;//计算订单关闭时间
+        $close_time = time() * 60 - 60 * $close_time;//计算订单关闭时间
         $close_date = time();
         $this->update()
             ->where(["create_time <= $close_time and state = :state", ":state" => OrderModel::WAIT])
@@ -119,7 +119,7 @@ class OrderDao extends Dao
 
     /**
      * 根据PAY_TYPE支付方式获取订单数
-     * @param $pay_type int 服务端支付方式支持{@link OrderModel::PAY_ALIPAY}(App监控的支付宝)/{@link OrderModel::PAY_WECHAT}(App监控的微信)/{@link OrderModel::PAY_QQ}(App监控的QQ)
+     * @param $pay_type int 服务端支付方式支持{@link OrderModel::PAY_ALIPAY}(App监控的支付宝)/{@link OrderModel::PAY_WECHAT}(App监控的微信)
      * @param float $price
      * @return OrderModel|null
      */

@@ -49,7 +49,7 @@ class App extends BaseController
             return $this->json(200, "心跳成功");
         } catch (VerityException $exception) {
             Log::record("app_channel", "心跳异常：" . $exception->getMessage());
-            return $this->json(400, $exception->getMessage());
+            return $this->json(500, $exception->getMessage());
         }
     }
 
