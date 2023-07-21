@@ -3,13 +3,19 @@
  */
 (function () {
     mdbAdmin.form.init("form","/api/admin/notice/config",function (data) {
-        $("#sso").on("change",function () {
+        var $mailArea = $("#mail_area");
+        var $ssoArea = $("#sso_area");
+
+        $("#sso").on("change", function () {
             // Toggle the visibility of mail_area and sso_area based on the checkbox's checked status
-            $("#mail_area").toggle(!this.checked);
-            $("#sso_area").toggle(this.checked);
+            $mailArea.toggle(!this.checked);
+            $ssoArea.toggle(this.checked);
         });
-        $("#mail_area").toggle(data.type===1);
-        $("#sso_area").toggle(data.type!==1);
+
+        // Use ternary operator for showing/hiding elements based on data.sso value
+        data.sso === 1 ? $ssoArea.show() : $mailArea.show();
+        data.sso === 1 ? $mailArea.hide() : $ssoArea.hide();
+
     });
 
     $("#test").off().on("click", function () {

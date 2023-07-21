@@ -22,7 +22,7 @@ use library\login\LoginManager;
 class Main extends BaseController
 {
 
-    function index()
+    function index(): void
     {
        [$day, $data] = OrderDao::getInstance()->countData();
         EngineManager::getEngine()
@@ -33,7 +33,7 @@ class Main extends BaseController
             ->setData("data", array_reverse($data));
     }
 
-    function logout()
+    function logout(): void
     {
         LoginManager::init()->logout();
         Response::location(url("admin", "main", "index"));

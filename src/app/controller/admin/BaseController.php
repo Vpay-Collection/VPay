@@ -39,8 +39,6 @@ class BaseController extends Controller
         EngineManager::getEngine()->setLayout("layout")
             ->setData("pjax", Request::isPjax())
             ->setData("host", Request::getNowAddress())
-            ->setData("username", $user["username"])
-            ->setData("image", $user["image"])
             ->setData("update", $result)
             ->setData("new_version", $new)
             ->setData("download", $download)

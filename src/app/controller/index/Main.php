@@ -34,7 +34,7 @@ class Main extends Controller
     {
 
         (new Response())->render(
-            EngineManager::getEngine()->renderMsg(200, sprintf("Vpay"), sprintf("让个人开发者收款更简单"), -1, "https://github.com/Vpay-Collection/VPay", "Github"))->send();
+            EngineManager::getEngine()->renderMsg(200, "Vpay", "让个人开发者收款更简单", -1, "https://github.com/Vpay-Collection/VPay", "Github"))->send();
     }
 
     function login()

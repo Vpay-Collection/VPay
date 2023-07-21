@@ -20,6 +20,8 @@ use app\exception\OrderNotFoundException;
 use app\objects\app\HeartObject;
 use app\objects\app\PushObject;
 
+use app\objects\config\ChannelConfig;
+use app\utils\AppChannel;
 use cleanphp\base\Config;
 use cleanphp\base\Json;
 use cleanphp\cache\Cache;
@@ -29,11 +31,10 @@ use library\verity\VerityException;
 
 class App extends BaseController
 {
-    private string $key = "";
-
+    private ChannelConfig $config;
     public function __init()
     {
-        $this->key = Config::getConfig('app')['key'];
+        $this->config = new ChannelConfig(Config::getConfig('app'),false);
     }
 
     /**
@@ -43,7 +44,7 @@ class App extends BaseController
     function heart(): string
     {
         try {
-            $heart = new HeartObject(get(), $this->key);
+            $heart = new HeartObject(get(), $this->config->key);
             Cache::init()->set("last_heart", time());
             return $this->json(200, "心跳成功");
         } catch (VerityException $exception) {
@@ -60,7 +61,7 @@ class App extends BaseController
     {
         Log::record("app_channel", "收到App推送：" . Json::encode(arg()));
         try {
-            $push = new PushObject(get(), $this->key);
+            $push = new PushObject(arg(), $this->config->key);
         } catch (VerityException $exception) {
             return $this->json(400, $exception->getMessage());
         }
@@ -69,7 +70,7 @@ class App extends BaseController
             return $this->json(500, '无订单待确认！');
         }
         try {
-            OrderDao::getInstance()->notify($result->order_id, $this->key);
+            OrderDao::getInstance()->notify($result->order_id, $this->config->key);
         } catch (OrderNotFoundException $e) {
             return $this->json(500, '无订单待确认！');
         }

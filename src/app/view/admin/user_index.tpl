@@ -5,17 +5,14 @@
     <section class="mb-10">
 
         <div class="card-body ps-2 pb-4">
-            <h3 class="">收入统计</h3>
+            <h3 class="">个人中心</h3>
         </div>
         <div class="row">
             <div class="col-12 mb-2">
                 <div class="card ">
-                    <div class="card-header py-3">
-                        <strong>编辑个人信息</strong>
-                    </div>
                     <div class="card-body text-center">
                         <div class="mt-1 mb-4">
-                            <strong>个人头像</strong>
+                            <strong>头像</strong>
                         </div>
 
                         <form action="">

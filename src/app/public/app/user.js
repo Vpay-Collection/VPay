@@ -1,39 +1,17 @@
 /*
  * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
+mdbAdmin.use([mdbAdminPlugins["file-upload"]],true).then(function () {
 
-$("#updateInfo").off().on("click", function () {
-    var data = form.val("form");
-    $.post("/ankio/login/change", data, function (d) {
-        $("#success_msg_body").text(d.msg);
-        mdb.Alert.getInstance(document.getElementById('success_msg')).show();
-        location.reload();
-    });
-});
-$(".file-upload-input").off().on('fileAdd.mdb.fileUpload', function (e) {
-    const addedFile = e.files;
-    const data = new FormData();
-    data.append('file', addedFile[0]);
-    $.ajax({
-        type: 'POST',
-        url: "/api/admin/user/upload",
-        data: data,        beforeSend() {
-            loading.show();
-        },
-        complete(){
-            loading.hide();
-        },
-        cache: false,
-        processData: false,
-        contentType: false,
-        success: function (ret) {
-            if (ret.code !== 200) {
-                $("#error_msg_body").text(ret.msg);
-                mdb.Alert.getInstance(document.getElementById('error_msg')).show();
-            } else {
-                $("#success_msg_body").text("上传成功");
-                mdb.Alert.getInstance(document.getElementById('success_msg')).show();
-            }
+    mdbAdmin.form.bindSubmit("#form_app","/ankio/login/change");
+
+    mdbAdmin.upload({
+        elem: ".file-upload-input",
+        url: '/api/admin/user/upload',
+        msg: '正在上传中...',
+        onsuccess(data){
+            $("#image").attr("src",data);
         }
     });
+
 });

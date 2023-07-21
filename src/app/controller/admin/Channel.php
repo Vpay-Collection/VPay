@@ -14,6 +14,7 @@
 
 namespace app\controller\admin;
 
+use app\objects\config\ChannelConfig;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
 use cleanphp\base\Response;
@@ -36,18 +37,16 @@ class Channel extends BaseController
             EngineManager::getEngine()->setData("status",2);
         }
 
-        $app = Config::getConfig("app");
-        $key = $app['key'];
-        if (empty($key)) {
-            $key = rand_str(32);
-            $app['key'] = $key;
-            Config::setConfig('app', $app);
+        $app = new ChannelConfig(Config::getConfig("app"),false);
+        if (empty($app->key)) {
+            $app->key = rand_str(32);
+            Config::setConfig('app', $app->toArray());
         }
         EngineManager::getEngine()->
         setData("qrcode", url("api", "image", "qrcode", [
             'url' => json_encode([
                 'url' => Response::getHttpScheme() . Request::getDomain(),
-                'key' => $key
+                'key' => $app->key
             ])
         ]));
     }

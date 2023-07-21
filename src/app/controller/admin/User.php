@@ -19,7 +19,7 @@ use cleanphp\engine\EngineManager;
 
 class User extends BaseController
 {
-    function index()
+    function index(): void
     {
         EngineManager::getEngine()->setArray(Config::getConfig("login"));
     }

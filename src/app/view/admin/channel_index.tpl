@@ -116,9 +116,6 @@
     <!--Section: Profile-->
 
 </div>
-
-
-
 {include file="layout_scripts"}
 
 <script src="../../public/app/channel.js?v={$__version}" defer></script>

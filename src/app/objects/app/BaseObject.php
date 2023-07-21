@@ -29,8 +29,6 @@ class BaseObject extends VerityObject
      */
     public function __construct(array $item = [], $key = "")
     {
-
-
         parent::__construct($item);
         if (!isset($item['sign'])) throw new VerityException('缺少签名');
         unset($item['sign']);

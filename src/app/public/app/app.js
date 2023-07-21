@@ -30,7 +30,7 @@ mdbAdmin.use(['file-upload'],true).then(function () {
 
                 mdbAdmin.modal.show({
                     title:'删除确认',
-                    body:'确认删除<b>'+json.title+'</b>吗？',
+                    body:'确认删除<b>'+json.app_name+'</b>吗？',
                     color:mdbAdmin.modal.color.primary,
                     buttons: [
                         ['关闭'],
@@ -68,11 +68,6 @@ mdbAdmin.use(['file-upload'],true).then(function () {
                 field: 'action',
                 fixed: 'right',
                 render(row,index){
-                    if(row.id===1){
-                        return `
-      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-pen"></i></button>
-   `;
-                    }
                     return `
       <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-pen"></i></button>
       <button class="delete-btn btn ms-2 btn-primary btn-floating btn-sm" data-index="${index}"><i class="fa fa-trash"></i></button>`;
