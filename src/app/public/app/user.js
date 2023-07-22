@@ -3,7 +3,7 @@
  */
 mdbAdmin.use([mdbAdminPlugins["file-upload"]],true).then(function () {
 
-    mdbAdmin.form.bindSubmit("#form_app","/ankio/login/change");
+    mdbAdmin.form.bindSubmit("form","/ankio/login/change");
 
     mdbAdmin.upload({
         elem: ".file-upload-input",

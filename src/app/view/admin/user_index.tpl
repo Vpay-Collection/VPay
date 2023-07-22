@@ -47,7 +47,7 @@
                                        value=""/>
                                 <label class="form-label" for="new">新的登录密码</label>
                             </div>
-                            <button type="button" class="btn btn-primary mb-2" id="updateInfo">
+                            <button type="submit" class="btn btn-primary mb-2" id="updateInfo">
                                 更新信息
                             </button>
                         </form>
