@@ -13,11 +13,11 @@
                     <div class="card-header py-3"><strong><i class="fas fa-mobile-screen-button me-3"></i>手机状态</strong></div>
                     <div class="card-body text-center pt-4">
                         <div class="row">
-                            <div class="col-md-4 mb-4 mb-md-0">
+                            <div class="col-xl-12">
                                 <img src="{$qrcode}" id="qrcode" class="mb-4" style="max-width: 250px; width: 100%;"/>
 
                             </div>
-                            <div class="col-md-8 text-start">
+                            <div class="col-xl-12 text-start">
                                 {if $status==0}
                                     <div class="alert" role="alert" data-mdb-color="primary">
                                         <i class="fas fa-info-circle me-3"></i>安卓监控客户端 <a

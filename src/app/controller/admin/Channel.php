@@ -30,7 +30,7 @@ class Channel extends BaseController
         $last = Cache::init()->get("last_heart");
         if($last===null){
             EngineManager::getEngine()->setData("status",0);
-        }elseif (time() - $last <= 60 * 15){
+        }elseif (time() - $last > 60 * 15){
             EngineManager::getEngine()->setData("status",1);
             EngineManager::getEngine()->setData("last_heart", date("Y-m-d H:i:s", $last));
         }else{
