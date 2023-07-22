@@ -134,11 +134,9 @@
                         />
                         <span id="username"></span>
                     </a>
-                    <ul
-                            class="dropdown-menu dropdown-menu-end"
-                            aria-labelledby="navbarDropdownMenuLink"
-                    >
-                        <li><a class="dropdown-item" href="{url('user','main','logout')}">退出登录</a></li>
+                    <ul class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{url('admin','main','logout')}">退出登录</a></li>
                     </ul>
                 </li>
             </ul>
