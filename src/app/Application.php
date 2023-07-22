@@ -39,7 +39,6 @@ class Application implements MainApp
      */
     function onRequestArrive(): void
     {
-        include_once Variables::getLibPath("vpay", "src", "autoload.php");
         Session::getInstance()->start();//会话有效即可
         if (str_starts_with(Variables::get("__request_module__"),"api")) {
             EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));

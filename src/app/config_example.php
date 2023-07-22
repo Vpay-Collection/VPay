@@ -3,9 +3,8 @@
         array (
             'host' =>
                 array (
-                    0 => 'pay.dev-ankio.net',
+                    0 => '0.0.0.0',
                 ),
-            'rewrite' => true,
             'version' => '4.0.6',
             'log' => 1,
             'session' => 'pay_session',
@@ -37,8 +36,8 @@
         ),
     'login' =>
         array (
-            'username' => 'USERNAME',
-            'password' => 'PASSWORD',
+            'username' => 'LOGIN_USERNAME',
+            'password' => 'LOGIN_PASSWORD',
             'image' => '',
         ),
     'key' => NULL,
