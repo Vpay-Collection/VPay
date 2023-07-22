@@ -10,5 +10,5 @@ config_file=/www/server/panel/vhost/nginx/${domain}.conf
 php_version=$(cat $config_file|grep 'enable-php'|grep -Eo "[0-9]+"|head -n 1)
 #获取PHP执行路径
 php_bin=/www/server/php/$php_version/bin/php
-root_path=$(cat $config_file|grep 'root '|awk '{print $2}'|sed "s/;//"|sed "s/public//")
-${php_bin} "${root_path}/replace.php" "${config_file}"
+root_path=$(pwd)
+${php_bin} "${root_path}/install.php" "${config_file}"

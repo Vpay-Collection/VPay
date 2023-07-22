@@ -9,6 +9,7 @@
  * Time : 22:07
  * Description :
  */
+//重写nginx缓存
 file_put_contents($argv[1],str_replace(<<<EOF
 location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
     {
@@ -26,3 +27,6 @@ location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 EOF,
 '',file_get_contents($argv[1])
 ));
+$dir = __DIR__."/app/storage/cache/cleanphp/";
+mkdir($dir,true);
+file_put_contents($dir."/install.lock","b:1;");

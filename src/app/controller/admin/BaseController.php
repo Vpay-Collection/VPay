@@ -33,8 +33,6 @@ class BaseController extends Controller
         if (!LoginManager::init()->isLogin()) {
             Response::location(LoginManager::init()->getLoginUrl());
         }
-
-        $user = LoginManager::init()->getUser();
         $result = GithubUpdater::init("Vpay-Collection/Vpay")->check(Config::getConfig("frame")["version"], $new, $download, $body);
         EngineManager::getEngine()->setLayout("layout")
             ->setData("pjax", Request::isPjax())

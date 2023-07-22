@@ -3,40 +3,51 @@
         array (
             'host' =>
                 array (
-                    0 => '0.0.0.0',
+                    0 => 'pay.dev-ankio.net',
                 ),
             'rewrite' => true,
             'version' => '4.0.6',
             'log' => 1,
-            'session' => 'pay_session'
+            'session' => 'pay_session',
         ),
-
     'route' =>
         array (
             'robots.txt' => 'api_index/main/robots',
             '/' => 'index/main/index',
             'admin' => 'admin/main/index',
             'pay/<id>' => 'index/main/pay',
-            'item/<id>' => 'shop/main/item',
             'order/<a>' => 'api/pay/<a>',
             'image/<type>/<file>' => 'api_index/main/image',
             'api/admin/<c>/<a>' => 'api_admin/<c>/<a>',
             'api/index/<c>/<a>' => 'api_index/<c>/<a>',
             '<m>/<c>/<a>' => '<m>/<c>/<a>',
         ),
-
     'database' =>
         array (
             'main' =>
                 array (
                     'type' => 'mysql',
                     'host' => 'localhost',
-                    'username' => '',
-                    'password' => '',
+                    'username' => 'BT_DB_USERNAME',
+                    'password' => 'BT_DB_PASSWORD',
                     'port' => 3306,
-                    'db' => '',
+                    'db' => 'BT_DB_NAME',
                     'charset' => 'utf8mb4',
                 ),
         ),
-
+    'login' =>
+        array (
+            'username' => 'USERNAME',
+            'password' => 'PASSWORD',
+            'image' => '',
+        ),
+    'key' => NULL,
+    'app' =>
+        array (
+            'key' => '',
+            'timeout' => 5,
+            'conflict' => 1,
+            'image_alipay' => '',
+            'image_wechat' => '',
+        ),
 );

@@ -1,7 +1,19 @@
-if ( $uri ~* "^(.*)\.php$") {
-rewrite ^(.*) /index.php break;
+if ($uri ~* "^(.*)\.php$") {
+    rewrite ^(.*) /cleanphp/bootstrap.php last;
+}
+
+location @cleanphp {
+    rewrite ^ /cleanphp/bootstrap.php last;
+}
+
+location ~* ^\/clean_static\/(.*)$ {
+    if_modified_since before;
+    try_files /app/public/$1 @cleanphp;
 }
 
 location / {
-  try_files $uri $uri/ /index.php?$query_string;
+    try_files /app/storage/public/$uri @cleanphp;
 }
+
+
+
