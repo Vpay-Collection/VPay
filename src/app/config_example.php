@@ -38,7 +38,7 @@
         array (
             'username' => 'LOGIN_USERNAME',
             'password' => 'LOGIN_PASSWORD',
-            'image' => '',
+            'image' => '/clean_static/img/head.png',
         ),
     'key' => NULL,
     'app' =>
