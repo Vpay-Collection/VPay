@@ -85,7 +85,7 @@
     </div>
     <!-- 验证码 -->
     <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" id="captcha">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable justify-content-center">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
