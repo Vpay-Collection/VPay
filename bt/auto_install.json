@@ -5,7 +5,7 @@
   ],
   "success_url":"/admin",
   "php_versions":"82",
-  "db_config":"app/config_example.php",
+  "db_config":"/app/config_example.php",
   "admin_username":"admin",
   "admin_password":"123456",
   "run_path":"/",

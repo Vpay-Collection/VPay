@@ -29,7 +29,7 @@ EOF,
 ));
 $dir = __DIR__."/app/storage/cache/cleanphp/";
 mkdir($dir,0777,true);
-/*file_put_contents($dir."/install.lock","b:1;");
+file_put_contents($dir."/install.lock","b:1;");
 
 $config =  __DIR__."/app/config_example.php";
 $username = "admin";
@@ -41,4 +41,4 @@ file_put_contents($config,
     ],[
         $username,
         $password
-    ],file_get_contents($config)));*/
+    ],file_get_contents($config)));
