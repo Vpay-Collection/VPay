@@ -13,7 +13,18 @@
 
 namespace app\controller\api;
 
+use library\login\SignUtils;
+
 class Sign extends BaseController
 {
+    function create(): string
+    {
+        if(post("key") !== null){
+            $data = post();
+            unset($data["key"]);
+            return $this->json(200,null,SignUtils::sign($data,post("key")));
+        }
 
+        return $this->json(403,"缺少加密密钥");
+    }
 }
