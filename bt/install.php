@@ -30,3 +30,8 @@ EOF,
 $dir = __DIR__."/app/storage/cache/cleanphp/";
 mkdir($dir,true);
 file_put_contents($dir."/install.lock","b:1;");
+
+$config =  __DIR__."/app/config_example.php";
+$username = "admin";
+$password = password_hash($username . "123456",PASSWORD_DEFAULT);
+file_put_contents($config,str_replace(["USERNAME","PASSWORD"],[$username,$password],file_get_contents($config)));
