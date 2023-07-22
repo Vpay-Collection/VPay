@@ -22,7 +22,8 @@
         mdbAdmin.request( "/api/admin/notice/test",{},"POST",{"#app":"测试中..."}).done(function (data) {
             mdbAdmin.modal.show({
                 'title':"测试结果",
-                'body':data.data
+                'body':data.data,
+                'color':mdbAdmin.modal.color.success
             });
         });
     });

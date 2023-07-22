@@ -72,7 +72,7 @@ class Notice extends BaseController
                        <p>该邮件是一封测试邮件<b></b></p>
                 ");
         ob_start();
-        $result = AnkioMail::send($this->config['received'], "Vpay登录测试", $file, "Vpay", true);
+        $result = AnkioMail::send($this->config->admin, "Vpay邮件测试", $file, "Vpay", true);
         if ($result) {
             echo "测试成功";
         } else {
