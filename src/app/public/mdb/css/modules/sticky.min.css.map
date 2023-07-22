@@ -1,1 +1,0 @@
-{"version":3,"sources":["css ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/src!./node_modules/sass-loader/dist/cjs.js!./src/scss/pro/modules/_sticky.scss"],"names":[],"mappings":"AAAA,kBAAkB,8BAAA,CAAiC,sBAAA","file":"sticky.min.css","sourcesContent":[".sticky.animation{-webkit-animation-duration:200ms;animation-duration:200ms}"]}
