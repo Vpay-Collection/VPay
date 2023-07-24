@@ -66,11 +66,11 @@ class Main extends Controller
         $order = OrderDao::getInstance()->getByOrderIdWait($id);
 
         if (empty($order)) {
-            (new Response())->render(EngineManager::getEngine()->renderMsg(false, 400, "无订单", "该订单已支付或已关闭", -1, "/", "返回"))->send();
+            (new Response())->render(EngineManager::getEngine()->renderMsg( 400, "无订单", "该订单已支付或已关闭", -1, "/", "返回"))->send();
         }
         $app = AppDao::getInstance()->getByAppId($order->appid);
         if (empty($app)) {
-            (new Response())->render(EngineManager::getEngine()->renderMsg(false, 400, "无订单", "该订单已支付或已关闭", -1, "/", "返回"))->send();
+            (new Response())->render(EngineManager::getEngine()->renderMsg( 400, "无订单", "该订单已支付或已关闭", -1, "/", "返回"))->send();
         }
         Session::getInstance()->set("order_id", $id);
         EngineManager::getEngine()->setLayout("layout")
