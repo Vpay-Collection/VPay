@@ -138,3 +138,6 @@ td {
     transition: opacity 0.5s ease;
 }
 
+.datatable tbody .fixed-cell{
+    background: #fafafa;
+}
