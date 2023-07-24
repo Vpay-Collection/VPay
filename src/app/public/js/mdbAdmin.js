@@ -183,24 +183,24 @@ function hasLoadPlugin(plugin) {
 
 const mdbAdmin = {
     async requestResource(file, async) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", file, async);
-        xhr.onload = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    resolve(xhr.responseText);
-                } else {
-                    reject(new Error(`请求加载失败: ${file}`));
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", file, async);
+            xhr.onload = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject(new Error(`请求加载失败: ${file}`));
+                    }
                 }
-            }
-        };
-        xhr.onerror = function () {
-            reject(new Error(`请求加载失败: ${file}`));
-        };
-        xhr.send(null);
-    });
-},
+            };
+            xhr.onerror = function () {
+                reject(new Error(`请求加载失败: ${file}`));
+            };
+            xhr.send(null);
+        });
+    },
     async  loadCss(file, async) {
         if (app.css.includes(file)) {
             return;
@@ -309,7 +309,7 @@ const mdbAdmin = {
         });
 
 
-      //  $(document).pjax('[data-link]', '#app');
+        //  $(document).pjax('[data-link]', '#app');
         $(document).on('pjax:send', function () {
             mdbAdmin.loading.show('#app');
         });
@@ -1152,27 +1152,27 @@ const mdbAdmin = {
                 $(config.elem)
                     .off('rowClick.mdb.datatable').off('selectRows.mdb.datatable')
                     .on('rowClick.mdb.datatable', function (e) {
-                    const { index } = e;
-                    if(index===null){
-                        return;
-                    }
-                    const func = config['rowClick'];
-                    if(typeof func === "function"){
-                        func(response.data[index],config,response,raw[index]);
-                    }
-                })
+                        const { index } = e;
+                        if(index===null){
+                            return;
+                        }
+                        const func = config['rowClick'];
+                        if(typeof func === "function"){
+                            func(response.data[index],config,response,raw[index],index);
+                        }
+                    })
                     .on('selectRows.mdb.datatable', function (e) {
-                    console.log(e.selectedRows, e.selectedIndexes, e.allSelected);
-                    const func = config['onSelected'];
-                    if(typeof func === "function"){
-                        var $array = [],$raw = [];
-                        $.each(e.selectedIndexes,function (k,v) {
-                            $array.push(response.data[v]);
-                            $raw.push(raw[v]);
-                        });
-                        func($array,e.selectedIndexes,config,response,$raw);
-                    }
-                });
+                        console.log(e.selectedRows, e.selectedIndexes, e.allSelected);
+                        const func = config['onSelected'];
+                        if(typeof func === "function"){
+                            var $array = [],$raw = [];
+                            $.each(e.selectedIndexes,function (k,v) {
+                                $array.push(response.data[v]);
+                                $raw.push(raw[v]);
+                            });
+                            func($array,e.selectedIndexes,config,response,$raw);
+                        }
+                    });
 
                 new Pagination(document.querySelector(config.pageElm), {
                     current: config['page'],
@@ -1285,10 +1285,10 @@ const mdbAdmin = {
 
                     if (jsonData.hasOwnProperty(key)) {
                         if ($(this).is(":file")) {
-                             sessionStorage.setItem("file_"+name,jsonData[key] );
-                             if(hasLoadPlugin(mdbAdminPlugins["file-upload"])){
-                                 FileUpload.getInstance(this).update({"defaultFile":jsonData[key]});
-                             }
+                            sessionStorage.setItem("file_"+name,jsonData[key] );
+                            if(hasLoadPlugin(mdbAdminPlugins["file-upload"])){
+                                FileUpload.getInstance(this).update({"defaultFile":jsonData[key]});
+                            }
 
                         }
                         // 当表单元素为 radio 时
