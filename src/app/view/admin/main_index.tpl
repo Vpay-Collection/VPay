@@ -20,10 +20,9 @@
                             <div class="flex-grow-1 ms-4">
                                 <p class="text-muted mb-1">当天收入</p>
                                 <h2 class="mb-0">
-
+                                    <span class="text-danger" style="font-size: 0.875rem"><i class="fas fa-yen-sign "></i></span>
                                     {$today_price}
-                                    <span class="text-danger" style="font-size: 0.875rem"><i
-                                                class="fas fa-dollar-sign"></i></span>
+
                                 </h2>
                             </div>
                         </div>
@@ -42,10 +41,8 @@
                             <div class="flex-grow-1 ms-4">
                                 <p class="text-muted mb-1">总计收入</p>
                                 <h2 class="mb-0">
-
+                                    <span class="text-danger" style="font-size: 0.875rem"><i class="fas fa-yen-sign "></i></span>
                                     {$total_price}
-                                    <span class="text-danger" style="font-size: 0.875rem"><i
-                                                class="fas fa-dollar-sign"></i></span>
                                 </h2>
                             </div>
                         </div>

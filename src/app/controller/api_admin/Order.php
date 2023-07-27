@@ -17,6 +17,8 @@ namespace app\controller\api_admin;
 use app\database\dao\AppDao;
 use app\database\dao\OrderDao;
 use app\exception\OrderNotFoundException;
+use cleanphp\base\Variables;
+use cleanphp\cache\Cache;
 use library\database\object\Page;
 
 class Order extends BaseController
@@ -37,7 +39,7 @@ class Order extends BaseController
             $condition['app_item'] = arg("app_item");
         }
 
-        $result = OrderDao::getInstance()->getAll([], $condition,false, arg("page", 1), arg("size", 10), $page);
+        $result = OrderDao::getInstance()->getAll([], $condition,false, arg("page", 1), arg("size", 10), $page,"id");
         return $this->render(200, null, $result, $page->total_count);
     }
 
@@ -58,5 +60,18 @@ class Order extends BaseController
             return $this->render(404, "无订单" . $e->getMessage());
         }
         return $this->render(200,  "后台回调中");
+    }
+
+    function log(): string
+    {
+        $id = arg("order_id");
+        if (empty($id)) {
+            return $this->render(404, "无日志");
+        }
+        $log =   Cache::init(3600*24*15,Variables::getCachePath("notify",DS))->get($id . "_fail_msg");
+        if(empty($log)){
+            return $this->render(404, "无日志");
+        }
+        return $this->render(200, $log);
     }
 }

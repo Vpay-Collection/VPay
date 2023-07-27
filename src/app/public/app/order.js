@@ -6,14 +6,38 @@
         elem:"#datatable",
         url:'/api/admin/order/list',
         page:1,
-        size:15,
+        size:10,
         param:{
             "appid": $("#app").val(),
             "app_item": $("#form_name").val(),
             "status": $("#status").val(),
         },
+        rowClick:function (data,config,response,raw) {
+            mdbAdmin.modal.show({
+                title:'订单信息',
+                body:`
+            <ul class="list-group list-group-light">
+            <li class="list-group-item">${raw.state}<span class="me-2"></span>${raw.order_id}</li>
+  <li class="list-group-item"><i class="fas fa-store me-2"></i>${raw.app_name}</li>
+   <li class="list-group-item"><i class="fas fa-bag-shopping me-2"></i>${raw.app_item}</li>
+  <li class="list-group-item"><i class="fas fa-comment-dollar me-2"></i>${raw.real_price}</li>
+   <li class="list-group-item"><i class="fas fa-clock me-2"></i>创建时间：${raw.create_time}</li>
+    <li class="list-group-item"><i class="fas fa-clock me-2"></i>关闭时间：${mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", raw.close_time)}</li>
+     <li class="list-group-item"><i class="fas fa-clock me-2"></i>支付时间：${mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", raw.pay_time)}</li>
+  <li class="list-group-item"><i class="fas fa-database me-2"></i>参数：<pre>${JSON.stringify(JSON.parse(raw.param),null,2)}</pre></li>
+</ul>
+              `,
+                position: mdbAdmin.modal.position.center,
+                size: mdbAdmin.modal.size.default,
+                color: mdbAdmin.modal.color.primary,
+                buttons: [
+                    ['关闭'],['好的']
+                ]
+            });
+        },
         onsuccess:function (data,config) {
-            $(".edit-btn").off().on('click',function () {
+            $(".edit-btn").off().on('click',function (e) {
+                e.stopPropagation();
                 var index = $(this).data("index");
                 var json = data[index];
 
@@ -32,6 +56,24 @@
                             }]
                     ],
                 });
+
+            });
+            $(".log-btn").off().on('click',function (e) {
+                e.stopPropagation();
+                var index = $(this).data("index");
+                var json = data[index];
+                mdbAdmin.request("/api/admin/order/log", {order_id: json.order_id},"POST").done(function () {
+                    mdbAdmin.modal.show({
+                        title:'回调日志',
+                        body:data.data,
+                        color:mdbAdmin.modal.color.warning,
+                        buttons: [
+                            ['关闭'],
+                            ['确定']
+                        ],
+                    });
+                });
+
 
             });
         },
@@ -58,30 +100,32 @@
             {label: '商品', field: 'app_item'},
             {label: '金额', field: 'real_price',render(row){
                 if(row.real_price!==row.price){
-                    return `<i class="fas fa-dollar-sign"></i><span class="text-primary">${row.real_price}</span><s><span class="text-primary">${row.danger}</span></s>`;
+                    return `<i class="fas fa-yen-sign me-2"></i><span class="text-primary">${row.real_price}</span><s><span class="text-primary">${row.danger}</span></s>`;
                 }
-                    return `<i class="fas fa-dollar-sign"></i><span class="text-primary">${row.real_price}</span>`;
+                    return `<i class="fas fa-yen-sign me-2"></i><span class="text-primary">${row.real_price}</span>`;
                 }},
             {label: '订单ID', field: 'order_id'},
             {label: '创建时间', field: 'create_time',render(row){
                     return mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", row.create_time);
-                }},
-            {label: '支付时间', field: 'pay_time',render(row){
-                    return mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", row.pay_time);
-                }},
-            {label: '关闭时间', field: 'close_time',render(row){
-                    return mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss", row.close_time);
                 }},
             {
                 label:"操作",
                 field: 'action',
                 fixed: 'right',
                 render(row,index){
+                    var ret = "";
                     if(row.state!==3){
-                        return `
+                        ret += `
       <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-rotate"></i></button>
      `;
                     }
+
+                    if(row.state===2){
+                        ret += `
+      <button class="log-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-file-lines"></i></button>
+     `;
+                    }
+                    return ret;
 
                 }
             }

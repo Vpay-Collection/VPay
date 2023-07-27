@@ -35,29 +35,5 @@ class BaseController extends Controller
         return EngineManager::getEngine()->render($code, $msg, $data, $count);
     }
 
-    function log(): string
-    {
-        $dirs = scandir(Variables::getStoragePath('logs'));
-        $dirs[] = date('Y-m-d') . DS . 'cleanphp.log';
-        $array = [];
-        foreach ($dirs as $dir) {
-            $new = Variables::getStoragePath('logs', $dir);
 
-            if (is_file($new)) {
-                $file_handle = fopen($new, "r");
-                if ($file_handle) {
-                    while (!feof($file_handle)) { //判断是否到最后一行
-                        $line = fgets($file_handle, 4096); //读取一行文本
-                        if (str_contains($line,"[ AppChannel ]")) {
-                            $array[] = trim($line);
-                        }
-                        if (sizeof($array) > 500) break;//最多读500行日志
-                    }
-                }
-                fclose($file_handle);//关闭文件
-            }
-        }
-        if (empty($array)) return $this->json(404, "无日志");
-        return $this->json(200, null, $array);
-    }
 }

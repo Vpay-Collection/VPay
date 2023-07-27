@@ -141,3 +141,7 @@ td {
 .datatable tbody .fixed-cell{
     background: #fafafa;
 }
+
+.select-arrow{
+    top: 16px!important;
+}

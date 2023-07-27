@@ -14,11 +14,13 @@
 
 namespace app\task;
 
-use app\controller\api\App;
+
 use app\database\dao\AppDao;
 use app\database\dao\OrderDao;
 use app\database\model\OrderModel;
+use cleanphp\App;
 use cleanphp\base\Config;
+use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
 use cleanphp\file\Log;
 use library\http\HttpClient;
@@ -57,13 +59,13 @@ class NotifyTasker extends TaskerAbstract
     {
        $order = OrderDao::getInstance()->getByOrderId($this->order->order_id);
        if (empty($order) || $order->state === OrderModel::SUCCESS){
-           Log::record("Notify","该订单回调成功不再处理。");
+          App::$debug && Log::record("Notify","该订单回调成功不再处理。");
            Cache::init()->del($this->order->order_id . "_fail");
            return;
        }
        $app = AppDao::getInstance()->getByAppId($order->appid);
        if(empty($app)){
-           Log::record("Notify","该订单对应App不存在。");
+           App::$debug && Log::record("Notify","该订单对应App不存在。");
            Cache::init()->del($this->order->order_id . "_fail");
            return;
        }
@@ -72,18 +74,23 @@ class NotifyTasker extends TaskerAbstract
         $array = SignUtils::sign($array, $this->key);
         try {
             $http = HttpClient::init($this->order->notify_url)->post($array,'form')->send('/');
-            if ($http->getBody() !== "success") throw new HttpException("回调接口没有输出 success 字符");
+            if ($http->getBody() !== "success") {
+                Cache::init(3600*24*15,Variables::getCachePath("notify",DS))->set($this->order->order_id . "_fail_msg",$http->getBody());
+
+                throw new HttpException("回调接口没有输出 success 字符");
+            }
             $this->order->state = OrderModel::SUCCESS;
             OrderDao::getInstance()->updateModel($this->order);
-            if (Config::getConfig("mail")['pay_success']) {
-                $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $app->app_name, "用户支付成功通知", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_UNESCAPED_UNICODE) . "</p>");
+            if (Config::getConfig("notice")['success_notice']) {
+                $file = AnkioMail::compileNotify("#1abc9c", "#fff", $app->app_image, $app->app_name, "用户支付成功通知", "<p>订单{$this->order->order_id}支付成功<span></p><p>商户：{$this->order->app_name}</p><p>商品：{$this->order->app_item}</p><p>支付金额：{$this->order->real_price}</p><p>应付金额：{$this->order->price}</p><p>支付方式：" . $this->getPayType($this->order->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $this->order->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($this->order->param) , JSON_PRETTY_PRINT) . "</p>");
                 AnkioMail::send(Config::getConfig("mail")['received'], "用户支付成功通知", $file, $app->app_name);
             }
 
             Cache::init()->del($this->order->order_id . "_fail");
 
         } catch (HttpException $e) {
-            Log::record("Notify", "回调失败：" . $e->getMessage());
+            Cache::init(3600*24*15,Variables::getCachePath("notify",DS))->set($this->order->order_id . "_fail_msg", $e->getMessage());
+           Log::record("Notify", "回调失败：" . $e->getMessage());
             $time = Cache::init()->get($this->order->order_id . "_fail");
             if (empty($time)) $time = 0;
             //4m、10m、10m、1h、2h、6h、15h

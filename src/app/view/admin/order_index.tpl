@@ -56,6 +56,7 @@
                              data-mdb-of-text="/"
                              data-mdb-pagination="false"
                              data-mdb-striped="true"
+                             data-mdb-clickable-rows="true"
                         ></div>
                         <div id="pagination" style="margin: 0 auto" class="mt-3" data-previous="上一页"
                              data-next="下一页"></div>

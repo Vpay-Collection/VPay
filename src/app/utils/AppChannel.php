@@ -39,13 +39,13 @@ class AppChannel
             throw new ChannelException("App收款渠道暂时不可用");
         $order->order_id = uniqid("pay_") . rand(1000, 9999);
         $order->create_time = time();
-        if ($order->pay_type == OrderModel::PAY_WECHAT) {
+      /*  if ($order->pay_type == OrderModel::PAY_WECHAT) {
             $order->pay_image = Config::getConfig("channel")['wechat'];
         } elseif ($order->pay_type == OrderModel::PAY_ALIPAY) {
             $order->pay_image = Config::getConfig("channel")['alipay'];
         } else {
             throw new ChannelException("不支持的支付方式");
-        }
+        }*/
         return $this->getPayMoney($order, Config::getConfig("app")['conflict']);
     }
 
@@ -81,6 +81,7 @@ class AppChannel
 
     static function isActive(): bool
     {
-        return !empty(Cache::init(900)->get("last_heart"));
+        return true;
+      //  return !empty(Cache::init(900)->get("last_heart"));
     }
 }
