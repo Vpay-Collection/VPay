@@ -89,7 +89,6 @@ class NotifyTasker extends TaskerAbstract
             Cache::init()->del($this->order->order_id . "_fail");
 
         } catch (HttpException $e) {
-            Cache::init(3600*24*15,Variables::getCachePath("notify",DS))->set($this->order->order_id . "_fail_msg", $e->getMessage());
            Log::record("Notify", "回调失败：" . $e->getMessage());
             $time = Cache::init()->get($this->order->order_id . "_fail");
             if (empty($time)) $time = 0;
