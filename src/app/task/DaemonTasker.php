@@ -45,7 +45,7 @@ class DaemonTasker extends TaskerAbstract
         }
         if(!$online){
             $file = AnkioMail::compileNotify("#e74c3c", "#fff",  Config::getConfig("login")['image'],"Vpay", "App客户端心跳掉线", "<p>App客户端心跳掉线，请检查手机端监控</p><p>最后心跳时间：" . date("Y-m-d H:i:s", $last) . "</p>");
-            AnkioMail::send(Config::getConfig("mail")['received'], "App客户端心跳掉线", $file, "Vpay");
+            AnkioMail::send(Config::getConfig("notice")['admin'], "App客户端心跳掉线", $file, "Vpay");
         }
         \cleanphp\App::$debug && Log::record("Daemon","App心跳检测完成");
 
