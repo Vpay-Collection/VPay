@@ -22,6 +22,7 @@ use app\objects\order\CreateOrderObject;
 use app\objects\order\OrderObject;
 use app\utils\AppChannel;
 use cleanphp\base\Session;
+use cleanphp\engine\EngineManager;
 use library\login\SignUtils;
 use library\verity\VerityException;
 
@@ -69,7 +70,8 @@ class Pay extends BaseController
 
     function payState(): string
     {
-        $order = Session::getInstance()->get("order_id");
+        EngineManager::getEngine()->setHeader('Access-Control-Allow-Origin',"*");
+        $order =arg("order_id",Session::getInstance()->get("order_id"));
         $result = OrderDao::getInstance()->getByOrderIdNoFilter($order);
         if (empty($result)) {
             return $this->json(self::API_ERROR, "订单不存在");
