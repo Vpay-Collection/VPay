@@ -39,7 +39,7 @@ class DailyTasker extends TaskerAbstract
 
         $file = AnkioMail::compileNotify("#FF5722", "#fff", Config::getConfig("login")['image'], "Vpay", "日报 - " . date("Y-m-d"), "<p>今日总收入：￥<span>" . OrderDao::getInstance()->getToday() . "</span></p><p>累计收入：￥<span>" . OrderDao::getInstance()->getTotal() . "</span></p>");
 
-        AnkioMail::send(Config::getConfig("mail")['received'], "日报 - " . date("Y-m-d"), $file, "Vpay");
+        AnkioMail::send(Config::getConfig("notice")['admin'], "日报 - " . date("Y-m-d"), $file, "Vpay");
 
     }
 
