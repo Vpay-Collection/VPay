@@ -7,7 +7,7 @@
 
 <p align="center">
  <img src="https://img.shields.io/static/v1?label=licenes&message=GPL%20V3&color=important&style=for-the-badge"/>
- <img src="https://img.shields.io/static/v1?label=version&message=4.0.5&color=9cf&style=for-the-badge"/>
+ <img src="https://img.shields.io/static/v1?label=version&message=4.1.0&color=9cf&style=for-the-badge"/>
  <img src="https://img.shields.io/static/v1?label=language&message=php&color=777BB4&style=for-the-badge"/>
 
 </p>
