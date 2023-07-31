@@ -1,5 +1,5 @@
  <p align="center">
-<img src="https://user-images.githubusercontent.com/37787014/227108078-5e2e2b20-1b33-440f-9cad-02a3d7a2a81d.png">
+<img src="./image/cover.png">
 </p>
 
 
@@ -7,7 +7,7 @@
 
 <p align="center">
  <img src="https://img.shields.io/static/v1?label=licenes&message=GPL%20V3&color=important&style=for-the-badge"/>
- <img src="https://img.shields.io/static/v1?label=version&message=4.0.4&color=9cf&style=for-the-badge"/>
+ <img src="https://img.shields.io/static/v1?label=version&message=4.0.5&color=9cf&style=for-the-badge"/>
  <img src="https://img.shields.io/static/v1?label=language&message=php&color=777BB4&style=for-the-badge"/>
 
 </p>
@@ -39,13 +39,23 @@ Vpay ——一款个人收款解决方案，使个人开发者能够安全高效
 2. 配置运行目录为`/public`
 3. 配置伪静态
 ```
-if ( $uri ~* "^(.*)\.php$") {
-rewrite ^(.*) /index.php break;
+if ($uri ~* "^(.*)\.php$") {
+    rewrite ^(.*) /cleanphp/bootstrap.php last;
+}
+
+location @cleanphp {
+    rewrite ^ /cleanphp/bootstrap.php last;
+}
+
+location ~* ^\/clean_static\/(.*)$ {
+    if_modified_since before;
+    try_files /app/public/$1 @cleanphp;
 }
 
 location / {
-  try_files $uri $uri/ /index.php?$query_string;
+    try_files /app/storage/public/$uri @cleanphp;
 }
+
 
 ```
 4. 如果使用宝塔面板部署，请**务必删除**宝塔默认配置的以下配置文件

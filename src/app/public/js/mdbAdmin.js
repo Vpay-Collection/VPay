@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
  */
-
 const app = {
     dir: "", // 缓存的路径文件
     libs: [],
@@ -110,6 +109,9 @@ class Pagination {
 }
 const setMode = () => {
     let sidenavInstance = mdb.Sidenav.getOrCreateInstance(document.getElementById("sidenav-1"));
+    if(sidenavInstance===null){
+        return;
+    }
     // Check necessary for Android devices
     if (window.innerWidth < 1400) {
         sidenavInstance.changeMode("over");
@@ -328,7 +330,7 @@ const mdbAdmin = {
             resetTheme();
         });
         $(document).on('pjax:timeout', function (event) {
-            mdbAdmin.toast.error("网络错误");
+            mdbAdmin.toast.error("当前网络环境不稳定");
             event.preventDefault();
         });
     },
@@ -1514,7 +1516,7 @@ log.print('      ___          _____                  \n' +
     '     \\__\\/                       \\__\\/                     \\__\\/    \n' +
     'V1.0 Powered by Ankio', 'primary', false);
 
-window.onerror = function(message, source, lineno, colno, error) {
+/*window.onerror = function(message, source, lineno, colno, error) {
     var stack = error && error.stack ? String(error.stack) : "";
     var browserAndOsInfo = navigator.userAgent;
 
@@ -1535,7 +1537,7 @@ window.onerror = function(message, source, lineno, colno, error) {
             ['确定']
         ],
     });
-};
+};*/
 
 // 辅助函数：HTML转义
 function escapeHTML(text) {
