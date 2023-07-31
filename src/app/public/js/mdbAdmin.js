@@ -350,11 +350,10 @@ const mdbAdmin = {
                         $.each(v.child, function (kk, vv) {
 
                             html += `
-            <li class="sidenav-item">
-              <a class="sidenav-link" 
+            <li class="sidenav-item m-2 ">
+              <a class="sidenav-link pt-3 pb-3" 
               href="${vv.href}" 
-                ${vv.inner ? 'data-link="true"' : ''} 
-                ${!v.inner ? 'target="_blank"' : ''}>
+                ${vv.inner ? 'data-link="true"' : 'target="_blank"' }>
                 <i class="${vv.icon} fa-fw me-3"></i>${vv.name}
                 </a>
             </li>
@@ -519,7 +518,7 @@ const mdbAdmin = {
             new mdb.Input(v).init();
         });
         each('.select', function (v) {
-            new mdb.Select(v, getOptions(v));
+            mdb.Select.getOrCreateInstance(v, getOptions(v));
         });
         each('.range', function (v) {
             new mdb.Range(v, getOptions(v));
@@ -1514,6 +1513,38 @@ log.print('      ___          _____                  \n' +
     '    \\  \\:\\         \\__\\/        \\  \\:\\         \\__\\/      \\  \\:\\    \n' +
     '     \\__\\/                       \\__\\/                     \\__\\/    \n' +
     'V1.0 Powered by Ankio', 'primary', false);
+
+window.onerror = function(message, source, lineno, colno, error) {
+    var stack = error && error.stack ? String(error.stack) : "";
+    var browserAndOsInfo = navigator.userAgent;
+
+    mdbAdmin.modal.show({
+        title: 'JS错误',
+        body: `
+      <p class="text-warning"><b>请将该错误发送给ankio@ankio.net</b></p>
+      <p>浏览器：<span class="text-primary">${escapeHTML(browserAndOsInfo)}</span></p>
+      <p>错误信息：<span class="text-danger"> ${escapeHTML(message)}</span></p>
+      <p>文件：<span class="text-primary">${escapeHTML(source)}</span></p>
+      <p>行数：<span class="text-primary">${lineno}</span></p>
+      <p>错误堆栈：<pre class="text-danger">${escapeHTML(stack)}</pre></p>
+      
+    `,
+        color: mdbAdmin.modal.color.error,
+        buttons: [
+            ['关闭'],
+            ['确定']
+        ],
+    });
+};
+
+// 辅助函数：HTML转义
+function escapeHTML(text) {
+    return text.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
 
 

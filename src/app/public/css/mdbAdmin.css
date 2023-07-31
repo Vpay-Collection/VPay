@@ -120,10 +120,7 @@
 td {
     vertical-align: middle;
 }
-.sidenav-link.active{
-    background-color: var(--mdb-sidenav-link-active-focus-background-color);
-    color: var(--mdb-sidenav-link-active-color)!important;
-}
+
 
 
 .clipboard{
@@ -138,9 +135,17 @@ td {
     transition: opacity 0.5s ease;
 }
 
-.datatable tbody .fixed-cell{
-    background: #fafafa;
+@media (prefers-color-scheme: light) {
+    .sidenav-link.active{
+        background-color: var(--mdb-sidenav-link-active-focus-background-color);
+        color: var(--mdb-sidenav-link-active-color)!important;
+    }
+    .datatable tbody .fixed-cell{
+        background: #fafafa;
+    }
 }
+
+
 
 .select-arrow{
     top: 16px!important;

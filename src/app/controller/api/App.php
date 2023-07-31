@@ -14,6 +14,7 @@
 
 namespace app\controller\api;
 
+use app\database\dao\AppDao;
 use app\database\dao\OrderDao;
 use app\database\model\OrderModel;
 use app\exception\OrderNotFoundException;
@@ -69,8 +70,12 @@ class App extends BaseController
         if (empty($result)) {
             return $this->json(500, '无订单待确认！');
         }
+        $app = AppDao::getInstance()->getByAppId( $result->appid);
+        if(empty($app)){
+            return $this->json(500, '该订单对应应用已删除！');
+        }
         try {
-            OrderDao::getInstance()->notify($result->order_id, $this->config->key);
+            OrderDao::getInstance()->notify($result->order_id,$app->app_key);
         } catch (OrderNotFoundException $e) {
             return $this->json(500, '无订单待确认！');
         }
