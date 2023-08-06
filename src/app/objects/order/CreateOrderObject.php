@@ -40,7 +40,7 @@ class CreateOrderObject extends BaseSignObject
         if ($this->pay_type === OrderModel::PAY_ALIPAY) {
             $this->pay_image = Config::getConfig("app")["image_alipay"];
         } elseif ($this->pay_type === OrderModel::PAY_WECHAT) {
-            $this->pay_image = Config::getConfig("app")["image_alipay"];
+            $this->pay_image = Config::getConfig("app")["image_wechat"];
         } else {
             throw new VerityException("不支持当前支付渠道", "pay_type", $this->pay_type);
         }

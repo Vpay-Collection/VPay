@@ -100,7 +100,7 @@
             {label: '商品', field: 'app_item'},
             {label: '金额', field: 'real_price',render(row){
                 if(row.real_price!==row.price){
-                    return `<i class="fas fa-yen-sign me-2"></i><span class="text-primary">${row.real_price}</span><s><span class="text-primary">${row.danger}</span></s>`;
+                    return `<i class="fas fa-yen-sign me-2"></i><span class="text-primary">${row.real_price}</span><s><span class="text-primary">${row.price}</span></s>`;
                 }
                     return `<i class="fas fa-yen-sign me-2"></i><span class="text-primary">${row.real_price}</span>`;
                 }},
