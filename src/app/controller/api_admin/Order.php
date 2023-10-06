@@ -55,7 +55,7 @@ class Order extends BaseController
             return $this->render(404, "商户不存在");
         }
         try {
-            OrderDao::getInstance()->notify($id, $app->app_key);
+            OrderDao::getInstance()->notify($id);
         } catch (OrderNotFoundException $e) {
             return $this->render(404, "无订单" . $e->getMessage());
         }

@@ -14,22 +14,23 @@
 
 namespace app\controller\api_admin;
 
-use app\utils\ImageUpload;
-use cleanphp\base\Config;
+use app\database\dao\FileDao;
+use library\login\LoginManager;
 
 class User extends BaseController
 {
+    function info()
+    {
+        return   $this->render(200,null,LoginManager::init()->getUser());
+    }
     function upload(): string
     {
-        $image = new ImageUpload("user");
-        $filename = "";
-        if ($image->upload($filename)) {
-            $login = Config::getConfig("login");
-            $image->delImage($login["image"]);
-            $login["image"] = $image->useImage($filename);
-            Config::setConfig("login", $login);
-            return $this->render(200, null, $filename);
-        }
-        return $this->render(403, $filename);
+        $user = LoginManager::init()->getUser();
+        [$error, $name, $url] = FileDao::getInstance()->upload();
+        if ($error)
+            return $this->render(403, $error);
+        FileDao::getInstance()->use($name,$user['image']);
+        return $this->render(200, null, $url);
     }
+
 }

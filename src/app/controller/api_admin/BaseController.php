@@ -25,7 +25,7 @@ class BaseController extends Controller
     {
 
         if (!LoginManager::init()->isLogin()) {
-            return EngineManager::getEngine()->render(403, null, LoginManager::init()->getLoginUrl());
+            return $this->render(401, LoginManager::init()->getLoginUrl());
         }
         return null;
     }

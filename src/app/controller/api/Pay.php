@@ -20,7 +20,9 @@ use app\database\model\OrderModel;
 use app\exception\ChannelException;
 use app\objects\order\CreateOrderObject;
 use app\objects\order\OrderObject;
-use app\utils\AppChannel;
+use app\utils\AlipayChannel;
+use app\utils\WechatChannel;
+use cleanphp\base\Request;
 use cleanphp\base\Session;
 use cleanphp\engine\EngineManager;
 use library\login\SignUtils;
@@ -44,19 +46,19 @@ class Pay extends BaseController
         $order->state = OrderModel::WAIT;
         //选择可用支付渠道创建订单
         try {
-            $order = (new  AppChannel())->create($order);
+
+            $order = $order->pay_type === OrderModel::PAY_ALIPAY ?(new  AlipayChannel())->create($order):(new  WechatChannel())->create($order);
             OrderDao::getInstance()->insertModel($order);
         } catch (ChannelException $e) {
             return $this->json(self::API_ERROR, $e->getMessage());
         }
         $return = [
             'order_id' => $order->order_id,
-            'url' => url("index", "main", "pay", ["id" => $order->order_id]),
+            'url' => Request::getAddress()."#!pay?id=".$order->order_id,
             'pay_image' => $order->pay_image,
             'create_time' => $order->create_time,
             'app_item' => $order->app_item,
             'app_name' => $order->app_name,
-            'real_price' => $order->real_price,
             'price' => $order->price,
             'param' => $order->param,
         ];
@@ -145,7 +147,6 @@ class Pay extends BaseController
         $array = [
             'order_id' => $orderModel->order_id,
             'param' => $orderModel->param,
-            'real_price' => $orderModel->real_price,
             'price' => $orderModel->price,
             'app_item' => $orderModel->app_item
         ];

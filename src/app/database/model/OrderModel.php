@@ -31,7 +31,6 @@ class OrderModel extends Model
     public int $id = 0;//唯一id
     public int $pay_type = 0;//支付类型
     public float $price = 0.00;//支付金额
-    public float $real_price = 0.00;//真实支付的金额
     public string $app_name = "";//商户，商户名称
     public string $app_item = "";//商户商品
     public int $appid = 0;//appid
@@ -46,7 +45,9 @@ class OrderModel extends Model
 
     public string $param = "";//附加参数
 
+    public string $user = "";
     public string $pay_image = "";//支付二维码
+    public string $key = "";
 
     function getPrimaryKey(): SqlKey
     {

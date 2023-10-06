@@ -37,7 +37,7 @@ class CreateOrderObject extends BaseSignObject
     {
         parent::__construct($item);
         $this->pay_image = "";
-        if ($this->pay_type === OrderModel::PAY_ALIPAY) {
+    /*    if ($this->pay_type === OrderModel::PAY_ALIPAY) {
             $this->pay_image = Config::getConfig("app")["image_alipay"];
         } elseif ($this->pay_type === OrderModel::PAY_WECHAT) {
             $this->pay_image = Config::getConfig("app")["image_wechat"];
@@ -46,7 +46,7 @@ class CreateOrderObject extends BaseSignObject
         }
         if (empty($this->pay_image)) {
             throw new VerityException("当前收款渠道未配置收款码，请等待站长配置后再试", "pay_type", $this->pay_type);
-        }
+        }*/
         $this->app_name = $this->appModel->app_name;
     }
 

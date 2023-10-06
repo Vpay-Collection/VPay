@@ -1,0 +1,25 @@
+<form id="form">
+    <div class="form-outline mb-4 d-none">
+        <input type="text" class="form-control" id="form_id" name="id" placeholder="" value="-1"/>
+        <label class="form-label" for="form_id"></label>
+    </div>
+    <div class="form-outline mb-4">
+        <input type="text" class="form-control" id="form_title"  name="app_name" />
+        <label class="form-label" for="form_title">网站名称</label>
+    </div>
+    <div class="file-upload-wrapper mb-4 ">
+        <input
+                id="file-upload"
+                type="file"
+                name="app_image"
+                data-mdb-file-upload="file-upload"
+                class="file-upload-input"
+                data-mdb-multiple="false"
+                data-mdb-remove-btn="删除"
+                data-mdb-accepted-extensions="image/*"
+                data-mdb-preview-msg="拖拽到此或点击这里进行上传"
+                data-mdb-default-msg="拖拽到此或点击这里进行上传"
+                data-mdb-format-error="不支持该文件 (支持的格式为 ~~~)"
+        />
+    </div>
+</form>

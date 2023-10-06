@@ -1,33 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="ftp (project level)" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="本地服务器" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
     <option name="confirmBeforeUploading" value="false" />
     <serverData>
-      <paths name="cleanphp">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/src/cleanphp" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="ftp">
+      <paths name="本地服务器">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$/src" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="ftp (project level)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/src" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="library">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$/src/library" web="/" />
           </mappings>
         </serverdata>
       </paths>

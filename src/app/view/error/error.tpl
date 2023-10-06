@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{$__lang}">
+<html lang="zh-cn">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -16,15 +16,15 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
     />
     <!-- MDB ESSENTIAL -->
-    {if $theme == "dark"}
-        <link id="theme-link" rel="stylesheet" href="../../public/mdb/css/mdb.dark.min.css?v={$__version}"/>
-    {else}
-        <link id="theme-link" rel="stylesheet" href="../../public/mdb/css/mdb.min.css?v={$__version}"/>
-    {/if}
+
+    {* <link id="theme-link" rel="stylesheet" href="../../public/mdb/css/mdb.dark.min.css?v={$__version}"/>*}
+
+    <link id="theme-link" rel="stylesheet" href="../../public/mdb/css/mdb.min.css"/>
+
     <!-- MDB PLUGINS -->
     {* <link rel="stylesheet" href="../../public/plugins/css/all.min.css" />*}
     <!-- Custom styles -->
-    <script src="../../public/js/theme.js?v={$__version}"></script>
+    <script src="../../public/pack/theme.js"></script>
 </head>
 
 <body>

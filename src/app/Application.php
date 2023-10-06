@@ -14,13 +14,15 @@
 
 namespace app;
 
-use app\task\DaemonTasker;
+
 use app\utils\GithubUpdater;
+use cleanphp\App;
 use cleanphp\base\Config;
 use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
 use cleanphp\base\MainApp;
 use cleanphp\base\Response;
+use cleanphp\base\Route;
 use cleanphp\base\Session;
 use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
@@ -42,43 +44,119 @@ class Application implements MainApp
         Session::getInstance()->start();//会话有效即可
         if (str_starts_with(Variables::get("__request_module__"),"api")) {
             EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
-        } else {
-            EngineManager::setDefaultEngine(new ViewEngine());
-            EngineManager::getEngine()->setData("__version", Config::getConfig('frame')['version'])->setData("__lang", Variables::get("__lang", "zh-cn"));
-            //刷新一下客户端主题，方便渲染
-            if (Cookie::getInstance()->get("theme") == null) {
-                (new Response())->render(<<<EOF
- <script>
-    function isDarkMode() {
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    document.cookie = "theme=" + (isDarkMode()?"dark":"light") + "; path=/; max-age=" +   2 * 60 * 60; 
-    location.reload()
-  </script>
-EOF
-                )->send();
-            }
-            EngineManager::getEngine()->setData("theme", Cookie::getInstance()->get("theme"));
-            //跳转安装
-
-            if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
-                Response::location(url("index", 'install', 'index'));
-            }
 
         }
 
-
-        if (!TaskerManager::has("App心跳守护进程")) {
-            TaskerManager::add(TaskerTime::nHour(1, 0), new DaemonTasker(), "App心跳守护进程", -1);
+        if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
+            App::exit(EngineManager::getEngine()->render(302,"install","#!install"),true);
         }
+
         if(!TaskerManager::has("Github更新检测")){
             TaskerManager::add(TaskerTime::day(12,00),GithubUpdater::init("Vpay-Collection/Vpay"),"Github更新检测",-1);
         }
 
     }
 
+    private function renderStatic(){
+        //渲染静态资源
+        $uriWithoutQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        $path = Variables::getAppPath("public", $uriWithoutQuery);
+        $raw = $path;
+        if (is_dir($path)) {
+            $path = $path . DS . "index.html";
+        }
+
+        if(!is_file($path)){
+            $path =  $raw . ".html";
+        }
+
+        //  dumps($path);
+
+        if (App::$debug && str_contains($path, "app.min.js")) {
+            $this->compress();
+        }
+
+        if (is_file($path)) {
+            Route::renderStatic($path);
+        }
+
+    }
+    private function compress(): void
+    {
+        $dir = APP_DIR . "/app";
+        $file = $dir . "/public/app.min.js";
+        if( file_exists($file) && !App::$debug ){
+            return;
+        }
+        $array = [
+            "/public/pack/jquery.min.js",
+            "/public/mdb/js/mdb.min.js",
+            "/public/pack/theme.js",
+            "/public/pack/mdbAdminPlugins.js",
+            "/public/pack/mdbAdmin.js",
+            "/public/pack/loading.js",
+            "/public/pack/form.js",
+            "/public/pack/requests.js",
+            "/public/pack/toast.js",
+            "/public/pack/alert.js",
+            "/public/pack/modal.js",
+            "/public/pack/resource.js",
+            "/public/pack/log.js",
+            "/public/pack/route.js",
+        ];
+
+
+        foreach (scandir($dir . "/public/pack/routes") as $item) {
+            if (str_starts_with($item, ".")) {
+                continue;
+            }
+            $array[] = "/public/pack/routes/$item";
+        }
+
+        foreach (scandir($dir . "/public/pack/frames") as $item) {
+            if (str_starts_with($item, ".")) {
+                continue;
+            }
+            $array[] = "/public/pack/frames/$item";
+        }
+        $array[] = "/public/main.js";
+
+        $this->combineFilesStream($dir, $array, $file);
+
+    }
+
+    private function combineFilesStream($dir, $files, $outputPath): void
+    {
+        $outputFile = fopen($outputPath, 'w'); // 打开输出文件进行写入
+
+        if (!$outputFile) {
+            die("Unable to open the output file for writing.");
+        }
+
+        foreach ($files as $file) {
+            $file = $dir . $file;
+            //  echo $file . PHP_EOL;
+            if (is_file($file)) {
+                $inputFile = fopen($file, 'r'); // 打开当前文件进行读取
+                if ($inputFile) {
+                    while (!feof($inputFile)) {
+                        $buffer = fread($inputFile, 4096); // 读取4KB
+                        fwrite($outputFile, $buffer);      // 写入到输出文件
+                    }
+                    fwrite($outputFile, "\n"); // 在每个文件后面添加一个换行符，确保代码不会混在一起
+                    fclose($inputFile);
+                }
+            } else {
+                echo "File not found: " . $file . "\n";
+            }
+        }
+
+        fclose($outputFile);
+    }
     function onFrameworkStart(): void
     {
+        $this->renderStatic();
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
             $data = ["code" => $data['code'], "msg" => $data['msg'], "data" => $data['data']];
@@ -89,23 +167,12 @@ EOF
 
             $data['tpl'] = EngineManager::getEngine()
                 ->setLayout(null)
-                ->setData("__version", Config::getConfig('frame')['version'])
-                ->setData("__lang", Variables::get("__lang", "zh-cn"))
-                ->setData("theme", Cookie::getInstance()->get("theme", 'light'))
                 ->setTplDir(Variables::getViewPath('error'))
                 ->setEncode(false)
                 ->setArray($render_data)
                 ->render('error');
 
 
-        });
-        EventManager::addListener("__on_view_render__",function (string $event, &$data){
-            $theme =  Cookie::getInstance()->get("theme",'light');
-            if($theme==="dark"){
-                $data = str_replace("-light","-dark",$data);
-            }else{
-                $data = str_replace("-dark","-light",$data);
-            }
         });
     }
 

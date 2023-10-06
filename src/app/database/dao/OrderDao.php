@@ -81,7 +81,7 @@ class OrderDao extends Dao
      */
     public function getTotal(): string
     {
-        return $this->getSum(['state' => OrderModel::SUCCESS], 'real_price');
+        return $this->getSum(['state' => OrderModel::SUCCESS], 'price');
     }
 
     /**
@@ -90,7 +90,7 @@ class OrderDao extends Dao
      */
     public function getToday(): string
     {
-        return $this->getSum(['state' => OrderModel::SUCCESS, 'close_time>:time', ':time' => strtotime(date('Y-m-d', time()))], 'real_price');
+        return $this->getSum(['state' => OrderModel::SUCCESS, 'close_time>:time', ':time' => strtotime(date('Y-m-d', time()))], 'price');
     }
 
 
@@ -101,19 +101,29 @@ class OrderDao extends Dao
      * @return void
      * @throws OrderNotFoundException
      */
-    public function notify($order_id, $key): void
+    public function notify($order_id): void
     {
         /**@var $model OrderModel */
         $model = $this->find(null, ['order_id' => $order_id]);
+
         if (empty($model)) {
             throw new OrderNotFoundException("找不到订单信息");
         }
+
+        $app = AppDao::getInstance()->getByAppId($model->appid);
+
+        if (empty($app)) {
+            throw new OrderNotFoundException("找不到应用信息");
+        }
+
+
         $model->pay_time = time();
         $model->state = OrderModel::PAID;
         $model->close_time = time();
         $this->updateModel($model);
         TaskerManager::del("异步回调任务_" .$model->order_id);
-        TaskerManager::add(TaskerTime::nMinute(0), new NotifyTasker($model, $key), "异步回调任务_" . $model->order_id);
+
+        TaskerManager::add(TaskerTime::nMinute(0), new NotifyTasker($model, $app->app_key), "异步回调任务_" . $model->order_id);
         //不要阻塞当前进程
     }
 
@@ -127,7 +137,7 @@ class OrderDao extends Dao
     {
         $this->closeTimeoutOrder();
         $condition = [
-            'real_price' => $price,
+            'price' => $price,
             'pay_type' => $pay_type,
             'state' => OrderModel::WAIT
         ];

@@ -104,18 +104,8 @@
         padding-left: 240px;
     }
 }
-#main-navbar {
-    background-color: #f6f9fc;
-}
-@media (prefers-color-scheme: dark) {
-    #main-navbar {
-        background-color: #424242;
-        color: #f6f9fc;
-    }
-    .list-group-item {
-        color:  #f6f9fc;
-    }
-}
+
+
 
 td {
     vertical-align: middle;
@@ -135,13 +125,49 @@ td {
     transition: opacity 0.5s ease;
 }
 
+body{
+    background-color: #151718;
+}
+.card,.card-footer, .card-header{
+    background-color:#212425!important;
+}
+
+#main-navbar,.sidenav  {
+    background-color: #1b1d1e;
+    color: #f6f9fc;
+}
+
 @media (prefers-color-scheme: light) {
     .sidenav-link.active{
         background-color: var(--mdb-sidenav-link-active-focus-background-color);
         color: var(--mdb-sidenav-link-active-color)!important;
     }
-    .datatable tbody .fixed-cell{
-        background: #fafafa;
+    .fixed-cell{
+        background-color: #fafafa!important;
+    }
+    body{
+        background-color: white;
+    }
+    .card,.card-footer, .card-header {
+        background-color: #f8f9fa!important;
+
+    }
+    #main-navbar,.sidenav  {
+        background-color: #f6f9fc;
+        color: #151718
+    }
+
+}
+
+@media (prefers-color-scheme: dark) {
+    .sidenav-backdrop{
+        --mdb-sidenav-backdrop-background-color: rgb(0 0 0 / 51%);
+    }
+    .list-group-item {
+        color:  #f6f9fc;
+    }
+    .fixed-cell{
+        background-color: #424242!important
     }
 }
 

@@ -15,9 +15,9 @@
 namespace app\controller\api_admin;
 
 use app\database\dao\AppDao;
+use app\database\dao\FileDao;
 use app\database\dao\OrderDao;
 use app\database\model\AppModel;
-use app\utils\ImageUpload;
 use library\database\object\Page;
 
 class App extends BaseController
@@ -34,7 +34,7 @@ class App extends BaseController
         $item = AppDao::getInstance()->getByAppId(arg("id", 0));
         if (!empty($item)) {
             AppDao::getInstance()->del($item->id);
-            (new ImageUpload('app'))->delImage($item->app_image);
+            FileDao::getInstance()->del($item->app_image);
             OrderDao::getInstance()->delByAppid($item->id);
         }
         return $this->render(200);
@@ -46,16 +46,15 @@ class App extends BaseController
         if (empty($model->app_image)) {
             return $this->render(403, "图片不允许为空");
         }
-        $image = new ImageUpload("app");
 
-        $model->app_image = $image->useImage($model->app_image);
 
         if (empty($model->id) || $model->id == -1) {
             $model->app_key = rand_str(32);
+            FileDao::getInstance()->use($model->app_image);
             AppDao::getInstance()->insertModel($model);
         } else {
             $old = AppDao::getInstance()->getByAppId($model->id);
-            if ($old->app_image !== $model->app_image) $image->delImage($old->app_image);
+            FileDao::getInstance()->use($model->app_image,$old->app_image);
             $model->app_key = $old->app_key;
             AppDao::getInstance()->updateModel($model);
         }
@@ -64,11 +63,9 @@ class App extends BaseController
 
     function upload(): string
     {
-        $image = new ImageUpload("app");
-        $filename = "";
-        if ($image->upload($filename)) {
-            return $this->render(200, null, $filename);
-        }
-        return $this->render(403, $filename);
+        [$error, $name, $url] = FileDao::getInstance()->upload();
+        if ($error)
+            return $this->render(403, $error);
+        return $this->render(200, null, $url);
     }
 }

@@ -16,7 +16,7 @@
             'admin' => 'admin/main/index',
             'pay/<id>' => 'index/main/pay',
             'order/<a>' => 'api/pay/<a>',
-            'image/<type>/<file>' => 'api_index/main/image',
+            'file/<file>' => 'api_index/main/file',
             'api/admin/<c>/<a>' => 'api_admin/<c>/<a>',
             'api/index/<c>/<a>' => 'api_index/<c>/<a>',
             '<m>/<c>/<a>' => '<m>/<c>/<a>',

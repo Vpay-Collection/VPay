@@ -13,14 +13,21 @@
 
 namespace app\controller\api_admin;
 
+use app\database\dao\OrderDao;
+use cleanphp\engine\EngineManager;
 use library\login\LoginManager;
 
 class Main extends BaseController
 {
-    function menu(){
+    function menu(): string
+    {
         $user = LoginManager::init()->getUser();
 
         return $this->render(200,null,[
+            'home'=>[
+                'name' => "概览",
+                'href' => "admin/console/index",
+            ],
             'user' => [
                 "image" => $user["image"],
                 "name" => $user["username"]
@@ -28,39 +35,39 @@ class Main extends BaseController
            'menu'=>[
                [
                    'name' => "概览",
-                   'href' => url('admin', 'main', 'index'),
-                   'inner' => true,
+                   'href' => 'admin/console/index',
+                 
                    'icon' => 'fas fa-box'
                ],
                [
-                   "name" => "App监控",
-                   "href" => url('admin', 'channel', 'index'),
-                   'inner' => true,
-                   'icon' => 'fab fa-apple'
+                   "name" => "支付宝配置",
+                   "href" => 'admin/channel/index',
+                 
+                   'icon' => 'fab fa-alipay'
                ],
                [
                    "name" => "通知配置",
-                   "href" => url('admin', 'notice', 'index'),
-                   'inner' => true,
+                   "href" => 'admin/notice/index',
+                 
                    'icon' => 'fas fa-envelope'
                ],//
                [
                    "name" => "应用管理",
-                   "href" => url('admin', 'app', 'index'),
-                   'inner' => true,
+                   "href" => 'admin/app/index',
+                 
                    'icon' => 'fab fa-app-store-ios'
                ],
 
                [
                    "name" => "订单列表",
-                   "href" => url('admin', 'order', 'index'),
-                   'inner' => true,
+                   "href" => 'admin/order/index',
+                 
                    'icon' => 'fas fa-table-list'
                ],
                [
                    'name' => "个人中心",
-                   'href' => url('admin', 'user', 'index'),
-                   'inner' => true,
+                   'href' => 'admin/user/index',
+                 
                    'icon' => 'fas fa-user'
 
                ],
@@ -70,6 +77,17 @@ class Main extends BaseController
                    "icon" => "fas fa-book",
                ]
            ]
+        ]);
+    }
+
+    function console(){
+        [$day, $data] = OrderDao::getInstance()->countData();
+        return $this->render(200,null,[
+            "total_price"=> OrderDao::getInstance()->getTotal(),
+            "today_price"=>OrderDao::getInstance()->getToday(),
+            "payments"=> OrderDao::getInstance()->getRecently(10),
+            "day"=>array_reverse($day),
+            "data"=>array_reverse($data)
         ]);
     }
 }

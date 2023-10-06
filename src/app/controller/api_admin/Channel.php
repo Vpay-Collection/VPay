@@ -35,7 +35,7 @@ class Channel extends BaseController
         if ($result !== null) {
             return $result;
         }
-        $this->config = new ChannelConfig(Config::getConfig("app"),false);
+        $this->config = new ChannelConfig(Config::getConfig("alipay"),false);
         return null;
     }
 
@@ -47,28 +47,11 @@ class Channel extends BaseController
     {
         if (Request::isGet()) return $this->json(200, null, $this->config->toArray());
         try{
-            $this->config->merge(post());
+            $this->config= new ChannelConfig(post());
         }catch (VerityException $e){
             return $this->json(403,$e->getMessage());
         }
-        Config::setConfig('app', $this->config->toArray());
+        Config::setConfig('alipay', $this->config->toArray());
         return $this->json(200, "更新成功");
     }
-
-    function upload(): string
-    {
-        $image = new ImageUpload("channel");
-        $filename = "";
-        if ($image->upload($filename)) {
-            $result = Code::decode(Variables::getStoragePath("uploads", 'temp', $filename));
-            $image->delImage($filename);
-            if (empty($result)) {
-                return $this->render(400, "请上传二维码文件");
-            }
-            return $this->render(200, null, $result);
-        }
-        return $this->render(403, $filename);
-    }
-
-
 }

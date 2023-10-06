@@ -1,0 +1,152 @@
+<div class=" bg-primary p-3 shadow-2">
+    <div class="fw-bold ls-tight text-light container">
+        <div style="display: flex; align-items: center;">
+            <img
+                    src="img/profile.png"
+                    class="img-fluid rounded-pill me-3"
+                    style="width: 60px"
+            />
+            <div>
+                <h3 id="title">Vpay 安装 <a href="https://github.com/Vpay-Collection/VPay"><i
+                        class="fab fa-github text-dark"></i></a></h3>
+                <h6 id="buildInfo" class="text-light">Build at 2023.09.30</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-5 pb-5">
+
+    <form>
+        <div id="isDocker">
+            <h6 class="mb-4">数据库配置</h6>
+            <div class="form-outline mb-4">
+                <input type="text" name="host" id="host" value="localhost" class="form-control"/>
+                <label class="form-label" for="host">数据库地址</label>
+            </div>
+            <div class="form-outline mb-4">
+                <input type="text" name="username" id="username" class="form-control" placeholder="docker安装留空"/>
+                <label class="form-label" for="username">数据库用户名</label>
+            </div>
+            <div class="form-outline mb-4">
+                <input type="text" name="password" id="password" class="form-control" placeholder="docker安装留空"/>
+                <label class="form-label" for="password">数据库密码</label>
+            </div>
+            <div class="form-outline mb-4">
+                <input type="text" name="database" id="database" class="form-control" placeholder="docker安装留空"/>
+                <label class="form-label" for="database">数据库名</label>
+            </div>
+            <div class="form-outline mb-4">
+                <input type="number" name="port" id="port" value="3306" class="form-control"/>
+                <label class="form-label" for="port">数据库端口</label>
+            </div>
+        </div>
+        <h6 class="mb-4">网站配置</h6>
+        <div class="form-outline mb-4">
+            <input type="text" name="domain" id="domain" class="form-control" value="0.0.0.0"
+                   placeholder="docker安装留空"/>
+            <label class="form-label" for="domain">本站域名</label>
+
+        </div>
+        <div class="alert" role="alert" data-mdb-color="danger">
+            一旦配置不可通过UI界面更换，后续更换域名请手动修改 ./app/config.php文件。<br>
+            如果不想限制域名可填写 0.0.0.0
+        </div>
+        <h6 class="mb-4">后台配置</h6>
+        <div class="form-outline mb-4">
+            <input type="text" name="_username" id="_username" class="form-control"/>
+            <label class="form-label" for="_username">用户名</label>
+        </div>
+        <div class="form-outline mb-4">
+            <input type="text" name="_password" id="_password" class="form-control"/>
+            <label class="form-label" for="_password">密码</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-4">安装</button>
+
+    </form>
+</div>
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-light text-muted">
+    <!-- Section: Social media -->
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+        <!-- Left -->
+        <div class="me-5 d-none d-lg-block">
+            <span>从其他渠道了解我们：</span>
+        </div>
+        <!-- Left -->
+
+        <!-- Right -->
+        <div>
+
+            <a href="https://github.com/Vpay-Collection" class="me-4 text-reset">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <!-- Right -->
+    </section>
+    <!-- Section: Social media -->
+
+    <!-- Section: Links  -->
+    <section class="">
+        <div class="container text-center text-md-start mt-5">
+            <!-- Grid row -->
+            <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        <i class="fas fa-gem me-3"></i>Ankioの个人收款
+                    </h6>
+                    <p>
+                        一款个人收款解决方案，使个人开发者能够安全高效地处理在线交易。
+                    </p>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                        更多应用
+                    </h6>
+                    <p>
+                        <a href="https://auto-account.net" class="text-reset">自动记账</a>
+                    </p>
+                    <p>
+                        <a href="https://iread.ankio.net" class="text-reset">iRead</a>
+                    </p>
+                    <p>
+                        <a href="https://cleanphp.icu" class="text-reset">CleanPHP</a>
+                    </p>
+
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">联系我们</h6>
+
+                    <p>
+                        <i class="fas fa-envelope me-3"></i>
+                        ankio@ankio.net
+                    </p>
+                </div>
+                <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+        </div>
+    </section>
+    <!-- Section: Links  -->
+
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        ©Copyright:
+        <a class="text-reset fw-bold" href="https://vpay.icu/">vpay.icu</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!-- Footer -->

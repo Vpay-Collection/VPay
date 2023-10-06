@@ -1,0 +1,57 @@
+<!--
+  ~ Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+  -->
+
+<!-- Container for demo purpose -->
+<div class="container my-5 pb-5">
+
+    <!-- Section: Design Block -->
+    <section class="mb-10">
+
+        <div class="card-body ps-2 pb-4">
+            <h3 class="">支付宝配置</h3>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-2">
+                <div class="card ">
+                    <div class="card-header py-3"><strong><i class="fas fa-gear me-3"></i>支付宝商户配置</strong></div>
+                    <div class="card-body text-center pt-4">
+                        <div class="row">
+                            <form class="mt-4" id="form_app">
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <input type="number" id="validity_minute" name="validity_minute" class="form-control"
+                                    />
+                                    <label class="form-label" for="validity_minute">订单超时时间（单位：分钟）</label>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="alipay_id" name="alipay_id" class="form-control" />
+                                    <label class="form-label" for="alipay_id">支付宝当面付的APPID</label>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <textarea type="text" id="alipay_private_key" name="alipay_private_key" class="form-control"></textarea>
+                                    <label class="form-label" for="alipay_private_key">商户私钥</label>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <textarea type="text" id="alipay_public_key" name="alipay_public_key" class="form-control"></textarea>
+                                    <label class="form-label" for="alipay_public_key">支付宝公钥</label>
+                                </div>
+
+
+                                <!-- Submit button -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">保存</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Section: Profile-->
+
+        </div>
+    </section>
+</div>

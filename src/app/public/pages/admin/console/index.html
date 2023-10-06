@@ -1,0 +1,96 @@
+<!-- Container for demo purpose -->
+<div class="container my-5 pb-5">
+
+    <!-- Section: Design Block -->
+    <section class="mb-4">
+
+        <div class="card-body ps-2 pb-4">
+            <h3 class="">概览</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="p-3 badge-primary rounded-4">
+                                    <i class="fas fa-money-bill-1-wave"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-4">
+                                <p class="text-muted mb-1">当天收入</p>
+                                <h2 class="mb-0">
+                                    <span class="text-danger" style="font-size: 0.875rem"><i class="fas fa-yen-sign "></i></span>
+                                    [today_price]
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="p-3 badge-primary rounded-4">
+                                    <i class="fas fa-money-bill-1"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-4">
+                                <p class="text-muted mb-1">总计收入</p>
+                                <h2 class="mb-0">
+                                    <span class="text-danger" style="font-size: 0.875rem"><i class="fas fa-yen-sign "></i></span>
+                                    [total_price]
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section: Design Block -->
+
+
+    <section class="mb-8">
+
+
+        <div class="card mb-4">
+            <div class="card-header py-3  border-0">
+                <strong>最近订单</strong>
+                <a href="#!admin/order/list" class="btn btn-primary float-end">详情</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                        <tr>
+                            <th scope="col">商户</th>
+                            <th scope="col">商品</th>
+                            <th scope="col">金额</th>
+                            <th scope="col">支付时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header border-0 py-3">
+                <strong>订单走势</strong>
+            </div>
+            <div class="card-body">
+                <canvas id="canvas"></canvas>
+
+            </div>
+        </div>
+
+    </section>
+
+
+</div>
