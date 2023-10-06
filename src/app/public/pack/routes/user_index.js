@@ -8,7 +8,7 @@ route("admin/user/index", {
 
     },
     onrender: function (query, dom, result) {
-        form.val("form",result.data)
+        form.val("form",result.data);
         form.bindSubmit("form","/ankio/login/change");
 
         mdbAdmin.upload({

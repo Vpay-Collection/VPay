@@ -40,13 +40,5 @@
             'password' => 'LOGIN_PASSWORD',
             'image' => '/clean_static/img/head.png',
         ),
-    'key' => NULL,
-    'app' =>
-        array (
-            'key' => '',
-            'timeout' => 5,
-            'conflict' => 1,
-            'image_alipay' => '',
-            'image_wechat' => '',
-        ),
+
 );

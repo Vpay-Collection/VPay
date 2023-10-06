@@ -4,15 +4,15 @@ route("login", {
     onenter: function (query, dom,result) {
 
         $.get("https://v1.hitokoto.cn/?c=i&encode=text",function (data) {
-            dom.find("#sentence").text(data)
-        })
+            dom.find("#sentence").text(data);
+        });
 
         dom.find('#title').text("Vpay后台管理");
-        request("/ankio/login/islogin",{},null,false).done(function (data) {
+        request("/ankio/login/islogin",{},null).done(function (data) {
             if(data.code===200){
                 go("/");
             }
-        })
+        });
     },
     onrender: function (query, dom,result) {
         $("form").on("submit", function () {
@@ -32,7 +32,7 @@ route("login", {
                     'username': $("input[name=username]").val(),
                     'password': passwd,
                 },"登录中...",false).done(function (d) {
-                   go("/")
+                   go("/");
                 });
 
             });

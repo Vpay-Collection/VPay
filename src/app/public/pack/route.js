@@ -3,7 +3,7 @@ var frames = [];
 var routeSegmentation = "#!";
 
 var ignoreHashChange = false;
-var titlePrefix = "Ankioの用户中心"
+var titlePrefix = "Ankioの用户中心";
 
 function jsonToQueryString(json) {
     var pairs = $.map(json, function (value, key) {
@@ -152,7 +152,7 @@ function router(event) {
                         if (typeof handler.onrender === "function") {
                             handler.onrender(getQueryAsArray(), htmlDom, data);
                         }
-                        mdbAdmin.initComponents(container)
+                        mdbAdmin.initComponents(container);
                     }, 0);
                     dom.fadeIn();
                 });
@@ -187,7 +187,7 @@ function router(event) {
             resource.use(newHandler.libs, function () {
 
                 libsDefer.resolve();
-            })
+            });
         } else {
 
             libsDefer.resolve();
@@ -293,7 +293,7 @@ function loadFrame(title, url, params, configs, loading) {
         resource.use(frame.libs, function () {
 
             libsDefer.resolve();
-        })
+        });
     } else {
 
         libsDefer.resolve();
@@ -310,7 +310,7 @@ function loadFrame(title, url, params, configs, loading) {
             title: title,
             body: html,
             oncreate: function (dom) {
-                frame.onenter(params, dom, result)
+                frame.onenter(params, dom, result);
             },
             onrender: function (dom, id) {
                 if (typeof frame.onrender === "function") {
@@ -326,8 +326,8 @@ function loadFrame(title, url, params, configs, loading) {
                     }
                 }
             }
-        })
-        mdbAdmin.modal.show(config)
+        });
+        mdbAdmin.modal.show(config);
 
     });
 

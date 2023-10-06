@@ -89,7 +89,7 @@ mdbAdmin.modal =  {
             }else{
                 let func = config.buttons[1][1];
                 if (typeof func === "function") {
-                    func(id)
+                    func(id);
                 }
                 mdb.Modal.getOrCreateInstance(document.getElementById(id)).hide();
             }
@@ -104,4 +104,4 @@ mdbAdmin.modal =  {
             document.getElementById(id).remove();
         });
     }
-}
+};

@@ -3,7 +3,6 @@ frame("admin/app/edit", {
     config:null,
     onenter: function (query, dom,result) {
 
-
     },
     onrender: function (query, dom,result) {
         this.config = query.config;
@@ -19,16 +18,16 @@ frame("admin/app/edit", {
                 }else{
                     $("[data-mdb-dismiss]").trigger("click");
                 }
-            })
+            });
         });
         if(query.data){
-            form.val("#form",query.data)
+            form.val("#form",query.data);
         }
     },
     onexit: function () {
         var instance = FileUpload.getInstance(document.getElementById("file-upload"));
         if(instance){
-            instance.dispose()
+            instance.dispose();
         }
         mdbAdmin.database(this.config);
     },

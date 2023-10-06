@@ -71,89 +71,13 @@ class Application implements MainApp
             $path =  $raw . ".html";
         }
 
-        //  dumps($path);
-
-        if (App::$debug && str_contains($path, "app.min.js")) {
-            $this->compress();
-        }
 
         if (is_file($path)) {
             Route::renderStatic($path);
         }
 
     }
-    private function compress(): void
-    {
-        $dir = APP_DIR . "/app";
-        $file = $dir . "/public/app.min.js";
-        if( file_exists($file) && !App::$debug ){
-            return;
-        }
-        $array = [
-            "/public/pack/jquery.min.js",
-            "/public/mdb/js/mdb.min.js",
-            "/public/pack/theme.js",
-            "/public/pack/mdbAdminPlugins.js",
-            "/public/pack/mdbAdmin.js",
-            "/public/pack/loading.js",
-            "/public/pack/form.js",
-            "/public/pack/requests.js",
-            "/public/pack/toast.js",
-            "/public/pack/alert.js",
-            "/public/pack/modal.js",
-            "/public/pack/resource.js",
-            "/public/pack/log.js",
-            "/public/pack/route.js",
-        ];
 
-
-        foreach (scandir($dir . "/public/pack/routes") as $item) {
-            if (str_starts_with($item, ".")) {
-                continue;
-            }
-            $array[] = "/public/pack/routes/$item";
-        }
-
-        foreach (scandir($dir . "/public/pack/frames") as $item) {
-            if (str_starts_with($item, ".")) {
-                continue;
-            }
-            $array[] = "/public/pack/frames/$item";
-        }
-        $array[] = "/public/main.js";
-
-        $this->combineFilesStream($dir, $array, $file);
-
-    }
-
-    private function combineFilesStream($dir, $files, $outputPath): void
-    {
-        $outputFile = fopen($outputPath, 'w'); // 打开输出文件进行写入
-
-        if (!$outputFile) {
-            die("Unable to open the output file for writing.");
-        }
-
-        foreach ($files as $file) {
-            $file = $dir . $file;
-            //  echo $file . PHP_EOL;
-            if (is_file($file)) {
-                $inputFile = fopen($file, 'r'); // 打开当前文件进行读取
-                if ($inputFile) {
-                    while (!feof($inputFile)) {
-                        $buffer = fread($inputFile, 4096); // 读取4KB
-                        fwrite($outputFile, $buffer);      // 写入到输出文件
-                    }
-                    fwrite($outputFile, "\n"); // 在每个文件后面添加一个换行符，确保代码不会混在一起
-                    fclose($inputFile);
-                }
-            } else {
-                echo "File not found: " . $file . "\n";
-            }
-        }
-
-        fclose($outputFile);
-    }
     function onFrameworkStart(): void
     {
         $this->renderStatic();

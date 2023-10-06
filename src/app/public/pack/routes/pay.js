@@ -5,7 +5,7 @@ route("pay", {
      heartInstance2 : null,
     onenter: function (query, dom,result) {
         if(result.code!==200){
-            go("error")
+            go("error");
             return true;
         }
 
@@ -15,7 +15,7 @@ route("pay", {
 
         function error(msg) {
           sessionStorage.setItem("error",msg);
-          go("error")
+          go("error");
         }
 
         function startCountdown(start_time, timeout) {

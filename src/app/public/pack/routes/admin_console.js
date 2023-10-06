@@ -34,7 +34,7 @@ route("admin/console/index", {
                                 <td>￥${order['real_price']}</td>
                                 <td>${mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss",order['pay_time'])}</td>
                             </tr>
-           `
+           `;
        });
        dom.find("tbody").html(html);
     },

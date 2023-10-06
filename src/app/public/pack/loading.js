@@ -46,4 +46,4 @@ mdbAdmin.loading = {
         }
 
     }
-}
+};

@@ -14,6 +14,7 @@
 namespace app\controller\api_admin;
 
 use app\database\dao\OrderDao;
+use cleanphp\base\Response;
 use cleanphp\engine\EngineManager;
 use library\login\LoginManager;
 
@@ -89,5 +90,10 @@ class Main extends BaseController
             "day"=>array_reverse($day),
             "data"=>array_reverse($data)
         ]);
+    }
+
+    function logout(){
+        LoginManager::init()->logout();
+        Response::location("/");
     }
 }

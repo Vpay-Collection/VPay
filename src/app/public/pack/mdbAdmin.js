@@ -113,7 +113,7 @@ const mdbAdmin = {
                     try{
                         func(v);
                     }catch (e) {
-                        console.error("组件渲染错误",e)
+                        console.error("组件渲染错误",e);
                     }
                 });
             }

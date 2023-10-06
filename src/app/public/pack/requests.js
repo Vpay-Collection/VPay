@@ -1,7 +1,6 @@
-function request(url, data, loading,add) {
+function request(url, data, loading) {
 
-	add = add!==undefined && add!==null && add!==false;
-	url = (url.startsWith("http") || add) ? url : ("api/" + url);
+	url = (url.startsWith("http") || url.startsWith("/")) ? url : ("api/" + url);
 
 	const defer = $.Deferred();
 
@@ -16,7 +15,7 @@ function request(url, data, loading,add) {
 		beforeSend: function () {
 
 			if (loading) {
-				loadingId = mdbAdmin.loading.show("#app", loading)
+				loadingId = mdbAdmin.loading.show("#app", loading);
 			}
 		},
 		success: function (data) {
@@ -25,7 +24,7 @@ function request(url, data, loading,add) {
 
 			if (data.code === 401) {
 				defer.reject(data);
-				location.href = routeSegmentation + "login"
+				location.href = routeSegmentation + "login";
 			}
 			if(data.code===302){
 				location.href = data.data;
@@ -36,7 +35,7 @@ function request(url, data, loading,add) {
 			} else {
 
 				if (data.msg !== "" && data.msg !== null && data.msg !== undefined) {
-					sessionStorage.setItem("error",data.msg )
+					sessionStorage.setItem("error",data.msg );
 					mdbAdmin.toast.error(data.msg);
 				}
 				defer.reject(data);

@@ -12,7 +12,7 @@ route("admin/app/index", {
                 data:data,
                 config:config
             });
-        }
+        };
         var config = {
             elem:"#datatable",
             url:'/api/admin/app/list',

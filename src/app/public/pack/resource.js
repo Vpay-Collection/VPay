@@ -49,7 +49,7 @@ var resource  = {
     css(href) {
         const deferred = $.Deferred();
         if(loadCss.indexOf(href)!==-1 || !href){
-            deferred.resolve()
+            deferred.resolve();
         }else{
             loadCss.push(href);
 
@@ -115,4 +115,4 @@ var resource  = {
             fn();
         });
     },
-}
+};

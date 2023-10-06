@@ -38,4 +38,4 @@ mdbAdmin.alert =  {
             document.getElementById(id).remove();
         });
     }
-}
+};
