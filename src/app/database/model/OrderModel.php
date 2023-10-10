@@ -47,7 +47,7 @@ class OrderModel extends Model
 
     public string $user = "";
     public string $pay_image = "";//支付二维码
-    public string $key = "";
+   
 
     function getPrimaryKey(): SqlKey
     {
