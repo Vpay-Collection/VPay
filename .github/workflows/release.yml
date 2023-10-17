@@ -19,9 +19,6 @@ jobs:
       - name: Get tag name
         id: get_tag
         run: echo ::set-output name=tag_name::$(git describe --tags --abbrev=0)
-      - name: Remove "v" from tag name
-        id: remove_v
-        run: echo ::set-output name=tag_name_without_v::${{ steps.get_tag.outputs.tag_name.replace('v', '') }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -30,8 +27,8 @@ jobs:
       - name: Install dependencies with Yarn
         run: |
           chmod +x /src/cleanphp/release/clean
-          ./src/cleanphp/release/clean release -v=${{ steps.remove_v.outputs.tag_name_without_v }} -n=vpay
-          ./src/cleanphp/release/clean release -v=${{ steps.remove_v.outputs.tag_name_without_v }} -n=vpay_bt -f=build_bt.php
+          ./src/cleanphp/release/clean release -v=${{ steps.get_tag.outputs.tag_name }} -n=vpay
+          ./src/cleanphp/release/clean release -v=${{ steps.get_tag.outputs.tag_name }} -n=vpay_bt -f=build_bt.php
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v3
