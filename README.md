@@ -7,15 +7,21 @@
 
 <p align="center">
  <img src="https://img.shields.io/static/v1?label=licenes&message=GPL%20V3&color=important&style=for-the-badge"/>
- <img src="https://img.shields.io/static/v1?label=version&message=4.1.0&color=9cf&style=for-the-badge"/>
+ <img src="https://img.shields.io/static/v1?label=version&message=4.2.0&color=9cf&style=for-the-badge"/>
  <img src="https://img.shields.io/static/v1?label=language&message=php&color=777BB4&style=for-the-badge"/>
 
 </p>
 
-**⚠️⚠️⚠️警告** 
-1. `master`分支版本为4.0系列全面重构的版本，可能含有BUG，请谨慎使用；
-2. `dev`分支版本为3.0系列稳定版本；
-3. 旧版稳定版请使用2.0系列版本，配合官方App使用。
+### ️⚠️ 警告 
+
+- 手机二维码监听收款是异地收款，收款频率高可能导致风控；
+- 云端监听收款风险同上；
+
+## 按需选择
+
+1. `master`分支版本为4.0系列全面重构的版本，仅支持`支付宝当面付`；
+2. `dev`分支版本为[3.0系列](https://github.com/Vpay-Collection/VPay/releases/tag/3.1)稳定版本，仅支持`支付宝当面付`；
+3. 旧版稳定版请使用[2.0系列](https://github.com/Vpay-Collection/VPay/releases/tag/2.4)版本，配合[官方App](https://github.com/Vpay-Collection/vmqApk/releases/tag/v1.8.2)使用，支持手机端二维码监听收款。
 
 ## 简介
 
@@ -25,7 +31,7 @@ Vpay ——一款个人收款解决方案，使个人开发者能够安全高效
 ## 安装指南
 
 ### 服务端安装
-> 以下三种方案三选一
+> 以下两种方案三选一
 #### 一、宝塔面板一键部署
 
 1. 导入项目到宝塔面板
@@ -75,29 +81,13 @@ location / {
     }
 ```
 
-#### 三、Docker部署
-
-1. 执行docker-compose
-
-```shell
-git clone https://github.com/Vpay-Collection/Vpay
-docker-compose
-```
-2. 按照页面提示安装，其中以下内容无需填写
-- 数据库地址
-- 数据库用户名
-- 数据库密码
-- 数据库端口
-- 本站域名
-
 
 
 ### 服务端配置
 
-1. 配置App监控端，从[vpay-android](https://github.com/Vpay-Collection/vpay-android)下载安卓客户端，扫码配置：
-![img_2.png](img_2.png)
-2. 配置收款码，左侧为支付宝右侧为微信：
-![img_3.png](img_3.png)
+1. 申请[支付宝当面付](https://open.alipay.com/intergraAssist/SC00002242?projectId=1487001107)
+- 【扫码支付】-【自研】，根据页面提示的接入准备完成当面付接入
+2. 填写当面付信息
 3. 配置邮件通知
 ![img_4.png](img_4.png)
 

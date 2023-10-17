@@ -1,9 +1,0 @@
-version: "4"
-services:
-  vpay:
-    build: .
-    ports:
-      - "8080:80"
-      #- ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-   # volumes:
-      #- ./src:/www
