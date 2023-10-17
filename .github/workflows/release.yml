@@ -21,7 +21,7 @@ jobs:
         run: echo ::set-output name=tag_name::$(git describe --tags --abbrev=0)
       - name: Remove "v" from tag name
         id: remove_v
-        run: echo ::set-output name=tag_name_without_v::${{ steps.get_tag.outputs.tag_name#"v"}}
+        run: echo ::set-output name=tag_name_without_v::${{ steps.get_tag.outputs.tag_name.replace('v', '') }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
