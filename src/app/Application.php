@@ -41,7 +41,7 @@ class Application implements MainApp
      */
     function onRequestArrive(): void
     {
-        Session::getInstance()->start();//会话有效即可
+
         if (str_starts_with(Variables::get("__request_module__"),"api")) {
             EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
 
@@ -80,6 +80,7 @@ class Application implements MainApp
 
     function onFrameworkStart(): void
     {
+        Session::getInstance()->start();//会话有效即可
         $this->renderStatic();
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
