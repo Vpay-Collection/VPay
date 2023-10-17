@@ -26,7 +26,7 @@ jobs:
           extensions: mbstring
       - name: Install dependencies with Yarn
         run: |
-          chmod +x /src/cleanphp/release/clean
+          chmod +x ./src/cleanphp/release/clean
           ./src/cleanphp/release/clean release -v=${{ steps.get_tag.outputs.tag_name }} -n=vpay
           ./src/cleanphp/release/clean release -v=${{ steps.get_tag.outputs.tag_name }} -n=vpay_bt -f=build_bt.php
       - name: Build Changelog
