@@ -87,7 +87,12 @@
       "on_property": "title"
     }
   ],
-  "transformers": [],
+  "transformers": [
+    {
+      "pattern": "(.+): (.+)",
+      "target": "$2"
+    }
+  ],
   "duplicate_filter": {
     "pattern": ".+",
     "on_property": "title",
