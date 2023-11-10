@@ -83,14 +83,14 @@
   "label_extractor": [
     {
       "pattern": "(.+) (.+)",
-      "target": "$1",
+      "target": "- **$1",
       "on_property": "title"
     }
   ],
   "transformers": [
     {
       "pattern": "(.+) (.+)",
-      "target": "$2"
+      "target": "- **$2"
     }
   ],
   "duplicate_filter": {
