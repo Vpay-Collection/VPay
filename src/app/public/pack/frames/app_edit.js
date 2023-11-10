@@ -5,10 +5,10 @@ frame("admin/app/edit", {
 
     },
     onrender: function (query, dom,result) {
-        this.config = query.config;
+        this.db = query.db;
         mdbAdmin.upload({
             elem: "#file-upload",
-            url: 'api/admin/app/upload',
+            url: '/admin/app/upload',
             dom: '', msg: '', onsuccess: function () {}
         });
         form.submit("#form", function (data) {
@@ -29,6 +29,6 @@ frame("admin/app/edit", {
         if(instance){
             instance.dispose();
         }
-        mdbAdmin.database(this.config);
+      this.db.reload();
     },
 });

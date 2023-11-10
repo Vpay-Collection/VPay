@@ -17,7 +17,7 @@ function setMode() {
 
 route("", {
     title: "Vpay",
-    depends: ["index/main/config", "user/main/menu"],
+    depends: ["index/main/config", "admin/main/menu"],
     onenter: function (query, dom, result) {
         if (!result[0].data.login) {
             location.href = result[1].msg;

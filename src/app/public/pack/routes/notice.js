@@ -1,6 +1,6 @@
 route("admin/notice/index", {
    // depends:"admin/channel/config",
-    reference: "/",
+    reference: "",
     container: "#container",
     title: "通知配置",
     onenter: function (query, dom, result) {},

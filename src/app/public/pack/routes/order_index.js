@@ -1,6 +1,5 @@
 route("admin/order/index", {
-    js: ["js/Pagination.js"],
-    reference: "/",
+    reference: "",
     depends:"admin/app/list?page=0&size=9999",
     container: "#container",
     title: "订单列表",
@@ -9,12 +8,13 @@ route("admin/order/index", {
         $.each(result.data,function (k,item) {
             html+=` <option value="${item.id}">${item.app_name}</option>`;
         });
-        dom.find("select").append(html);
+        dom.find("#app").append(html);
     },
     onrender: function (query, dom, result) {
+        let that = this;
         var config = {
             elem:"#datatable",
-            url:'/api/admin/order/list',
+            url:'/admin/order/list',
             page:1,
             size:10,
             param:{
@@ -59,7 +59,11 @@ route("admin/order/index", {
                             ['确定',
                                 function () {
                                     request("admin/order/callback", {order_id: json.order_id}).done(function () {
-                                        mdbAdmin.database(config);
+                                        that.db.reload({
+                                            "appid": $("#app").val(),
+                                            "app_item": $("#form_name").val(),
+                                            "status": $("#status").val(),
+                                        });
                                     });
 
                                 }]
@@ -137,20 +141,21 @@ route("admin/order/index", {
                 }
             ],
         };
-        mdbAdmin.database(config);
+       that.db = mdbAdmin.database(config);
         $("#search").off().on("click", function () {
-            mdbAdmin.database($.extend({},config,{
-                param:{
-                    "appid": $("#app").val(),
+
+            that.db.reload({
+                "appid": $("#app").val(),
                     "app_item": $("#form_name").val(),
                     "status": $("#status").val(),
-                },
-            }));
+            });
         });
 
 
     },
     onexit: function () {
-        mdb.Datatable.getOrCreateInstance(document.querySelector("#datatable")).dispose();
+        if (this.db) {
+            this.db.destroy();
+        }
     },
 });

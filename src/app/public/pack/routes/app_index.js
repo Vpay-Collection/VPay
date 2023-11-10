@@ -1,25 +1,24 @@
 route("admin/app/index", {
-    js: ["js/Pagination.js"],
-    reference: "/",
+    reference: "",
     container: "#container",
     title: "App管理",
     onenter: function (query, dom, result) {
 
     },
     onrender: function (query, dom, result) {
+        let that = this;
         var frameIndex = function (title,data,config) {
             loadFrame(title,"admin/app/edit",{
                 data:data,
-                config:config
+                db:that.db
             });
         };
         var config = {
             elem:"#datatable",
-            url:'/api/admin/app/list',
+            url:'/admin/app/list',
             page:1,
             size:15,
             onsuccess:function (data,config) {
-                //$('.clipboard').clipboard();
                 mdbAdmin.initComponents("#datatable");
                 $('.clipboard').off().on('copy.mdb.clipboard', function (e) {
                     mdbAdmin.toast.success(e.copyText+"已复制","剪切板");
@@ -44,7 +43,7 @@ route("admin/app/index", {
                             ['确定',
                                 function () {
                                     request("admin/app/del", {id:json.id}).done(function () {
-                                        mdbAdmin.database(config);
+                                        that.db.reload();
                                     });
 
                                 }]
@@ -82,12 +81,14 @@ route("admin/app/index", {
                 }
             ],
         };
-        mdbAdmin.database(config);
+       this.db = mdbAdmin.database(config);
         $("#addApp").on("click",function () {
             frameIndex("新增App",null,config);
         });
     },
     onexit: function () {
-        mdb.Datatable.getOrCreateInstance(document.querySelector("#datatable")).dispose();
+        if (this.db) {
+            this.db.destroy();
+        }
     },
 });
