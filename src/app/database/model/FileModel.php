@@ -2,6 +2,7 @@
 /*******************************************************************************
  * Copyright (c) 2022. Ankio. All Rights Reserved.
  ******************************************************************************/
+
 /**
  * Package: app\database\model
  * Class FileModel
@@ -17,9 +18,11 @@ use library\database\object\Model;
 
 class FileModel extends Model
 {
-    public $name = "";
-    public $date = 0;//上传时间
-    public $path  = "";//文件路径
-    public $count = 0;//引用计数
-    public $timeout = 0;
+    public string $name = "";
+    public int $date = 0;//上传时间
+    public string $path = "";//文件路径
+    public int $count = 0;//引用计数
+    public int $timeout = 0;
+    public string $hash = "";//文件哈希
+    public string $link = "";//文件关联的Key
 }
