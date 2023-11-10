@@ -47,27 +47,6 @@ class Application implements MainApp
 
     }
 
-    private function renderStatic(){
-        //渲染静态资源
-        $uriWithoutQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-        $path = Variables::getAppPath("public", $uriWithoutQuery);
-        $raw = $path;
-        if (is_dir($path)) {
-            $path = $path . DS . "index.html";
-        }
-
-        if(!is_file($path)){
-            $path =  $raw . ".html";
-        }
-
-
-        if (is_file($path)) {
-            Route::renderStatic($path);
-        }
-
-    }
-
     function onFrameworkStart(): void
     {
         if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
