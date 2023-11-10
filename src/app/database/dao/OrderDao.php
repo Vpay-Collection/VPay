@@ -67,7 +67,7 @@ class OrderDao extends Dao
         $day = [];
         for ($i = 1; $i < 8; $i++) {
             $day[] = date('Y-m-d', $start);
-            $result[] = $this->getSum(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS], 'real_price');
+            $result[] = $this->getSum(["close_time>$start", "close_time<$end", 'state' => OrderModel::SUCCESS], 'price');
             $end = $start;
             $start = strtotime(date('Y-m-d', strtotime("-$i day")));
         }
