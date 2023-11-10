@@ -44,18 +44,17 @@ class Application implements MainApp
 
         EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
 
-
     }
 
     function onFrameworkStart(): void
     {
-        if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
-            App::exit(EngineManager::getEngine()->render(302,"install","/@install"),true);
+        $uriWithoutQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && !str_contains($uriWithoutQuery,"/install/")) {
+           Response::location("/@install");
         }
         //会话有效期持续7天
         Session::getInstance()->start();
-
-        $uriWithoutQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         if(in_array($uriWithoutQuery,['','/'])){
             Response::location("/@");
