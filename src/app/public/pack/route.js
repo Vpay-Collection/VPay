@@ -1,334 +1,353 @@
-var routes = [];
-var frames = [];
-var routeSegmentation = "#!";
+(function (global, document, $) {
+	"use strict";
+	var routes = [];
+	var frames = [];
+	let lastHash = null;
+	var ignoreHashChange = false;
 
-var ignoreHashChange = false;
-var titlePrefix = "Ankioの用户中心";
-
-function jsonToQueryString(json) {
-    var pairs = $.map(json, function (value, key) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(value);
-    });
-    return pairs.join('&');
-}
-
-function go(path, params) {
-    var query = params ? "?" + jsonToQueryString(params) : "";
-    location.href = routeSegmentation + path + query;
-}
-
-/**
- * 查询提取成数组
- * @return {{value: string, key: string}[]|*[]}
- */
-function getQueryAsArray() {
-    var position = location.hash.indexOf("?");
-
-    if (position === -1) {
-        return [];
-    }
-
-    var query = location.hash.substring(position);
-    // 检查是否有查询参数
-
-    // 去掉问号并按&分隔
-    var queryParts = query.slice(1).split("&");
-    var objects = {};
-    $.each(queryParts, function (k, part) {
-        var split = part.split("=");
-        var key = decodeURIComponent(split[0]);
-        objects[key] = decodeURIComponent(split[1]);
-    });
-    return objects;
-}
-
-function getHash(route) {
-    route = route || "";
-    var position = route.indexOf("?");
-
-    if (position !== -1) {
-        route = route.substring(0, position);
-    }
-    return route;
-}
-
-/**
- * 获取route handler
- * @return {{
- *     depends: string,
- *     container: string,
- *     reference: string,
- *     parent: string,
- *     title: string,
- *     onexit: function,
- *     onenter: function(array,string,string),
- *   }}
- */
-function getRouter(route) {
-    var routeHandler = null;
-    route = getHash(route);
-    $.each(routes, function (key, value) {
-        if (typeof value.path === "string") {
-            // 普通字符串匹配
-            if (value.path === route) {
-                routeHandler = value;
-                return false;
-            }
-        } else {
-            // 正则表达式匹配
-            var match = route.match(value.path);
-            if (match) {
-                routeHandler = value;
-                return false;
-            }
-        }
-    });
-    return routeHandler;
-}
-
-/**
- * 从url获取hash
- * @param url
- * @return {*|string}
- */
-function getHashFromURL(url) {
-    if (!url) return "";
-    var hashIndex = url.indexOf(routeSegmentation);
-    return hashIndex !== -1 ? url.slice(hashIndex + 2) : "/";
-}
-
-/**
- * 进行路由
- * @param event
- */
-function router(event) {
-    if (event.originalEvent) {
-        event = event.originalEvent;
-    }
-
-    if (ignoreHashChange) {
-        ignoreHashChange = false;
-        return;
-    }
-    var oldHash = getHashFromURL(event.oldURL);
-    var newHash = getHashFromURL(event.newURL);
-    var newHandler = getRouter(newHash);
-    var oldHandler = getRouter(oldHash);
-
-    console.log("旧:", event.oldURL, "新", event.newURL);
-
-
-    if (oldHandler && typeof oldHandler.onexit === "function") {
-        try {
-            oldHandler.onexit();
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    if (newHandler) {
-
-        function pathHtml(handler, html, data) {
-            var container = handler.container || "#app";
-            if (handler.reference && $(container).length === 0) {
-                router({
-                    oldURL: null,
-                    newURL: routeSegmentation + handler.reference,
-                });
-            }
-            $.wait(container, function () {
-                var dom = this;
-                dom.fadeOut(function () {
-                    if (handler.title) {
-                        $("title").html(titlePrefix + " - " + handler.title);
-                    }
-
-                    var htmlDom = $("<div>" + html + "</div>");
-                    var result = handler.onenter(getQueryAsArray(), htmlDom, data);
-                    if (!result) {
-                        dom.html(htmlDom);
-                    }
-                    setTimeout(function () {
-                        if (typeof handler.onrender === "function") {
-                            handler.onrender(getQueryAsArray(), htmlDom, data);
-                        }
-                        mdbAdmin.initComponents(container);
-                    }, 0);
-                    dom.fadeIn();
-                });
-
-            }, true);
-        }
-
-        var dependsDefer = $.Deferred();
-        if (newHandler.depends) {
-
-            request(newHandler.depends, getQueryAsArray(), newHandler.loading).done(function (result) {
-
-                dependsDefer.resolve(result);
-            }).fail(function (result) {
-
-                dependsDefer.resolve(result);
-            });
-        } else {
-            dependsDefer.resolve(null);
-        }
-
-        var htmlDefer = $.Deferred();
-
-        loadHtml(newHash, function (html) {
-            htmlDefer.resolve(html);
-        });
-
-        var libsDefer = $.Deferred();
-
-        if (newHandler.libs) {
-
-            resource.use(newHandler.libs, function () {
-
-                libsDefer.resolve();
-            });
-        } else {
-
-            libsDefer.resolve();
-        }
-
-        var id = null;
-
-        if (newHandler.loading) {
-            id = mdbAdmin.loading.show("body", newHandler.loading);
-        }
-
-        $.when(dependsDefer, htmlDefer, libsDefer, resource.jsAll(newHandler.js), resource.cssAll(newHandler.css)).done(function (result, html) {
-            if (id) mdbAdmin.loading.hide(id);
-            pathHtml(newHandler, html, result);
-        });
-
-
-    }else{
-		go("error");
+	function handleRouting() {
+		log.success(window.location.pathname, "route");
+		if (window.location.pathname === lastHash) return;
+		routerGo({
+			oldURL: lastHash,
+			newURL: window.location.pathname,
+		});
+		lastHash = window.location.pathname;
 	}
-}
 
-function loadHtml(newHash, onload) {
-    var hash = getHash(newHash);
-    var html = sessionStorage.getItem("page_" + hash);
-    if (!window.debug && html) {
-        onload(html);
-    } else {
-        $.get(("pages/" + hash).replace("//", "/"), function (data) {
-            sessionStorage.setItem("page_" + hash, data);
-            onload(data);
-        });
-    }
+	function getQueryParams(searchString) {
+		let params = {};
+		// 移除字符串开头的"?"
+		let queryStr = searchString[0] === "?" ? searchString.substring(1) : searchString;
+		// 分割字符串为键值对数组
+		let queryArr = queryStr.split("&");
+		// 遍历数组，填充params对象
+		queryArr.forEach(function (pair) {
+			let [key, value] = pair.split("=");
+			if (key) { // 确保key非空
+				params[decodeURIComponent(key)] = decodeURIComponent(value || "");
+			}
+		});
+		return params;
+	}
 
-}
+	/**
+	 * 查询提取成数组
+	 * @return {{value: string, key: string}[]|*[]}
+	 */
+	function getQueryAsArray() {
+		var appendArguments = window.appendArguments || {};
+		return Object.assign({}, appendArguments, getQueryParams(location.search));
+	}
 
-/**
- * 添加路由
- * @param {string} path string 路径
- * @param {object} routeObject 路径对象
- */
-function route(path, routeObject) {
-    var object = routeObject || {
-        depends: "",
-        title: "iRead:爱阅读",
-        container: "",
-        onexit: function onexit() {
-        },
-        onrender: function () {
+	function getHash(route) {
+		return route || "";
+	}
 
-        },
-        onenter: function onenter(query, string) {
-        }
-    };
-    object.path = path;
-    routes.push(object);
-}
+	/**
+	 * 获取route handler
+	 * @return {{
+	 *     depends: string,
+	 *     container: string,
+	 *     reference: string,
+	 *     parent: string,
+	 *     title: string,
+	 *     onexit: function,
+	 *     onenter: function(array,string,string),
+	 *   }}
+	 */
+	function getRouter(route) {
+		var routeHandler = null;
+		route = getHash(route);
+		//  window.appendArguments = {};
+		$.each(routes, function (key, value) {
+			if (typeof value.path === "string") {
+				// 普通字符串匹配
+				if (value.path === route) {
+					routeHandler = value;
+					return false;
+				}
+			} else {
+				// 正则表达式匹配
+				var match = route.match(value.path);
+				if (match) {
+					const matches = [...route.matchAll(value.path)];
+					window.appendArguments = matches[0]["groups"];
+					routeHandler = value;
+					return false;
+				}
+			}
+		});
+		return routeHandler;
+	}
 
-function frame(path, routeObject) {
-    var object = routeObject || {
-        depends: "",
-        onexit: function onexit() {
-        },
-        onenter: function onenter(query, string) {
-        }
-    };
-    frames[path] = object;
-}
+	/**
+	 * 从url获取hash
+	 * @param url
+	 * @return {*|string}
+	 */
+	function getHashFromURL(url) {
+		if (!url) return "";
+		var hashIndex = url.indexOf("@");
+		return hashIndex !== -1 ? url.slice(hashIndex + 1) : "";
+	}
+
+	function pathHtml(handler, html, data) {
+		var container = handler.container || "#app";
+		var $container = $(container); // 缓存jQuery对象，避免重复查询DOM
+
+		// 确保容器存在，否则调用路由器
+		if (handler.reference !== undefined && $container.length === 0) {
+			routerGo({
+				oldURL: null,
+				newURL: "/@" + handler.reference,
+			});
+			// return; // 如果容器不存在，后续操作无需执行
+		}
+
+		// 使用 $.wait 自定义函数，这个函数需要检查是否有效
+		$.wait(container, function () {
+			var $dom = $(this); // 与 'dom' 一致但更明确是jQuery对象
+			$dom.fadeOut(function () {
+				if (handler.title) {
+					$("title").html(lang(router.titlePrefix) + " - " + lang(handler.title));
+				}
+
+				var $htmlDom = $("<div>").html(html); // 创建新元素而不是字符串拼接
+				var queryParams = getQueryAsArray();
+
+//此处预检
+				mdbAdmin.autoLoadComponents($htmlDom, function () {
+					var result = handler.onenter(queryParams, $htmlDom, data);
 
 
-function loadFrame(title, url, params, configs, loading) {
-    var frame = frames[url];
-    if (!frame) return;
+					if (!result) {
+						$dom.html($htmlDom.contents()); // 插入HTML内容
+					}
+
+					mdbAdmin.initComponents(container);
+
+					if (typeof handler.onrender === "function") {
+						handler.onrender(queryParams, $htmlDom, data);
+					}
+					$dom.fadeIn();
+					hideLoading();
+				});
 
 
-    var dependsDefer = $.Deferred();
-    if (frame.depends) {
+			});
+		}, true);
+	}
 
 
-        request(frame.depends, params).done(function (result) {
-            dependsDefer.resolve(result);
+	/**
+	 * 进行路由
+	 * @param event
+	 */
+	function routerGo(event) {
+		if (router.ignoreHashChange) {
+			router.ignoreHashChange = false;
+			return;
+		}
+		var oldHash = getHashFromURL(event.oldURL);
+		var newHash = getHashFromURL(event.newURL);
+		var newHandler = getRouter(newHash);
+		var oldHandler = getRouter(oldHash);
 
-        }).fail(function (data) {
-            dependsDefer.reject({
-                code: 500,
-                msg: "服务器错误"
-            });
 
-        });
-    } else {
-        dependsDefer.resolve(null);
-    }
+		if (oldHandler && typeof oldHandler.onexit === "function") {
+			try {
+				oldHandler.onexit();
+			} catch (e) {
+				console.error("退出异常", e);
+			}
+		}
 
-    var htmlDefer = $.Deferred();
+		if (newHandler) {
+			var dependsDefer = $.Deferred();
 
-    loadHtml(url, function (html) {
-        htmlDefer.resolve(html);
-    });
-    var libsDefer = $.Deferred();
+			if (newHandler.depends) {
+				var depends = $.isArray(newHandler.depends) ? newHandler.depends : [newHandler.depends];
+				var wait = depends.map(function (depend) {
+					var defer = $.Deferred();
+					request(depend, getQueryAsArray()).always(function (result) {
+						defer.resolve(result);
+					});
+					return defer;
+				});
 
-    if (frame.libs) {
+				$.when.apply($, wait).done(function () {
+					dependsDefer.resolve(arguments.length === 1 ? arguments[0] : arguments);
+				});
+			} else {
+				dependsDefer.resolve(null);
+			}
 
-        resource.use(frame.libs, function () {
+			var htmlDefer = $.Deferred();
 
-            libsDefer.resolve();
-        });
-    } else {
+			loadHtml(newHandler.page || newHash, function (html) {
+				htmlDefer.resolve(html);
+			});
 
-        libsDefer.resolve();
-    }
-    var id = null;
+			var loadingElem = null;
 
-    if (loading) {
-        id = mdbAdmin.loading.show("body", loading);
-    }
-    $.when(dependsDefer, htmlDefer, libsDefer, resource.jsAll(frame.js), resource.cssAll(frame.css)).done(function (result, html) {
-        if (id) mdbAdmin.loading.hide(id);
+			if (newHandler.loading) {
+				loadingElem = mdbAdmin.loading("body", newHandler.loading);
+			}
 
-        var config = $.extend({}, configs, {
-            title: title,
-            body: html,
-            oncreate: function (dom) {
-                frame.onenter(params, dom, result);
-            },
-            onrender: function (dom, id) {
-                if (typeof frame.onrender === "function") {
-                    frame.onrender(params, dom, result, "#" + id);
-                }
-            },
-            onclose: function (id) {
-                if (typeof frame.onexit === "function") {
-                    try {
-                        frame.onexit();
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            }
-        });
-        mdbAdmin.modal.show(config);
+			var libsDefer = $.Deferred();
 
-    });
+			resourceLoader.use(newHandler, function () {
+				libsDefer.resolve();
+			});
 
-}
+			$.when(dependsDefer, htmlDefer, libsDefer, resourceLoader.jsAll(newHandler.js), resourceLoader.cssAll(newHandler.css)).done(function (result, html) {
+				if (loadingElem) loadingElem.hide();
+				pathHtml(newHandler, html, result);
+			});
+		} else {
+			go("error");
+		}
+	}
+
+	function loadHtml(newHash, onload) {
+
+		var hash = getHash(newHash);
+		var html = sessionStorage.getItem("page_" + hash);
+		if (!window.debug && html) {
+			onload(replaceTplLang(html));
+		} else {
+			if (hash === "") hash = "index";
+			$.ajax({
+				url: "/@static/pages/" + hash + ".html",
+				type: "GET",
+				headers: {"If-Modified-Since": sessionStorage.getItem("page_modify_" + hash)},
+				complete: function (xhr, textStatus) {
+					let data = xhr.responseText;
+					if (xhr.status === 304) {
+						data = sessionStorage.getItem("page_" + hash);
+					} else {
+						var lastModified = xhr.getResponseHeader("Last-Modified");
+						sessionStorage.setItem("page_modify_" + hash, lastModified);
+						sessionStorage.setItem("page_" + hash, data);
+					}
+					onload(replaceTplLang(data));
+
+				},
+			});
+
+		}
+	}
+
+	global.loadFrame = function (title, url, params, configs, loading) {
+		var frame = frames[url];
+		if (!frame) return;
+		var dependsDefer = $.Deferred();
+		if (frame.depends) {
+			request(frame.depends, params).done(function (result) {
+				dependsDefer.resolve(result);
+
+			}).fail(function (data) {
+				dependsDefer.reject({
+					code: 500,
+					msg: "服务器错误"
+				});
+
+			});
+		} else {
+			dependsDefer.resolve(null);
+		}
+
+		var htmlDefer = $.Deferred();
+
+		loadHtml(url, function (html) {
+			htmlDefer.resolve(html);
+		});
+		var libsDefer = $.Deferred();
+
+		if (frame.libs) {
+
+			resourceLoader.use(frame.libs, function () {
+
+				libsDefer.resolve();
+			});
+		} else {
+
+			libsDefer.resolve();
+		}
+		var loadElem = null;
+
+		if (loading) {
+			loadElem = mdbAdmin.loading("body", loading);
+		}
+		$.when(dependsDefer, htmlDefer, libsDefer, resourceLoader.jsAll(frame.js), resourceLoader.cssAll(frame.css)).done(function (result, html) {
+			if (loadElem) loadElem.hide();
+
+
+			var config = $.extend({}, configs, {
+				title: title,
+				body: html,
+				oncreate: function (dom) {
+					frame.onenter(params, dom, result);
+				},
+				onrender: function (dom, id) {
+					if (typeof frame.onrender === "function") {
+						frame.onrender(params, dom, result, "#" + id);
+					}
+				},
+				onclose: function (id) {
+					if (typeof frame.onexit === "function") {
+						try {
+							frame.onexit();
+						} catch (e) {
+							console.error(e);
+						}
+					}
+				}
+			});
+			mdbAdmin.modal.show(config);
+
+		});
+
+	};
+
+	function convertRouteToRegexPattern(route) {
+		if (route.indexOf(":") === -1) {
+			return route;
+		}
+		const variableRegex = /:([a-zA-Z0-9_]+)/g;
+		const regexPattern = route.replace(variableRegex, "(?<$1>[^\/]+)");
+		const escapedPattern = regexPattern.replace(/\//g, "\\/");
+		return new RegExp(escapedPattern, "g");
+	}
+
+	//动态注册路由
+	global.route = function (path, routeObject) {
+		routeObject.path = convertRouteToRegexPattern(path);
+		routes.push(routeObject);
+	};
+	global.frame = function (path, routeObject) {
+		frames[path] = routeObject;
+	};
+	global.go = function (path, params) {
+		var query = params ? "?" + $.param(params) : "";
+		window.history.pushState({}, "", "/@" + path + query);
+		handleRouting();
+	};
+
+
+	global.router = {
+		titlePrefix: "Ankioの用户中心",
+		ignoreHashChange: false,
+		init: function () {
+			window.addEventListener("popstate", handleRouting);
+			handleRouting();
+		},
+		reload: function () {
+			routerGo({
+				oldURL: lastHash,
+				newURL: window.location.pathname,
+			});
+		}
+	};
+})(window, document, jQuery);

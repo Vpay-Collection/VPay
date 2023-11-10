@@ -20,10 +20,11 @@
     transition: opacity 0.5s ease;
 }
 
-#loadingOverlay p{
+#loadingOverlay p {
     margin-block-start: 9em;
     margin-block-end: 1em;
 }
+
 @keyframes rotate {
     0% {
         transform: rotate(0);
@@ -79,13 +80,62 @@
     }
 }
 
-#loadingOverlay figure { position: absolute; margin: auto; inset: 0; width: 6.25em; height: 6.25em; animation: 2.4s linear 0s infinite normal none running rotate; }
-#loadingOverlay .white { inset: 0; background: white; animation: 2.4s linear 0s infinite normal none running flash; opacity: 0; }
-#loadingOverlay .dot { position: absolute; margin: auto; width: 2.4em; height: 2.4em; border-radius: 100%; transition: all 1s ease 0s; }
-#loadingOverlay .dot:nth-child(2) { top: 0; bottom: 0; left: 0; background: rgb(255, 68, 68); animation: 2.4s linear 0s infinite normal none running dotsY; }
-#loadingOverlay .dot:nth-child(3) { left: 0; right: 0; top: 0; background: rgb(255, 187, 51); animation: 2.4s linear 0s infinite normal none running dotsX; }
-#loadingOverlay .dot:nth-child(4) { top: 0; bottom: 0; right: 0; background: rgb(153, 204, 0); animation: 2.4s linear 0s infinite normal none running dotsY; }
-#loadingOverlay .dot:nth-child(5) { left: 0; right: 0; bottom: 0; background: rgb(51, 181, 229); animation: 2.4s linear 0s infinite normal none running dotsX; }
+#loadingOverlay figure {
+    position: absolute;
+    margin: auto;
+    inset: 0;
+    width: 6.25em;
+    height: 6.25em;
+    animation: 2.4s linear 0s infinite normal none running rotate;
+}
+
+#loadingOverlay .white {
+    inset: 0;
+    background: white;
+    animation: 2.4s linear 0s infinite normal none running flash;
+    opacity: 0;
+}
+
+#loadingOverlay .dot {
+    position: absolute;
+    margin: auto;
+    width: 2.4em;
+    height: 2.4em;
+    border-radius: 100%;
+    transition: all 1s ease 0s;
+}
+
+#loadingOverlay .dot:nth-child(2) {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: rgb(255, 68, 68);
+    animation: 2.4s linear 0s infinite normal none running dotsY;
+}
+
+#loadingOverlay .dot:nth-child(3) {
+    left: 0;
+    right: 0;
+    top: 0;
+    background: rgb(255, 187, 51);
+    animation: 2.4s linear 0s infinite normal none running dotsX;
+}
+
+#loadingOverlay .dot:nth-child(4) {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgb(153, 204, 0);
+    animation: 2.4s linear 0s infinite normal none running dotsY;
+}
+
+#loadingOverlay .dot:nth-child(5) {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(51, 181, 229);
+    animation: 2.4s linear 0s infinite normal none running dotsX;
+}
 
 @keyframes spin {
     0% {
@@ -106,68 +156,153 @@
 }
 
 
-
 td {
     vertical-align: middle;
 }
 
 
-
-.clipboard{
+.clipboard {
     cursor: pointer;
 }
-.ps__rail-y{
-    display: none!important;
+
+.ps__rail-y {
+    display: none !important;
 }
 
-.ankio-loading{
+.ankio-loading {
     opacity: 1;
     transition: opacity 0.5s ease;
 }
 
-body{
+body {
     background-color: #151718;
 }
-.card,.card-footer, .card-header{
-    background-color:#212425!important;
+
+.card, .card-footer, .card-header {
+    background-color: #212425 !important;
 }
 
-#main-navbar,.sidenav  {
-    background-color: #1b1d1e;
-    color: #f6f9fc;
-}
 
 @media (prefers-color-scheme: light) {
-    .sidenav-link.active{
+    .sidenav-link.active {
         background-color: var(--mdb-sidenav-link-active-focus-background-color);
-        color: var(--mdb-sidenav-link-active-color)!important;
+        color: var(--mdb-sidenav-link-active-color) !important;
     }
-    .fixed-cell{
-        background-color: #fafafa!important;
+
+    .fixed-cell {
+        background-color: #fafafa !important;
     }
-    body{
+
+    body {
         background-color: white;
     }
-    .card,.card-footer, .card-header {
-        background-color: #f8f9fa!important;
+
+    .card, .card-footer, .card-header {
+        background-color: #f8f9fa !important;
 
     }
-    #main-navbar,.sidenav  {
+
+    #main-navbar, .sidenav {
         background-color: #f6f9fc;
         color: #151718
     }
 
 }
 
+/* 默认的滚动条样式（明亮/白天模式） */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;
+}
+
+.sidenav-link {
+    width: 100%;
+}
+
+.sidenav-collapse .sidenav-link {
+    display: flex;
+}
+
+.file-upload-remove-file-btn {
+    position: absolute;
+}
+
 @media (prefers-color-scheme: dark) {
-    .sidenav-backdrop{
+    .sidenav-backdrop {
         --mdb-sidenav-backdrop-background-color: rgb(0 0 0 / 51%);
     }
+
     .list-group-item {
-        color:  #f6f9fc;
+        color: #f6f9fc;
     }
-    .fixed-cell{
-        background-color: #424242!important
+
+    .fixed-cell {
+        background-color: #424242 !important
+    }
+
+    #main-navbar, .sidenav {
+        background-color: #1b1d1e !important;
+        color: #f6f9fc;
+    }
+
+    .datatable-inner, .datatable table {
+        background: rgb(66, 66, 66) !important;
+        color: #fff;
+        border-color: hsla(0, 0%, 100%, .12);
+    }
+
+    .datatable.datatable-striped tbody tr:nth-of-type(odd) {
+        color: #fff;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        background-color: #2e2e2e;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #383838;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #555;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #6e6e6e;
+    }
+
+    .pagination {
+        --mdb-pagination-color: #e0e0e0; /* 更亮的字体颜色以提高可读性 */
+        --mdb-pagination-bg: #333; /* 暗背景色 */
+        --mdb-pagination-border-color: #444; /* 暗边框颜色 */
+        --mdb-pagination-hover-color: #fff;
+        --mdb-pagination-hover-bg: #555; /* 深灰色悬停背景 */
+        --mdb-pagination-hover-border-color: #666;
+        --mdb-pagination-focus-color: #fff;
+        --mdb-pagination-focus-bg: #444; /* 深色背景上的聚焦效果 */
+        --mdb-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(59, 113, 202, 0.9);
+        --mdb-pagination-active-color: #fff;
+        --mdb-pagination-active-bg: #285192; /* 保持活动状态下的颜色不变 */
+        --mdb-pagination-active-border-color: #285192;
+        --mdb-pagination-disabled-color: #555; /* 更深的字体颜色表示禁用状态 */
+        --mdb-pagination-disabled-bg: #333; /* 与普通背景相同的禁用状态背景 */
+        --mdb-pagination-disabled-border-color: #444;
     }
 }
 

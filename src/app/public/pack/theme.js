@@ -1,80 +1,74 @@
+// 添加版权声明
 /*
- * Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
+ * Copyright (c) 2023. Ankio. 由CleanPHP4强力驱动。
  */
+
+// 使用 jQuery 轮询等待函数
 $.extend($, {
-    wait: function (selector, callback, noHide, interval, maxAttempts) {
-        noHide = noHide || false;
+	wait: function (selector, callback) {
+		var interval = 100; // 默认轮询间隔为100毫秒
+		var maxAttempts = 200; // 默认最大尝试次数为50
+		var attempts = 0;
 
-        interval = interval || 100; // 默认轮询间隔为100毫秒
-        maxAttempts = maxAttempts || 1000; // 默认最大轮询次数为10次
-        var attempts = 0;
+		var timer = setInterval(function () {
+			var $elements = $(selector);
+			if ($elements.length) {
+				clearInterval(timer);
+				callback.call($elements);
+			}
+			if (++attempts >= maxAttempts) {
+				clearInterval(timer);
+			}
+		}, interval);
+	},
+	uuid: function () {
+		function s4() {
+			return Math.floor((1 + Math.random()) * 0x10000)
+				.toString(16)
+				.substring(1);
+		}
 
-
-        function check() {
-            var item = $(selector);
-            if (item.length) {
-                if ((noHide && item.css("display") !== "none") || !noHide) {
-                    clearInterval(timer);
-                    callback.call(item); // 执行回调并将 Zepto 元素作为上下文
-                }
-            }
-            attempts++;
-            if (attempts >= maxAttempts) {
-                clearInterval(timer);
-            }
-
-        }
-
-        var timer = setInterval(check, interval);
-        check();
-        return this; // 返回 Zepto 元素以支持链式调用
-    },
+		// 添加字符前缀确保UUID不以数字开头
+		return "a" + s4() + s4() + s4();
+	}
 });
 
-function resetTheme() {
-    if ((window.matchMedia('(prefers-color-scheme: dark)')).matches) {
-        document.querySelectorAll('[class*="-light"]').forEach(function (k) {
+// 主题切换函数，使用 jQuery
+function switchTheme(isDark) {
+	var suffix = isDark ? "-dark" : "-light";
+	var style_suffix = isDark ? ".dark" : "";
+	var style = "/@static/mdb/css/mdb" + style_suffix + ".min.css";
+	var theme = $("#theme-link");
+	if (theme.attr("href") !== style) {
+		theme.attr("href", style);
+	}
 
-            k.classList.forEach(function (cls) {
-                if (cls.includes('-light')) {
-                    var newCls = cls.replace('-light', '-dark');
-                    k.classList.replace(cls, newCls);
-                }
-            });
-        });
-    } else {
-        document.querySelectorAll('[class*="-dark"]').forEach(function (k) {
-            k.classList.forEach(function (cls) {
-                if (cls.includes('-dark')) {
-                    var newCls = cls.replace('-dark', '-light');
-                    k.classList.replace(cls, newCls);
-                }
-            });
-        });
-    }
+	$("*[class*=\"" + (isDark ? "-light" : "-dark") + "\"]").each(function () {
+		var $this = $(this);
+		var classList = $this.attr("class").split(/\s+/);
+		$.each(classList, function (index, className) {
+			if (className.indexOf(suffix) === -1) {
+				$this.removeClass(className).addClass(className.replace(isDark ? "-light" : "-dark", suffix));
+			}
+		});
+	});
+
 }
 
-function onChange(e) {
-    const themeLink = document.getElementById('theme-link');
-    resetTheme();
-    if (e.matches) {
-        themeLink.href = "mdb/css/mdb.dark.min.css";
-    } else {
-        themeLink.href = "mdb/css/mdb.min.css";
-    }
-    document.cookie = "theme=" + (e.matches ? "dark" : "light") + "; path=/; max-age=" + 365 * 24 * 60 * 60;
-}
+// 监听系统主题变化并应用到页面
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (e) {
+	switchTheme(e.matches);
+});
 
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onChange);
-
-onChange(window.matchMedia('(prefers-color-scheme: dark)'));
-resetTheme();
-
+// 使用 jQuery 隐藏加载提示
 function hideLoading() {
-    document.getElementById('loadingOverlay').style.opacity = "0";
-    setTimeout(function () {
-        document.getElementById('loadingOverlay').style.display = "none";
-    }, 500);
+	$("#loadingOverlay").fadeTo(500, 0, function () {
+		$(this).remove();
+	});
 }
 
+function resetTheme() {
+	switchTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+}
 
+resetTheme();
