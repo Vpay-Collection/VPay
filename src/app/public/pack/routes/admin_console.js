@@ -26,16 +26,17 @@ route("admin/console/index", {
 
        var html = "";
        $.each(result.data.payments,function (k,order) {
+           console.log(order);
            html+=`
           <tr>
                                 <td>${order['app_name']}</td>
                                 <td>${order['app_item']}</td>
-                                <td>￥${order['real_price']}</td>
+                                <td>￥${order['price']}</td>
                                 <td>${mdbAdmin.dateFormat("yyyy-MM-dd hh:mm:ss",order['pay_time'])}</td>
                             </tr>
            `;
        });
-       dom.find("tbody").html(html);
+       $("tbody").html(html);
     },
     onexit: function () {
         if(this.chartInstance){
