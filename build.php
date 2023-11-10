@@ -16,28 +16,27 @@ include "src/cleanphp/release/js/ParseMaster.php";
 include "src/cleanphp/release/js/JavascriptPacker.php";
 include "src/cleanphp/release/js/CompressJs.php";
 const APP_DIR = __DIR__.DIRECTORY_SEPARATOR."src";
- function compress(): void
+function compress(): void
 {
     $dir = APP_DIR . "/app";
     $file = $dir . "/public/app.min.js";
     $array = [
+
+
         "/public/pack/jquery.min.js",
+        "/public/pack/log.js",
         "/public/mdb/js/mdb.min.js",
         "/public/pack/theme.js",
-        "/public/pack/mdbAdminPlugins.js",
         "/public/pack/mdbAdmin.js",
-        "/public/pack/loading.js",
+
         "/public/pack/form.js",
         "/public/pack/requests.js",
-        "/public/pack/toast.js",
-        "/public/pack/alert.js",
-        "/public/pack/modal.js",
         "/public/pack/resource.js",
-        "/public/pack/log.js",
-        "/public/pack/route.js",
+        "/public/pack/lang.js",
+
     ];
 
-
+    $array[] =  "/public/pack/route.js";
     foreach (scandir($dir . "/public/pack/routes") as $item) {
         if (str_starts_with($item, ".")) {
             continue;
@@ -57,7 +56,7 @@ const APP_DIR = __DIR__.DIRECTORY_SEPARATOR."src";
 
 }
 
- function combineFilesStream($dir, $files, $outputPath): void
+function combineFilesStream($dir, $files, $outputPath): void
 {
 
 

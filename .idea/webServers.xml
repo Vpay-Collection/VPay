@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="391e2d72-edd4-44b4-82e4-4253dc4a9073" name="本地服务器" url="http://10.211.55.47">
-        <fileTransfer host="10.211.55.47" port="21">
+      <webServer id="391e2d72-edd4-44b4-82e4-4253dc4a9073" name="本地服务器" url="http://home.ankio.top">
+        <fileTransfer host="home.ankio.top" port="21">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" keepAliveCommand="CWD" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" showHiddenFiles="true" isUseRsync="true" />
+            <advancedOptions dataProtectionLevel="Private" keepAliveCommand="CWD" keepAliveTimeout="0" shareSSLContext="true" showHiddenFiles="true" isUseRsync="true" />
           </advancedOptions>
         </fileTransfer>
       </webServer>
