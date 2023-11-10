@@ -90,7 +90,7 @@
   "transformers": [
     {
       "pattern": "(.+): (.+)",
-      "target": "$2"
+      "target": "- **$2"
     }
   ],
   "duplicate_filter": {
