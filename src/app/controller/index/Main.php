@@ -18,6 +18,7 @@ use app\database\dao\FileDao;
 use app\database\dao\OrderDao;
 use cleanphp\base\Config;
 use cleanphp\base\Controller;
+use library\login\LoginManager;
 
 
 class Main extends Controller
@@ -60,6 +61,16 @@ EOF;
             "price"=>$order->price,
             "create_time"=>date("Y-m-d H:i:s",$order->create_time),
             "start"=>time()
+        ]);
+
+    }
+
+    function config()
+    {
+        return $this->render(200, null, [
+            "languages" => [],
+            "language" => '',
+            "login" => LoginManager::init()->isLogin()
         ]);
 
     }
