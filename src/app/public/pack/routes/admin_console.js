@@ -1,12 +1,11 @@
 route("admin/console/index", {
     depends:"admin/main/console",
-    reference:"/",
+    reference:"",
     container:"#container",
     title: "控制台",
     chartInstance:null,
     onenter: function (query, dom,result) {
-       var html = dom.html().replace("[today_price]",result.data.today_price).replace("[total_price]",result.data.total_price);
-       dom.html(html);
+       replaceTpl(dom,result.data);
     },
     onrender: function (query, dom,result) {
 
