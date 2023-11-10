@@ -5,9 +5,12 @@ route("pay", {
      heartInstance2 : null,
     onenter: function (query, dom,result) {
         if(result.code!==200){
+            sessionStorage.setItem("error",result.msg);
             go("error");
             return true;
         }
+
+        replaceTpl(dom,result.data);
 
     },
     onrender: function (query, dom,result) {
@@ -34,7 +37,7 @@ route("pay", {
 
         function isPay() {
             /* jshint undef: false */
-            $.post("/api/pay/payState", {}, function (data) {
+            $.post("/api/pay/payState", {order_id:query.id}, function (data) {
                 if (data.code === 200) {
                     switch (data.data.state) {
                         case -1:
@@ -54,15 +57,44 @@ route("pay", {
 
 
         }
-
         that.heartInstance = setInterval(isPay, 2000);
         that.heartInstance2 = setInterval(function () {
-            $("#time").text(startCountdown(result.data.start, result.data.timeout));
+            try{
+                $("#time").text(startCountdown(result.data.start, result.data.timeout));
+            }catch (e) {
+                clearInterval(that.heartInstance);
+                clearInterval(that.heartInstance2);
+            }
+
         }, 1000);
+
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            // Check for iOS and Android devices
+            return /android/i.test(userAgent) || /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+        }
+        if(isMobileDevice()){
+            function extractUrlFromQueryString(fullUrl) {
+                // Create a URL object
+                const urlObj = new URL(fullUrl);
+
+                // Get the 'url' query parameter
+                const encodedUrl = urlObj.searchParams.get("url");
+
+                // Decode the URL
+                return decodeURIComponent(encodedUrl);
+            }
+            try{
+                window.open("alipays://platformapi/startapp?saId=10000007&qrcode="+extractUrlFromQueryString(result.data.image));
+            }catch (e) {
+                
+            }
+        }
+        //https://qr.alipay.com/bax04959iz6vrgvvt3fq30f6
 
     },
     onexit: function () {
-        clearInterval(that.heartInstance);
-        clearInterval(that.heartInstance2);
+        clearInterval(this.heartInstance);
+        clearInterval(this.heartInstance2);
     },
 });

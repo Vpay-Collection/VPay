@@ -35,7 +35,7 @@ class OrderDao extends Dao
      */
     public function closeTimeoutOrder(): void
     {
-        $close_time = Config::getConfig("app")['timeout'];
+        $close_time = Config::getConfig("alipay")['validity_minute'];
         $close_time = time()  - 60 * $close_time;//计算订单关闭时间
         $close_date = time();
         $this->update()

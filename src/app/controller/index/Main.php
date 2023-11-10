@@ -55,12 +55,13 @@ EOF;
         return $this->render(200,null,[
             "app_image"=>$app->app_image,
             "app_name"=>$app->app_name,
+            "app_item"=>$order->app_item,
             "image"=>$order->pay_image,
             "timeout"=>Config::getConfig("alipay")["validity_minute"],
             "mail"=>Config::getConfig("notice")["admin"],
             "price"=>$order->price,
             "create_time"=>date("Y-m-d H:i:s",$order->create_time),
-            "start"=>time()
+            "start"=>$order->create_time
         ]);
 
     }

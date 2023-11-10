@@ -35,6 +35,7 @@ class Requests {
 				} else if (data.code === 200) {
 					defer.resolve(data);
 				} else {
+
 					if (data.msg) {
 						mdbAdmin.toast.error(data.msg);
 					}

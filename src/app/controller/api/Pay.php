@@ -54,7 +54,7 @@ class Pay extends BaseController
         }
         $return = [
             'order_id' => $order->order_id,
-            'url' => Request::getAddress()."#!pay?id=".$order->order_id,
+            'url' => Request::getAddress()."/@pay?id=".$order->order_id,
             'pay_image' => $order->pay_image,
             'create_time' => $order->create_time,
             'app_item' => $order->app_item,

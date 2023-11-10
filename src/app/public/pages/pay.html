@@ -4,16 +4,16 @@
 
 <header>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container container-fluid justify-content-between align-items-center">
             <a href="/" class="text-reset">
                 <div class="d-flex align-items-center mb-sm-0 mb-xm-2">
 
                     <div class="col-auto me-3">
-                        <img src="[app_image]" height="35"/>
+                        <img src="" data-name="app_image" height="35"/>
                     </div>
                     <div class="col d-none d-lg-block me-3">
-                        <h5 class="m-0">[app_name]收银台</h5>
+                        <h5 class="m-0"><span data-name="app_name"></span>收银台</h5>
                     </div>
 
                 </div>
@@ -42,20 +42,20 @@
         <div class="row">
             <div class="col-lg-7 pe-lg-4 mb-5 mb-lg-0">
                 <div class="card p-4">
-                    <h4 class="mb-4">
-                        [pay_type]
+                    <h4 class="mb-4" data-name="pay_type">
+
                     </h4>
                     <div class="text-center">
-                        <p class="h4 mb-1 text-danger wait-pay">[price]</p>
-                        <img class="wait-pay" src="[image]"
+                        <p class="h4 mb-3 text-primary wait-pay " >支付宝扫码支付</p>
+                        <img class="wait-pay mb-2" src="" data-name="image"
                         style="max-width: 200px" alt="支付码">
                         <div id="time" class="mb-3 wait-pay display-2 text-muted">
                             00:00
                         </div>
                         <div>
-                            <div class="alert" role="alert" data-mdb-color="danger">
-                                <br>如有疑问，请发邮件联系<a
-                                    href="mailto:[mail]">[mail]</a>。
+                            <div class="alert" role="alert" data-mdb-color="info">
+                              如有疑问，请发邮件联系<a
+                                    data-name="mail"></a>。
                             </div>
                         </div>
                     </div>
@@ -78,9 +78,9 @@
                                     <p class="h6 pt-1 mb-1">创建时间</p>
                                 </div>
                                 <div>
-                                    <p class="h6 pt-1 mb-1">[app_item]</p>
-                                    <p class="h6 pt-1 mb-1 text-danger">￥[price]</p>
-                                    <p class="h6 pt-1 text-muted mb-1">[create_time]</p>
+                                    <p class="h6 pt-1 mb-1" data-name="app_item"></p>
+                                    <p class="h6 pt-1 mb-1 text-danger">￥<span data-name="price"></span></p>
+                                    <p class="h6 pt-1 text-muted mb-1" data-name="create_time"></p>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <h4>总计</h4>
-                                <h4>￥[price]</h4>
+                                <h4>￥<span data-name="price"></span></h4>
                             </div>
                         </div>
                     </div>
