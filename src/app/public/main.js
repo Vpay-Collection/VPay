@@ -1,13 +1,9 @@
-$(window).on("hashchange", router);
-var loadingIndex = 19999999;
-router({
-    oldURL: null,
-    newURL: location.href,
-});
-function replaceTpl(dom,data) {
-    $.each(data,function (k,value) {
-        dom.find("[data-name='"+k+"']").text(value);
+router.init();
+router.titlePrefix = "Vpay";
+
+//进行路由
+function replaceTpl(dom, data) {
+    $.each(data, function (k, value) {
+        dom.find("[data-name='" + k + "']").text(value).attr("src", value);
     });
 }
-
-titlePrefix = "Vpayの个人收款平台";

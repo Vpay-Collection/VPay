@@ -12,7 +12,8 @@ route("install", {
         if(result.data.docker){
             dom.find("#isDocker").hide();
         }
-        
+
+        replaceTpl(dom,result.data);
     },
     onrender: function (query, dom, result) {
         form.submit("form",function (data) {

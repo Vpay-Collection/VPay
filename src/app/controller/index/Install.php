@@ -38,6 +38,7 @@ class Install extends Controller
         return $this->render(200, null, [
             'install' => $install,
             'docker' => $this->isDocker(),
+            'build'=> 'Version '.Config::getConfig('frame')['version']
         ]);
     }
 
