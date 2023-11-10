@@ -35,7 +35,8 @@ var form = {
 						$element.val(value);
 						if ($element.is("select")) {
 							mdb.Select.getOrCreateInstance($element.get(0)).setValue(value);
-
+						}else{
+							mdb.Input.getOrCreateInstance($element.parent().get(0)).update();
 						}
 					}
 				} else if (name.startsWith("wysiwyg-textarea")) {

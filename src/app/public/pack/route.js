@@ -125,13 +125,13 @@
 						$dom.html($htmlDom.contents()); // 插入HTML内容
 					}
 
-					mdbAdmin.initComponents(container);
-
-					if (typeof handler.onrender === "function") {
-						handler.onrender(queryParams, $htmlDom, data);
-					}
-					$dom.fadeIn();
-					hideLoading();
+					mdbAdmin.initComponents(container,function () {
+						$dom.fadeIn();
+						if (typeof handler.onrender === "function") {
+							handler.onrender(queryParams, $htmlDom, data);
+						}
+						hideLoading();
+					});
 				});
 
 

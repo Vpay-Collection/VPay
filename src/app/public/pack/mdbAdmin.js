@@ -348,9 +348,7 @@
 									console.log(data);
 								}
 								vv["function_" + raw] = true;
-								if ($.isFunction(onInitSuccess)) {
-									onInitSuccess();
-								}
+
 							} catch (e) {
 								log.danger(e, "组件初始化异常");
 								console.log(e);
@@ -375,7 +373,9 @@
 
 
 			resetTheme();
-
+			if ($.isFunction(onInitSuccess)) {
+				onInitSuccess();
+			}
 		},
 		modal: {
 			position: {
