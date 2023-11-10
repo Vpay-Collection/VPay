@@ -8,9 +8,9 @@ route("login", {
         });
 
         dom.find('#title').text("Vpay后台管理");
-        request("/ankio/login/islogin",{},null).done(function (data) {
+        request("ankio/login/islogin",{},null).done(function (data) {
             if(data.code===200){
-                go("/");
+                go("");
             }
         });
     },
@@ -22,17 +22,17 @@ route("login", {
         });
 
         $("#submit_captcha").off().on("click", function () {
-            request("/ankio/login/key",{},"加密中...",false).done(function (d) {
+            request("ankio/login/key",{},"加密中...",false).done(function (d) {
                 const encrypt = new JSEncrypt();
                 encrypt.setPublicKey(d.data);
                 var passwd = $("input[name=password]").val();
                 passwd = encrypt.encrypt(passwd);
-              request("/ankio/login/login",{
+              request("ankio/login/login",{
                     'code': $("#captcha_code").val(),
                     'username': $("input[name=username]").val(),
                     'password': passwd,
                 },"登录中...",false).done(function (d) {
-                   go("/");
+                   go("");
                 });
 
             });
