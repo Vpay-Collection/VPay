@@ -1,46 +1,95 @@
 {
-  "categories": [
+  "categories":[
     {
-      "title": "## 🚀 Features",
-      "labels": ["feat","feats"]
+      "title": "## 🐛 Bug Fixes",
+      "labels": [":bug:", ":ambulance:", ":lock:", ":adhesive_bandage:"]
     },
     {
-      "title": "## \uD83C\uDF1F Optimizes",
-      "labels": ["pref"]
+      "title": "## ✨ New Features",
+      "labels": [":sparkles:", ":tada:", ":children_crossing:", ":iphone:"]
     },
     {
-      "title": "## 🐛 Fixes",
-      "labels": ["bug","fix"]
+      "title": "## ⚡️ Performance Improvements",
+      "labels": [":zap:"]
     },
     {
-      "title": "## 🧪 Tests",
-      "labels": ["🧪","test","tests"]
+      "title": "## 📝 Documentation",
+      "labels": [":memo:", ":bulb:"]
     },
     {
-      "title": "## 💬 Other",
-      "labels": ["💬",  "🚨","other"]
+      "title": "## 🧹 Code Cleanup",
+      "labels": [":fire:", ":recycle:", ":wastebasket:", ":poop:"]
     },
     {
-      "title": "## \uD83D\uDCD6 Docs",
-      "labels": ["doc","docs"]
+      "title": "## 🚀 Deployment",
+      "labels": [":rocket:"]
     },
     {
-      "title": "## 📦 Dependencies",
-      "labels": ["dependencies","deps"]
+      "title": "## 🔧 Configuration",
+      "labels": [":wrench:"]
+    },
+    {
+      "title": "## 📦 Dependency Updates",
+      "labels": [":arrow_down:", ":arrow_up:", ":pushpin:", ":heavy_plus_sign:", ":heavy_minus_sign:"]
+    },
+    {
+      "title": "## 🔀 Merging",
+      "labels": [":twisted_rightwards_arrows:"]
+    },
+    {
+      "title": "## 🌐 Internationalization",
+      "labels": [":globe_with_meridians:"]
+    },
+    {
+      "title": "## 🚧 WIP",
+      "labels": [":construction:"]
+    },
+    {
+      "title": "## 📈 Analytics and Tracking",
+      "labels": [":chart_with_upwards_trend:", ":loud_sound:", ":mute:"]
+    },
+    {
+      "title": "## 💄 UI/UX",
+      "labels": [":lipstick:"]
+    },
+    {
+      "title": "## ♻️ Refactoring",
+      "labels": [":recycle:", ":hammer:"]
+    },
+    {
+      "title": "## ✅ Testing",
+      "labels": [":white_check_mark:", ":test_tube:"]
+    },
+    {
+      "title": "## 🏗️ Architectural Changes",
+      "labels": [":building_construction:", ":bricks:"]
+    },
+    {
+      "title": "## 🗃️ Database",
+      "labels": [":card_file_box:"]
+    },
+    {
+      "title": "## 🚸 UX/UI Improvements",
+      "labels": [":art:", ":iphone:"]
+    },
+    {
+      "title": "## 📱 Responsive Design",
+      "labels": [":iphone:"]
     }
-  ],
+  ]
+,
   "template": "${{CHANGELOG}}",
   "pr_template": "- **${{TITLE}}**",
   "label_extractor": [
     {
-      "pattern": "(\\w+):(.+)",
+      "pattern": "(.+) (.+)",
       "target": "$1",
       "on_property": "title"
     }
   ],
   "transformers": [
     {
-      "pattern": "(\\w+):(.+)",
+      "pattern": "(.+) (.+)",
       "target": "$2"
     }
   ],
