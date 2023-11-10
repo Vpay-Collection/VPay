@@ -11,7 +11,7 @@
  * Description :
  */
 
-namespace app\controller\api_index;
+namespace app\controller\index;
 
 use app\database\dao\AppDao;
 use app\database\dao\FileDao;

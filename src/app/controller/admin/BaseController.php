@@ -12,7 +12,7 @@
  * Description :
  */
 
-namespace app\controller\api_admin;
+namespace app\controller\admin;
 
 use cleanphp\base\Controller;
 use cleanphp\base\Variables;

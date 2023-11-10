@@ -12,7 +12,7 @@
  * Description :
  */
 
-namespace app\controller\api_admin;
+namespace app\controller\admin;
 
 use app\database\dao\FileDao;
 use library\login\LoginManager;

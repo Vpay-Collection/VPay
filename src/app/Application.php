@@ -42,18 +42,8 @@ class Application implements MainApp
     function onRequestArrive(): void
     {
 
-        if (str_starts_with(Variables::get("__request_module__"),"api")) {
-            EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
+        EngineManager::setDefaultEngine(new JsonEngine(["code" => 0, "msg" => "OK", "data" => null, "count" => 0]));
 
-        }
-
-        if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
-            App::exit(EngineManager::getEngine()->render(302,"install","#!install"),true);
-        }
-
-        if(!TaskerManager::has("Github更新检测")){
-            TaskerManager::add(TaskerTime::day(12,00),GithubUpdater::init("Vpay-Collection/Vpay"),"Github更新检测",-1);
-        }
 
     }
 
@@ -80,25 +70,22 @@ class Application implements MainApp
 
     function onFrameworkStart(): void
     {
-        Session::getInstance()->start();//会话有效即可
-        $this->renderStatic();
+        if (empty(Cache::init(0,Variables::getCachePath('cleanphp',DS))->get("install.lock")) && Variables::get("__request_controller__") !== "install") {
+            App::exit(EngineManager::getEngine()->render(302,"install","/@install"),true);
+        }
+        //会话有效期持续7天
+        Session::getInstance()->start();
+
+        $uriWithoutQuery = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        if(in_array($uriWithoutQuery,['','/'])){
+            Response::location("/@");
+        }
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
             $data = ["code" => $data['code'], "msg" => $data['msg'], "data" => $data['data']];
         });
-        //渲染view
-        EventManager::addListener('__view_render_msg__', function (string $event, &$data) {
-            $render_data = $data['data'];
 
-            $data['tpl'] = EngineManager::getEngine()
-                ->setLayout(null)
-                ->setTplDir(Variables::getViewPath('error'))
-                ->setEncode(false)
-                ->setArray($render_data)
-                ->render('error');
-
-
-        });
     }
 
     function onRequestEnd(): void

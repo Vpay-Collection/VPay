@@ -11,7 +11,7 @@
  * Description :
  */
 
-namespace app\controller\api_index;
+namespace app\controller\index;
 
 use cleanphp\base\Config;
 use cleanphp\base\Controller;

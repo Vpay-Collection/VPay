@@ -12,7 +12,7 @@
  * Description :
  */
 
-namespace app\controller\api_admin;
+namespace app\controller\admin;
 
 use app\objects\config\NoticeConfig;
 use app\task\DailyTasker;

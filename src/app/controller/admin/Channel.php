@@ -12,7 +12,7 @@
  * Description :
  */
 
-namespace app\controller\api_admin;
+namespace app\controller\admin;
 
 
 
