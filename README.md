@@ -52,15 +52,31 @@ if ($uri ~* "^(.*)\.php$") {
 location @cleanphp {
     rewrite ^ /cleanphp/bootstrap.php last;
 }
-
-location ~* ^\/clean_static\/(.*)$ {
+location ~* ^\/@static(.*)$ {
     if_modified_since before;
-    try_files /app/public/$1 @cleanphp;
+       expires 30d;
+        access_log off;
+        add_header Cache-Control "public";
+
+    try_files /app/public$1 /app/public/$1 /app/public$1/index.html /app/public/index.html =404 last;
 }
+location ~* ^\/@(.*)$ {
+  if_modified_since before;
+       expires 30d;
+        access_log off;
+        add_header Cache-Control "public";
+    try_files /app/public$1 /app/public/$1 /app/public$1/index.html /app/public/$1/index.html  /app/public/index.html last;
+}
+
 
 location / {
-    try_files /app/storage/public/$uri @cleanphp;
+ if_modified_since before;
+       expires 30d;
+        access_log off;
+        add_header Cache-Control "public";
+     try_files /app/public/$uri  @cleanphp;
 }
+
 
 
 ```
