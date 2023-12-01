@@ -57,7 +57,8 @@ class FileDao extends Dao
          */
         $file = $this->find(null, ['name' => $filename]);
         if (!empty($file)) {
-            $file->count = 1;
+            if ($file->count < 0) $file->count = 0;
+            $file->count += 1;
             $this->updateModel($file);
         }
 
@@ -80,7 +81,7 @@ class FileDao extends Dao
          */
         $file = $this->find(null, ['name' => $filename]);
         if (!empty($file)) {
-            $file->count = 0;
+            $file->count -= 1;
             $this->updateModel($file);
         }
     }
@@ -96,14 +97,15 @@ class FileDao extends Dao
     private function clearNoUsage(): void
     {
         //超过24小时清理门户
-        $data_1 = $this->select("path")->where(["count" => 0, "date < " . strtotime("-1 days")])->commit();
-        $data_2 = $this->select("path")->where(['timeout < ' . time(), 'timeout<>0'])->commit();
+        $data_1 = $this->select("path", "id")->where(["count" => 0, "date < " . strtotime("-1 days")])->commit(false);
+        $data_2 = $this->select("path", "id")->where(['timeout < ' . time(), 'timeout<>0'])->commit(false);
+
         /**
          * @var $item FileModel
          */
         foreach (array_merge($data_1, $data_2) as $item) {
-            File::del($item->path);
-            $this->delete()->where(['id' => $item->id]);
+            File::del($item['path']);
+            $this->delete()->where(['id' => $item['id']])->commit();
         }
     }
 
@@ -112,7 +114,7 @@ class FileDao extends Dao
         return $this->select()->where(['link' => $link])->commit();
     }
 
-    function addExistFile($filename, $timeout = 0, $link = "")
+    function addExistFile($filename, $timeout = 0, $link = ""): string
     {
         $this->clearNoUsage();
         $model = new FileModel();
@@ -122,16 +124,47 @@ class FileDao extends Dao
 
         $model->path = Variables::getStoragePath('uploads', $filename);
         File::mkDir(Variables::getStoragePath('uploads'));
+        return $this->insertFile($model, $link, $filename);
+    }
+
+    /**
+     * @param FileModel $model
+     * @param mixed $link
+     * @param $filename
+     * @return string
+     */
+    private function insertFile(FileModel $model, mixed $link, $filename): string
+    {
         $model->hash = md5_file($model->path);
+        $filename = $this->getFilename($link, $model, $filename);
+        return url("index", "main", "file", ['file' => $filename]);
+    }
+
+    /**
+     * @param mixed $link
+     * @param FileModel $model
+     * @param $filename
+     * @return mixed
+     */
+    private function getFilename(mixed $link, FileModel $model, $filename): mixed
+    {
         $model->link = $link;
         $existFile = $this->find(null, ["hash" => $model->hash, "link" => $link]);
         if ($existFile) { //实现图片复用
-            $filename = $existFile->name;
-            File::del($model->path);
+            if (file_exists($existFile->path)) {
+                $filename = $existFile->name;
+                if ($model->path !== $existFile->path) {
+                    File::del($model->path);
+                }
+
+            } else {
+                $this->delete()->where(['id' => $existFile->id]);
+            }
+
         } else {
             $this->insertModel($model);
         }
-        return url("index", "main", "file", ['file' => $filename]);
+        return $filename;
     }
 
     function add($filename, $file, $timeout = 0, $link = ""): string
@@ -141,23 +174,13 @@ class FileDao extends Dao
         $model->name = $filename;
         $model->date = time();
         $model->timeout = $timeout;
-
         $model->path = Variables::getStoragePath('uploads', $filename);
         File::mkDir(Variables::getStoragePath('uploads'));
         file_put_contents($model->path, $file);
-        $model->hash = md5_file($model->path);
-        $model->link = $link;
-        $existFile = $this->find(null, ["hash" => $model->hash, "link" => $link]);
-        if ($existFile) { //实现图片复用
-            $filename = $existFile->name;
-            File::del($model->path);
-        } else {
-            $this->insertModel($model);
-        }
-        return url("index", "main", "file", ['file' => $filename]);
+        return $this->insertFile($model, $link, $filename);
     }
 
-    function upload($allow = ['jpg', 'jpeg', 'png', 'gif'], $max = 1024 * 1024 * 10, $link = ""): array
+    function upload($allow = ['jpg', 'jpeg', 'png', 'gif', 'svg'], $max = 1024 * 1024 * 10, $link = ""): array
     {
         $this->clearNoUsage();
         $upload = new Upload();
@@ -167,7 +190,7 @@ class FileDao extends Dao
         File::mkDir($upload->path);
         try {
             $upload->upload(function (UploadFile &$file) {
-                if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif'])) {
+                if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg'])) {
                     if (filesize($file->tmp_name) > 1024 * 1024) {
                         ImageCompress::compress($file->tmp_name);
                     }
@@ -184,14 +207,7 @@ class FileDao extends Dao
             $model->path = $upload->path . DS . $filename;
             $hash = md5_file($model->path);
             $model->hash = $hash;
-            $model->link = $link;
-            $file = $this->find(null, ["hash" => $hash, "link" => $link]);
-            if ($file) { //实现图片复用
-                $filename = $file->name;
-                File::del($model->path);
-            } else {
-                $this->insertModel($model);
-            }
+            $filename = $this->getFilename($link, $model, $filename);
 
             return [null, $files, url("index", "main", "file", ['file' => $filename])];
         } catch (UploadException $e) {
