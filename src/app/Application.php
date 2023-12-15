@@ -57,7 +57,13 @@ class Application implements MainApp
         Session::getInstance()->start();
 
         if(in_array($uriWithoutQuery,['','/'])){
-            Response::location("/@");
+            $shop = Config::getConfig("shop");
+            if($shop && $shop['state']===1){
+                Response::location("/@shop");
+            }else{
+                Response::location("/@");
+            }
+
         }
         //渲染json
         EventManager::addListener('__json_render_msg__', function (string $event, &$data) {
