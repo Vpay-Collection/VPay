@@ -24,6 +24,11 @@ class AppDao extends Dao
 {
 
 
+    public function findImage($image): int|array
+    {
+        return $this->select()->where(['app_image like %:image%',':image'=>$image])->limit()->commit(false);
+    }
+
 
     public function getByAppId($appid): ?AppModel
     {
@@ -31,10 +36,6 @@ class AppDao extends Dao
         return $this->find(null, ['id' => $appid]);
     }
 
-    public function getAllApp()
-    {
-        return $this->select()->commit(false);
-    }
 
     public function del($id)
     {

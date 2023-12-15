@@ -15,22 +15,19 @@
 namespace app;
 
 
-use app\utils\GithubUpdater;
-use cleanphp\App;
+use app\controller\admin\App;
+use app\database\dao\AppDao;
+use app\database\dao\ShopDao;
+use app\database\model\FileModel;
 use cleanphp\base\Config;
-use cleanphp\base\Cookie;
 use cleanphp\base\EventManager;
 use cleanphp\base\MainApp;
 use cleanphp\base\Response;
-use cleanphp\base\Route;
 use cleanphp\base\Session;
 use cleanphp\base\Variables;
 use cleanphp\cache\Cache;
 use cleanphp\engine\EngineManager;
 use cleanphp\engine\JsonEngine;
-use cleanphp\engine\ViewEngine;
-use library\task\TaskerManager;
-use library\task\TaskerTime;
 
 class Application implements MainApp
 {
@@ -70,6 +67,20 @@ class Application implements MainApp
             $data = ["code" => $data['code'], "msg" => $data['msg'], "data" => $data['data']];
         });
 
+        EventManager::addListener('__deleteTimeoutFile__',function(string $event, &$data){
+            /**
+             * @var $data FileModel
+             */
+            //首先检查logo
+            if(
+                str_contains(Config::getConfig("login")["image"],$data->name) ||
+                AppDao::getInstance()->findImage($data->name) ||
+                ShopDao::getInstance()->findImage($data->name)
+            ) {
+                $data->count = 1;
+            }
+
+        });
     }
 
     function onRequestEnd(): void

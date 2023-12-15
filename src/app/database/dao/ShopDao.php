@@ -10,6 +10,9 @@ use library\database\object\Dao;
 
 class ShopDao extends Dao
 {
+    public function findImage($image){
+        return $this->select()->where(['image like %:image%',':image'=>$image])->limit()->commit(false);
+    }
 
     public function getById($id): ?ShopModel
     {
