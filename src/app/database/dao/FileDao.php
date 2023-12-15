@@ -17,8 +17,10 @@ namespace app\database\dao;
 use app\database\model\FileModel;
 use app\utils\ImageCompress;
 use cleanphp\App;
+use cleanphp\base\EventManager;
 use cleanphp\base\Route;
 use cleanphp\base\Variables;
+use cleanphp\cache\Cache;
 use cleanphp\file\File;
 use library\database\object\Dao;
 use library\upload\Upload;
@@ -79,8 +81,9 @@ class FileDao extends Dao
         /**
          * @var $file FileModel
          */
-        $file = $this->find(null, ['name' => $filename]);
+        $file = $this->find(null, ['name' => $this->getFile($filename)]);
         if (!empty($file)) {
+            if ($file->count < 0) $file->count = 1;
             $file->count -= 1;
             $this->updateModel($file);
         }
@@ -97,16 +100,46 @@ class FileDao extends Dao
     private function clearNoUsage(): void
     {
         //超过24小时清理门户
-        $data_1 = $this->select("path", "id")->where(["count" => 0, "date < " . strtotime("-1 days")])->commit(false);
-        $data_2 = $this->select("path", "id")->where(['timeout < ' . time(), 'timeout<>0'])->commit(false);
+        $data_1 = $this->select("path", "id", "count", "name")->where(["count" => 0, "date < " . strtotime("-1 days")])->commit(false);
+        $data_2 = $this->select("path", "id", "count", "name")->where(['timeout < ' . time(), 'timeout<>0'])->commit(false);
 
         /**
          * @var $item FileModel
          */
         foreach (array_merge($data_1, $data_2) as $item) {
-            File::del($item['path']);
-            $this->delete()->where(['id' => $item['id']])->commit();
+            EventManager::trigger("__deleteTimeoutFile__", $item);
+            if ($item['count'] === 0) {
+                File::del($item['path']);
+                $this->delete()->where(['id' => $item['id']])->commit();
+            } else {
+                $this->update()->set($item)->where(['id' => $item['id']])->commit();
+            }
         }
+        $cache = Cache::init(7200, Variables::getCachePath());
+        if (!$cache->get("file.lock")) {
+            $cache->set("file.lock", true);
+            foreach (scandir(Variables::getStoragePath('uploads')) as $value) {
+                if (in_array($value, [".", ".."])) continue;
+                if ($this->find(null, ['name' => $value])) {
+                    continue;
+                }
+                $data = new FileModel();
+                $data->count = 0;
+                $data->path = Variables::getStoragePath('uploads', $value);
+                $data->name = $value;
+                $data->date = time();
+                $data->hash = md5_file($data->path);
+                $array = $data->toArray();
+                EventManager::trigger("__deleteTimeoutFile__", $array);
+                if ($array['count'] === 0) {
+                    File::del($array['path']);
+                } else {
+                    $this->insert()->keyValue($array)->commit();
+                }
+            }
+
+        }
+
     }
 
     function getByLink($link)
@@ -156,11 +189,9 @@ class FileDao extends Dao
                 if ($model->path !== $existFile->path) {
                     File::del($model->path);
                 }
-
             } else {
                 $this->delete()->where(['id' => $existFile->id]);
             }
-
         } else {
             $this->insertModel($model);
         }
@@ -194,7 +225,6 @@ class FileDao extends Dao
                     if (filesize($file->tmp_name) > 1024 * 1024) {
                         ImageCompress::compress($file->tmp_name);
                     }
-
 
                 }
                 return false;
