@@ -41,11 +41,24 @@ class Main extends BaseController
                    'icon' => 'fas fa-box'
                ],
                [
-                   "name" => "支付宝配置",
-                   "href" => 'admin/channel/index',
-                 
-                   'icon' => 'fab fa-alipay'
+                   'name' => "收款渠道",
+
+                   'icon' => 'fas fa-money-check-dollar',
+                   'child' => [
+                       [
+                           "name" => "个人收款码",
+                           "href" => 'admin/channel/user',
+                           "icon" => "fas fa-user",
+
+                       ],
+                       [
+                           "name" => "当面付",
+                           "href" => 'admin/channel/index',
+                           'icon' => 'fab fa-alipay'
+                       ],
+                   ]
                ],
+
                [
                    "name" => "通知配置",
                    "href" => 'admin/notice/index',
@@ -55,15 +68,30 @@ class Main extends BaseController
                [
                    "name" => "应用管理",
                    "href" => 'admin/app/index',
-                 
                    'icon' => 'fab fa-app-store-ios'
                ],
 
                [
                    "name" => "订单列表",
                    "href" => 'admin/order/index',
-                 
                    'icon' => 'fas fa-table-list'
+               ],
+               [
+                   'name' => "内置商城",
+                   'icon' => 'fas fa-shop',
+                   'child' => [
+                       [
+                           "name" => "商城设置",
+                           "href" => 'admin/shop/setting',
+                           "icon" => "fas fa-gear",
+
+                       ],
+                       [
+                           "name" => "商品管理",
+                           "href" => 'admin/shop/item',
+                           'icon' => 'fab fa-shopify'
+                       ],
+                   ]
                ],
                [
                    'name' => "个人中心",

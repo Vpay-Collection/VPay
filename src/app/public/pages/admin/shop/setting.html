@@ -1,0 +1,77 @@
+<div class="container my-5 py-5">
+    <section class="mb-10">
+        <div class="row">
+            <div class="col-12 mb-2">
+                <div class="card ">
+                    <div class="card-header py-3"><strong>内置商城配置</strong></div>
+                    <div class="card-body ">
+                        <form action="" id="shopSetting">
+                            <div class="form-check mb-4 text-start"><input class="form-check-input" type="checkbox"
+                                                                           value="1" id="state"
+                                name="state" > <label class="form-check-label"
+                                                                 for="state">开启商城并将首页重定向到商城</label></div>
+                            <div class="form-outline mb-4 "><input type="text" name="title" id="title"
+                                                                   class="form-control" value=""/> <label
+                                    class="form-label" for="title">商城名称</label></div>
+                            <div class="file-upload-wrapper mb-4 ">
+                                <input id="file-upload" type="file" name="logo"
+                                       data-mdb-file-upload="file-upload"
+                                       class="file-upload-input" data-mdb-multiple="false"
+                                       data-mdb-remove-btn="删除"
+                                       data-mdb-accepted-extensions="image/*"
+                                       data-mdb-preview-msg="拖拽到此或点击这里进行上传LOGO图片"
+                                       data-mdb-default-msg="拖拽到此或点击这里进行上传LOGO图片"
+                                       data-mdb-format-error="不支持该文件 (支持的格式为 ~~~)"/>
+                            </div>
+                            <div class="form-outline mb-4 "><input type="text" name="appid" id="appid"
+                                                                   class="form-control" value=""/> <label
+                                    class="form-label" for="appid">AppId</label></div>
+                            <div class="form-outline mb-4 "><input type="text" name="appkey" id="appkey"
+                                                                   class="form-control" value=""/> <label
+                                    class="form-label" for="appkey">SecretKey</label></div>
+                            <div class=" mb-4 ">
+                                <div id="wysiwygNotice" class="wysiwyg" style="min-width: 100%" data-mdb-wysiwyg-translations='{
+                "paragraph": "段落",
+                "textStyle": "文本样式",
+                "heading": "标题",
+                "preformatted": "预设格式",
+                "bold": "加粗",
+                "italic": "斜体",
+                "strikethrough": "删除线",
+                "underline": "下划线",
+                "textcolor": "文本颜色",
+                "textBackgroundColor": "文本背景颜色",
+                "alignLeft": "左对齐",
+                "alignCenter": "居中对齐",
+                "alignRight": "右对齐",
+                "alignJustify": "两端对齐",
+                "insertLink": "插入链接",
+                "insertPicture": "插入图片",
+                "unorderedList": "无序列表",
+                "orderedList": "有序列表",
+                "increaseIndent": "增加缩进",
+                "decreaseIndent": "减少缩进",
+                "insertHorizontalRule": "插入水平线",
+                "showHTML": "显示HTML代码",
+                "undo": "撤销",
+                "redo": "重做",
+                "addLinkHead": "添加链接",
+                "addImageHead": "添加图片",
+                "linkUrlLabel": "输入网址：",
+                "linkDescription": "输入描述",
+                "imageUrlLabel": "输入图片网址：",
+                "okButton": "确定",
+                "cancelButton": "取消",
+                "moreOptions": "更多选项"
+            }'>
+
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2" id="save"> 保存</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,42 @@
+<style>
+    .navbar.bg-dark{
+        background-color: #222425!important;
+    }
+</style>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container container-fluid justify-content-between align-items-center"><a
+                href="/@shop" class="text-reset">
+            <div class="d-flex align-items-center mb-sm-0 mb-xm-2">
+                <div class="col-auto me-3">
+                    <img  height="35"  data-name="logo" /></div>
+                <div class="col d-none d-lg-block me-3"><h5 class="m-0" data-name="title" ></h5></div>
+            </div>
+        </a>
+            <div class="d-flex align-items-center mb-sm-0 mb-xm-2 ms-auto me-0">
+                <button type="button" class="btn btn-primary me-2" data-mdb-toggle="modal"
+                        data-mdb-target="#updateModal" id="notice"> 公告
+                </button>
+        </div>
+        </div>
+    </nav>
+    <div style="margin-top: 58px"></div>
+</header>
+<main style="    padding-left: 0!important;">
+    <div class="container" id="container"> </div>
+</main>
+<div class="modal top fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true"
+     data-mdb-backdrop="true" data-mdb-keyboard="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">公告</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" data-name="notice"> 无事 </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">我知道了</button>
+            </div>
+        </div>
+    </div>
+</div>
+
