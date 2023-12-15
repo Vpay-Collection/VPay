@@ -26,6 +26,7 @@ route("shop/detail/:id", {
             return randomString;
         }
         $.each(inputs,function (k,v) {
+            if(v.trim()==="")return;
             let str = generateRandomString(12);
             tpl+= ` <div class="form-outline mb-4"><input type="text" class="form-control" id="${str}" name="${v}"/>
                             <label class="form-label" for="${str}">${v}</label>
