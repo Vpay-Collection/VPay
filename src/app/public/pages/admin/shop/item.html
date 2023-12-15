@@ -1,0 +1,129 @@
+<div class="container my-5 py-5">
+    <section class="mb-10">
+        <div class="row">
+            <div class="col-12 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-12 col-lg-3 mb-4">
+                                <button type="button" id="addApp" class="btn btn-primary" data-mdb-toggle="modal"
+                                        data-mdb-target="#addOrUpdate">添加商品
+                                </button>
+                            </div>
+                            <div class="col-12 col-lg-3 mb-4">
+                                <div class="form-outline">
+                                    <input type="text" id="form_name" class="form-control"
+                                           name="name"/> <label class="form-label"
+                                                                for="form_name">商品名称</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-3 mb-4">
+                                <button type="button" id="search" class="btn btn-primary">查找</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="datatable" data-mdb-loading="true" data-mdb-rows-text="每一页显示数量："
+                             data-mdb-no-found-message="空空如也" data-mdb-of-text="/" data-mdb-pagination="false"
+                             data-mdb-striped="true"></div>
+                        <div id="pagination" style="margin: 0 auto" class="mt-3" data-previous="上一页"
+                             data-next="下一页"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="modal fade" id="addOrUpdate" tabindex="-1" aria-labelledby="addOrUpdateTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="addOrUpdateTitle" data-add="新增商品"
+                                          data-change="修改商品">新增商品</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form form-vertical " id="form">
+                    <div class="form-outline mb-4 d-none">
+                        <input type="text" class="form-control" id="form_id" name="id"  placeholder="" value=""/> <label class="form-label"
+                                                                                                  for="form_id"></label>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control" id="item_name"  name="item"/> <label class="form-label" for="item_name">商品名称</label>
+                    </div>
+                    <div class="file-upload-wrapper mb-4 ">
+                        <input id="file-upload" type="file" name="image"
+                               data-mdb-file-upload="file-upload"
+                               class="file-upload-input" data-mdb-multiple="false"
+                               data-mdb-remove-btn="删除"
+                                data-mdb-accepted-extensions="image/*"
+                                                                  data-mdb-preview-msg="拖拽到此或点击这里进行上传商品图片"
+                                                                  data-mdb-default-msg="拖拽到此或点击这里进行上传商品图片"
+                                                                  data-mdb-format-error="不支持该文件 (支持的格式为 ~~~)"/>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control" id="item_price"
+                           name="price"/> <label class="form-label" for="item_price">商品价格</label>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control" id="item_category"
+                        name="category" value="默认"/>
+                        <label class="form-label" for="item_category">商品分类</label>
+                    </div>
+                    <div class="form-outline mb-4"><input type="text" class="form-control" id="inputs" name="inputs"/>
+                        <label class="form-label" for="inputs">允许用户输入的字段名（逗号分割）</label></div>
+                    <div class="form-outline mb-4"><input type="text" class="form-control" id="webhook" name="api"/>
+                        <label class="form-label" for="webhook">WebHook</label></div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" value="1" name="stop" type="checkbox" role="switch" id="stop" />
+                        <label class="form-check-label" for="stop">停售</label>
+                    </div>
+                    <div class=" mb-4 ">
+                        <div id="wysiwyg" class="wysiwyg" style="min-width: 100%" data-mdb-wysiwyg-translations='{
+                "paragraph": "段落",
+                "textStyle": "文本样式",
+                "heading": "标题",
+                "preformatted": "预设格式",
+                "bold": "加粗",
+                "italic": "斜体",
+                "strikethrough": "删除线",
+                "underline": "下划线",
+                "textcolor": "文本颜色",
+                "textBackgroundColor": "文本背景颜色",
+                "alignLeft": "左对齐",
+                "alignCenter": "居中对齐",
+                "alignRight": "右对齐",
+                "alignJustify": "两端对齐",
+                "insertLink": "插入链接",
+                "insertPicture": "插入图片",
+                "unorderedList": "无序列表",
+                "orderedList": "有序列表",
+                "increaseIndent": "增加缩进",
+                "decreaseIndent": "减少缩进",
+                "insertHorizontalRule": "插入水平线",
+                "showHTML": "显示HTML代码",
+                "undo": "撤销",
+                "redo": "重做",
+                "addLinkHead": "添加链接",
+                "addImageHead": "添加图片",
+                "linkUrlLabel": "输入网址：",
+                "linkDescription": "输入描述",
+                "imageUrlLabel": "输入图片网址：",
+                "okButton": "确定",
+                "cancelButton": "取消",
+                "moreOptions": "更多选项"
+            }'></div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="saveOrUpdate">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
