@@ -53,6 +53,9 @@ class Channel extends BaseController
     function app(): string
     {
         $config = new AppConfig(Config::getConfig("app"),false);
+        if(empty($config->app_key)){
+            $config->app_key = rand_str(16);
+        }
         if (Request::isGet()) return $this->json(200, null, $config->toArray());
         try{
             $config= new AppConfig(post());

@@ -22,7 +22,7 @@ class AppChannel
      */
     public function create(OrderModel $order): OrderModel
     {
-        if(!self::isActive() && Config::getConfig("app")['app_key']!==""){
+        if(!self::isActive()){
             throw new ChannelException("收款设备不在线");
         }
         $app = new AppConfig(Config::getConfig("app"));
