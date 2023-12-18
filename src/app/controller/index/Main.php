@@ -61,7 +61,9 @@ EOF;
             "mail"=>Config::getConfig("notice")["admin"],
             "price"=>$order->price,
             "create_time"=>date("Y-m-d H:i:s",$order->create_time),
-            "start"=>$order->create_time
+            "start"=>$order->create_time,
+            'real_price' => $order->real_price,
+            'type'=>$order->pay_type
         ]);
 
     }
@@ -75,5 +77,7 @@ EOF;
         ]);
 
     }
+
+
 
 }

@@ -141,10 +141,32 @@ class Shop extends Controller
         return $this->render(200, "OK", $result->url);
     }
 
-    function notity(): string
+    function return()
     {
-        $config = new PayConfig(Config::getConfig("shop"));
-        $pay = new Vpay($config);
+        $config = Config::getConfig("shop");
+        $payConfig = new PayConfig([
+            'host'=>Request::getAddress(),
+            'key'=>$config['appkey'],
+            'id'=>$config['appid'],
+            'time'=>5
+        ]);
+        $pay = new Vpay($payConfig);
+        if($pay->payReturn($_POST)){
+            return $this->render(200,null,$_POST);
+        }
+        return $this->render(500,$pay->getError());
+    }
+
+    function notify(): string
+    {
+        $config = Config::getConfig("shop");
+        $payConfig = new PayConfig([
+            'host'=>Request::getAddress(),
+            'key'=>$config['appkey'],
+            'id'=>$config['appid'],
+            'time'=>5
+        ]);
+        $pay = new Vpay($payConfig);
         $result = $pay->payNotify(function (PayNotifyObject $notifyObject) {
             $data = Json::decode($notifyObject->param, true);
             $mail = $data['mail'];

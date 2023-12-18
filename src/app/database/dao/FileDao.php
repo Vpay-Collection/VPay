@@ -238,7 +238,6 @@ class FileDao extends Dao
             $hash = md5_file($model->path);
             $model->hash = $hash;
             $filename = $this->getFilename($link, $model, $filename);
-
             return [null, $files, url("index", "main", "file", ['file' => $filename])];
         } catch (UploadException $e) {
             return [$e->getMessage(), null, null];

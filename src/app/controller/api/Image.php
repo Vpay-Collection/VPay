@@ -15,6 +15,7 @@
 namespace app\controller\api;
 
 use cleanphp\base\Config;
+use cleanphp\base\Request;
 use cleanphp\base\Variables;
 use library\qrcode\Code;
 
@@ -22,7 +23,13 @@ class Image extends BaseController
 {
     function qrcode(): void
     {
-        Code::encode(urldecode(arg('url', "")),Config::getConfig("login")['image']);
+        $url = Config::getConfig("login")['image'];
+
+        if(!str_starts_with($url,"http")){
+            $url = Request::getAddress()."/@static/".$url;
+        }
+
+        Code::encode(urldecode(arg('url', "")),$url);
     }
 
 }

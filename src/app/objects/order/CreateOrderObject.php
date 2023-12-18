@@ -21,7 +21,7 @@ use library\verity\VerityRule;
 
 class CreateOrderObject extends BaseSignObject
 {
-    public int $pay_type = OrderModel::PAY_WECHAT;//支付类型
+    public int $pay_type = OrderModel::PAY_ALIPAY;//支付类型
     public string $app_item = "";//商户商品
     public string $notify_url = "";//异步通知链接
     public string $return_url = "";//异步通知链接
@@ -62,7 +62,7 @@ class CreateOrderObject extends BaseSignObject
     function getRules(): array
     {
         return array_merge(parent::getRules(), [
-            'pay_type' => new VerityRule("^1|2|3$", "请传输收款信息", false),
+            'pay_type' => new VerityRule("^1|2|3|4$", "请传输收款信息", false),
             'notify_url' => new VerityRule('', "请传入异步通知链接", false),
             'return_url' => new VerityRule('', "请传入同步通知链接", false),
             'price' => new VerityRule(VerityRule::FLOAT_AND_INT, '金额必须为浮点数', false)

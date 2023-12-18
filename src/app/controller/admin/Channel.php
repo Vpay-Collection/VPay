@@ -16,27 +16,18 @@ namespace app\controller\admin;
 
 
 
-use app\objects\config\ChannelConfig;
+use app\database\dao\FileDao;
+use app\database\model\FileModel;
+use app\objects\config\AlipayConfig;
+use app\objects\config\AppConfig;
 use cleanphp\base\Config;
 use cleanphp\base\Request;
-use cleanphp\base\Variables;
 use library\qrcode\Code;
+use library\upload\UploadFile;
 use library\verity\VerityException;
 
 class Channel extends BaseController
 {
-    private ChannelConfig $config;
-
-    public function __init(): ?string
-    {
-
-        $result = parent::__init();
-        if ($result !== null) {
-            return $result;
-        }
-        $this->config = new ChannelConfig(Config::getConfig("alipay"),false);
-        return null;
-    }
 
     /**
      * 处理配置信息
@@ -44,13 +35,43 @@ class Channel extends BaseController
      */
     function config(): string
     {
-        if (Request::isGet()) return $this->json(200, null, $this->config->toArray());
+        $config = new AlipayConfig(Config::getConfig("alipay"),false);
+        if (Request::isGet()) return $this->json(200, null, $config->toArray());
         try{
-            $this->config= new ChannelConfig(post());
+            $config= new AlipayConfig(post());
         }catch (VerityException $e){
             return $this->json(403,$e->getMessage());
         }
-        Config::setConfig('alipay', $this->config->toArray());
+        Config::setConfig('alipay', $config->toArray());
         return $this->json(200, "更新成功");
+    }
+
+    /**
+     * 处理配置信息
+     * @return string
+     */
+    function app(): string
+    {
+        $config = new AppConfig(Config::getConfig("app"),false);
+        if (Request::isGet()) return $this->json(200, null, $config->toArray());
+        try{
+            $config= new AppConfig(post());
+        }catch (VerityException $e){
+            return $this->json(403,$e->getMessage());
+        }
+        Config::setConfig('app', $config->toArray());
+        return $this->json(200, "更新成功");
+    }
+    function upload(): string
+    {
+        /**
+         * @var $file UploadFile
+         */
+        [$error, $file, $url] = FileDao::getInstance()->upload();
+       $path =  $file->path.DS. basename($url);
+       $decode = Code::decode($path);
+       $url = url('api','image','qrcode',['url'=>$decode,'type'=>'.jpg']);
+       return $this->render(200,null,$url);
+
     }
 }

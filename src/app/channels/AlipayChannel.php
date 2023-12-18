@@ -12,19 +12,17 @@
  * Description :
  */
 
-namespace app\utils;
+namespace app\channels;
 
 use app\database\model\OrderModel;
 use app\exception\ChannelException;
+use app\objects\config\AlipayConfig;
 use app\utils\alipay\AlipayServiceSend;
 use cleanphp\base\Config;
-use library\qrcode\src\QRCode;
 
 
 class AlipayChannel
 {
-
-
 
     /**
      * 从该渠道创建订单
@@ -38,13 +36,14 @@ class AlipayChannel
             throw new ChannelException("支付宝收款渠道暂时不可用");
         $order->order_id = date("YmdHis") . rand(10000, 99999);
         $order->create_time = time();
-        $pay = Config::getConfig("alipay");
-        $appid = $pay["alipay_id"];
-        $saPrivateKey = $pay["alipay_private_key"];
-        $timeout = $pay["validity_minute"];
+        $pay = new AlipayConfig(Config::getConfig("alipay"));
+        $appid = $pay->alipay_id;
+        $saPrivateKey = $pay->alipay_private_key;
+        $timeout = $pay->validity_minute;
         $aliPay = new AlipayServiceSend($appid, $saPrivateKey);
         $result = $aliPay->doPay($order->price, $order->order_id, $order->app_item, url("api","notify","alipay"),$timeout);
         $result = $result['alipay_trade_precreate_response'];
+        $order->real_price = $order->price;
         if (isset($result['code']) && $result['code'] == '10000') {
             $order->pay_image = url("api","image","qrcode",['url'=>$result['qr_code']]);
         }

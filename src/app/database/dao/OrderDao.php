@@ -137,7 +137,7 @@ class OrderDao extends Dao
     {
         $this->closeTimeoutOrder();
         $condition = [
-            'price' => $price,
+            'real_price' => $price,
             'pay_type' => $pay_type,
             'state' => OrderModel::WAIT
         ];

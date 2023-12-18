@@ -24,13 +24,15 @@ class OrderModel extends Model
     const WAIT = 1;//等待支付
     const CLOSE = -1;//已关闭
 
-    const PAY_WECHAT = 1; //微信收款
+ //   const PAY_WECHAT = 1; //微信收款
     const PAY_ALIPAY = 2;//支付宝收款
-
+    const PAY_WECHAT_APP = 3; //微信App收款
+    const PAY_ALIPAY_APP = 4; //支付宝App收款
 
     public int $id = 0;//唯一id
     public int $pay_type = 0;//支付类型
     public float $price = 0.00;//支付金额
+    public float $real_price = 0.00;//支付金额
     public string $app_name = "";//商户，商户名称
     public string $app_item = "";//商户商品
     public int $appid = 0;//appid

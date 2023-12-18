@@ -1,7 +1,8 @@
-<!--
-  ~ Copyright (c) 2023. Ankio.  由CleanPHP4强力驱动。
-  -->
-
+<style>
+    .navbar.bg-dark{
+        background-color: #222425!important;
+    }
+</style>
 <header>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -46,14 +47,14 @@
 
                     </h4>
                     <div class="text-center">
-                        <p class="h4 mb-3 text-primary wait-pay " >支付宝扫码支付</p>
+                        <p class="h4 mb-3 text-primary wait-pay wait-pay-title " >支付宝扫码支付</p>
                         <img class="wait-pay mb-2" src="" data-name="image"
                         style="max-width: 200px" alt="支付码">
                         <div id="time" class="mb-3 wait-pay display-2 text-muted">
                             00:00
                         </div>
                         <div>
-                            <div class="alert" role="alert" data-mdb-color="info">
+                            <div class="alert alert-light" role="alert" >
                               如有疑问，请发邮件联系<a
                                     data-name="mail"></a>。
                             </div>
@@ -76,11 +77,13 @@
                                     <p class="h6 pt-1 mb-1">商品</p>
                                     <p class="h6 pt-1 mb-1">金额</p>
                                     <p class="h6 pt-1 mb-1">创建时间</p>
+                                    <p class="h6 pt-1 mb-1 preferential preferential-name">优惠</p>
                                 </div>
                                 <div>
                                     <p class="h6 pt-1 mb-1" data-name="app_item"></p>
                                     <p class="h6 pt-1 mb-1 text-danger">￥<span data-name="price"></span></p>
                                     <p class="h6 pt-1 text-muted mb-1" data-name="create_time"></p>
+                                    <p class="h6 pt-1 mb-1 text-danger preferential preferential-price">￥<span></span></p>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +94,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <h4>总计</h4>
-                                <h4>￥<span data-name="price"></span></h4>
+                                <h4>￥<span data-name="real_price"></span></h4>
                             </div>
                         </div>
                     </div>

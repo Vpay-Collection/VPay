@@ -3,11 +3,13 @@
     var routes = [];
     var frames = [];
     let lastHash = null;
-    var ignoreHashChange = false;
 
     function handleRouting() {
         log.success(window.location.pathname, "route");
-        if (window.location.pathname === lastHash) return;
+        if (window.location.pathname === lastHash) {
+            router.ignoreHashChange = false;
+            return;
+        }
         routerGo({
             oldURL: lastHash,
             newURL: window.location.pathname,
@@ -218,30 +220,24 @@
     function loadHtml(newHash, onload) {
 
         var hash = getHash(newHash);
-        var html = sessionStorage.getItem("page_" + hash);
-        if (!window.debug && html) {
-            onload(replaceTplLang(html));
-        } else {
-            if (hash === "") hash = "index";
-            $.ajax({
-                url: "/@static/pages/" + hash + ".html",
-                type: "GET",
-                headers: {"If-Modified-Since": sessionStorage.getItem("page_modify_" + hash)},
-                complete: function (xhr, textStatus) {
-                    let data = xhr.responseText;
-                    if (xhr.status === 304) {
-                        data = sessionStorage.getItem("page_" + hash);
-                    } else {
-                        var lastModified = xhr.getResponseHeader("Last-Modified");
-                        sessionStorage.setItem("page_modify_" + hash, lastModified);
-                        sessionStorage.setItem("page_" + hash, data);
-                    }
-                    onload(replaceTplLang(data));
+        if (hash === "") hash = "index";
+        $.ajax({
+            url: "/@static/pages/" + hash + ".html",
+            type: "GET",
+            headers: {"If-Modified-Since": sessionStorage.getItem("page_modify_" + hash)},
+            complete: function (xhr, textStatus) {
+                let data = xhr.responseText;
+                if (xhr.status === 304) {
+                    data = sessionStorage.getItem("page_" + hash);
+                } else {
+                    var lastModified = xhr.getResponseHeader("Last-Modified");
+                    sessionStorage.setItem("page_modify_" + hash, lastModified);
+                    sessionStorage.setItem("page_" + hash, data);
+                }
+                onload(replaceTplLang(data));
 
-                },
-            });
-
-        }
+            },
+        });
     }
 
     global.loadFrame = function (title, url, params, configs, loading) {

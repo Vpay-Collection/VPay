@@ -14,14 +14,14 @@
 
 namespace app\controller\api;
 
+use app\channels\AlipayChannel;
+use app\channels\AppChannel;
 use app\database\dao\AppDao;
 use app\database\dao\OrderDao;
 use app\database\model\OrderModel;
 use app\exception\ChannelException;
 use app\objects\order\CreateOrderObject;
 use app\objects\order\OrderObject;
-use app\utils\AlipayChannel;
-use app\utils\WechatChannel;
 use cleanphp\base\Request;
 use cleanphp\base\Session;
 use cleanphp\engine\EngineManager;
@@ -46,8 +46,11 @@ class Pay extends BaseController
         $order->state = OrderModel::WAIT;
         //选择可用支付渠道创建订单
         try {
-
-            $order = $order->pay_type === OrderModel::PAY_ALIPAY ?(new  AlipayChannel())->create($order):(new  WechatChannel())->create($order);
+            $order = match ($order->pay_type) {
+                OrderModel::PAY_ALIPAY => (new  AlipayChannel())->create($order),
+                OrderModel::PAY_ALIPAY_APP, OrderModel::PAY_WECHAT_APP => (new  AppChannel())->create($order),
+                default => throw new ChannelException("不支持的付款渠道"),
+            };
             OrderDao::getInstance()->insertModel($order);
         } catch (ChannelException $e) {
             return $this->json(self::API_ERROR, $e->getMessage());
@@ -60,6 +63,7 @@ class Pay extends BaseController
             'app_item' => $order->app_item,
             'app_name' => $order->app_name,
             'price' => $order->price,
+            'real_price' => $order->real_price,
             'param' => $order->param,
         ];
 

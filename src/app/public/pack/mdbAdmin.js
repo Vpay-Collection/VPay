@@ -325,7 +325,7 @@
                                 if (vv["function_" + raw]) {
                                     return;
                                 }
-                                console.log("组件参数", raw, vv, option);
+                               window.debug && console.log("组件参数", raw, vv, option);
                                 let objection = null;
                                 if ($.isFunction(func.getOrCreateInstance)) {
                                     objection = func.getOrCreateInstance(vv, option);

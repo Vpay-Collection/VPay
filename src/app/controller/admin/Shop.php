@@ -31,7 +31,8 @@ class Shop extends BaseController
             'logo'=>'',
             'state'=>0,
             'appid'=>'',
-            'appkey'=>''
+            'appkey'=>'',
+            'host'=>Request::getAddress()
         ];
         if(empty( $this->config)){
             $this->config = [];

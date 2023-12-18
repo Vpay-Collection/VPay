@@ -15,6 +15,32 @@ route("pay", {
     },
     onrender: function (query, dom,result) {
         var that = this;
+        let price = (result.data.price - result.data.real_price).toFixed(2);
+        if(price==='0.00'){
+            dom.find(".preferential").hide();
+        }else{
+            let showPrice = price;
+            let  text = "";
+            if(price>0){
+                text = "优惠";
+            }else{
+                text = "溢价";
+                showPrice = -showPrice;
+            }
+            dom.find(".preferential-name").text(text);
+            dom.find(".preferential-price span").text(showPrice);
+
+            mdbAdmin.modal.show({
+                title: text+"提醒",
+                body: `因系统负载过高，您本次订单存在<span class="text-danger">￥${showPrice}</span>的${text}，支付时请支付<span class="text-danger">￥${result.data.real_price}</span>。`,
+                color: mdbAdmin.modal.color.error,
+            });
+
+        }
+
+        if(result.data.type===3){
+            dom.find(".wait-pay-title").text("微信扫码支付");
+        }
 
         function error(msg) {
           sessionStorage.setItem("error",msg);
@@ -74,6 +100,9 @@ route("pay", {
             return /android/i.test(userAgent) || /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
         }
         if(isMobileDevice()){
+            if(result.data.type!==2){
+                return;
+            }
             function extractUrlFromQueryString(fullUrl) {
                 // Create a URL object
                 const urlObj = new URL(fullUrl);
