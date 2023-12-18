@@ -112,7 +112,10 @@ route("admin/order/index", {
                 {label: '商户', field: 'app_name'},
                 {label: '商品', field: 'app_item'},
                 {label: '金额', field: 'price',render(row){
-                        return `<i class="fas fa-yen-sign me-2"></i><span class="text-primary">${row.price}</span>`;
+                    if(row.price!==row.real_price){
+                        return `<i class="fas fa-yen-sign me-2"></i><span class="text-danger me-2"><s>${row.price}</s></span><span class="text-success">${row.real_price}</span>`;
+                    }
+                        return `<i class="fas fa-yen-sign me-2"></i><span class="text-success">${row.price}</span>`;
                     }},
                 {label: '订单ID', field: 'order_id'},
                 {label: '创建时间', field: 'create_time',render(row){
@@ -126,7 +129,7 @@ route("admin/order/index", {
                         var ret = "";
                         if(row.state!==3){
                             ret += `
-      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm"  data-index="${index}"><i class="fas fa-rotate"></i></button>
+      <button class="edit-btn btn btn-outline-primary btn-floating btn-sm me-2"  data-index="${index}"><i class="fas fa-rotate"></i></button>
      `;
                         }
 
