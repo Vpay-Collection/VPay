@@ -131,7 +131,7 @@ class Shop extends Controller
         $order->param = Json::encode(arg());
         $order->price = $item->price;
         $order->pay_type = $pay_type;
-        $order->notify_url = url("main", "shop", "notify");
+        $order->notify_url = url("index", "shop", "notify");
         $order->return_url = Request::getAddress()."/@shop/success";
         $pay = new Vpay($payConfig);
         $result = $pay->create($order);
@@ -201,7 +201,7 @@ class Shop extends Controller
 
                 $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item}失败", "<p>您购买的{$item->item}出现异常，请等待商家处理。</p>");
                 AnkioMail::send($mail, "购买{$item->item}失败", $file, $title);
-                $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item}失败", "<p>用户购买的{$item->item}出现异常，请及时处理。{$error}</p><p>订单：{$notifyObject->order_id}<span></p><p>商户：{$notifyObject->app_name}</p><p>商品：{$notifyObject->app_item}</p><p>支付金额：{$notifyObject->real_price}</p><p>应付金额：{$notifyObject->price}</p><p>支付方式：" . $this->getPayType($notifyObject->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $notifyObject->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($notifyObject->param) . JSON_UNESCAPED_UNICODE) . "</p>");
+                $file = AnkioMail::compileNotify("#df3b3b", "#fff", $app->app_image, $title, "购买{$item->item}失败", "<p>用户购买的{$item->item}出现异常，请及时处理。{$error}</p><p>订单：{$notifyObject->order_id}<span></p><p>商户：{$notifyObject->app_name}</p><p>商品：{$notifyObject->app_item}</p><p>支付金额：{$notifyObject->real_price}</p><p>应付金额：{$notifyObject->price}</p><p>支付方式：" . $this->getPayType($notifyObject->pay_type) . "</p><p>支付时间：" . date("Y-m-d H:i:s", $notifyObject->pay_time) . "</p><p>携带参数：" . json_encode(json_decode($notifyObject->param) , JSON_UNESCAPED_UNICODE) . "</p>");
                 AnkioMail::send($mail, "用户购买{$item->item}失败", $file, $title);
 
         });
