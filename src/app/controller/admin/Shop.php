@@ -77,8 +77,6 @@ class Shop extends BaseController
         }
         $model->inputs = trim($model->inputs, ",");
 
-
-
         if (empty($model->id) || $model->id == -1) {
             FileDao::getInstance()->use($model->image);
             ShopDao::getInstance()->insertModel($model);
