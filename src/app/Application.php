@@ -68,16 +68,13 @@ class Application implements MainApp
         });
 
         EventManager::addListener('__deleteTimeoutFile__',function(string $event, &$data){
-            /**
-             * @var $data FileModel
-             */
             //首先检查logo
             if(
-                str_contains(Config::getConfig("login")["image"],$data->name) ||
-                AppDao::getInstance()->findImage($data->name) ||
-                ShopDao::getInstance()->findImage($data->name)
+                str_contains(Config::getConfig("login")["image"],$data['name']) ||
+                AppDao::getInstance()->findImage($data['name']) ||
+                ShopDao::getInstance()->findImage($data['name'])
             ) {
-                $data->count = 1;
+                $data['count'] = 1;
             }
 
         });
